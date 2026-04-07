@@ -470,23 +470,23 @@ function Footer() {
 // ═══════════════════════════════════════════════════════════════════════════
 export default function BookingPage() {
   return (
-    <div className="min-h-screen pt-24 md:pt-32 relative">
-      {/* HÁTTÉRKÉP (Elmosott, sötétített) */}
-      <div className="absolute inset-0 -z-10">
-        <Image
+    <div className="min-h-screen pt-24 md:pt-32 relative bg-gray-50">
+      {/* HÁTTÉRKÉP (Világos, prémium luxus hatás, tejüveg effekttel) */}
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        <img
           src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80&w=2068&auto=format&fit=crop"
           alt="Luxus Fogászati Rendelő Háttér"
-          fill
-          className="object-cover blur-md brightness-50"
-          priority
+          className="w-full h-full object-cover"
         />
+        {/* Fehér, félig átlátszó réteg, ami finoman el is mossa a hátteret */}
+        <div className="absolute inset-0 bg-white/85 backdrop-blur-[6px]" />
       </div>
 
       <Navigation />
       
       <main className="container mx-auto px-4 py-12 relative z-10">
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-sky-100/80 backdrop-blur-md rounded-full text-sky-700 text-sm font-bold tracking-wide uppercase mb-6">
+          <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-sky-100/80 backdrop-blur-md rounded-full text-sky-700 text-sm font-bold tracking-wide uppercase mb-6 shadow-sm border border-sky-200">
             <Building2 className="w-4 h-4" /> Gyors és kényelmes
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-4 tracking-tight drop-shadow-sm">
@@ -508,7 +508,7 @@ export default function BookingPage() {
           width: 6px;
         }
         .custom-scrollbar::-webkit-scrollbar-track {
-          background: #f1f5f9;
+          background: rgba(255, 255, 255, 0.5);
           border-radius: 10px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
