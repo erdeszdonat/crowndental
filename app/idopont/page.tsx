@@ -368,6 +368,86 @@ function BookingForm() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
+// VÉLEMÉNYEK - GÖRDÜLŐ MARQUEE 
+// ═══════════════════════════════════════════════════════════════════════════
+function ReviewsSection() {
+  const reviews = [
+    { name: 'Kovács Mária', rating: 5, text: 'Már 10 éve járok ide, a legjobb döntés volt. A gyerekeim is ide járnak, sosem csalódtunk a csapatban.', date: '2026. február' },
+    { name: 'Nagy József', rating: 4, text: 'Nagyon profik, az implantátumom tökéletes lett. Kicsit várni kellett az időpontra, de abszolút megérte.', date: '2026. január' },
+    { name: 'Szabó Anna', rating: 5, text: 'A korona 3 nap alatt elkészült a saját labor miatt. Nagyon féltem a beavatkozástól, de teljesen fájdalommentes volt!', date: '2025. december' },
+    { name: 'Tóth Gábor', rating: 5, text: '8 éve csak hozzájuk járok. Mindig kedvesek, gyorsak és a legmodernebb, legtisztább gépekkel dolgoznak.', date: '2025. november' },
+    { name: 'Horváth Éva', rating: 4, text: 'Nagyon szép lett a kivehető fogsorom, a technikus azonnal tudott korrigálni a színen. Szuper szakemberek.', date: '2025. október' },
+    { name: 'Varga Péter', rating: 5, text: '5 éve vagyok páciens. Életemben először nem gyomorgörccsel megyek fogorvoshoz, nagyon empatikusak.', date: '2025. szeptember' },
+    { name: 'Kiss László', rating: 5, text: 'Komplikált gyökérkezelésen voltam, de megmentették a fogam. Precíz, gyors és alapos munka.', date: '2025. július' },
+    { name: 'Farkas Zita', rating: 5, text: '10 éve hűséges páciensük vagyok. Bárkinek, aki fogorvost keres, csak ajánlani tudom őket!', date: '2025. május' },
+  ];
+
+  const extendedReviews = [...reviews, ...reviews, ...reviews];
+
+  return (
+    <section className="py-24 relative z-10 overflow-hidden">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-16">
+          <h2 className="text-sky-600 font-bold uppercase tracking-widest mb-3">Vélemények</h2>
+          <h3 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">
+            Pácienseink mondták
+          </h3>
+          <div className="flex items-center justify-center gap-1.5 sm:gap-2 text-amber-400 bg-white inline-flex px-4 sm:px-6 py-2 rounded-full shadow-sm border border-gray-100 whitespace-nowrap">
+            <div className="flex items-center">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="w-4 h-4 sm:w-5 sm:h-5 fill-current" />
+              ))}
+            </div>
+            <span className="text-gray-900 font-bold ml-1 sm:ml-2 text-base sm:text-lg">4.8 / 5</span>
+            <span className="text-gray-500 font-medium ml-1 text-xs sm:text-base">(320+ értékelés)</span>
+          </div>
+        </div>
+      </div>
+
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-33.3333%); }
+        }
+        .animate-marquee {
+          display: flex;
+          width: max-content;
+          animation: marquee 50s linear infinite;
+        }
+        .animate-marquee:hover {
+          animation-play-state: paused;
+        }
+      `}} />
+
+      <div className="relative w-full">
+        <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-gray-50 to-transparent z-10" />
+        <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-gray-50 to-transparent z-10" />
+
+        <div className="animate-marquee gap-6 px-6">
+          {extendedReviews.map((review, i) => (
+            <div
+              key={i}
+              className="w-[350px] md:w-[400px] p-8 bg-white rounded-3xl shadow-sm border border-gray-100 flex-shrink-0 cursor-default"
+            >
+              <div className="flex items-center gap-1 mb-6">
+                {[...Array(5)].map((_, j) => (
+                  <Star key={j} className={`w-5 h-5 ${j < review.rating ? 'text-amber-400 fill-current' : 'text-gray-200'}`} />
+                ))}
+              </div>
+              <p className="text-gray-600 mb-8 italic leading-relaxed min-h-[80px]">"{review.text}"</p>
+              <div className="flex items-center justify-between border-t border-gray-50 pt-4">
+                <span className="text-gray-900 font-bold">{review.name}</span>
+                <span className="text-gray-400 text-sm">{review.date}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
 // PRÉMIUM 2026 FOOTER (Egyezik a többi oldallal)
 // ═══════════════════════════════════════════════════════════════════════════
 function Footer() {
@@ -470,17 +550,10 @@ function Footer() {
 // ═══════════════════════════════════════════════════════════════════════════
 export default function BookingPage() {
   return (
-    <div className="min-h-screen pt-24 md:pt-32 relative bg-gray-50">
-      {/* HÁTTÉRKÉP (Világos, prémium luxus hatás, tejüveg effekttel) */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        <img
-          src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80&w=2068&auto=format&fit=crop"
-          alt="Luxus Fogászati Rendelő Háttér"
-          className="w-full h-full object-cover"
-        />
-        {/* Fehér, félig átlátszó réteg, ami finoman el is mossa a hátteret */}
-        <div className="absolute inset-0 bg-white/85 backdrop-blur-[6px]" />
-      </div>
+    <div className="min-h-screen pt-24 md:pt-32 relative bg-gray-50 overflow-hidden">
+      {/* ELEGÁNS CSS HÁTTÉR GRAFIKA (Kép helyett) */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-sky-200/40 rounded-full blur-[120px] -translate-y-1/4 translate-x-1/4 -z-10 pointer-events-none" />
+      <div className="absolute bottom-1/4 left-0 w-[800px] h-[800px] bg-sky-100/60 rounded-full blur-[120px] translate-y-1/4 -translate-x-1/3 -z-10 pointer-events-none" />
 
       <Navigation />
       
@@ -499,6 +572,9 @@ export default function BookingPage() {
 
         <BookingForm />
       </main>
+
+      {/* A vélemények szekció beillesztve a lábléc elé */}
+      <ReviewsSection />
 
       <Footer />
       
