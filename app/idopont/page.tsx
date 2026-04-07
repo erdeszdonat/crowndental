@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -191,24 +191,24 @@ function BookingForm() {
       {/* LÉPÉS JELZŐ (Step Indicator) */}
       <div className="flex items-center justify-center mb-12">
         <div className="flex items-center gap-4">
-          <div className={`flex items-center justify-center w-12 h-12 rounded-full font-bold text-lg ${step >= 1 ? 'bg-sky-600 text-white shadow-lg shadow-sky-600/30' : 'bg-gray-100 text-gray-400'}`}>
+          <div className={`flex items-center justify-center w-12 h-12 rounded-full font-bold text-lg ${step >= 1 ? 'bg-sky-600 text-white shadow-lg shadow-sky-600/30' : 'bg-white/80 text-gray-400'}`}>
             1
           </div>
-          <span className={`hidden sm:block font-bold ${step >= 1 ? 'text-gray-900' : 'text-gray-400'}`}>Személyes adatok</span>
+          <span className={`hidden sm:block font-bold ${step >= 1 ? 'text-gray-900' : 'text-gray-500'}`}>Személyes adatok</span>
         </div>
-        <div className="w-16 sm:w-24 h-1 mx-4 rounded-full bg-gray-100 overflow-hidden">
+        <div className="w-16 sm:w-24 h-1 mx-4 rounded-full bg-gray-300 overflow-hidden">
           <div className={`h-full bg-sky-600 transition-all duration-500 ${step === 2 ? 'w-full' : 'w-0'}`} />
         </div>
         <div className="flex items-center gap-4">
-          <div className={`flex items-center justify-center w-12 h-12 rounded-full font-bold text-lg transition-colors duration-500 ${step === 2 ? 'bg-sky-600 text-white shadow-lg shadow-sky-600/30' : 'bg-gray-100 text-gray-400'}`}>
+          <div className={`flex items-center justify-center w-12 h-12 rounded-full font-bold text-lg transition-colors duration-500 ${step === 2 ? 'bg-sky-600 text-white shadow-lg shadow-sky-600/30' : 'bg-white/80 text-gray-400'}`}>
             2
           </div>
-          <span className={`hidden sm:block font-bold transition-colors duration-500 ${step === 2 ? 'text-gray-900' : 'text-gray-400'}`}>Kezelés kiválasztása</span>
+          <span className={`hidden sm:block font-bold transition-colors duration-500 ${step === 2 ? 'text-gray-900' : 'text-gray-500'}`}>Kezelés kiválasztása</span>
         </div>
       </div>
 
       {/* ŰRLAP KONTÉNER */}
-      <div className="bg-white rounded-[2rem] shadow-2xl border border-gray-100 p-6 md:p-12">
+      <div className="bg-white rounded-[2rem] shadow-2xl border border-gray-100 p-6 md:p-12 backdrop-blur-sm bg-white/95">
         <AnimatePresence mode="wait">
           {/* 1. LÉPÉS: SZEMÉLYES ADATOK */}
           {step === 1 && (
@@ -372,7 +372,7 @@ function BookingForm() {
 // ═══════════════════════════════════════════════════════════════════════════
 function Footer() {
   return (
-    <footer className="bg-gray-950 pt-20 pb-10 border-t border-gray-900 text-gray-300 mt-24">
+    <footer className="bg-gray-950 pt-20 pb-10 border-t border-gray-900 text-gray-300 mt-24 backdrop-blur-sm bg-gray-950/95 relative z-10">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           
@@ -470,18 +470,29 @@ function Footer() {
 // ═══════════════════════════════════════════════════════════════════════════
 export default function BookingPage() {
   return (
-    <div className="bg-gray-50 min-h-screen pt-24 md:pt-32">
+    <div className="min-h-screen pt-24 md:pt-32 relative">
+      {/* HÁTTÉRKÉP (Elmosott, sötétített) */}
+      <div className="absolute inset-0 -z-10">
+        <Image
+          src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80&w=2068&auto=format&fit=crop"
+          alt="Luxus Fogászati Rendelő Háttér"
+          fill
+          className="object-cover blur-md brightness-50"
+          priority
+        />
+      </div>
+
       <Navigation />
       
-      <main className="container mx-auto px-4 py-12">
+      <main className="container mx-auto px-4 py-12 relative z-10">
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-sky-100 rounded-full text-sky-700 text-sm font-bold tracking-wide uppercase mb-6">
+          <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-sky-100/80 backdrop-blur-md rounded-full text-sky-700 text-sm font-bold tracking-wide uppercase mb-6">
             <Building2 className="w-4 h-4" /> Gyors és kényelmes
           </div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-4 tracking-tight">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-4 tracking-tight drop-shadow-sm">
             Foglaljon Időpontot
           </h1>
-          <p className="text-xl text-gray-500 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-700 max-w-2xl mx-auto font-medium drop-shadow-sm">
             Kérjük, adja meg adatait és a kívánt kezelést, hogy kollégáink a legmegfelelőbb időponttal kereshessék.
           </p>
         </div>
