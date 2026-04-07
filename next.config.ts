@@ -20,7 +20,7 @@ const nextConfig: NextConfig = {
       { source: '/fajdalommentes-fogaszat-esztergom', destination: '/esztergom', permanent: true },
 
       // FUNKCIONÁLIS OLDALAK
-      { source: '/cpg/978873/Arlista', destination: '/araink', permanent: true },
+      { source: '/cpg/978873/Arlista', destination: '/kezelesek', permanent: true },
       { source: '/cpg/696488/Kapcsolat', destination: '/kapcsolat', permanent: true },
       { source: '/cpg/156506/Karrier', destination: '/karrier', permanent: true },
       { source: '/cpg/803324/Idopont-Foglalas', destination: '/idopont', permanent: true },
