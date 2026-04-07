@@ -1,0 +1,32 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Fogászati Kezelések és Árak | Crown Dental - Esztergom & Budapest',
+  description: 'Teljes fogászati árlista: implantátum, korona, fogszabályozás, fogfehérítés. Transzparens árazás, saját labor = akár 40% megtakarítás. Nézze meg aktuális árainkat!',
+  keywords: [
+    'fogászati árak',
+    'implantátum ár',
+    'fogkorona ár',
+    'fogszabályozás ár',
+    'fogfehérítés ár',
+    'fogorvos árlista',
+    'fogászat esztergom árak',
+  ],
+  openGraph: {
+    title: 'Fogászati Kezelések és Árak | Crown Dental',
+    description: 'Transzparens árazás, rejtett költségek nélkül. Saját labor = akár 40% megtakarítás a budapesti árakhoz képest.',
+    url: 'https://www.crowndental.hu/kezelesek',
+    type: 'website',
+  },
+  alternates: {
+    canonical: 'https://www.crowndental.hu/kezelesek',
+  },
+};
+
+export default function KezelesekLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return children;
+}
