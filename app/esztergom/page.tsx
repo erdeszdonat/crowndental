@@ -21,143 +21,79 @@ import {
   Sparkles,
   Menu,
   X,
-  ChevronDown,
   ChevronRight,
   Upload
 } from 'lucide-react';
 
 // ═══════════════════════════════════════════════════════════════════════════
-// NAVIGÁCIÓ
+// NAVIGÁCIÓ (Stabil fehér, nagy logóval, egyszerűsített menüvel)
 // ═══════════════════════════════════════════════════════════════════════════
 function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
-  const [servicesOpen, setServicesOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const services = [
-    { name: 'Implantátumok', href: '/kezelesek/implantatum' },
-    { name: 'Fogszabályozás', href: '/kezelesek/fogszabalyozas' },
-    { name: 'Koronák és Hidak', href: '/kezelesek/koronak-hidak' },
-    { name: 'Fogfehérítés', href: '/kezelesek/fogfeherites' },
-    { name: 'Fogsorok', href: '/kezelesek/fogsor' },
-    { name: 'Gyökérkezelés', href: '/kezelesek/gyokerkezeles' },
-    { name: 'Szájsebészet', href: '/kezelesek/szajsebeszet' },
-  ];
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-sm py-0' : 'bg-transparent py-2'}`}>
-      {/* Top info bar */}
-      <div className={`transition-all duration-300 overflow-hidden ${scrolled ? 'h-0 opacity-0' : 'h-10 opacity-100'}`}>
-        <div className="container mx-auto px-4 flex justify-between items-center h-full text-white/90 text-sm font-medium">
-          <div className="flex items-center gap-6">
-            <a href="tel:+36705646837" className="flex items-center gap-2 hover:text-white transition-colors">
-              <Phone className="w-4 h-4" /> +36 70 564 6837
-            </a>
-          </div>
-          <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1 text-sky-200"><MapPin className="w-4 h-4" /> Esztergom</span>
-            <span className="text-white/40">|</span>
-            <span className="flex items-center gap-1"><MapPin className="w-4 h-4" /> Budapest (Hamarosan)</span>
-          </div>
-        </div>
-      </div>
-
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl shadow-sm border-b border-gray-100">
       <nav className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-20">
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className={`relative w-12 h-12 flex items-center justify-center overflow-hidden rounded-xl transition-all ${scrolled ? 'bg-transparent' : 'bg-white/90 p-1'}`}>
-              <Image src="/logo.webp" alt="Crown Dental Logo" width={48} height={48} className="object-contain" />
-            </div>
-            <div className="flex flex-col">
-              <span className={`text-xl font-bold tracking-tight ${scrolled ? 'text-gray-900' : 'text-white'}`}>CROWN DENTAL</span>
-              <span className={`text-xs tracking-widest uppercase font-semibold ${scrolled ? 'text-sky-600' : 'text-sky-200'}`}>Clinic & Lab</span>
-            </div>
+        <div className="flex items-center justify-between h-24">
+          {/* Nagy, letisztult Logo feliratok nélkül */}
+          <Link href="/" className="flex items-center relative h-full py-3 z-50">
+            <Image 
+              src="/logo.webp" 
+              alt="Crown Dental Logo" 
+              width={280} 
+              height={80} 
+              className="object-contain h-16 w-auto drop-shadow-sm" 
+              priority 
+            />
           </Link>
 
-          <div className="hidden lg:flex items-center gap-2 xl:gap-4">
-            <Link href="/" className={`px-3 py-2 font-bold transition-colors ${scrolled ? 'text-gray-600 hover:text-sky-600' : 'text-white/90 hover:text-white'}`}>
+          {/* Desktop menu - Egyszerűsítve, lenyíló lista nélkül */}
+          <div className="hidden lg:flex items-center gap-6 xl:gap-8">
+            <Link href="/" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">
               Főoldal
             </Link>
-            
-            <div className="relative group">
-              <button
-                className={`flex items-center gap-1 px-4 py-2 font-bold transition-colors ${scrolled ? 'text-gray-600 hover:text-sky-600' : 'text-white/90 hover:text-white'}`}
-                onMouseEnter={() => setServicesOpen(true)}
-                onMouseLeave={() => setServicesOpen(false)}
-                onClick={() => window.location.href = '/kezelesek'}
-              >
-                Szolgáltatások és Árak <ChevronDown className="w-4 h-4" />
-              </button>
-              
-              <AnimatePresence>
-                {servicesOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute top-full left-0 w-72 bg-white shadow-2xl rounded-2xl border border-gray-100 py-3 z-50 overflow-hidden"
-                    onMouseEnter={() => setServicesOpen(true)}
-                    onMouseLeave={() => setServicesOpen(false)}
-                  >
-                    <Link href="/kezelesek" className="block px-6 py-3 text-sky-700 font-bold hover:bg-sky-50 border-b border-gray-100 pb-4 mb-2 bg-sky-50/50">
-                      Összes Kezelés és Árlista
-                    </Link>
-                    {services.map((service) => (
-                      <Link key={service.name} href={service.href} className="block px-6 py-3 text-gray-700 hover:bg-sky-50 hover:text-sky-600 hover:pl-8 transition-all font-medium">
-                        {service.name}
-                      </Link>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
-            <Link href="/rolunk" className={`px-3 py-2 font-bold transition-colors ${scrolled ? 'text-gray-600 hover:text-sky-600' : 'text-white/90 hover:text-white'}`}>Rólunk</Link>
-            <Link href="/blog" className={`px-3 py-2 font-bold transition-colors ${scrolled ? 'text-gray-600 hover:text-sky-600' : 'text-white/90 hover:text-white'}`}>Blog</Link>
-            <Link href="/karrier" className={`px-3 py-2 font-bold transition-colors ${scrolled ? 'text-gray-600 hover:text-sky-600' : 'text-white/90 hover:text-white'}`}>Karrier</Link>
+            <Link href="/kezelesek" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">
+              Szolgáltatások & Árak
+            </Link>
+            <Link href="/rolunk" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">
+              Rólunk
+            </Link>
+            <Link href="/blog" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">
+              Blog
+            </Link>
+            <Link href="/karrier" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">
+              Karrier
+            </Link>
           </div>
 
           <div className="flex items-center gap-4 z-50">
-            <a href="tel:+36705646837" className={`hidden xl:flex items-center gap-2 font-bold mr-2 ${scrolled ? 'text-sky-700 hover:text-sky-600' : 'text-white hover:text-sky-200'}`}>
+            <a href="tel:+36705646837" className="hidden xl:flex items-center gap-2 font-bold text-sky-700 hover:text-sky-600 mr-2">
               <Phone className="w-5 h-5" /> +36 70 564 6837
             </a>
-            <Link href="/idopont" className={`hidden sm:inline-flex items-center gap-2 px-6 py-3 font-bold rounded-full transition-all shadow-md hover:shadow-xl transform hover:-translate-y-0.5 ${scrolled ? 'bg-sky-600 text-white hover:bg-sky-700' : 'bg-white text-sky-700 hover:bg-sky-50'}`}>
+            <Link href="/idopont" className="hidden sm:inline-flex items-center gap-2 px-6 py-3 bg-sky-600 text-white font-bold rounded-full transition-all shadow-md hover:shadow-xl hover:bg-sky-700 transform hover:-translate-y-0.5">
               <Calendar className="w-5 h-5" /> Időpontot kérek
             </Link>
-            <button onClick={() => setIsOpen(!isOpen)} className={`lg:hidden p-2 rounded-lg transition-colors ${scrolled ? 'text-gray-900 bg-gray-100 hover:bg-gray-200' : 'text-white bg-white/20 hover:bg-white/30'}`}>
+            <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden p-2 rounded-lg text-gray-900 bg-gray-100 hover:bg-gray-200 transition-colors">
               {isOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
             </button>
           </div>
         </div>
 
+        {/* Mobile menu */}
         <AnimatePresence>
           {isOpen && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="lg:hidden absolute top-20 left-0 right-0 bg-white shadow-2xl border-t border-gray-100 overflow-hidden z-40"
+              className="lg:hidden absolute top-24 left-0 right-0 bg-white shadow-2xl border-t border-gray-100 overflow-hidden z-40"
             >
               <div className="px-6 py-6 space-y-3 max-h-[80vh] overflow-y-auto">
-                <Link href="/" className="block px-4 py-3 text-gray-600 font-bold rounded-xl hover:bg-sky-50" onClick={() => setIsOpen(false)}>Főoldal</Link>
-                <Link href="/kezelesek" className="block px-4 py-3 text-gray-600 font-bold rounded-xl hover:bg-sky-50" onClick={() => setIsOpen(false)}>Szolgáltatások és Árak</Link>
-                <div className="pl-4 border-l-2 border-gray-100 ml-6 space-y-1 my-1">
-                  {services.map((s) => (
-                    <Link key={s.name} href={s.href} className="block px-4 py-2 text-gray-500 hover:text-sky-600 text-sm font-medium" onClick={() => setIsOpen(false)}>
-                      • {s.name}
-                    </Link>
-                  ))}
-                </div>
-                <Link href="/rolunk" className="block px-4 py-3 text-gray-600 font-bold rounded-xl hover:bg-sky-50" onClick={() => setIsOpen(false)}>Rólunk</Link>
-                <Link href="/blog" className="block px-4 py-3 text-gray-600 font-bold rounded-xl hover:bg-sky-50" onClick={() => setIsOpen(false)}>Blog</Link>
-                <Link href="/karrier" className="block px-4 py-3 text-gray-600 font-bold rounded-xl hover:bg-sky-50" onClick={() => setIsOpen(false)}>Karrier</Link>
+                <Link href="/" className="block px-4 py-3 text-gray-800 font-bold rounded-xl hover:bg-sky-50" onClick={() => setIsOpen(false)}>Főoldal</Link>
+                <Link href="/kezelesek" className="block px-4 py-3 text-gray-800 font-bold rounded-xl hover:bg-sky-50" onClick={() => setIsOpen(false)}>Szolgáltatások & Árak</Link>
+                <Link href="/rolunk" className="block px-4 py-3 text-gray-800 font-bold rounded-xl hover:bg-sky-50" onClick={() => setIsOpen(false)}>Rólunk</Link>
+                <Link href="/blog" className="block px-4 py-3 text-gray-800 font-bold rounded-xl hover:bg-sky-50" onClick={() => setIsOpen(false)}>Blog</Link>
+                <Link href="/karrier" className="block px-4 py-3 text-gray-800 font-bold rounded-xl hover:bg-sky-50" onClick={() => setIsOpen(false)}>Karrier</Link>
                 
                 <div className="pt-6 pb-2 border-t border-gray-100 mt-4">
                   <a href="tel:+36705646837" className="flex justify-center items-center gap-2 w-full py-4 bg-gray-50 text-sky-700 font-bold rounded-xl mb-3">
@@ -177,7 +113,7 @@ function Navigation() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// HERO SLIDER (Esztergom Specifikus)
+// HERO SLIDER (Lentebb tolva a stabil fejléc miatt mt-24)
 // ═══════════════════════════════════════════════════════════════════════════
 function HeroSlider() {
   const [current, setCurrent] = useState(0);
@@ -205,7 +141,7 @@ function HeroSlider() {
   }, [slides.length]);
 
   return (
-    <section className="relative h-[85svh] min-h-[600px] w-full overflow-hidden flex items-center justify-center bg-gray-900 pt-20">
+    <section className="relative mt-24 h-[80svh] min-h-[600px] w-full overflow-hidden flex items-center justify-center bg-gray-900">
       <AnimatePresence mode="wait">
         <motion.div
           key={current}
@@ -262,7 +198,7 @@ function HeroSlider() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// ELÉRHETŐSÉGEK ÉS TÉRKÉP
+// ELÉRHETŐSÉGEK ÉS TÉRKÉP (Cím és nyitvatartás javítva)
 // ═══════════════════════════════════════════════════════════════════════════
 function ContactAndMap() {
   return (
@@ -283,7 +219,7 @@ function ContactAndMap() {
                 </div>
                 <div>
                   <h4 className="text-xl font-bold text-gray-900 mb-1">Cím</h4>
-                  <p className="text-gray-600 text-lg">2500 Esztergom, Petőfi Sándor u. 11.</p>
+                  <p className="text-gray-600 text-lg font-medium">2500 Esztergom, Petőfi Sándor utca 11.</p>
                   <p className="text-gray-500 text-sm mt-1">Központi elhelyezkedés a városban</p>
                 </div>
               </div>
@@ -298,29 +234,28 @@ function ContactAndMap() {
                   <a href="tel:+36705646837" className="text-sky-600 hover:text-sky-700 text-lg font-bold">
                     +36 70 564 6837
                   </a>
-                  <p className="text-gray-500 text-sm mt-1">Hétfő - Péntek: 8:00 - 18:00</p>
+                  <p className="text-gray-500 text-sm mt-1">Hívjon minket bizalommal!</p>
                 </div>
               </div>
 
-              {/* Nyitvatartás */}
+              {/* Nyitvatartás - Frissítve! */}
               <div className="flex gap-5 p-6 bg-gray-50 rounded-3xl border border-gray-100 hover:shadow-md transition-shadow">
                 <div className="w-14 h-14 bg-sky-100 rounded-2xl flex items-center justify-center flex-shrink-0">
                   <Clock className="w-6 h-6 text-sky-600" />
                 </div>
                 <div className="w-full">
                   <h4 className="text-xl font-bold text-gray-900 mb-3">Nyitvatartás</h4>
-                  <div className="space-y-2 text-sm text-gray-600">
+                  <div className="space-y-3 text-sm text-gray-600">
                     <div className="flex justify-between border-b border-gray-200 pb-2">
-                      <span>Hétfő - Csütörtök</span>
-                      <span className="font-bold text-gray-900">8:00 - 18:00</span>
+                      <span className="font-medium text-gray-700">Hétfő - Péntek</span>
+                      <span className="font-bold text-gray-900 text-base">8:00 - 20:00</span>
                     </div>
-                    <div className="flex justify-between border-b border-gray-200 pb-2">
-                      <span>Péntek</span>
-                      <span className="font-bold text-gray-900">8:00 - 14:00</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Szombat - Vasárnap</span>
-                      <span className="font-bold text-gray-400">Zárva</span>
+                    <div className="flex justify-between items-center">
+                      <span className="font-medium text-gray-700">Szombat - Vasárnap</span>
+                      <div className="text-right">
+                        <span className="block font-bold text-amber-600 uppercase tracking-wide text-xs mb-0.5">Ügyelet</span>
+                        <span className="font-bold text-gray-900 text-base">7:00 - 13:00</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -328,9 +263,9 @@ function ContactAndMap() {
             </div>
           </div>
 
-          {/* Jobb oldal - Térkép frissítve a Petőfi Sándor u 11-re */}
+          {/* Jobb oldal - Térkép */}
           <div className="relative h-full min-h-[500px] lg:min-h-[600px]">
-            <div className="sticky top-24 h-full rounded-3xl overflow-hidden shadow-2xl border border-gray-100">
+            <div className="sticky top-32 h-full rounded-3xl overflow-hidden shadow-2xl border border-gray-100">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2677.202377526978!2d18.737151315645366!3d47.79155987919792!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x476a65df1c08bd05%3A0x6b6c28f2441a1bd!2sEsztergom%2C%20Pet%C5%91fi%20S%C3%A1ndor%20u.%2011%2C%202500!5e0!3m2!1sen!2shu!4v1650000000000!5m2!1sen!2shu"
                 width="100%"
@@ -528,7 +463,7 @@ function WhyUsSection() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// VÉLEMÉNYEK - GÖRDÜLŐ "FOLYÓ" MARQUEE (10 éves limit, 4-5 csillagos mix)
+// VÉLEMÉNYEK - GÖRDÜLŐ "FOLYÓ" MARQUEE 
 // ═══════════════════════════════════════════════════════════════════════════
 function ReviewsSection() {
   const reviews = [
@@ -542,7 +477,6 @@ function ReviewsSection() {
     { name: 'Farkas Zita', rating: 5, text: '10 éve hűséges páciensük vagyok. Bárkinek, aki Esztergomban keres fogorvost, csak ajánlani tudom őket!', date: '2025. május' },
   ];
 
-  // Duplikáljuk a listát, hogy végtelenül görgethető legyen hiba nélkül
   const extendedReviews = [...reviews, ...reviews, ...reviews];
 
   return (
@@ -563,11 +497,10 @@ function ReviewsSection() {
         </div>
       </div>
 
-      {/* Marquee Animation Style */}
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes marquee {
           0% { transform: translateX(0); }
-          100% { transform: translateX(-33.3333%); } /* Mivel 3x duplikáltuk, 33%-nál ugrik vissza zökkenőmentesen */
+          100% { transform: translateX(-33.3333%); }
         }
         .animate-marquee {
           display: flex;
@@ -579,9 +512,7 @@ function ReviewsSection() {
         }
       `}} />
 
-      {/* Folyó vélemény kártyák */}
       <div className="relative w-full">
-        {/* Bal/Jobb gradiens elmosás, hogy szépen tűnjenek el */}
         <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-gray-50 to-transparent z-10" />
         <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-gray-50 to-transparent z-10" />
 
@@ -592,7 +523,6 @@ function ReviewsSection() {
               className="w-[350px] md:w-[400px] p-8 bg-white rounded-3xl shadow-sm border border-gray-100 flex-shrink-0 cursor-default"
             >
               <div className="flex items-center gap-1 mb-6">
-                {/* Dinamikusan rajzoljuk ki a csillagokat (5 vagy 4) */}
                 {[...Array(5)].map((_, j) => (
                   <Star key={j} className={`w-5 h-5 ${j < review.rating ? 'text-amber-400 fill-current' : 'text-gray-200'}`} />
                 ))}
@@ -611,7 +541,7 @@ function ReviewsSection() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// AI ÁRAJÁNLAT ELEMZŐ (Hozzáadva)
+// AI ÁRAJÁNLAT ELEMZŐ
 // ═══════════════════════════════════════════════════════════════════════════
 function QuoteAnalyzerSection() {
   const [isDragging, setIsDragging] = useState(false);
@@ -731,7 +661,7 @@ function Footer() {
                 <MapPin className="w-5 h-5 text-sky-500 mt-1" />
                 <div>
                   <span className="block text-white font-semibold">Esztergomi Rendelő</span>
-                  <span className="text-gray-400">2500 Esztergom, Petőfi Sándor u. 11.</span>
+                  <span className="text-gray-400">2500 Esztergom, Petőfi Sándor utca 11.</span>
                 </div>
               </li>
               <li className="flex items-start gap-3">
