@@ -23,7 +23,8 @@ import {
   Crown,
   Scissors,
   Baby,
-  Activity
+  Activity,
+  Shield
 } from 'lucide-react';
 
 // ═══════════════════════════════════════════════════════════════════════════
