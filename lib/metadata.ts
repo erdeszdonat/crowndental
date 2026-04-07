@@ -101,9 +101,9 @@ export const esztergomMetadata: Metadata = {
 
 export const budapestMetadata: Metadata = {
   ...commonMeta,
-  title: 'Fogászat Budapest | Crown Dental – Prémium Minőség, Középkategóriás Ár',
+  title: 'Fogászat Budapest | Crown Dental – Prémium Minőség, Megfizethető Ár',
   description:
-    'Új budapesti rendelőnk megnyílt! Saját fogtechnikai laborunk miatt akár 40%-kal olcsóbbak vagyunk a belvárosi klinikáknál. Prémium japán és koreai anyagok.',
+    'Új budapesti rendelőnk megnyílt! Saját fogtechnikai laborunk miatt akár 40%-kal olcsóbbak vagyunk a belvárosi klinikáknál. Prémium anyagok.',
   openGraph: {
     title: 'Crown Dental Budapest – Végre Elérhető Prémium Fogászat',
     description:
@@ -127,13 +127,13 @@ export const serviceMetadata: Record<string, Metadata> = {
   // Fogászati implantátumok (régi: /fogaszati-implantatumok)
   implantatum: {
     ...commonMeta,
-    title: 'Fogimplantátum Ár 2024 | Crown Dental – Saját Labor, Akár 40% Megtakarítás',
+    title: 'Implantátum Ár | Crown Dental – Saját Labor, Akár 40% Megtakarítás',
     description:
-      'Fogászati implantátumok tartós megoldásként foghiányra. Prémium Straumann és koreai implantátumok saját laborból. Ingyenes konzultáció, részletfizetés.',
+      'Fogászati implantátumok tartós megoldásként foghiányra. Prémium Alpha Bio és DIO implantátumok saját laborból. Ingyenes konzultáció, részletfizetés.',
     openGraph: {
       title: 'Fogimplantátum – Tartós Megoldás, Elérhető Áron',
       description:
-        'Prémium implantátumok a saját laborunkból. 30 év tapasztalat, életre szóló garancia a beültetésre.',
+        'Prémium implantátumok a saját laborunkból. 30 év tapasztalat, életre szóló mosoly.',
       url: `${baseUrl}/kezelesek/implantatum`,
     },
     alternates: {
@@ -260,7 +260,7 @@ export const serviceMetadata: Record<string, Metadata> = {
     ...commonMeta,
     title: 'Kivehető és Rögzített Fogsor | Crown Dental – Saját Labor, Gyors Készítés',
     description:
-      'Teljes és részleges fogsorok saját laborból, 5 nap alatt. Prémium akril és fém vázas fogsorok. Precíz illeszkedés garantálva.',
+      'Teljes és részleges fogsorok saját laborból, 3 nap alatt. Prémium akril és fém vázas fogsorok. Precíz illeszkedés garantálva.',
     openGraph: {
       title: 'Fogsor – Saját Laborból, Tökéletes Illeszkedés',
       description: 'Kivehető és implantátumon rögzített fogsorok. Saját labor = gyors és pontos.',
@@ -326,7 +326,7 @@ export const serviceMetadata: Record<string, Metadata> = {
 export const pageMetadata: Record<string, Metadata> = {
   araink: {
     ...commonMeta,
-    title: 'Fogászati Árak 2024 | Crown Dental – Transzparens Árlista',
+    title: 'Fogászati Árak | Crown Dental – Transzparens Árlista',
     description:
       'Fogászati kezelések árai: implantátum, korona, fogszabályozás, fogfehérítés. Nálunk nincsenek rejtett költségek. Töltse fel más ajánlatát az összehasonlításhoz!',
     alternates: { canonical: `${baseUrl}/araink` },
@@ -336,7 +336,7 @@ export const pageMetadata: Record<string, Metadata> = {
     ...commonMeta,
     title: 'Kapcsolat | Crown Dental – Esztergom & Budapest',
     description:
-      'Lépjen kapcsolatba velünk! Esztergom: Hősök tere 5. Budapest: [cím]. Online időpontfoglalás, azonnali visszahívás.',
+      'Lépjen kapcsolatba velünk! Esztergom: Petőfi Sándor Utca 11. Budapest: Királyok Útja 55. Online időpontfoglalás, azonnali visszahívás.',
     alternates: { canonical: `${baseUrl}/kapcsolat` },
   },
 
@@ -454,8 +454,8 @@ export const homeJsonLd = {
     longitude: 18.7403,
   },
   openingHoursSpecification: [
-    { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday'], opens: '08:00', closes: '18:00' },
-    { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Friday', opens: '08:00', closes: '14:00' },
+    { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '8:00', closes: '20:00' },
+    { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Saturday', 'Sunday'], opens: '07:00', closes: '13:00' },
   ],
   priceRange: '$$',
   paymentAccepted: ['Cash', 'Credit Card', 'Debit Card'],
@@ -464,13 +464,13 @@ export const homeJsonLd = {
     '@type': 'OfferCatalog',
     name: 'Fogászati szolgáltatások',
     itemListElement: [
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Fogimplantátum' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Fogkorona' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Implantátum' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Korona' } },
       { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Fogszabályozás' } },
     ],
   },
   sameAs: [
-    'https://www.facebook.com/crowndental',
-    'https://www.instagram.com/crowndental',
+    'https://www.facebook.com/koronafogaszatesztergom/',
+    'https://www.instagram.com/crown_dental93/',
   ],
 };
