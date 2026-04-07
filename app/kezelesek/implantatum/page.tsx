@@ -34,7 +34,7 @@ import {
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'MedicalProcedure',
-  name: 'Fogimplantátum beültetés',
+  name: 'Implantátum beültetés',
   description: 'Tartós fogpótlás titán implantátummal',
   howPerformed: 'Helyi érzéstelenítésben, ambuláns beavatkozásként',
   procedureType: 'Surgical',
@@ -138,7 +138,7 @@ function ServiceHero() {
               <Stethoscope className="w-4 h-4" /> Prémium Szolgáltatás
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold text-gray-900 mb-6 leading-tight tracking-tight">
-              Fog<span className="text-sky-600">implantátum</span>
+              <span className="text-sky-600">Implantátum</span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-500 leading-relaxed font-light mb-8 max-w-xl">
               Tartós megoldás foghiányra – Prémium implantátumok saját laborból, akár 40%-kal kedvezőbb áron.
@@ -163,7 +163,7 @@ function ServiceHero() {
             <div className="relative rounded-[2rem] overflow-hidden shadow-2xl aspect-[4/3] lg:aspect-[4/3]">
               <img 
                 src="https://images.unsplash.com/photo-1598256989800-fea5c5ce8720?q=80&w=2070&auto=format&fit=crop" 
-                alt="Fogimplantátum beültetés" 
+                alt="Implantátum beültetés" 
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-gray-900/40 to-transparent" />
@@ -211,9 +211,9 @@ function ProblemSolution() {
               <div className="w-14 h-14 bg-sky-600 text-white rounded-2xl flex items-center justify-center mb-6 shadow-md">
                 <Plus className="w-8 h-8" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">A Megoldás: Fogimplantátum</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">A Megoldás: Implantátum</h3>
               <p className="text-gray-700 leading-relaxed text-lg">
-                A fogimplantátum a természetes foggyökér pótlása titán csavarral. Nem kell hozzá a szomszédos fogakat bántani, és akár egy életen át tarthat. A Crown Dental-nál saját laborunkkal a teljes folyamat egy kézben van, így gyorsabb és <strong>akár 40%-kal olcsóbb</strong>, mint a fővárosban.
+                Az implantátum a természetes foggyökér pótlása titán csavarral. Nem kell hozzá a szomszédos fogakat bántani, és akár egy életen át tarthat. A Crown Dental-nál saját laborunkkal a teljes folyamat egy kézben van, így gyorsabb és <strong>akár 40%-kal olcsóbb</strong>, mint a fővárosban.
               </p>
             </div>
           </div>
@@ -233,7 +233,7 @@ function Benefits() {
     { icon: <Clock className="w-6 h-6" />, title: 'Gyors elkészülés', desc: 'Saját labor = nincs várakozás külső technikusra. A korona 3-5 nap alatt elkészül, nem 2-3 hét alatt.' },
     { icon: <Banknote className="w-6 h-6" />, title: 'Átlátható árazás', desc: 'Nincs rejtett költség. Az első konzultáción pontos árajánlatot kap, ami a kezelés végéig nem változik.' },
     { icon: <Stethoscope className="w-6 h-6" />, title: 'Fájdalommentes', desc: 'Modern érzéstelenítéssel a beavatkozás fájdalommentes. Sok páciensünk szerint kevésbé fáj, mint egy foghúzás.' },
-    { icon: <Microscope className="w-6 h-6" />, title: 'Prémium anyagok', desc: 'Svájci és prémium koreai (Alpha Bio, DIO) implantátumokkal dolgozunk, hogy a legmagasabb minőséget nyújtsuk.' },
+    { icon: <Microscope className="w-6 h-6" />, title: 'Prémium anyagok', desc: 'Kiváló minőségű Alpha Bio és DIO implantátumokkal dolgozunk, hogy a legmagasabb minőséget nyújtsuk.' },
     { icon: <Heart className="w-6 h-6" />, title: '30 év tapasztalat', desc: 'Több ezer sikeres implantációs beavatkozás áll mögöttünk. Pácienseink biztonsága és kényelme a legfontosabb.' },
   ];
 
@@ -275,7 +275,7 @@ function ProcessSection() {
   const steps = [
     { step: 1, title: 'Ingyenes konzultáció', desc: 'Panoráma röntgen, 3D CT felvétel, részletes vizsgálat. Megbeszéljük a lehetőségeket és pontos árajánlatot adunk.', time: '30-45 perc' },
     { step: 2, title: 'Implantátum beültetése', desc: 'Helyi érzéstelenítésben beültetjük a titán csavart. A beavatkozás fájdalommentes, utána azonnal hazamehet.', time: '30-60 perc' },
-    { step: 3, title: 'Gyógyulási idő', desc: 'Az implantátum stabilan összeforr a csonttal. Ez idő alatt szükség esetén esztétikus ideiglenes pótlást kap.', time: '3-6 hónap' },
+    { step: 3, title: 'Gyógyulási idő', desc: 'Az implantátum stabilan összeforr a csonttal, ami tökéletes alapot biztosít a végleges fogpótlásnak.', time: '3-6 hónap' },
     { step: 4, title: 'Korona készítés', desc: 'Saját laborunkban digitális precizitással elkészítjük a tökéletesen illeszkedő cirkónium vagy porcelán koronát.', time: '3-5 nap' },
     { step: 5, title: 'Korona felhelyezés', desc: 'Rögzítjük a végleges koronát. Innentől úgy használhatja, mintha mindig is az eredeti foga lett volna!', time: '30 perc' },
   ];
@@ -373,12 +373,12 @@ function FAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   const faqs = [
-    { question: 'Mennyibe kerül egy fogimplantátum?', answer: 'A prémium koreai (Alpha Bio, DIO) implantátumok beültetése 190.000 Ft-tól indul. A pontos és végleges árat (felépítménnyel, koronával együtt) a 3D CT felvétel és az ingyenes konzultáció után tudjuk megmondani, mivel minden eset egyedi (pl. szükség van-e csontpótlásra).' },
+    { question: 'Mennyibe kerül egy implantátum?', answer: 'Az Alpha Bio és DIO implantátumok beültetése 190.000 Ft-tól indul. A pontos és végleges árat (felépítménnyel, koronával együtt) a 3D CT felvétel és az ingyenes konzultáció után tudjuk megmondani, mivel minden eset egyedi (pl. szükség van-e csontpótlásra).' },
     { question: 'Fáj az implantátum beültetése?', answer: 'Nem. A beavatkozást a legmodernebb érzéstelenítőkkel végezzük, így teljesen fájdalommentes. A páciensek 90%-a arról számol be, hogy sokkal kevésbé megterhelő, mint egy egyszerű foghúzás. Utána 1-2 napig enyhe duzzanat előfordulhat, amit fájdalomcsillapítóval tökéletesen lehet kezelni.' },
-    { question: 'Meddig tart a gyógyulás?', answer: 'Az implantátum és a csont összeforradása (csontosodás) általában 3-6 hónapot vesz igénybe a szervezet biológiai adottságaitól függően. Erre az időre igény esetén esztétikus ideiglenes pótlást biztosítunk, így Ön egyetlen napig sem marad "lyukas mosollyal".' },
-    { question: 'Mi a különbség a különböző implantátum márkák között?', answer: 'Kizárólag világszínvonalú anyagokkal dolgozunk. A Straumann (svájci) a globális prémium kategória, míg a koreai (pl. Alpha Bio, DIO) implantátumok szintén kiváló minőségű, tartós és megbízható megoldások, de lényegesen megfizethetőbb áron érhetők el.' },
+    { question: 'Meddig tart a gyógyulás?', answer: 'Az implantátum és a csont összeforradása (csontosodás) általában 3-6 hónapot vesz igénybe a szervezet biológiai adottságaitól függően.' },
+    { question: 'Milyen implantátum márkákkal dolgoznak?', answer: 'Kizárólag világszínvonalú anyagokkal dolgozunk. Az Alpha Bio és DIO implantátumok kiváló minőségű, rendkívül tartós és megbízható prémium megoldások, amelyek kiváló ár-érték arányt képviselnek.' },
     { question: 'Van garancia az implantátumra?', answer: 'Természetesen! Az implantátum anyagára (a titán csavarra) a legtöbb gyártó élettartam garanciát biztosít, az általunk készített prémium koronákra és fogpótlásokra pedig 5 év teljes körű garanciát vállalunk.' },
-    { question: 'Miért olcsóbb a Crown Dental, mint a budapesti klinikák?', answer: 'Klinikánk legnagyobb előnye a saját, helyben lévő fogtechnikai laboratórium. Mivel a koronákat és felépítményeket mi magunk készítjük, nem kell külsős, pesti laborok közvetítői díjait kifizetnie. Ez akár 30-40% megtakarítást, és hetek helyett mindössze néhány napos várakozási időt jelent Önnek!' }
+    { question: 'Miért olcsóbb a Crown Dental, mint más klinikák?', answer: 'Klinikánk legnagyobb előnye a saját, helyben lévő fogtechnikai laboratórium. Mivel a koronákat és felépítményeket mi magunk készítjük, nem kell külsős laborok közvetítői díjait kifizetnie. Ez jelentős megtakarítást, és hetek helyett mindössze néhány napos várakozási időt jelent Önnek!' }
   ];
 
   return (
