@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Phone,
@@ -80,8 +81,8 @@ function Navigation() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors ${scrolled ? 'bg-sky-600' : 'bg-white'}`}>
-              <span className={`font-bold text-xl ${scrolled ? 'text-white' : 'text-sky-600'}`}>C</span>
+            <div className={`relative w-12 h-12 flex items-center justify-center overflow-hidden rounded-xl transition-all ${scrolled ? 'bg-transparent' : 'bg-white/90 p-1'}`}>
+              <Image src="/logo.webp" alt="Crown Dental Logo" width={48} height={48} className="object-contain" />
             </div>
             <div className="flex flex-col">
               <span className={`text-xl font-bold tracking-tight ${scrolled ? 'text-gray-900' : 'text-white'}`}>CROWN DENTAL</span>
@@ -317,10 +318,10 @@ function HeroSlider() {
 // ═══════════════════════════════════════════════════════════════════════════
 function TrustBadges() {
   const badges = [
-    { icon: <Award />, title: '30 Év Tapasztalat', desc: 'Biztos szakmai háttér' },
-    { icon: <Building2 />, title: 'Saját Labor', desc: 'Gyorsabb, olcsóbb munka' },
-    { icon: <Shield />, title: 'Japán Anyagok', desc: 'Prémium minőség' },
-    { icon: <Heart />, title: 'Fájdalommentes', desc: 'Empatikus ellátás' },
+    { icon: <Award className="w-8 h-8" />, title: '30 Év Tapasztalat', desc: 'Biztos szakmai háttér' },
+    { icon: <Building2 className="w-8 h-8" />, title: 'Saját Labor', desc: 'Gyorsabb, olcsóbb munka' },
+    { icon: <Shield className="w-8 h-8" />, title: 'Japán Anyagok', desc: 'Prémium minőség' },
+    { icon: <Heart className="w-8 h-8" />, title: 'Fájdalommentes', desc: 'Empatikus ellátás' },
   ];
 
   return (
@@ -337,7 +338,7 @@ function TrustBadges() {
               className="bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-50 flex flex-col items-center text-center group hover:-translate-y-2 transition-transform duration-300"
             >
               <div className="w-16 h-16 bg-sky-50 text-sky-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-sky-600 group-hover:text-white transition-all duration-300">
-                {React.cloneElement(badge.icon as React.ReactElement, { className: "w-8 h-8" })}
+                {badge.icon}
               </div>
               <h3 className="font-bold text-gray-900 mb-2 text-lg">{badge.title}</h3>
               <p className="text-gray-500 text-sm">{badge.desc}</p>
@@ -484,6 +485,9 @@ function Footer() {
   return (
     <footer className="bg-gray-50 pt-20 pb-10 border-t border-gray-200">
       <div className="container mx-auto px-4 text-center">
+        <div className="flex justify-center mb-6">
+          <Image src="/logo.webp" alt="Crown Dental Logo" width={80} height={80} className="object-contain opacity-80 hover:opacity-100 transition-opacity" />
+        </div>
         <h2 className="text-2xl font-bold text-gray-900 mb-6">CROWN DENTAL</h2>
         <p className="text-gray-600 mb-8">Kiváló minőségű fogászat Esztergomban, hamarosan Budapesten is.</p>
         <p className="text-sm text-gray-400">© 2026 Crown Dental. Minden jog fenntartva.</p>
