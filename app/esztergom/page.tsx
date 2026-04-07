@@ -26,7 +26,7 @@ import {
 } from 'lucide-react';
 
 // ═══════════════════════════════════════════════════════════════════════════
-// NAVIGÁCIÓ (Stabil fehér, nagy logóval, egyszerűsített menüvel)
+// NAVIGÁCIÓ
 // ═══════════════════════════════════════════════════════════════════════════
 function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,7 +35,6 @@ function Navigation() {
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl shadow-sm border-b border-gray-100">
       <nav className="container mx-auto px-4">
         <div className="flex items-center justify-between h-24">
-          {/* Nagy, letisztult Logo feliratok nélkül */}
           <Link href="/" className="flex items-center relative h-full py-3 z-50">
             <Image 
               src="/logo.webp" 
@@ -47,7 +46,6 @@ function Navigation() {
             />
           </Link>
 
-          {/* Desktop menu - Egyszerűsítve, lenyíló lista nélkül */}
           <div className="hidden lg:flex items-center gap-6 xl:gap-8">
             <Link href="/" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">
               Főoldal
@@ -79,7 +77,6 @@ function Navigation() {
           </div>
         </div>
 
-        {/* Mobile menu */}
         <AnimatePresence>
           {isOpen && (
             <motion.div
@@ -113,7 +110,7 @@ function Navigation() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// HERO SLIDER (Lentebb tolva a stabil fejléc miatt mt-24)
+// HERO SLIDER
 // ═══════════════════════════════════════════════════════════════════════════
 function HeroSlider() {
   const [current, setCurrent] = useState(0);
@@ -177,16 +174,16 @@ function HeroSlider() {
             </motion.div>
           </AnimatePresence>
 
-          <div className="flex flex-col sm:flex-row gap-5">
-            <Link href="/idopont">
-              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-5 bg-sky-600 text-white text-lg font-bold rounded-full overflow-hidden shadow-[0_0_40px_rgba(2,132,199,0.5)]">
+          <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+            <Link href="/idopont" className="w-full sm:w-auto">
+              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-5 bg-sky-600 text-white text-lg font-bold rounded-full shadow-[0_0_40px_rgba(2,132,199,0.5)] transition-all">
                 <Calendar className="w-6 h-6" />
                 Azonnali Időpontfoglalás
               </motion.button>
             </Link>
-            <a href="tel:+36705646837">
-              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-5 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white text-lg font-bold rounded-full transition-colors">
-                <Phone className="w-5 h-5" />
+            <a href="tel:+36705646837" className="w-full sm:w-auto">
+              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-5 bg-white text-sky-700 hover:bg-gray-50 text-lg font-bold rounded-full shadow-xl transition-all border border-gray-100">
+                <Phone className="w-5 h-5 text-sky-600" />
                 +36 70 564 6837
               </motion.button>
             </a>
@@ -198,97 +195,47 @@ function HeroSlider() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// ELÉRHETŐSÉGEK ÉS TÉRKÉP (Cím és nyitvatartás javítva)
+// AI ÁRAJÁNLAT ELEMZŐ (Felhoztuk a Slider alá)
 // ═══════════════════════════════════════════════════════════════════════════
-function ContactAndMap() {
+function QuoteAnalyzerSection() {
+  const [isDragging, setIsDragging] = useState(false);
+
   return (
-    <section className="py-24 bg-white">
-      <div className="container mx-auto px-4">
+    <section id="arajanlat-elemzo" className="py-24 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gray-900" />
+      <div className="absolute inset-0 bg-sky-900/20" />
+      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-sky-600/30 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3" />
+
+      <div className="relative z-10 container mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div>
-            <h2 className="text-sky-600 font-bold uppercase tracking-widest mb-3">Kapcsolat</h2>
-            <h3 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-8">
-              Látogasson el hozzánk!
-            </h3>
-
-            <div className="space-y-6">
-              {/* Cím frissítve */}
-              <div className="flex gap-5 p-6 bg-gray-50 rounded-3xl border border-gray-100 hover:shadow-md transition-shadow">
-                <div className="w-14 h-14 bg-sky-100 rounded-2xl flex items-center justify-center flex-shrink-0">
-                  <MapPin className="w-6 h-6 text-sky-600" />
-                </div>
-                <div>
-                  <h4 className="text-xl font-bold text-gray-900 mb-1">Cím</h4>
-                  <p className="text-gray-600 text-lg font-medium">2500 Esztergom, Petőfi Sándor utca 11.</p>
-                  <p className="text-gray-500 text-sm mt-1">Központi elhelyezkedés a városban</p>
-                </div>
-              </div>
-
-              {/* Telefon */}
-              <div className="flex gap-5 p-6 bg-gray-50 rounded-3xl border border-gray-100 hover:shadow-md transition-shadow">
-                <div className="w-14 h-14 bg-sky-100 rounded-2xl flex items-center justify-center flex-shrink-0">
-                  <Phone className="w-6 h-6 text-sky-600" />
-                </div>
-                <div>
-                  <h4 className="text-xl font-bold text-gray-900 mb-1">Telefon</h4>
-                  <a href="tel:+36705646837" className="text-sky-600 hover:text-sky-700 text-lg font-bold">
-                    +36 70 564 6837
-                  </a>
-                  <p className="text-gray-500 text-sm mt-1">Hívjon minket bizalommal!</p>
-                </div>
-              </div>
-
-              {/* Nyitvatartás - Frissítve! */}
-              <div className="flex gap-5 p-6 bg-gray-50 rounded-3xl border border-gray-100 hover:shadow-md transition-shadow">
-                <div className="w-14 h-14 bg-sky-100 rounded-2xl flex items-center justify-center flex-shrink-0">
-                  <Clock className="w-6 h-6 text-sky-600" />
-                </div>
-                <div className="w-full">
-                  <h4 className="text-xl font-bold text-gray-900 mb-3">Nyitvatartás</h4>
-                  <div className="space-y-3 text-sm text-gray-600">
-                    <div className="flex justify-between border-b border-gray-200 pb-2">
-                      <span className="font-medium text-gray-700">Hétfő - Péntek</span>
-                      <span className="font-bold text-gray-900 text-base">8:00 - 20:00</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium text-gray-700">Szombat - Vasárnap</span>
-                      <div className="text-right">
-                        <span className="block font-bold text-amber-600 uppercase tracking-wide text-xs mb-0.5">Ügyelet</span>
-                        <span className="font-bold text-gray-900 text-base">7:00 - 13:00</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500/10 border border-amber-500/20 rounded-full text-amber-400 text-sm font-bold uppercase mb-6">
+              <Sparkles className="w-4 h-4" /> AI Ár-kalkulátor
             </div>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-6 leading-tight">
+              Sokallja az árajánlatot amit egy <span className="text-sky-400">másik rendelőben kapott?</span>
+            </h2>
+            <p className="text-xl text-gray-300 mb-8 leading-relaxed font-light">
+              Töltse fel és azonnal megmutatjuk mennyit spórolhat ha minket választ!
+            </p>
           </div>
 
-          {/* Jobb oldal - Térkép */}
-          <div className="relative h-full min-h-[500px] lg:min-h-[600px]">
-            <div className="sticky top-32 h-full rounded-3xl overflow-hidden shadow-2xl border border-gray-100">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2677.202377526978!2d18.737151315645366!3d47.79155987919792!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x476a65df1c08bd05%3A0x6b6c28f2441a1bd!2sEsztergom%2C%20Pet%C5%91fi%20S%C3%A1ndor%20u.%2011%2C%202500!5e0!3m2!1sen!2shu!4v1650000000000!5m2!1sen!2shu"
-                width="100%"
-                height="100%"
-                style={{ border: 0, minHeight: '500px' }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute bottom-6 left-0 right-0 flex justify-center">
-                <a
-                  href="https://share.google/UV0bxLOGoyQdgH826"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-white text-gray-900 font-bold px-6 py-3 rounded-full shadow-lg hover:bg-sky-50 hover:text-sky-600 transition-colors"
-                >
-                  <MapPin className="w-5 h-5" />
-                  Megnyitás navigációban
-                </a>
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}>
+            <div 
+              className={`relative bg-white/5 backdrop-blur-xl border-2 border-dashed rounded-3xl p-10 lg:p-16 text-center transition-all duration-300 ${isDragging ? 'border-sky-400 bg-sky-500/10 scale-105' : 'border-gray-600'}`}
+              onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+              onDragLeave={() => setIsDragging(false)}
+              onDrop={(e) => { e.preventDefault(); setIsDragging(false); }}
+            >
+              <div className="w-24 h-24 bg-sky-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Upload className="w-10 h-10 text-sky-400" />
               </div>
+              <h3 className="text-2xl font-bold text-white mb-3">Húzza ide a PDF-et</h3>
+              <button className="mt-6 w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-4 px-8 rounded-full shadow-lg transition-colors">
+                Fájl Kiválasztása
+              </button>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
@@ -302,10 +249,10 @@ function ServicesSection() {
   const services = [
     {
       title: 'Fogimplantátum',
-      description: 'Tartós megoldás foghiányra. Straumann és koreai implantátumok saját laborból.',
+      description: 'Tartós megoldás foghiányra. Alpha Bio és DIO implantátumok saját laborból.',
       href: '/kezelesek/implantatum',
       icon: <Stethoscope className="w-8 h-8" />,
-      price: '240.000 Ft-tól',
+      price: '190.000 Ft-tól',
     },
     {
       title: 'Cirkónium Korona',
@@ -463,7 +410,7 @@ function WhyUsSection() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// VÉLEMÉNYEK - GÖRDÜLŐ "FOLYÓ" MARQUEE 
+// VÉLEMÉNYEK
 // ═══════════════════════════════════════════════════════════════════════════
 function ReviewsSection() {
   const reviews = [
@@ -541,54 +488,6 @@ function ReviewsSection() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// AI ÁRAJÁNLAT ELEMZŐ
-// ═══════════════════════════════════════════════════════════════════════════
-function QuoteAnalyzerSection() {
-  const [isDragging, setIsDragging] = useState(false);
-
-  return (
-    <section id="arajanlat-elemzo" className="py-24 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gray-900" />
-      <div className="absolute inset-0 bg-sky-900/20" />
-      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-sky-600/30 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3" />
-
-      <div className="relative z-10 container mx-auto px-4">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          <div>
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500/10 border border-amber-500/20 rounded-full text-amber-400 text-sm font-bold uppercase mb-6">
-              <Sparkles className="w-4 h-4" /> AI Ár-kalkulátor
-            </div>
-            <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
-              Sokallja a pesti árajánlatot? <br/><span className="text-sky-400">Mutassa meg nekünk!</span>
-            </h2>
-            <p className="text-xl text-gray-300 mb-8 leading-relaxed font-light">
-              Töltse fel a máshol kapott kezelési tervet. Az AI azonnal megmutatja, <strong>mennyit spórolhat</strong> saját laborunkkal, helyben Esztergomban.
-            </p>
-          </div>
-
-          <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}>
-            <div 
-              className={`relative bg-white/5 backdrop-blur-xl border-2 border-dashed rounded-3xl p-10 lg:p-16 text-center transition-all duration-300 ${isDragging ? 'border-sky-400 bg-sky-500/10 scale-105' : 'border-gray-600'}`}
-              onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-              onDragLeave={() => setIsDragging(false)}
-              onDrop={(e) => { e.preventDefault(); setIsDragging(false); }}
-            >
-              <div className="w-24 h-24 bg-sky-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Upload className="w-10 h-10 text-sky-400" />
-              </div>
-              <h3 className="text-2xl font-bold text-white mb-3">Húzza ide a PDF-et</h3>
-              <button className="mt-6 w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-4 px-8 rounded-full shadow-lg transition-colors">
-                Fájl Kiválasztása
-              </button>
-            </div>
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ═══════════════════════════════════════════════════════════════════════════
 // CTA SECTION
 // ═══════════════════════════════════════════════════════════════════════════
 function CTASection() {
@@ -623,7 +522,105 @@ function CTASection() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// PRÉMIUM 2026 FOOTER (Frissített címmel)
+// ELÉRHETŐSÉGEK ÉS TÉRKÉP (Lekerült a Footer fölé)
+// ═══════════════════════════════════════════════════════════════════════════
+function ContactAndMap() {
+  return (
+    <section className="py-24 bg-white">
+      <div className="container mx-auto px-4">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <h2 className="text-sky-600 font-bold uppercase tracking-widest mb-3">Kapcsolat</h2>
+            <h3 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-8">
+              Látogasson el hozzánk!
+            </h3>
+
+            <div className="space-y-6">
+              {/* Cím */}
+              <div className="flex gap-5 p-6 bg-gray-50 rounded-3xl border border-gray-100 hover:shadow-md transition-shadow">
+                <div className="w-14 h-14 bg-sky-100 rounded-2xl flex items-center justify-center flex-shrink-0">
+                  <MapPin className="w-6 h-6 text-sky-600" />
+                </div>
+                <div>
+                  <h4 className="text-xl font-bold text-gray-900 mb-1">Cím</h4>
+                  <p className="text-gray-600 text-lg font-medium">2500 Esztergom, Petőfi Sándor utca 11.</p>
+                  <p className="text-gray-500 text-sm mt-1">Központi elhelyezkedés a városban</p>
+                </div>
+              </div>
+
+              {/* Telefon */}
+              <div className="flex gap-5 p-6 bg-gray-50 rounded-3xl border border-gray-100 hover:shadow-md transition-shadow">
+                <div className="w-14 h-14 bg-sky-100 rounded-2xl flex items-center justify-center flex-shrink-0">
+                  <Phone className="w-6 h-6 text-sky-600" />
+                </div>
+                <div>
+                  <h4 className="text-xl font-bold text-gray-900 mb-1">Telefon</h4>
+                  <a href="tel:+36705646837" className="text-sky-600 hover:text-sky-700 text-lg font-bold">
+                    +36 70 564 6837
+                  </a>
+                  <p className="text-gray-500 text-sm mt-1">Hívjon minket bizalommal!</p>
+                </div>
+              </div>
+
+              {/* Nyitvatartás */}
+              <div className="flex gap-5 p-6 bg-gray-50 rounded-3xl border border-gray-100 hover:shadow-md transition-shadow">
+                <div className="w-14 h-14 bg-sky-100 rounded-2xl flex items-center justify-center flex-shrink-0">
+                  <Clock className="w-6 h-6 text-sky-600" />
+                </div>
+                <div className="w-full">
+                  <h4 className="text-xl font-bold text-gray-900 mb-3">Nyitvatartás</h4>
+                  <div className="space-y-3 text-sm text-gray-600">
+                    <div className="flex justify-between border-b border-gray-200 pb-2">
+                      <span className="font-medium text-gray-700">Hétfő - Péntek</span>
+                      <span className="font-bold text-gray-900 text-base">8:00 - 20:00</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="font-medium text-gray-700">Szombat - Vasárnap</span>
+                      <div className="text-right">
+                        <span className="block font-bold text-amber-600 uppercase tracking-wide text-xs mb-0.5">Ügyelet</span>
+                        <span className="font-bold text-gray-900 text-base">7:00 - 13:00</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Jobb oldal - Térkép */}
+          <div className="relative h-full min-h-[500px] lg:min-h-[600px]">
+            <div className="sticky top-32 h-full rounded-3xl overflow-hidden shadow-2xl border border-gray-100">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2677.202377526978!2d18.737151315645366!3d47.79155987919792!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x476a65df1c08bd05%3A0x6b6c28f2441a1bd!2sEsztergom%2C%20Pet%C5%91fi%20S%C3%A1ndor%20u.%2011%2C%202500!5e0!3m2!1sen!2shu!4v1650000000000!5m2!1sen!2shu"
+                width="100%"
+                height="100%"
+                style={{ border: 0, minHeight: '500px' }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute bottom-6 left-0 right-0 flex justify-center">
+                <a
+                  href="https://share.google/UV0bxLOGoyQdgH826"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-white text-gray-900 font-bold px-6 py-3 rounded-full shadow-lg hover:bg-sky-50 hover:text-sky-600 transition-colors"
+                >
+                  <MapPin className="w-5 h-5" />
+                  Megnyitás navigációban
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// PRÉMIUM 2026 FOOTER
 // ═══════════════════════════════════════════════════════════════════════════
 function Footer() {
   return (
@@ -716,12 +713,12 @@ export default function EsztergomPage() {
     <main className="min-h-screen bg-gray-50">
       <Navigation />
       <HeroSlider />
-      <ContactAndMap />
+      <QuoteAnalyzerSection />
       <ServicesSection />
       <WhyUsSection />
       <ReviewsSection />
-      <QuoteAnalyzerSection />
       <CTASection />
+      <ContactAndMap />
       <Footer />
     </main>
   );
