@@ -18,7 +18,8 @@ import {
   User,
   MessageSquare,
   Building2,
-  Sparkles
+  Sparkles,
+  Star
 } from 'lucide-react';
 
 // ═══════════════════════════════════════════════════════════════════════════
