@@ -9,7 +9,6 @@ import {
   Phone,
   Mail,
   Clock,
-  Car,
   Award,
   Building2,
   Shield,
@@ -23,11 +22,12 @@ import {
   Menu,
   X,
   ChevronDown,
-  ChevronRight
+  ChevronRight,
+  Upload
 } from 'lucide-react';
 
 // ═══════════════════════════════════════════════════════════════════════════
-// NAVIGÁCIÓ (Kibővítve Blog és Karrier menüpontokkal)
+// NAVIGÁCIÓ
 // ═══════════════════════════════════════════════════════════════════════════
 function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -51,21 +51,43 @@ function Navigation() {
   ];
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-sm py-0' : 'bg-white border-b border-gray-100 py-2'}`}>
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-sm py-0' : 'bg-transparent py-2'}`}>
+      {/* Top info bar */}
+      <div className={`transition-all duration-300 overflow-hidden ${scrolled ? 'h-0 opacity-0' : 'h-10 opacity-100'}`}>
+        <div className="container mx-auto px-4 flex justify-between items-center h-full text-white/90 text-sm font-medium">
+          <div className="flex items-center gap-6">
+            <a href="tel:+36705646837" className="flex items-center gap-2 hover:text-white transition-colors">
+              <Phone className="w-4 h-4" /> +36 70 564 6837
+            </a>
+          </div>
+          <div className="flex items-center gap-4">
+            <span className="flex items-center gap-1 text-sky-200"><MapPin className="w-4 h-4" /> Esztergom</span>
+            <span className="text-white/40">|</span>
+            <span className="flex items-center gap-1"><MapPin className="w-4 h-4" /> Budapest (Hamarosan)</span>
+          </div>
+        </div>
+      </div>
+
       <nav className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
-          <Link href="/" className="flex items-center relative h-full py-2 z-50">
-            <Image src="/logo.webp" alt="Crown Dental Logo" width={240} height={70} className="object-contain h-14 w-auto drop-shadow-sm" priority />
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className={`relative w-12 h-12 flex items-center justify-center overflow-hidden rounded-xl transition-all ${scrolled ? 'bg-transparent' : 'bg-white/90 p-1'}`}>
+              <Image src="/logo.webp" alt="Crown Dental Logo" width={48} height={48} className="object-contain" />
+            </div>
+            <div className="flex flex-col">
+              <span className={`text-xl font-bold tracking-tight ${scrolled ? 'text-gray-900' : 'text-white'}`}>CROWN DENTAL</span>
+              <span className={`text-xs tracking-widest uppercase font-semibold ${scrolled ? 'text-sky-600' : 'text-sky-200'}`}>Clinic & Lab</span>
+            </div>
           </Link>
 
           <div className="hidden lg:flex items-center gap-2 xl:gap-4">
-            <Link href="/" className="px-3 py-2 font-bold text-gray-600 hover:text-sky-600 transition-colors">
+            <Link href="/" className={`px-3 py-2 font-bold transition-colors ${scrolled ? 'text-gray-600 hover:text-sky-600' : 'text-white/90 hover:text-white'}`}>
               Főoldal
             </Link>
             
             <div className="relative group">
               <button
-                className="flex items-center gap-1 px-4 py-2 font-bold text-gray-600 hover:text-sky-600 transition-colors"
+                className={`flex items-center gap-1 px-4 py-2 font-bold transition-colors ${scrolled ? 'text-gray-600 hover:text-sky-600' : 'text-white/90 hover:text-white'}`}
                 onMouseEnter={() => setServicesOpen(true)}
                 onMouseLeave={() => setServicesOpen(false)}
                 onClick={() => window.location.href = '/kezelesek'}
@@ -97,25 +119,19 @@ function Navigation() {
               </AnimatePresence>
             </div>
 
-            <Link href="/rolunk" className="px-3 py-2 font-bold text-gray-600 hover:text-sky-600 transition-colors">
-              Rólunk
-            </Link>
-            <Link href="/blog" className="px-3 py-2 font-bold text-gray-600 hover:text-sky-600 transition-colors">
-              Blog
-            </Link>
-            <Link href="/karrier" className="px-3 py-2 font-bold text-gray-600 hover:text-sky-600 transition-colors">
-              Karrier
-            </Link>
+            <Link href="/rolunk" className={`px-3 py-2 font-bold transition-colors ${scrolled ? 'text-gray-600 hover:text-sky-600' : 'text-white/90 hover:text-white'}`}>Rólunk</Link>
+            <Link href="/blog" className={`px-3 py-2 font-bold transition-colors ${scrolled ? 'text-gray-600 hover:text-sky-600' : 'text-white/90 hover:text-white'}`}>Blog</Link>
+            <Link href="/karrier" className={`px-3 py-2 font-bold transition-colors ${scrolled ? 'text-gray-600 hover:text-sky-600' : 'text-white/90 hover:text-white'}`}>Karrier</Link>
           </div>
 
           <div className="flex items-center gap-4 z-50">
-            <a href="tel:+36705646837" className="hidden xl:flex items-center gap-2 font-bold text-sky-700 hover:text-sky-600 mr-2">
+            <a href="tel:+36705646837" className={`hidden xl:flex items-center gap-2 font-bold mr-2 ${scrolled ? 'text-sky-700 hover:text-sky-600' : 'text-white hover:text-sky-200'}`}>
               <Phone className="w-5 h-5" /> +36 70 564 6837
             </a>
-            <Link href="/idopont" className="hidden sm:inline-flex items-center gap-2 px-6 py-3 bg-sky-600 text-white font-bold rounded-full transition-all shadow-md hover:shadow-xl hover:bg-sky-700 transform hover:-translate-y-0.5">
+            <Link href="/idopont" className={`hidden sm:inline-flex items-center gap-2 px-6 py-3 font-bold rounded-full transition-all shadow-md hover:shadow-xl transform hover:-translate-y-0.5 ${scrolled ? 'bg-sky-600 text-white hover:bg-sky-700' : 'bg-white text-sky-700 hover:bg-sky-50'}`}>
               <Calendar className="w-5 h-5" /> Időpontot kérek
             </Link>
-            <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden p-2 rounded-lg text-gray-900 bg-gray-100 hover:bg-gray-200 transition-colors">
+            <button onClick={() => setIsOpen(!isOpen)} className={`lg:hidden p-2 rounded-lg transition-colors ${scrolled ? 'text-gray-900 bg-gray-100 hover:bg-gray-200' : 'text-white bg-white/20 hover:bg-white/30'}`}>
               {isOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
             </button>
           </div>
@@ -161,92 +177,84 @@ function Navigation() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// HERO SECTION (Világos, prémium dizájn)
+// HERO SLIDER (Esztergom Specifikus)
 // ═══════════════════════════════════════════════════════════════════════════
-function HeroSection() {
+function HeroSlider() {
+  const [current, setCurrent] = useState(0);
+
+  const slides = [
+    {
+      image: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80&w=2068&auto=format&fit=crop",
+      tag: "Esztergom Szívében",
+      title: "Prémium Fogászat\nHelyben",
+      subtitle: "1994 óta a város megbízható fogászata. Saját laborunkkal gyorsabban és kedvezőbb áron biztosítunk csúcsminőséget."
+    },
+    {
+      image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?q=80&w=2070&auto=format&fit=crop",
+      tag: "30 Év Tapasztalat",
+      title: "Fájdalommentes\nKezelések",
+      subtitle: "Több mint 10.000 elégedett páciens. Prémium japán és koreai anyagokkal dolgozunk, garanciával."
+    }
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % slides.length);
+    }, 8000);
+    return () => clearInterval(timer);
+  }, [slides.length]);
+
   return (
-    <section className="relative pt-40 pb-20 overflow-hidden bg-gray-50">
-      {/* Finom hátterek */}
-      <div className="absolute top-0 inset-x-0 h-full bg-gradient-to-b from-sky-50 to-gray-50" />
-      <div className="absolute top-20 right-0 w-[500px] h-[500px] bg-sky-100/50 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3" />
-      <div className="absolute bottom-20 left-0 w-[400px] h-[400px] bg-sky-50/50 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/4" />
+    <section className="relative h-[85svh] min-h-[600px] w-full overflow-hidden flex items-center justify-center bg-gray-900 pt-20">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={current}
+          initial={{ opacity: 0, scale: 1.05 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.2, ease: "easeInOut" }}
+          className="absolute inset-0 z-0"
+        >
+          <img src={slides[current].image} alt="Crown Dental Esztergom" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gray-900/60" />
+        </motion.div>
+      </AnimatePresence>
 
-      <div className="relative z-10 container mx-auto px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-white shadow-sm border border-gray-100 rounded-full text-sky-600 text-sm font-bold tracking-wide uppercase mb-6"
-          >
-            <Award className="w-4 h-4" />
-            30+ év tapasztalat Esztergomban
-          </motion.div>
+      <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-white to-transparent z-10" />
 
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 mb-6 tracking-tight"
-          >
-            Fogászat <span className="text-sky-600">Esztergomban</span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-xl md:text-2xl text-gray-500 mb-10 leading-relaxed font-light"
-          >
-            1994 óta a város megbízható fogászata. <strong className="text-gray-900">Saját fogtechnikai laborunk</strong> miatt 
-            gyorsabbak és kedvezőbbek vagyunk – prémium japán és koreai anyagokkal.
-          </motion.p>
-
-          {/* Trust badges */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="flex flex-wrap justify-center gap-4 mb-12"
-          >
-            {[
-              { icon: <Users className="w-4 h-4" />, text: '10.000+ páciens' },
-              { icon: <Building2 className="w-4 h-4" />, text: 'Saját labor' },
-              { icon: <Car className="w-4 h-4" />, text: 'Ingyenes parkolás' },
-              { icon: <Shield className="w-4 h-4" />, text: 'Garancia' },
-            ].map((badge, i) => (
-              <div
-                key={i}
-                className="flex items-center gap-2 px-4 py-2 bg-white rounded-full text-gray-700 text-sm font-medium shadow-sm border border-gray-100"
-              >
-                <span className="text-sky-500">{badge.icon}</span>
-                {badge.text}
+      <div className="relative z-20 container mx-auto px-4 mt-10">
+        <div className="max-w-3xl">
+          <AnimatePresence mode="wait">
+            <motion.div key={current} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -30 }} transition={{ duration: 0.5, delay: 0.2 }}>
+              <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-sky-500/20 border border-sky-400/30 backdrop-blur-md rounded-full text-sky-200 text-sm font-bold tracking-wide uppercase mb-6">
+                <MapPin className="w-4 h-4" />
+                {slides[current].tag}
               </div>
-            ))}
-          </motion.div>
+              
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 leading-tight whitespace-pre-line drop-shadow-lg">
+                {slides[current].title}
+              </h1>
+              
+              <p className="text-xl md:text-2xl text-gray-200 mb-10 leading-relaxed max-w-2xl font-light">
+                {slides[current].subtitle}
+              </p>
+            </motion.div>
+          </AnimatePresence>
 
-          {/* CTA gombok */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="flex flex-col sm:flex-row justify-center gap-5"
-          >
-            <Link
-              href="/idopont"
-              className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-full transition-all hover:scale-105 hover:shadow-lg hover:shadow-sky-600/25"
-            >
-              <Calendar className="w-5 h-5" />
-              Időpontfoglalás
+          <div className="flex flex-col sm:flex-row gap-5">
+            <Link href="/idopont">
+              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-5 bg-sky-600 text-white text-lg font-bold rounded-full overflow-hidden shadow-[0_0_40px_rgba(2,132,199,0.5)]">
+                <Calendar className="w-6 h-6" />
+                Azonnali Időpontfoglalás
+              </motion.button>
             </Link>
-            <a
-              href="tel:+36705646837"
-              className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-white hover:bg-gray-50 text-gray-900 font-bold rounded-full border border-gray-200 shadow-sm transition-all"
-            >
-              <Phone className="w-5 h-5 text-sky-600" />
-              +36 70 564 6837
+            <a href="tel:+36705646837">
+              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-5 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white text-lg font-bold rounded-full transition-colors">
+                <Phone className="w-5 h-5" />
+                +36 70 564 6837
+              </motion.button>
             </a>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
@@ -254,14 +262,13 @@ function HeroSection() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// ELÉRHETŐSÉGEK ÉS TÉRKÉP (Világos dizájn)
+// ELÉRHETŐSÉGEK ÉS TÉRKÉP
 // ═══════════════════════════════════════════════════════════════════════════
 function ContactAndMap() {
   return (
     <section className="py-24 bg-white">
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Bal oldal - Elérhetőségek */}
           <div>
             <h2 className="text-sky-600 font-bold uppercase tracking-widest mb-3">Kapcsolat</h2>
             <h3 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-8">
@@ -269,15 +276,15 @@ function ContactAndMap() {
             </h3>
 
             <div className="space-y-6">
-              {/* Cím */}
+              {/* Cím frissítve */}
               <div className="flex gap-5 p-6 bg-gray-50 rounded-3xl border border-gray-100 hover:shadow-md transition-shadow">
                 <div className="w-14 h-14 bg-sky-100 rounded-2xl flex items-center justify-center flex-shrink-0">
                   <MapPin className="w-6 h-6 text-sky-600" />
                 </div>
                 <div>
                   <h4 className="text-xl font-bold text-gray-900 mb-1">Cím</h4>
-                  <p className="text-gray-600 text-lg">2500 Esztergom, Hősök tere 5.</p>
-                  <p className="text-gray-500 text-sm mt-1">A Bazilika közelében, a belvárosban</p>
+                  <p className="text-gray-600 text-lg">2500 Esztergom, Petőfi Sándor u. 11.</p>
+                  <p className="text-gray-500 text-sm mt-1">Központi elhelyezkedés a városban</p>
                 </div>
               </div>
 
@@ -318,25 +325,14 @@ function ContactAndMap() {
                   </div>
                 </div>
               </div>
-
-              {/* Parkolás */}
-              <div className="flex gap-5 p-6 bg-sky-50 rounded-3xl border border-sky-100">
-                <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm">
-                  <Car className="w-6 h-6 text-sky-600" />
-                </div>
-                <div>
-                  <h4 className="text-xl font-bold text-gray-900 mb-1">Ingyenes parkolás</h4>
-                  <p className="text-gray-600">A rendelő előtt 5 db ingyenes parkolóhely áll rendelkezésre pácienseink számára.</p>
-                </div>
-              </div>
             </div>
           </div>
 
-          {/* Jobb oldal - Térkép */}
-          <div className="relative h-full min-h-[500px] lg:min-h-[700px]">
+          {/* Jobb oldal - Térkép frissítve a Petőfi Sándor u 11-re */}
+          <div className="relative h-full min-h-[500px] lg:min-h-[600px]">
             <div className="sticky top-24 h-full rounded-3xl overflow-hidden shadow-2xl border border-gray-100">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2677.5!2d18.7403!3d47.7856!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDfCsDQ3JzA4LjIiTiAxOMKwNDQnMjUuMSJF!5e0!3m2!1sen!2shu!4v1234567890"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2677.202377526978!2d18.737151315645366!3d47.79155987919792!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x476a65df1c08bd05%3A0x6b6c28f2441a1bd!2sEsztergom%2C%20Pet%C5%91fi%20S%C3%A1ndor%20u.%2011%2C%202500!5e0!3m2!1sen!2shu!4v1650000000000!5m2!1sen!2shu"
                 width="100%"
                 height="100%"
                 style={{ border: 0, minHeight: '500px' }}
@@ -345,10 +341,9 @@ function ContactAndMap() {
                 referrerPolicy="no-referrer-when-downgrade"
                 className="w-full h-full object-cover"
               />
-              {/* Térkép feletti gomb */}
               <div className="absolute bottom-6 left-0 right-0 flex justify-center">
                 <a
-                  href="https://maps.google.com/?q=Esztergom+Hősök+tere+5"
+                  href="https://share.google/UV0bxLOGoyQdgH826"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 bg-white text-gray-900 font-bold px-6 py-3 rounded-full shadow-lg hover:bg-sky-50 hover:text-sky-600 transition-colors"
@@ -366,7 +361,7 @@ function ContactAndMap() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// SZOLGÁLTATÁSOK GRID (Világos dizájn)
+// SZOLGÁLTATÁSOK GRID
 // ═══════════════════════════════════════════════════════════════════════════
 function ServicesSection() {
   const services = [
@@ -472,7 +467,7 @@ function ServicesSection() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// MIÉRT MINKET VÁLASSZON (Világos dizájn)
+// MIÉRT MINKET VÁLASSZON
 // ═══════════════════════════════════════════════════════════════════════════
 function WhyUsSection() {
   const reasons = [
@@ -533,32 +528,25 @@ function WhyUsSection() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// VÉLEMÉNYEK (Világos dizájn)
+// VÉLEMÉNYEK - GÖRDÜLŐ "FOLYÓ" MARQUEE (10 éves limit, 4-5 csillagos mix)
 // ═══════════════════════════════════════════════════════════════════════════
 function ReviewsSection() {
   const reviews = [
-    {
-      name: 'Kovács Mária',
-      rating: 5,
-      text: '20 éve járok ide, és mindig maximálisan elégedett vagyok. A gyerekeim is itt kezeltetik a fogaikat.',
-      date: '2025. október',
-    },
-    {
-      name: 'Nagy József',
-      rating: 5,
-      text: 'Féltem a fogorvostól, de itt olyan kedvesek és türelmesek, hogy már nem izgulok. Az implantátumom tökéletes!',
-      date: '2025. augusztus',
-    },
-    {
-      name: 'Szabó Anna',
-      rating: 5,
-      text: 'A korona 3 nap alatt elkészült, máshol 3 hetet mondtak. És még olcsóbb is volt! Csak ajánlani tudom.',
-      date: '2025. július',
-    },
+    { name: 'Kovács Mária', rating: 5, text: 'Már 10 éve járok ide, a legjobb döntés volt. A gyerekeim is ide járnak, sosem csalódtunk a csapatban.', date: '2026. február' },
+    { name: 'Nagy József', rating: 4, text: 'Nagyon profik, az implantátumom tökéletes lett. Kicsit várni kellett az időpontra, de abszolút megérte.', date: '2026. január' },
+    { name: 'Szabó Anna', rating: 5, text: 'A korona 3 nap alatt elkészült a saját labor miatt. Nagyon féltem a beavatkozástól, de teljesen fájdalommentes volt!', date: '2025. december' },
+    { name: 'Tóth Gábor', rating: 5, text: '8 éve csak hozzájuk járok. Mindig kedvesek, gyorsak és a legmodernebb, legtisztább gépekkel dolgoznak.', date: '2025. november' },
+    { name: 'Horváth Éva', rating: 4, text: 'Nagyon szép lett a kivehető fogsorom, a technikus azonnal tudott korrigálni a színen. Szuper szakemberek.', date: '2025. október' },
+    { name: 'Varga Péter', rating: 5, text: '5 éve vagyok páciens. Életemben először nem gyomorgörccsel megyek fogorvoshoz, nagyon empatikusak.', date: '2025. szeptember' },
+    { name: 'Kiss László', rating: 5, text: 'Komplikált gyökérkezelésen voltam, de megmentették a fogam. Precíz, gyors és alapos munka.', date: '2025. július' },
+    { name: 'Farkas Zita', rating: 5, text: '10 éve hűséges páciensük vagyok. Bárkinek, aki Esztergomban keres fogorvost, csak ajánlani tudom őket!', date: '2025. május' },
   ];
 
+  // Duplikáljuk a listát, hogy végtelenül görgethető legyen hiba nélkül
+  const extendedReviews = [...reviews, ...reviews, ...reviews];
+
   return (
-    <section className="py-24 bg-gray-50 border-t border-gray-100">
+    <section className="py-24 bg-gray-50 border-t border-gray-100 overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-sky-600 font-bold uppercase tracking-widest mb-3">Vélemények</h2>
@@ -569,32 +557,52 @@ function ReviewsSection() {
             {[...Array(5)].map((_, i) => (
               <Star key={i} className="w-6 h-6 fill-current" />
             ))}
-            <span className="text-gray-900 font-bold ml-2 text-lg">4.9 / 5</span>
+            <span className="text-gray-900 font-bold ml-2 text-lg">4.8 / 5</span>
             <span className="text-gray-500 font-medium ml-1">(320+ értékelés)</span>
           </div>
         </div>
+      </div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {reviews.map((review, i) => (
-            <motion.div
+      {/* Marquee Animation Style */}
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-33.3333%); } /* Mivel 3x duplikáltuk, 33%-nál ugrik vissza zökkenőmentesen */
+        }
+        .animate-marquee {
+          display: flex;
+          width: max-content;
+          animation: marquee 50s linear infinite;
+        }
+        .animate-marquee:hover {
+          animation-play-state: paused;
+        }
+      `}} />
+
+      {/* Folyó vélemény kártyák */}
+      <div className="relative w-full">
+        {/* Bal/Jobb gradiens elmosás, hogy szépen tűnjenek el */}
+        <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-gray-50 to-transparent z-10" />
+        <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-gray-50 to-transparent z-10" />
+
+        <div className="animate-marquee gap-6 px-6">
+          {extendedReviews.map((review, i) => (
+            <div
               key={i}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="p-8 bg-white rounded-3xl shadow-sm border border-gray-100 relative"
+              className="w-[350px] md:w-[400px] p-8 bg-white rounded-3xl shadow-sm border border-gray-100 flex-shrink-0 cursor-default"
             >
               <div className="flex items-center gap-1 mb-6">
-                {[...Array(review.rating)].map((_, j) => (
-                  <Star key={j} className="w-5 h-5 text-amber-400 fill-current" />
+                {/* Dinamikusan rajzoljuk ki a csillagokat (5 vagy 4) */}
+                {[...Array(5)].map((_, j) => (
+                  <Star key={j} className={`w-5 h-5 ${j < review.rating ? 'text-amber-400 fill-current' : 'text-gray-200'}`} />
                 ))}
               </div>
-              <p className="text-gray-600 mb-8 italic leading-relaxed">"{review.text}"</p>
+              <p className="text-gray-600 mb-8 italic leading-relaxed min-h-[80px]">"{review.text}"</p>
               <div className="flex items-center justify-between border-t border-gray-50 pt-4">
                 <span className="text-gray-900 font-bold">{review.name}</span>
                 <span className="text-gray-400 text-sm">{review.date}</span>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
@@ -603,7 +611,55 @@ function ReviewsSection() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// CTA SECTION (Egyezik a kezelések oldalon lévő prémium verzióval)
+// AI ÁRAJÁNLAT ELEMZŐ (Hozzáadva)
+// ═══════════════════════════════════════════════════════════════════════════
+function QuoteAnalyzerSection() {
+  const [isDragging, setIsDragging] = useState(false);
+
+  return (
+    <section id="arajanlat-elemzo" className="py-24 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gray-900" />
+      <div className="absolute inset-0 bg-sky-900/20" />
+      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-sky-600/30 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3" />
+
+      <div className="relative z-10 container mx-auto px-4">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500/10 border border-amber-500/20 rounded-full text-amber-400 text-sm font-bold uppercase mb-6">
+              <Sparkles className="w-4 h-4" /> AI Ár-kalkulátor
+            </div>
+            <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+              Sokallja a pesti árajánlatot? <br/><span className="text-sky-400">Mutassa meg nekünk!</span>
+            </h2>
+            <p className="text-xl text-gray-300 mb-8 leading-relaxed font-light">
+              Töltse fel a máshol kapott kezelési tervet. Az AI azonnal megmutatja, <strong>mennyit spórolhat</strong> saját laborunkkal, helyben Esztergomban.
+            </p>
+          </div>
+
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}>
+            <div 
+              className={`relative bg-white/5 backdrop-blur-xl border-2 border-dashed rounded-3xl p-10 lg:p-16 text-center transition-all duration-300 ${isDragging ? 'border-sky-400 bg-sky-500/10 scale-105' : 'border-gray-600'}`}
+              onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+              onDragLeave={() => setIsDragging(false)}
+              onDrop={(e) => { e.preventDefault(); setIsDragging(false); }}
+            >
+              <div className="w-24 h-24 bg-sky-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Upload className="w-10 h-10 text-sky-400" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-3">Húzza ide a PDF-et</h3>
+              <button className="mt-6 w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-4 px-8 rounded-full shadow-lg transition-colors">
+                Fájl Kiválasztása
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// CTA SECTION
 // ═══════════════════════════════════════════════════════════════════════════
 function CTASection() {
   return (
@@ -637,7 +693,7 @@ function CTASection() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// PRÉMIUM 2026 FOOTER (Megegyezik)
+// PRÉMIUM 2026 FOOTER (Frissített címmel)
 // ═══════════════════════════════════════════════════════════════════════════
 function Footer() {
   return (
@@ -675,7 +731,7 @@ function Footer() {
                 <MapPin className="w-5 h-5 text-sky-500 mt-1" />
                 <div>
                   <span className="block text-white font-semibold">Esztergomi Rendelő</span>
-                  <span className="text-gray-400">2500 Esztergom, Hősök tere 5.</span>
+                  <span className="text-gray-400">2500 Esztergom, Petőfi Sándor u. 11.</span>
                 </div>
               </li>
               <li className="flex items-start gap-3">
@@ -729,11 +785,12 @@ export default function EsztergomPage() {
   return (
     <main className="min-h-screen bg-gray-50">
       <Navigation />
-      <HeroSection />
+      <HeroSlider />
       <ContactAndMap />
       <ServicesSection />
       <WhyUsSection />
       <ReviewsSection />
+      <QuoteAnalyzerSection />
       <CTASection />
       <Footer />
     </main>
