@@ -21,7 +21,9 @@ import {
   CheckCircle2,
   Sparkles,
   ChevronRight,
-  Mail
+  Mail,
+  Search,
+  Activity
 } from 'lucide-react';
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -334,73 +336,45 @@ function LocationSelector() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// TELJES ÁRLISTA SZEKCIÓ (Az általad küldött árakkal, elegáns kivitelben)
+// KIEMELT ÁRAK / KEZELÉSEK (3D Flip Kártyák)
 // ═══════════════════════════════════════════════════════════════════════════
-function PriceListSection() {
-  const priceCategories = [
+function FeaturedPricesSection() {
+  const cards = [
     {
-      title: "Diagnosztika és Alapkezelések",
-      items: [
-        { name: "Elő-vizsgálat, írásos vélemény, góckutatás, kezelési terv", price: "10.000 Ft" },
-        { name: "Tömések", price: "30.000 - 35.000 Ft" },
-        { name: "Foghúzás", price: "25.000 - 35.000 Ft" },
-        { name: "Röntgen felvétel (kisröntgen filmes / egy fogról)", price: "5.000 Ft" },
-        { name: "Panoráma röntgen", price: "6.000 Ft" },
-      ]
+      title: "Diagnosztika & Alap",
+      subtitle: "Vizsgálat, röntgen, tömések",
+      price: "10.000 Ft-tól",
+      icon: <Search className="w-10 h-10 text-sky-500" />
     },
     {
       title: "Gyökérkezelés",
-      items: [
-        { name: "Gyökértömés (Egy gyökerű)", price: "25.000 Ft" },
-        { name: "Gyökértömés (Két gyökerű)", price: "30.000 Ft" },
-        { name: "Gyökértömés (Három gyökerű)", price: "33.000 Ft" },
-        { name: "Gyökértömés eltávolítása", price: "20.000 Ft" },
-        { name: "Gyökérkezelés alkalmanként", price: "10.000 Ft" },
-      ]
+      subtitle: "Fájdalommentes fogmegmentés",
+      price: "10.000 Ft-tól",
+      icon: <Activity className="w-10 h-10 text-sky-500" />
     },
     {
-      title: "Fogmegőrzés és Esztétika",
-      items: [
-        { name: "Fogkőeltávolítás állcsontonként", price: "15.000 Ft" },
-        { name: "Fogfehérítés szilikon sínnel (otthoni) / fogívenként", price: "30.000 Ft" },
-        { name: "Fogfehérítés rendelői (lámpás) / fogívenként", price: "45.000 Ft" },
-      ]
+      title: "Esztétika & Prevenció",
+      subtitle: "Fogkőeltávolítás, fogfehérítés",
+      price: "15.000 Ft-tól",
+      icon: <Sparkles className="w-10 h-10 text-sky-500" />
     },
     {
-      title: "Fogpótlások és Koronák",
-      items: [
-        { name: "Ideiglenes korona (rövidtávú, 1-2 hétre)", price: "6.000 Ft" },
-        { name: "Ideiglenes korona (hosszútávú, max. 1 évre)", price: "15.000 Ft" },
-        { name: "Fémkerámia korona", price: "42.000 Ft" },
-        { name: "Cirkónium korona (fémmentes)", price: "55.000 Ft" },
-        { name: "Egyéni fogszínek készítése (foganként)", price: "15.000 Ft" },
-        { name: "Kivehető fogsor egy állcsontra (kompozit)", price: "110.000 Ft" },
-        { name: "Fémlemezes fogsor egy állcsontra", price: "150.000 Ft" },
-        { name: "Régi híd eltávolítása (pillér foganként)", price: "12.000 Ft" },
-        { name: "Fogsor alábélelés", price: "25.000 Ft" },
-      ]
+      title: "Fogpótlás & Koronák",
+      subtitle: "Cirkónium, fémkerámia, fogsorok",
+      price: "42.000 Ft-tól",
+      icon: <CheckCircle2 className="w-10 h-10 text-sky-500" />
     },
     {
-      title: "Szájsebészet és Implantáció",
-      items: [
-        { name: "Foghúzás műtéttel", price: "55.000 Ft" },
-        { name: "Bölcsességfog eltávolítása", price: "55.000 Ft" },
-        { name: "Gyökércsúcs rezekció", price: "55.000 Ft" },
-        { name: "DIO Implantátum", price: "240.000 Ft" },
-        { name: "ALPHA BIO Implantátum", price: "180.000 Ft" },
-        { name: "Csontpótlás", price: "190.000 Ft" },
-      ]
+      title: "Sebészet & Implantáció",
+      subtitle: "Húzások, prémium implantátumok",
+      price: "55.000 Ft-tól",
+      icon: <Shield className="w-10 h-10 text-sky-500" />
     },
     {
-      title: "Gyermekfogászat és Fogszabályozás",
-      items: [
-        { name: "Tömés tejfogakba", price: "15.000 Ft" },
-        { name: "Barázda zárás", price: "15.000 Ft" },
-        { name: "Rögzített készülékek", price: "190.000 - 285.000 Ft" },
-        { name: "Kivehető készülékek", price: "60.000 - 90.000 Ft" },
-        { name: "Rögzített készülék aktiválása", price: "10.000 - 15.000 Ft" },
-        { name: "Kivehető készülék aktiválása", price: "Konzultáció alapján" },
-      ]
+      title: "Gyermek & Fogszabályozás",
+      subtitle: "Rögzített és kivehető készülékek",
+      price: "15.000 Ft-tól",
+      icon: <Heart className="w-10 h-10 text-sky-500" />
     }
   ];
 
@@ -408,47 +382,46 @@ function PriceListSection() {
     <section id="arlista" className="py-24 bg-gray-50 border-t border-gray-100">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-sky-600 font-bold uppercase tracking-widest mb-3">Transzparens Árképzés</h2>
-          <h3 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">Teljes Árlistánk</h3>
-          <p className="text-xl text-gray-500 max-w-2xl mx-auto">Saját laborunknak köszönhetően prémium minőségű anyagokkal dolgozunk, rejtett költségek nélkül.</p>
+          <h2 className="text-sky-600 font-bold uppercase tracking-widest mb-3">Kiemelt Ajánlataink</h2>
+          <h3 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">Prémium Kezelések</h3>
+          <p className="text-xl text-gray-500 max-w-2xl mx-auto">Saját laborunknak köszönhetően kimagasló minőséget nyújtunk kompromisszumok nélkül.</p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-x-12 gap-y-12 max-w-6xl mx-auto">
-          {priceCategories.map((category, idx) => (
-            <motion.div 
-              key={idx} 
-              initial={{ opacity: 0, y: 20 }} 
-              whileInView={{ opacity: 1, y: 0 }} 
-              viewport={{ once: true }} 
-              transition={{ delay: idx * 0.1 }}
-              className="bg-white rounded-3xl p-8 lg:p-10 shadow-lg border border-gray-100 relative overflow-hidden"
-            >
-              {/* Dekoratív elem a kártyában */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-sky-50 rounded-bl-full -mr-8 -mt-8 z-0" />
-              
-              <h4 className="text-2xl font-bold text-gray-900 mb-8 relative z-10 flex items-center gap-3">
-                <div className="w-2 h-8 bg-sky-500 rounded-full" />
-                {category.title}
-              </h4>
-              
-              <ul className="space-y-4 relative z-10">
-                {category.items.map((item, i) => (
-                  <li key={i} className="flex justify-between items-end group">
-                    <span className="text-gray-700 font-medium pr-4 leading-snug max-w-[70%] group-hover:text-sky-700 transition-colors">{item.name}</span>
-                    <div className="flex-1 border-b-2 border-dotted border-gray-200 mb-1 mx-2 opacity-50"></div>
-                    <span className="text-gray-900 font-extrabold whitespace-nowrap pl-2">{item.price}</span>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {cards.map((card, idx) => (
+            <div key={idx} className="group [perspective:1000px] h-[350px] w-full cursor-pointer">
+              <div className="relative w-full h-full duration-700 transition-transform [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+                
+                {/* Front (Előlap) */}
+                <div className="absolute inset-0 [backface-visibility:hidden] bg-white rounded-3xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100 flex flex-col items-center justify-center text-center">
+                  <div className="w-20 h-20 bg-sky-50 rounded-full flex items-center justify-center mb-6">
+                    {card.icon}
+                  </div>
+                  <h4 className="text-2xl font-bold text-gray-900 mb-2">{card.title}</h4>
+                  <p className="text-gray-500 mb-6">{card.subtitle}</p>
+                  <div className="mt-auto">
+                    <span className="text-3xl font-extrabold text-sky-600">{card.price}</span>
+                  </div>
+                </div>
+
+                {/* Back (Hátlap) */}
+                <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] bg-gradient-to-br from-sky-600 to-sky-800 rounded-3xl p-8 shadow-2xl flex items-center justify-center">
+                  <Link href="/idopont" className="flex flex-col items-center justify-center w-full h-full text-white group/link">
+                    <Calendar className="w-16 h-16 mb-6 opacity-80 group-hover/link:scale-110 group-hover/link:opacity-100 transition-all duration-300" />
+                    <span className="text-2xl font-bold text-center mb-2">Konzultáció Foglalása</span>
+                    <span className="text-sky-200 text-sm font-medium">Kattintson ide az időponthoz</span>
+                  </Link>
+                </div>
+
+              </div>
+            </div>
           ))}
         </div>
         
         <div className="text-center mt-16">
-          <p className="text-gray-500 mb-6 italic">Az árak tájékoztató jellegűek, a pontos kezelési tervet a személyes konzultáció során készítjük el.</p>
-          <Link href="/idopont" className="inline-flex items-center gap-3 px-8 py-4 bg-gray-900 text-white text-lg font-bold rounded-full hover:bg-sky-600 transition-colors shadow-lg">
-            <Calendar className="w-5 h-5" /> Kérem a pontos árajánlatot
-          </Link>
+           <Link href="/kezelesek" className="inline-flex items-center gap-2 text-gray-500 hover:text-sky-600 font-bold transition-colors">
+             Teljes árlista megtekintése <ArrowRight className="w-4 h-4" />
+           </Link>
         </div>
       </div>
     </section>
@@ -586,8 +559,16 @@ function Footer() {
 
         {/* Copyright Sáv */}
         <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
-          <p>© 2026 Crown Dental Clinic & Lab. Minden jog fenntartva.</p>
-          <p>Készítette: <span className="text-white font-semibold">Erdesz Donat & AI</span></p>
+          <p>© 2026 Crown Dental Praxis és Labor Fogászati Kft. Minden jog fenntartva.</p>
+          <p className="flex items-center gap-2">
+            Készítette: 
+            <span 
+              className="text-white text-2xl tracking-wider ml-1" 
+              style={{ fontFamily: "'Great Vibes', 'Brush Script MT', cursive" }}
+            >
+              Crown Dental
+            </span>
+          </p>
         </div>
       </div>
     </footer>
@@ -605,7 +586,7 @@ export default function HomePage() {
         <HeroSlider />
         <TrustBadges />
         <LocationSelector />
-        <PriceListSection />
+        <FeaturedPricesSection />
         <QuoteAnalyzerSection />
       </main>
       <Footer />
