@@ -24,7 +24,8 @@ import {
   Scissors,
   Baby,
   Activity,
-  Shield
+  Shield,
+  Building2
 } from 'lucide-react';
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -115,7 +116,6 @@ const priceCategories = [
   },
 ];
 
-// Prémium szín mapping (világos témához igazítva)
 const colorClasses: Record<string, { text: string; bgLight: string; border: string; borderHighlight: string }> = {
   sky: { text: 'text-sky-600', bgLight: 'bg-sky-50', border: 'border-sky-100', borderHighlight: 'border-sky-200' },
   teal: { text: 'text-teal-600', bgLight: 'bg-teal-50', border: 'border-teal-100', borderHighlight: 'border-teal-200' },
@@ -125,9 +125,6 @@ const colorClasses: Record<string, { text: string; bgLight: string; border: stri
   fuchsia: { text: 'text-fuchsia-600', bgLight: 'bg-fuchsia-50', border: 'border-fuchsia-100', borderHighlight: 'border-fuchsia-200' },
 };
 
-// ═══════════════════════════════════════════════════════════════════════════
-// NAVIGÁCIÓ (Aktív "Szolgáltatások" menüponttal, külön Árlista gomb nélkül)
-// ═══════════════════════════════════════════════════════════════════════════
 function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
@@ -163,7 +160,6 @@ function Navigation() {
             </Link>
             
             <div className="relative group">
-              {/* VILÁGÍTÓ AKTÍV MENÜPONT */}
               <button
                 className="flex items-center gap-1 px-4 py-2 font-bold text-sky-600 bg-sky-50 rounded-full transition-colors"
                 onMouseEnter={() => setServicesOpen(true)}
@@ -248,9 +244,6 @@ function Navigation() {
   );
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// HERO SECTION (Belső oldalra szabva, elegáns és letisztult)
-// ═══════════════════════════════════════════════════════════════════════════
 function InnerHero() {
   return (
     <section className="relative pt-40 pb-20 overflow-hidden bg-gray-50">
@@ -291,9 +284,6 @@ function InnerHero() {
   );
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// KATEGÓRIA KÁRTYA (Étlap dizájn, lenyitható harmonika)
-// ═══════════════════════════════════════════════════════════════════════════
 function CategoryCard({ category, index }: { category: typeof priceCategories[0]; index: number }) {
   const [isOpen, setIsOpen] = useState(index === 0);
   const colors = colorClasses[category.color];
@@ -354,7 +344,6 @@ function CategoryCard({ category, index }: { category: typeof priceCategories[0]
                     )}
                   </div>
                   
-                  {/* Pontozott vonal (Étlap stílus) asztali nézeten */}
                   <div className="hidden sm:block flex-1 border-b-2 border-dotted border-gray-200 mb-2 mx-4 opacity-50 group-hover:border-sky-200 transition-colors"></div>
                   
                   <div className={`text-xl font-extrabold whitespace-nowrap ${item.highlight ? colors.text : 'text-gray-900'}`}>
@@ -370,9 +359,6 @@ function CategoryCard({ category, index }: { category: typeof priceCategories[0]
   );
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// ÁRLISTA KONTÉNER SECTION
-// ═══════════════════════════════════════════════════════════════════════════
 function PriceListSection() {
   return (
     <section className="pb-24 bg-gray-50">
@@ -383,7 +369,6 @@ function PriceListSection() {
           ))}
         </div>
 
-        {/* Információs doboz */}
         <div className="max-w-4xl mx-auto mt-10 p-6 bg-sky-50 rounded-2xl border border-sky-100 flex gap-4 items-start">
           <div className="w-10 h-10 rounded-full bg-sky-100 flex items-center justify-center text-sky-600 flex-shrink-0 mt-1">
             <Sparkles className="w-5 h-5" />
@@ -401,9 +386,6 @@ function PriceListSection() {
   );
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// AI ÁRAJÁNLAT ELEMZŐ (Egyezik a főoldalival)
-// ═══════════════════════════════════════════════════════════════════════════
 function QuoteAnalyzerSection() {
   const [isDragging, setIsDragging] = useState(false);
 
@@ -449,9 +431,6 @@ function QuoteAnalyzerSection() {
   );
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// CTA SECTION (Elegáns alsó sáv)
-// ═══════════════════════════════════════════════════════════════════════════
 function CTASection() {
   return (
     <section className="py-20 bg-sky-600">
@@ -483,9 +462,6 @@ function CTASection() {
   );
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// PRÉMIUM 2026 FOOTER (Egyezik a főoldalival)
-// ═══════════════════════════════════════════════════════════════════════════
 function Footer() {
   return (
     <footer className="bg-gray-950 pt-20 pb-10 border-t border-gray-900 text-gray-300">
@@ -569,9 +545,6 @@ function Footer() {
   );
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// OLDAL EXPORT
-// ═══════════════════════════════════════════════════════════════════════════
 export default function KezelesekPage() {
   return (
     <main className="min-h-screen bg-gray-50">
