@@ -119,7 +119,7 @@ function HeroSlider() {
   const slides = [
     {
       image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?q=80&w=2070&auto=format&fit=crop",
-      tag: "Budapest Minőség, Vidéki Árak",
+      tag: "Prémium Minőség, Megfizethető Áron",
       title: "Prémium Fogászat\nKompromisszumok Nélkül",
       subtitle: "Fedezze fel a fájdalommentes fogászati kezeléseket klinikánkon. Saját fogtechnikai laborunkkal időt és pénzt spórolunk Önnek."
     },
@@ -145,7 +145,7 @@ function HeroSlider() {
   }, [slides.length]);
 
   return (
-    <section className="relative mt-16 md:mt-20 h-[80svh] min-h-[600px] w-full overflow-hidden flex items-center justify-center bg-gray-900">
+    <section className="relative mt-16 md:mt-20 min-h-[100svh] md:min-h-[600px] md:h-[80svh] w-full overflow-hidden flex items-center justify-center bg-gray-900 pt-12 md:pt-0">
       <AnimatePresence mode="wait">
         <motion.div
           key={current}
@@ -162,20 +162,20 @@ function HeroSlider() {
 
       <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-white to-transparent z-10" />
 
-      <div className="relative z-20 container mx-auto px-4 mt-10">
+      <div className="relative z-20 container mx-auto px-4 mt-20 md:mt-10">
         <div className="max-w-3xl">
           <AnimatePresence mode="wait">
             <motion.div key={current} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -30 }} transition={{ duration: 0.5, delay: 0.2 }}>
-              <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-sky-500/20 border border-sky-400/30 backdrop-blur-md rounded-full text-sky-200 text-sm font-bold tracking-wide uppercase mb-6">
+              <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-sky-500/20 border border-sky-400/30 backdrop-blur-md rounded-full text-sky-200 text-xs sm:text-sm font-bold tracking-wide uppercase mb-4 md:mb-6">
                 <Sparkles className="w-4 h-4" />
                 {slides[current].tag}
               </div>
               
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 leading-tight whitespace-pre-line drop-shadow-lg">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white mb-4 md:mb-6 leading-tight whitespace-pre-line drop-shadow-lg">
                 {slides[current].title}
               </h1>
               
-              <p className="text-xl md:text-2xl text-gray-200 mb-10 leading-relaxed max-w-2xl font-light">
+              <p className="text-lg md:text-2xl text-gray-200 mb-8 md:mb-10 leading-relaxed max-w-2xl font-light">
                 {slides[current].subtitle}
               </p>
             </motion.div>
@@ -306,8 +306,7 @@ function QuoteAnalyzerSection() {
   return (
     <section id="arajanlat-elemzo" className="py-24 relative overflow-hidden">
       <div className="absolute inset-0 bg-gray-900" />
-      <div className="absolute inset-0 bg-sky-900/20" />
-      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-sky-600/30 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-sky-700/40 via-transparent to-transparent" />
 
       <div className="relative z-10 container mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -595,7 +594,9 @@ function Footer() {
                 <MapPin className="w-5 h-5 text-amber-500 mt-1" />
                 <div>
                   <span className="block text-white font-semibold">Budapesti Rendelő</span>
-                  <span className="text-gray-400">1039 Budapest, Királyok útja 55.</span>
+                  <a href="https://maps.google.com/?q=1039+Budapest+Királyok+útja+55" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
+                    1039 Budapest, Királyok útja 55.
+                  </a>
                 </div>
               </li>
               <li className="flex items-center gap-3">
