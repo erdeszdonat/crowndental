@@ -27,7 +27,7 @@ import {
 } from 'lucide-react';
 
 // ═══════════════════════════════════════════════════════════════════════════
-// NAVIGÁCIÓ (Stabil fehér, letisztult menü)
+// NAVIGÁCIÓ (Stabil fehér, MEGNÖVELT logóval)
 // ═══════════════════════════════════════════════════════════════════════════
 function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,14 +35,14 @@ function Navigation() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl shadow-sm border-b border-gray-100">
       <nav className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-24">
-          <Link href="/" className="flex items-center relative h-full py-3 z-50">
+        <div className="flex items-center justify-between h-28"> {/* h-24-ről h-28-ra növelve a nagyobb logó miatt */}
+          <Link href="/" className="flex items-center relative h-full py-2 z-50">
             <Image 
               src="/logo.webp" 
               alt="Crown Dental Logo" 
-              width={280} 
-              height={80} 
-              className="object-contain h-16 w-auto drop-shadow-sm" 
+              width={350} 
+              height={100} 
+              className="object-contain h-20 md:h-24 w-auto drop-shadow-sm" 
               priority 
             />
           </Link>
@@ -84,7 +84,7 @@ function Navigation() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="lg:hidden absolute top-24 left-0 right-0 bg-white shadow-2xl border-t border-gray-100 overflow-hidden z-40"
+              className="lg:hidden absolute top-28 left-0 right-0 bg-white shadow-2xl border-t border-gray-100 overflow-hidden z-40"
             >
               <div className="px-6 py-6 space-y-3 max-h-[80vh] overflow-y-auto">
                 <Link href="/" className="block px-4 py-3 text-gray-800 font-bold rounded-xl hover:bg-sky-50" onClick={() => setIsOpen(false)}>Főoldal</Link>
@@ -145,7 +145,7 @@ function HeroSlider() {
   }, [slides.length]);
 
   return (
-    <section className="relative mt-24 h-[80svh] min-h-[600px] w-full overflow-hidden flex items-center justify-center bg-gray-900">
+    <section className="relative mt-28 h-[80svh] min-h-[600px] w-full overflow-hidden flex items-center justify-center bg-gray-900">
       <AnimatePresence mode="wait">
         <motion.div
           key={current}
@@ -202,7 +202,7 @@ function HeroSlider() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// TRUST BADGES (Prémium Megjelenés és Szövegek)
+// TRUST BADGES
 // ═══════════════════════════════════════════════════════════════════════════
 function TrustBadges() {
   const badges = [
@@ -239,7 +239,66 @@ function TrustBadges() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// AI ÁRAJÁNLAT ELEMZŐ (Sales fókusz, Felhúzva ide)
+// ANIMÁLT TELJESÍTMÉNY SZÁMLÁLÓ (Tények és Számok animációval)
+// ═══════════════════════════════════════════════════════════════════════════
+function AnimatedCounter({ end, suffix = "", text, desc }: { end: number, suffix?: string, text: string, desc: string }) {
+  const [count, setCount] = useState(0);
+
+  return (
+    <motion.div
+      onViewportEnter={() => {
+        let start = 0;
+        const duration = 2000; // 2 másodperc alatt pörög fel
+        const increment = end / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= end) {
+            setCount(end);
+            clearInterval(timer);
+          } else {
+            setCount(Math.ceil(start));
+          }
+        }, 16);
+      }}
+      viewport={{ once: true, margin: "-100px" }}
+      className="text-center p-8 bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-50"
+    >
+      <div className="text-5xl md:text-6xl font-extrabold text-sky-600 mb-4 tracking-tight">
+        {count.toLocaleString('hu-HU')}{suffix}
+      </div>
+      <div className="text-lg font-bold text-gray-900 mb-2">{text}</div>
+      <p className="text-gray-500 text-sm">{desc}</p>
+    </motion.div>
+  );
+}
+
+function StatsSection() {
+  return (
+    <section className="py-16 bg-gray-50 border-t border-gray-100">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-sky-600 font-bold uppercase tracking-widest mb-3">Tények és Számok</h2>
+          <h3 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">
+            Teljesítményeink
+          </h3>
+          <p className="text-xl text-gray-500 max-w-2xl mx-auto">
+            Büszkék vagyunk az elmúlt évtizedek munkájára és a ránk bízott mosolyokra.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+          <AnimatedCounter end={30} suffix="+" text="Év Tapasztalat" desc="1994 óta a pályán" />
+          <AnimatedCounter end={15000} suffix="+" text="Elégedett Páciens" desc="Generációk bizalma" />
+          <AnimatedCounter end={40} suffix="%" text="Megtakarítás" desc="Saját laborunknak köszönhetően" />
+          <AnimatedCounter end={3} suffix=" nap" text="Korona Elkészítés" desc="Villámgyors, precíz fogpótlás" />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// AI ÁRAJÁNLAT ELEMZŐ (Felhoztuk ide)
 // ═══════════════════════════════════════════════════════════════════════════
 function QuoteAnalyzerSection() {
   const [isDragging, setIsDragging] = useState(false);
@@ -294,8 +353,7 @@ function LocationSelector() {
     <section className="py-24 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-sky-600 font-bold uppercase tracking-widest mb-3">Rendelőink</h2>
-          <h3 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">Melyik rendelőnk érdekli?</h3>
+          <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">Rendelőink</h2>
           <p className="text-xl text-gray-500">Válassza ki a leginkább megfelelő helyszínt</p>
         </div>
 
@@ -347,7 +405,7 @@ function LocationSelector() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// KIEMELT ÁRAK / KEZELÉSEK (3D Flip Kártyák)
+// KIEMELT ÁRAK / KEZELÉSEK (Elegáns képekkel a kártyák tetején)
 // ═══════════════════════════════════════════════════════════════════════════
 function FeaturedPricesSection() {
   const cards = [
@@ -355,37 +413,43 @@ function FeaturedPricesSection() {
       title: "Diagnosztika & Alap",
       subtitle: "Vizsgálat, röntgen, tömések",
       price: "10.000 Ft-tól",
-      icon: <Search className="w-10 h-10 text-sky-500" />
+      icon: <Search className="w-6 h-6" />,
+      image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80&w=800&auto=format&fit=crop"
     },
     {
       title: "Gyökérkezelés",
       subtitle: "Fájdalommentes fogmegmentés",
       price: "10.000 Ft-tól",
-      icon: <Activity className="w-10 h-10 text-sky-500" />
+      icon: <Activity className="w-6 h-6" />,
+      image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?q=80&w=800&auto=format&fit=crop"
     },
     {
       title: "Esztétika & Prevenció",
       subtitle: "Fogkőeltávolítás, fogfehérítés",
       price: "15.000 Ft-tól",
-      icon: <Sparkles className="w-10 h-10 text-sky-500" />
+      icon: <Sparkles className="w-6 h-6" />,
+      image: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?q=80&w=800&auto=format&fit=crop"
     },
     {
       title: "Fogpótlás & Koronák",
       subtitle: "Cirkónium, fémkerámia, fogsorok",
       price: "42.000 Ft-tól",
-      icon: <CheckCircle2 className="w-10 h-10 text-sky-500" />
+      icon: <CheckCircle2 className="w-6 h-6" />,
+      image: "https://images.unsplash.com/photo-1609840114035-3c981b782dfe?q=80&w=800&auto=format&fit=crop"
     },
     {
       title: "Sebészet & Implantáció",
       subtitle: "Húzások, prémium implantátumok",
       price: "55.000 Ft-tól",
-      icon: <Shield className="w-10 h-10 text-sky-500" />
+      icon: <Shield className="w-6 h-6" />,
+      image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=800&auto=format&fit=crop"
     },
     {
       title: "Gyermek & Fogszabályozás",
       subtitle: "Rögzített és kivehető készülékek",
       price: "15.000 Ft-tól",
-      icon: <Heart className="w-10 h-10 text-sky-500" />
+      icon: <Heart className="w-6 h-6" />,
+      image: "https://images.unsplash.com/photo-1581594549595-35f6edc7b762?q=80&w=800&auto=format&fit=crop"
     }
   ];
 
@@ -400,20 +464,32 @@ function FeaturedPricesSection() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {cards.map((card, idx) => (
-            <div key={idx} className="group [perspective:1000px] h-[350px] w-full cursor-pointer">
+            <div key={idx} className="group [perspective:1000px] h-[400px] w-full cursor-pointer">
               <div className="relative w-full h-full duration-700 transition-transform [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
                 
-                <div className="absolute inset-0 [backface-visibility:hidden] bg-white rounded-3xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100 flex flex-col items-center justify-center text-center">
-                  <div className="w-20 h-20 bg-sky-50 rounded-full flex items-center justify-center mb-6">
-                    {card.icon}
+                {/* Front (Előlap - Fent kép, lent szöveg) */}
+                <div className="absolute inset-0 [backface-visibility:hidden] bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100 flex flex-col overflow-hidden group/front">
+                  {/* Kép része sötét átmenettel */}
+                  <div className="relative h-[55%] w-full overflow-hidden">
+                    <img src={card.image} alt={card.title} className="w-full h-full object-cover transition-transform duration-700 group-hover/front:scale-110" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/20 to-transparent" />
+                    <div className="absolute bottom-4 left-6 right-4 flex items-center gap-3">
+                      <div className="w-10 h-10 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center text-white shadow-sm">
+                        {card.icon}
+                      </div>
+                      <h4 className="text-xl font-bold text-white">{card.title}</h4>
+                    </div>
                   </div>
-                  <h4 className="text-2xl font-bold text-gray-900 mb-2">{card.title}</h4>
-                  <p className="text-gray-500 mb-6">{card.subtitle}</p>
-                  <div className="mt-auto">
-                    <span className="text-3xl font-extrabold text-sky-600">{card.price}</span>
+                  {/* Szöveges rész */}
+                  <div className="p-6 flex flex-col flex-1 text-center justify-center">
+                    <p className="text-gray-500 mb-3">{card.subtitle}</p>
+                    <div className="mt-auto">
+                      <span className="text-2xl font-extrabold text-sky-600">{card.price}</span>
+                    </div>
                   </div>
                 </div>
 
+                {/* Back (Hátlap) */}
                 <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] bg-gradient-to-br from-sky-600 to-sky-800 rounded-3xl p-8 shadow-2xl flex items-center justify-center">
                   <Link href="/idopont" className="flex flex-col items-center justify-center w-full h-full text-white group/link">
                     <Calendar className="w-16 h-16 mb-6 opacity-80 group-hover/link:scale-110 group-hover/link:opacity-100 transition-all duration-300" />
@@ -516,7 +592,7 @@ function ReviewsSection() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// PRÉMIUM 2026 FOOTER (Frissített cím és kattintható link)
+// PRÉMIUM 2026 FOOTER (Kattintható címmel, Teljes Árlista linkkel)
 // ═══════════════════════════════════════════════════════════════════════════
 function Footer() {
   return (
@@ -621,6 +697,7 @@ export default function HomePage() {
       <main>
         <HeroSlider />
         <TrustBadges />
+        <StatsSection />
         <QuoteAnalyzerSection />
         <LocationSelector />
         <FeaturedPricesSection />
