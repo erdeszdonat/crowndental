@@ -27,7 +27,7 @@ import {
 } from 'lucide-react';
 
 // ═══════════════════════════════════════════════════════════════════════════
-// NAVIGÁCIÓ (Stabil fehér, MEGNÖVELT logóval)
+// NAVIGÁCIÓ
 // ═══════════════════════════════════════════════════════════════════════════
 function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,14 +35,14 @@ function Navigation() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl shadow-sm border-b border-gray-100">
       <nav className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-28"> {/* h-24-ről h-28-ra növelve a nagyobb logó miatt */}
+        <div className="flex items-center justify-between h-16 md:h-20">
           <Link href="/" className="flex items-center relative h-full py-2 z-50">
             <Image 
               src="/logo.webp" 
               alt="Crown Dental Logo" 
-              width={350} 
-              height={100} 
-              className="object-contain h-20 md:h-24 w-auto drop-shadow-sm" 
+              width={220} 
+              height={60} 
+              className="object-contain h-10 md:h-12 w-auto drop-shadow-sm" 
               priority 
             />
           </Link>
@@ -69,11 +69,11 @@ function Navigation() {
             <a href="tel:+36705646837" className="hidden xl:flex items-center gap-2 font-bold text-sky-700 hover:text-sky-600 mr-2">
               <Phone className="w-5 h-5" /> +36 70 564 6837
             </a>
-            <Link href="/idopont" className="hidden sm:inline-flex items-center gap-2 px-6 py-3 bg-sky-600 text-white font-bold rounded-full transition-all shadow-md hover:shadow-xl hover:bg-sky-700 transform hover:-translate-y-0.5">
-              <Calendar className="w-5 h-5" /> Időpontot kérek
+            <Link href="/idopont" className="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 bg-sky-600 text-white font-bold rounded-full transition-all shadow-md hover:shadow-xl hover:bg-sky-700 transform hover:-translate-y-0.5 text-sm md:text-base">
+              <Calendar className="w-4 h-4 md:w-5 md:h-5" /> Időpontot kérek
             </Link>
             <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden p-2 rounded-lg text-gray-900 bg-gray-100 hover:bg-gray-200 transition-colors">
-              {isOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
+              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </div>
@@ -84,7 +84,7 @@ function Navigation() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="lg:hidden absolute top-28 left-0 right-0 bg-white shadow-2xl border-t border-gray-100 overflow-hidden z-40"
+              className="lg:hidden absolute top-16 left-0 right-0 bg-white shadow-2xl border-t border-gray-100 overflow-hidden z-40"
             >
               <div className="px-6 py-6 space-y-3 max-h-[80vh] overflow-y-auto">
                 <Link href="/" className="block px-4 py-3 text-gray-800 font-bold rounded-xl hover:bg-sky-50" onClick={() => setIsOpen(false)}>Főoldal</Link>
@@ -145,7 +145,7 @@ function HeroSlider() {
   }, [slides.length]);
 
   return (
-    <section className="relative mt-28 h-[80svh] min-h-[600px] w-full overflow-hidden flex items-center justify-center bg-gray-900">
+    <section className="relative mt-16 md:mt-20 h-[80svh] min-h-[600px] w-full overflow-hidden flex items-center justify-center bg-gray-900">
       <AnimatePresence mode="wait">
         <motion.div
           key={current}
@@ -228,7 +228,7 @@ function TrustBadges() {
               <div className="w-16 h-16 bg-sky-50 text-sky-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-sky-600 group-hover:text-white transition-all duration-300">
                 {badge.icon}
               </div>
-              <h3 className="font-bold text-gray-900 mb-2 text-lg">{badge.title}</h3>
+              <h3 className="font-bold text-gray-900 mb-2 text-lg md:text-xl">{badge.title}</h3>
               <p className="text-gray-500 text-sm">{badge.desc}</p>
             </motion.div>
           ))}
@@ -239,7 +239,7 @@ function TrustBadges() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// ANIMÁLT TELJESÍTMÉNY SZÁMLÁLÓ (Tények és Számok animációval)
+// ANIMÁLT TELJESÍTMÉNY SZÁMLÁLÓ
 // ═══════════════════════════════════════════════════════════════════════════
 function AnimatedCounter({ end, suffix = "", text, desc }: { end: number, suffix?: string, text: string, desc: string }) {
   const [count, setCount] = useState(0);
@@ -248,7 +248,7 @@ function AnimatedCounter({ end, suffix = "", text, desc }: { end: number, suffix
     <motion.div
       onViewportEnter={() => {
         let start = 0;
-        const duration = 2000; // 2 másodperc alatt pörög fel
+        const duration = 2000;
         const increment = end / (duration / 16);
         const timer = setInterval(() => {
           start += increment;
@@ -298,7 +298,7 @@ function StatsSection() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// AI ÁRAJÁNLAT ELEMZŐ (Felhoztuk ide)
+// AI ÁRAJÁNLAT ELEMZŐ
 // ═══════════════════════════════════════════════════════════════════════════
 function QuoteAnalyzerSection() {
   const [isDragging, setIsDragging] = useState(false);
@@ -346,66 +346,7 @@ function QuoteAnalyzerSection() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// PRÉMIUM LOKÁCIÓ VÁLASZTÓ
-// ═══════════════════════════════════════════════════════════════════════════
-function LocationSelector() {
-  return (
-    <section className="py-24 bg-white">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">Rendelőink</h2>
-          <p className="text-xl text-gray-500">Válassza ki a leginkább megfelelő helyszínt</p>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-8 lg:gap-12 max-w-6xl mx-auto">
-          {/* Esztergom Kártya */}
-          <Link href="/esztergom" className="group relative rounded-[2rem] overflow-hidden shadow-xl aspect-[4/3] lg:aspect-video cursor-pointer">
-            <div className="absolute inset-0">
-              <img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80&w=2068&auto=format&fit=crop" alt="Esztergomi Klinika" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/40 to-transparent transition-opacity group-hover:opacity-90" />
-            
-            <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-end">
-              <div className="flex items-center gap-2 text-sky-400 font-bold uppercase tracking-wider mb-3">
-                <MapPin className="w-5 h-5" /> Komárom-Esztergom
-              </div>
-              <h3 className="text-4xl md:text-5xl font-extrabold text-white mb-4">Esztergomi Rendelő</h3>
-              <p className="text-gray-300 text-lg mb-8 max-w-md">30 éves múlt, saját fogtechnikai labor és családias, modern környezet a város szívében.</p>
-              <div className="inline-flex items-center gap-3 text-white font-bold group-hover:text-sky-400 transition-colors">
-                Tovább a rendelőhöz <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-sky-500 group-hover:text-white transition-all"><ArrowRight className="w-5 h-5" /></div>
-              </div>
-            </div>
-          </Link>
-
-          {/* Budapest Kártya */}
-          <Link href="/budapest" className="group relative rounded-[2rem] overflow-hidden shadow-xl aspect-[4/3] lg:aspect-video cursor-pointer">
-            <div className="absolute inset-0">
-              <img src="https://images.unsplash.com/photo-1542456424-5d51379db6a6?q=80&w=2070&auto=format&fit=crop" alt="Budapesti Klinika" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-            </div>
-            <div className="absolute top-6 right-6 z-20">
-              <span className="px-4 py-2 bg-amber-500 text-white font-bold rounded-full text-sm shadow-lg">Hamarosan Nyitunk!</span>
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/40 to-transparent transition-opacity group-hover:opacity-90" />
-            
-            <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-end">
-              <div className="flex items-center gap-2 text-amber-400 font-bold uppercase tracking-wider mb-3">
-                <MapPin className="w-5 h-5" /> Főváros
-              </div>
-              <h3 className="text-4xl md:text-5xl font-extrabold text-white mb-4">Budapesti Rendelő</h3>
-              <p className="text-gray-300 text-lg mb-8 max-w-md">A megszokott esztergomi minőség és árak, kompromisszumok nélkül, hamarosan Budapesten is.</p>
-              <div className="inline-flex items-center gap-3 text-white font-bold group-hover:text-amber-400 transition-colors">
-                Részletek megtekintése <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-amber-500 group-hover:text-white transition-all"><ArrowRight className="w-5 h-5" /></div>
-              </div>
-            </div>
-          </Link>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ═══════════════════════════════════════════════════════════════════════════
-// KIEMELT ÁRAK / KEZELÉSEK (Elegáns képekkel a kártyák tetején)
+// KIEMELT ÁRAK / KEZELÉSEK (Szigorúan fogászati fotókkal)
 // ═══════════════════════════════════════════════════════════════════════════
 function FeaturedPricesSection() {
   const cards = [
@@ -414,7 +355,7 @@ function FeaturedPricesSection() {
       subtitle: "Vizsgálat, röntgen, tömések",
       price: "10.000 Ft-tól",
       icon: <Search className="w-6 h-6" />,
-      image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80&w=800&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1598256989800-fea5c5ce8720?q=80&w=800&auto=format&fit=crop"
     },
     {
       title: "Gyökérkezelés",
@@ -428,28 +369,28 @@ function FeaturedPricesSection() {
       subtitle: "Fogkőeltávolítás, fogfehérítés",
       price: "15.000 Ft-tól",
       icon: <Sparkles className="w-6 h-6" />,
-      image: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?q=80&w=800&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1498842812179-c81beecf902c?q=80&w=800&auto=format&fit=crop"
     },
     {
       title: "Fogpótlás & Koronák",
       subtitle: "Cirkónium, fémkerámia, fogsorok",
       price: "42.000 Ft-tól",
       icon: <CheckCircle2 className="w-6 h-6" />,
-      image: "https://images.unsplash.com/photo-1609840114035-3c981b782dfe?q=80&w=800&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1600170311833-c2cf5280ce49?q=80&w=800&auto=format&fit=crop"
     },
     {
       title: "Sebészet & Implantáció",
       subtitle: "Húzások, prémium implantátumok",
       price: "55.000 Ft-tól",
       icon: <Shield className="w-6 h-6" />,
-      image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=800&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80&w=800&auto=format&fit=crop"
     },
     {
       title: "Gyermek & Fogszabályozás",
       subtitle: "Rögzített és kivehető készülékek",
       price: "15.000 Ft-tól",
       icon: <Heart className="w-6 h-6" />,
-      image: "https://images.unsplash.com/photo-1581594549595-35f6edc7b762?q=80&w=800&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1599739291060-4578e77dac5d?q=80&w=800&auto=format&fit=crop"
     }
   ];
 
@@ -464,8 +405,15 @@ function FeaturedPricesSection() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {cards.map((card, idx) => (
-            <div key={idx} className="group [perspective:1000px] h-[400px] w-full cursor-pointer">
-              <div className="relative w-full h-full duration-700 transition-transform [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+            <div 
+              key={idx} 
+              className="group [perspective:1000px] h-[400px] w-full cursor-pointer focus:outline-none"
+              tabIndex={0}
+              onClick={(e) => {
+                // Mobilon ez a dummy kattintás aktiválja a focus/active pseudoclassokat a forgatáshoz
+              }}
+            >
+              <div className="relative w-full h-full duration-700 transition-transform [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] group-focus:[transform:rotateY(180deg)] focus-within:[transform:rotateY(180deg)]">
                 
                 {/* Front (Előlap - Fent kép, lent szöveg) */}
                 <div className="absolute inset-0 [backface-visibility:hidden] bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100 flex flex-col overflow-hidden group/front">
@@ -538,12 +486,15 @@ function ReviewsSection() {
           <h3 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">
             Pácienseink mondták
           </h3>
-          <div className="flex items-center justify-center gap-2 text-amber-400 bg-gray-50 inline-flex px-6 py-2 rounded-full shadow-sm border border-gray-100">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} className="w-6 h-6 fill-current" />
-            ))}
-            <span className="text-gray-900 font-bold ml-2 text-lg">4.8 / 5</span>
-            <span className="text-gray-500 font-medium ml-1">(320+ értékelés)</span>
+          {/* Javított: Egy soros, flex elrendezésű, zsugorodó értékelés gomb a mobilos megjelenéshez */}
+          <div className="flex items-center justify-center gap-1.5 sm:gap-2 text-amber-400 bg-gray-50 inline-flex px-4 sm:px-6 py-2 rounded-full shadow-sm border border-gray-100 whitespace-nowrap">
+            <div className="flex items-center">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="w-4 h-4 sm:w-5 sm:h-5 fill-current" />
+              ))}
+            </div>
+            <span className="text-gray-900 font-bold ml-1 sm:ml-2 text-base sm:text-lg">4.8 / 5</span>
+            <span className="text-gray-500 font-medium ml-1 text-xs sm:text-base">(320+ értékelés)</span>
           </div>
         </div>
       </div>
@@ -592,7 +543,7 @@ function ReviewsSection() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// PRÉMIUM 2026 FOOTER (Kattintható címmel, Teljes Árlista linkkel)
+// PRÉMIUM 2026 FOOTER (Frissített cím és kattintható link)
 // ═══════════════════════════════════════════════════════════════════════════
 function Footer() {
   return (
@@ -644,7 +595,7 @@ function Footer() {
                 <MapPin className="w-5 h-5 text-amber-500 mt-1" />
                 <div>
                   <span className="block text-white font-semibold">Budapesti Rendelő</span>
-                  <span className="text-gray-400">Hamarosan nyitunk!</span>
+                  <span className="text-gray-400">1039 Budapest, Királyok útja 55.</span>
                 </div>
               </li>
               <li className="flex items-center gap-3">
@@ -699,7 +650,6 @@ export default function HomePage() {
         <TrustBadges />
         <StatsSection />
         <QuoteAnalyzerSection />
-        <LocationSelector />
         <FeaturedPricesSection />
         <ReviewsSection />
       </main>
