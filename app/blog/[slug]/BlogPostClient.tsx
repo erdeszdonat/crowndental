@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { 
   Phone, 
@@ -13,9 +15,6 @@ import {
   X, 
   Building2 
 } from 'lucide-react';
-
-// Megjegyzés: A 'next/link' és 'next/image' helyett szabványos <a> és <img> tageket használunk 
-// a környezeti kompatibilitás érdekében, de a stílus és a logika változatlan marad.
 
 // ═══════════════════════════════════════════════════════════════════════════
 // EGYSÉGES NAVIGÁCIÓ
@@ -57,7 +56,6 @@ function Navigation() {
         </div>
       </nav>
       
-      {/* Mobile Menu */}
       {isOpen && (
         <div className="lg:hidden bg-white border-t border-gray-100 p-4 flex flex-col gap-4 font-bold shadow-xl">
           <a href="/" className="px-4 py-2 hover:bg-sky-50 rounded-xl">Főoldal</a>
@@ -128,7 +126,7 @@ function StatsSection() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// VÉLEMÉNYEK - GÖRDÜLŐ MARQUEE
+// VÉLEMÉNYEK
 // ═══════════════════════════════════════════════════════════════════════════
 function ReviewsSection() {
   const reviews = [
@@ -146,18 +144,9 @@ function ReviewsSection() {
         <h3 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">Pácienseink mondták</h3>
       </div>
       <style dangerouslySetInnerHTML={{__html: `
-        @keyframes marquee { 
-          0% { transform: translateX(0); } 
-          100% { transform: translateX(-50%); } 
-        } 
-        .animate-marquee { 
-          display: flex; 
-          width: max-content; 
-          animation: marquee 40s linear infinite; 
-        } 
-        .animate-marquee:hover { 
-          animation-play-state: paused; 
-        }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } } 
+        .animate-marquee { display: flex; width: max-content; animation: marquee 40s linear infinite; } 
+        .animate-marquee:hover { animation-play-state: paused; }
       `}} />
       <div className="animate-marquee gap-6 px-6">
         {extendedReviews.map((review, i) => (
@@ -196,10 +185,9 @@ function Footer() {
           <div>
             <h4 className="text-white font-bold text-lg mb-6 uppercase tracking-wider">Szolgáltatások</h4>
             <ul className="space-y-4 text-sm">
-              <li><a href="/kezelesek/implantatum" className="hover:text-sky-400 flex items-center gap-2 transition-colors"><ChevronRight className="w-4 h-4 text-sky-600" /> Implantáció</a></li>
-              <li><a href="/kezelesek/fogszabalyozas" className="hover:text-sky-400 flex items-center gap-2 transition-colors"><ChevronRight className="w-4 h-4 text-sky-600" /> Fogszabályozás</a></li>
-              <li><a href="/kezelesek/koronak-hidak" className="hover:text-sky-400 flex items-center gap-2 transition-colors"><ChevronRight className="w-4 h-4 text-sky-600" /> Koronák és Hidak</a></li>
-              <li><a href="/kezelesek" className="hover:text-sky-400 flex items-center gap-2 transition-colors"><ChevronRight className="w-4 h-4 text-sky-600" /> Teljes Árlista</a></li>
+              <li><a href="/kezelesek/implantatum" className="hover:text-sky-400 flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Implantáció</a></li>
+              <li><a href="/kezelesek/fogszabalyozas" className="hover:text-sky-400 flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Fogszabályozás</a></li>
+              <li><a href="/kezelesek" className="hover:text-sky-400 flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Teljes Árlista</a></li>
             </ul>
           </div>
           <div>
@@ -228,9 +216,9 @@ function Footer() {
           <div>
             <h4 className="text-white font-bold text-lg mb-6 uppercase tracking-wider">Jogi Információk</h4>
             <ul className="space-y-3 text-sm">
-              <li><a href="/aszf" className="hover:text-white transition-colors">Általános Szerződési Feltételek</a></li>
-              <li><a href="/adatkezeles" className="hover:text-white transition-colors">Adatkezelési Tájékoztató</a></li>
-              <li><a href="/impresszum" className="hover:text-white transition-colors">Impresszum</a></li>
+              <li><a href="/aszf" className="hover:text-white">ÁSZF</a></li>
+              <li><a href="/adatkezeles" className="hover:text-white">Adatkezelés</a></li>
+              <li><a href="/impresszum" className="hover:text-white">Impresszum</a></li>
             </ul>
           </div>
         </div>
@@ -297,8 +285,7 @@ export default function BlogPostClient({ post }: { post: any }) {
           })}
         </div>
 
-        {/* IDŐPONTFOGLALÓ DOBOZ */}
-        <div className="p-10 md:p-16 bg-gradient-to-br from-sky-600 to-sky-800 rounded-[3rem] shadow-2xl text-center relative overflow-hidden text-white mt-24 transform hover:scale-[1.01] transition-transform duration-500">
+        <div className="p-10 md:p-16 bg-gradient-to-br from-sky-600 to-sky-800 rounded-[3rem] shadow-2xl text-center relative overflow-hidden text-white mt-24">
           <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-black/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
           
