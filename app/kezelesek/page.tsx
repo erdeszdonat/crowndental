@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
+import { createClient } from 'next-sanity';
+import { dataset, projectId } from '@/sanity/env';
 import {
   Phone,
   Menu,
@@ -30,7 +32,17 @@ import {
 } from 'lucide-react';
 
 // ═══════════════════════════════════════════════════════════════════════════
-// KEZELÉS KÁRTYÁK - Fő szolgáltatások
+// SANITY KLIENS
+// ═══════════════════════════════════════════════════════════════════════════
+const client = createClient({
+  projectId,
+  dataset,
+  apiVersion: '2024-03-08',
+  useCdn: true,
+});
+
+// ═══════════════════════════════════════════════════════════════════════════
+// KEZELÉS KÁRTYÁK ALAPADATAI
 // ═══════════════════════════════════════════════════════════════════════════
 const treatmentCards = [
   {
@@ -144,7 +156,7 @@ const treatmentCards = [
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════
-// ÁRLISTA ADATOK - Egyszerűsített struktúra
+// ÁRLISTA ADATOK
 // ═══════════════════════════════════════════════════════════════════════════
 const priceCategories = [
   {
@@ -252,9 +264,7 @@ function Navigation() {
           </Link>
 
           <div className="hidden lg:flex items-center gap-4">
-            <Link href="/" className="px-3 py-2 font-bold text-gray-600 hover:text-sky-600 transition-colors">
-              Főoldal
-            </Link>
+            <Link href="/" className="px-3 py-2 font-bold text-gray-600 hover:text-sky-600 transition-colors">Főoldal</Link>
             
             <div className="relative group">
               <button
@@ -286,9 +296,7 @@ function Navigation() {
               </AnimatePresence>
             </div>
 
-            <Link href="/rolunk" className="px-3 py-2 font-bold text-gray-600 hover:text-sky-600 transition-colors">
-              Rólunk
-            </Link>
+            <Link href="/rolunk" className="px-3 py-2 font-bold text-gray-600 hover:text-sky-600 transition-colors">Rólunk</Link>
           </div>
 
           <div className="flex items-center gap-4 z-50">
@@ -347,36 +355,18 @@ function Navigation() {
 function HeroSection() {
   return (
     <section className="relative pt-32 pb-16 overflow-hidden bg-gradient-to-b from-slate-50 via-white to-gray-50">
-      {/* Decorative elements */}
       <div className="absolute top-20 right-0 w-[600px] h-[600px] bg-gradient-to-br from-sky-100/60 to-violet-100/40 rounded-full blur-[100px] -translate-y-1/3 translate-x-1/3" />
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-amber-100/50 to-rose-100/30 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/4" />
       
       <div className="relative z-10 container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-white shadow-lg shadow-sky-100/50 border border-sky-100 rounded-full text-sky-600 text-sm font-bold tracking-wide uppercase mb-8"
-          >
-            <Building2 className="w-4 h-4" />
-            Saját labor = Kedvezőbb árak
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="inline-flex items-center gap-2 px-5 py-2.5 bg-white shadow-lg shadow-sky-100/50 border border-sky-100 rounded-full text-sky-600 text-sm font-bold tracking-wide uppercase mb-8">
+            <Building2 className="w-4 h-4" /> Saját labor = Kedvezőbb árak
           </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-4xl sm:text-5xl md:text-6xl font-black text-gray-900 mb-6 tracking-tight leading-[1.1]"
-          >
+          <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-4xl sm:text-5xl md:text-6xl font-black text-gray-900 mb-6 tracking-tight leading-[1.1]">
             Fogászati <span className="bg-gradient-to-r from-sky-500 to-violet-500 bg-clip-text text-transparent">Kezeléseink</span>
           </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-lg sm:text-xl text-gray-500 mb-6 max-w-2xl mx-auto leading-relaxed"
-          >
+          <motion.p initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-lg sm:text-xl text-gray-500 mb-6 max-w-2xl mx-auto leading-relaxed">
             Válassza ki a kezelést az alábbi kártyákból, vagy görgessen lejjebb a teljes árlistáért. 
             Saját fogtechnikai laborunknak köszönhetően <strong className="text-gray-700">akár 40%-kal kedvezőbb</strong> árakat biztosítunk.
           </motion.p>
@@ -387,41 +377,38 @@ function HeroSection() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// KEZELÉS KÁRTYÁK SZEKCIÓ
+// KEZELÉS KÁRTYÁK SZEKCIÓ (Sanity adatokkal kombinálva)
 // ═══════════════════════════════════════════════════════════════════════════
-function TreatmentCard({ treatment, index }: { treatment: typeof treatmentCards[0]; index: number }) {
+function TreatmentCard({ treatment, index, imageUrl }: { treatment: typeof treatmentCards[0]; index: number; imageUrl?: string }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ delay: index * 0.05, duration: 0.4 }}
-    >
+    <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ delay: index * 0.05, duration: 0.4 }}>
       <Link href={treatment.href} className="group block h-full">
         <div 
           className={`relative h-full bg-gradient-to-br ${treatment.color} rounded-2xl sm:rounded-3xl p-5 sm:p-6 overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-gray-900/20`}
           style={{ backgroundImage: treatment.bgPattern }}
         >
+          {/* SANITY KÉP OVERLAY */}
+          {imageUrl && (
+            <div className="absolute top-0 right-0 w-32 h-32 opacity-20 group-hover:opacity-40 transition-opacity duration-300 z-0">
+              <img src={imageUrl} alt={treatment.title} className="object-cover w-full h-full rounded-bl-[3rem]" />
+            </div>
+          )}
+
           {/* Shine effect on hover */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 z-0" />
           
-          {/* Icon */}
-          <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white/20 backdrop-blur-sm rounded-xl sm:rounded-2xl flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform duration-300">
-            {treatment.icon}
-          </div>
-          
-          {/* Content */}
-          <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 leading-tight">
-            {treatment.title}
-          </h3>
-          <p className="text-white/80 text-sm sm:text-base leading-relaxed mb-4">
-            {treatment.description}
-          </p>
-          
-          {/* Arrow indicator */}
-          <div className="flex items-center gap-2 text-white/90 text-sm font-semibold">
-            <span>Részletek</span>
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform duration-300" />
+          <div className="relative z-10">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white/20 backdrop-blur-sm rounded-xl sm:rounded-2xl flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform duration-300">
+              {treatment.icon}
+            </div>
+            
+            <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 leading-tight">{treatment.title}</h3>
+            <p className="text-white/80 text-sm sm:text-base leading-relaxed mb-4">{treatment.description}</p>
+            
+            <div className="flex items-center gap-2 text-white/90 text-sm font-semibold">
+              <span>Részletek</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform duration-300" />
+            </div>
           </div>
         </div>
       </Link>
@@ -430,12 +417,40 @@ function TreatmentCard({ treatment, index }: { treatment: typeof treatmentCards[
 }
 
 function TreatmentCardsSection() {
+  const [sanityImages, setSanityImages] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const query = `*[_type == "treatment"]{ "slug": slug.current, "imageUrl": mainImage.asset->url }`;
+        const results = await client.fetch(query);
+        const imageMap: Record<string, string> = {};
+        
+        results.forEach((item: any) => {
+          if (item.slug && item.imageUrl) {
+            imageMap[item.slug] = item.imageUrl;
+          }
+        });
+        
+        setSanityImages(imageMap);
+      } catch (error) {
+        console.error("Hiba a Sanity képek lekérésekor:", error);
+      }
+    };
+    fetchImages();
+  }, []);
+
   return (
     <section className="py-12 sm:py-16 bg-gradient-to-b from-gray-50 to-white">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
           {treatmentCards.map((treatment, index) => (
-            <TreatmentCard key={treatment.id} treatment={treatment} index={index} />
+            <TreatmentCard 
+              key={treatment.id} 
+              treatment={treatment} 
+              index={index} 
+              imageUrl={sanityImages[treatment.id]} // Itt adjuk át a Sanity képet!
+            />
           ))}
         </div>
       </div>
@@ -444,70 +459,34 @@ function TreatmentCardsSection() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// ÁRLISTA SZEKCIÓ - Tiszta, átlátható design
+// ÁRLISTA SZEKCIÓ
 // ═══════════════════════════════════════════════════════════════════════════
 function PriceListSection() {
   return (
     <section id="arlista" className="py-16 sm:py-24 bg-white">
       <div className="container mx-auto px-4">
-        {/* Section header */}
         <div className="max-w-3xl mx-auto text-center mb-12 sm:mb-16">
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 mb-4"
-          >
+          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 mb-4">
             Teljes Árlistánk
           </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-gray-500 text-lg"
-          >
+          <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-gray-500 text-lg">
             Transzparens árazás, rejtett költségek nélkül
           </motion.p>
         </div>
 
-        {/* Price tables */}
         <div className="max-w-4xl mx-auto space-y-8 sm:space-y-12">
           {priceCategories.map((category, catIndex) => (
-            <motion.div
-              key={category.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ delay: catIndex * 0.1 }}
-              className="bg-gray-50 rounded-2xl sm:rounded-3xl overflow-hidden"
-            >
-              {/* Category header */}
+            <motion.div key={category.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ delay: catIndex * 0.1 }} className="bg-gray-50 rounded-2xl sm:rounded-3xl overflow-hidden">
               <div className="bg-gradient-to-r from-gray-800 to-gray-900 px-6 sm:px-8 py-5 sm:py-6">
-                <h3 className="text-xl sm:text-2xl font-bold text-white">
-                  {category.title}
-                </h3>
+                <h3 className="text-xl sm:text-2xl font-bold text-white">{category.title}</h3>
               </div>
-              
-              {/* Price items */}
               <div className="divide-y divide-gray-200">
                 {category.items.map((item, itemIndex) => (
-                  <div 
-                    key={itemIndex}
-                    className={`flex flex-col sm:flex-row sm:items-center justify-between px-6 sm:px-8 py-4 sm:py-5 transition-colors ${
-                      item.highlight 
-                        ? 'bg-gradient-to-r from-sky-50 to-violet-50' 
-                        : 'bg-white hover:bg-gray-50'
-                    }`}
-                  >
+                  <div key={itemIndex} className={`flex flex-col sm:flex-row sm:items-center justify-between px-6 sm:px-8 py-4 sm:py-5 transition-colors ${item.highlight ? 'bg-gradient-to-r from-sky-50 to-violet-50' : 'bg-white hover:bg-gray-50'}`}>
                     <span className={`text-base sm:text-lg mb-2 sm:mb-0 pr-4 ${item.highlight ? 'font-semibold text-gray-900' : 'text-gray-700'}`}>
                       {item.name}
                     </span>
-                    <span className={`text-lg sm:text-xl font-bold whitespace-nowrap ${
-                      item.highlight 
-                        ? 'bg-gradient-to-r from-sky-600 to-violet-600 bg-clip-text text-transparent' 
-                        : 'text-gray-900'
-                    }`}>
+                    <span className={`text-lg sm:text-xl font-bold whitespace-nowrap ${item.highlight ? 'bg-gradient-to-r from-sky-600 to-violet-600 bg-clip-text text-transparent' : 'text-gray-900'}`}>
                       {item.price}
                     </span>
                   </div>
@@ -517,13 +496,7 @@ function PriceListSection() {
           ))}
         </div>
 
-        {/* Important note */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="max-w-4xl mx-auto mt-10 sm:mt-12"
-        >
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-4xl mx-auto mt-10 sm:mt-12">
           <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/50 rounded-2xl p-6 sm:p-8 flex gap-4 sm:gap-5 items-start">
             <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white flex-shrink-0">
               <Sparkles className="w-6 h-6" />
@@ -531,8 +504,7 @@ function PriceListSection() {
             <div>
               <h4 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">Fontos Tudnivaló</h4>
               <p className="text-gray-600 leading-relaxed">
-                Az árak tájékoztató jellegűek. Mivel minden fogazat egyedi, a végleges árat személyes vizsgálat 
-                és részletes kezelési terv átadása után határozzuk meg. <strong>Az első konzultáció ingyenes!</strong>
+                Az árak tájékoztató jellegűek. Mivel minden fogazat egyedi, a végleges árat személyes vizsgálat és részletes kezelési terv átadása után határozzuk meg.
               </p>
             </div>
           </div>
@@ -548,31 +520,18 @@ function PriceListSection() {
 function CTASection() {
   return (
     <section className="py-16 sm:py-20 bg-gradient-to-br from-sky-600 via-sky-500 to-violet-600 relative overflow-hidden">
-      {/* Decorative circles */}
       <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-white/10 rounded-full blur-[60px] translate-x-1/2 -translate-y-1/2" />
       <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-white/10 rounded-full blur-[60px] -translate-x-1/2 translate-y-1/2" />
       
       <div className="relative z-10 container mx-auto px-4 text-center">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-4 sm:mb-6">
-          Kérdése van az árakkal kapcsolatban?
-        </h2>
-        <p className="text-lg sm:text-xl text-sky-100 mb-8 sm:mb-10 max-w-2xl mx-auto">
-          Foglaljon időpontot egy ingyenes, személyes állapotfelmérésre!
-        </p>
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-4 sm:mb-6">Kérdése van az árakkal kapcsolatban?</h2>
+        <p className="text-lg sm:text-xl text-sky-100 mb-8 sm:mb-10 max-w-2xl mx-auto">Foglaljon időpontot egy személyes állapotfelmérésre!</p>
         <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-5">
-          <a
-            href="tel:+36705646837"
-            className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-bold rounded-full transition-all border border-white/30"
-          >
-            <Phone className="w-5 h-5" />
-            +36 70 564 6837
+          <a href="tel:+36705646837" className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-bold rounded-full transition-all border border-white/30">
+            <Phone className="w-5 h-5" /> +36 70 564 6837
           </a>
-          <Link
-            href="/idopont"
-            className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-white hover:bg-gray-50 text-sky-700 font-bold rounded-full transition-all shadow-xl shadow-sky-900/20"
-          >
-            <Calendar className="w-5 h-5" />
-            Időpontot kérek
+          <Link href="/idopont" className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-white hover:bg-gray-50 text-sky-700 font-bold rounded-full transition-all shadow-xl shadow-sky-900/20">
+            <Calendar className="w-5 h-5" /> Időpontot kérek
           </Link>
         </div>
       </div>
@@ -588,7 +547,6 @@ function Footer() {
     <footer className="bg-gray-950 pt-16 sm:pt-20 pb-8 sm:pb-10 border-t border-gray-900 text-gray-300">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 sm:gap-12 mb-12 sm:mb-16">
-          
           <div>
             <div className="bg-white inline-block p-2 rounded-xl mb-6">
               <Image src="/logo.webp" alt="Crown Dental Logo" width={160} height={50} className="object-contain" />
@@ -597,7 +555,6 @@ function Footer() {
               Kiváló minőségű fogászat saját fogtechnikai laborral, kompromisszumok nélkül. 
             </p>
           </div>
-
           <div>
             <h4 className="text-white font-bold text-lg mb-6 uppercase tracking-wider">Szolgáltatások</h4>
             <ul className="space-y-3 sm:space-y-4">
@@ -607,7 +564,6 @@ function Footer() {
               <li><Link href="/kezelesek/fogfeherites" className="hover:text-sky-400 transition-colors flex items-center gap-2 text-sm sm:text-base"><ChevronRight className="w-4 h-4 text-sky-600" /> Fogfehérítés</Link></li>
             </ul>
           </div>
-
           <div>
             <h4 className="text-white font-bold text-lg mb-6 uppercase tracking-wider">Kapcsolat</h4>
             <ul className="space-y-4 sm:space-y-5">
@@ -628,7 +584,6 @@ function Footer() {
               </li>
             </ul>
           </div>
-
           <div>
             <h4 className="text-white font-bold text-lg mb-6 uppercase tracking-wider">Jogi Információk</h4>
             <ul className="space-y-3 sm:space-y-4">
@@ -638,9 +593,7 @@ function Footer() {
               <li><Link href="/cookie-tajekoztato" className="text-gray-400 hover:text-white transition-colors text-sm sm:text-base">Sütik (Cookie) kezelése</Link></li>
             </ul>
           </div>
-
         </div>
-
         <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4 text-xs sm:text-sm text-gray-500">
           <p>© 2026 Crown Dental Praxis és Labor Fogászati Kft. Minden jog fenntartva.</p>
         </div>
