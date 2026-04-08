@@ -59,7 +59,7 @@ export const metadata: Metadata = {
 };
 
 // JSON-LD strukturált adatok - LocalBusiness schema a helyi SEO-hoz
-export const jsonLd = {
+const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Dentist',
   '@id': 'https://www.crowndental.hu/esztergom',
