@@ -75,27 +75,28 @@ export async function POST(req: Request) {
       .map(([k, v]) => `- ${k}: ${v}`)
       .join('\n');
 
+    // --- CSAK EZT A RÉSZT (PROMPT) VÁLTOZTATTUK, HOGY SZÁMOLJA A DARABSZÁMOKAT ---
     const prompt = `
-Te egy profi fogászati árajánlat elemző vagy a Crown Dental klinikánál.
-A feladatod, hogy a feltöltött dokumentumban lévő kezeléseket és azok árait felismerd,
+Te egy profi fogászati árajánlat elemző matematikus vagy a Crown Dental klinikánál.
+A feladatod, hogy a feltöltött dokumentumban lévő kezeléseket, azok egységárát és a pontos DARABSZÁMUKAT (mennyiséget) felismerd,
 majd összehasonlítsd a Crown Dental árlistájával.
 
-Crown Dental Fix Árlista:
+Crown Dental Fix Árlista (1 darabra vonatkozó egységárak):
 ${priceListText}
 
-SZABÁLYOK:
-1. Minden egyes kezelést párosíts a legmegfelelőbb Crown Dental tétellel.
-2. Ha egy tétel nincs a listán, adj meg egy 25%-kal olcsóbb árat nálunk, mint a fájlban talált ár.
-3. Az árak mindig egész számok legyenek (Ft-ban).
-4. Csak érvényes JSON struktúrában válaszolj, mindenféle magyarázat és markdown jelölés nélkül!
-5. Magyar ékezetes karaktereket használj a kezelések neveinél!
+SZIGORÚ MATEMATIKAI SZABÁLYOK:
+1. DARABSZÁM SZORZÁS: Nagyon figyelj a darabszámokra! Ha egy tételből több darab van (pl. 4 db implantátum vagy 3 db korona), a mi árlistás egységárunkat BE KELL SZOROZNOD ezzel a darabszámmal! (Példa: 4 db Alpha Bio implantátum esetén: 4 x 180000 = 720000 Ft). A "competitorPrice" és az "ourPrice" mezőkbe is a darabszámmal felszorzott VÉGÖSSZEGET kell beírnod az adott sornál!
+2. IMPLANTÁTUM SZABÁLY: Ha a feltöltött ajánlatban implantátum szerepel, NÁLUNK MINDIG a legolcsóbb "ALPHA BIO Implantátum" (180 000 Ft) árával számolj, hogy a legkedvezőbb ajánlatot adjuk! (Ezt is szorozd a darabszámmal).
+3. MEGNEVEZÉS: A "name" mezőbe mindig írd bele a darabszámot is (pl. "4x ALPHA BIO Implantátum" vagy "2x Fémkerámia korona").
+4. Ha egy tétel nincs a listán, adj meg egy 25%-kal olcsóbb árat nálunk az eredeti árhoz képest.
+5. Az árak mindig tiszta egész számok legyenek. Csak érvényes JSON-t küldj, markdown nélkül!
 
-FORMÁTUM:
+FORMÁTUM PÉLDA (ha pl. 4 db implantátum van a papíron 280.000 Ft/db áron):
 {
-  "items": [{ "name": "Kezelés neve ékezettel", "competitorPrice": 120000, "ourPrice": 85000 }],
-  "competitorTotal": 120000,
-  "ourTotal": 85000,
-  "savings": 35000
+  "items": [{ "name": "4x ALPHA BIO Implantátum", "competitorPrice": 1120000, "ourPrice": 720000 }],
+  "competitorTotal": 1120000,
+  "ourTotal": 720000,
+  "savings": 400000
 }`;
 
     let responseText = "";
