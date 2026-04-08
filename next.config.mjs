@@ -1,6 +1,13 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cdn.sanity.io',
+      },
+    ],
+  },
   async redirects() {
     return [
       // SZOLGÁLTATÁSOK - Régi URL-ek → Új struktúra
@@ -37,7 +44,6 @@ const nextConfig: NextConfig = {
       { source: '/cpg/:path*', destination: '/', permanent: false },
     ];
   },
-
   async rewrites() {
     return [
       { source: '/esztergom/:path*', destination: '/lokacio/esztergom/:path*' },
