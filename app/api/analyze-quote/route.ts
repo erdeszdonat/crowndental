@@ -3,8 +3,11 @@ import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
+// Segédfüggvény a várakozáshoz retry esetén
+const wait = (ms: number) => new Promise(res => setTimeout(res, ms));
+
 export async function POST(req: Request) {
-  console.log("--- AI KALKULÁTOR ANALÍZIS INDÍTÁSA (Biztonsági Fallback verzió) ---");
+  console.log("--- AI KALKULÁTOR ANALÍZIS INDÍTÁSA (NAGY TELJESÍTMÉNYŰ MODELLEK) ---");
   
   try {
     const formData = await req.formData();
@@ -18,9 +21,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Hiányzó adatok az űrlapból.' }, { status: 400 });
     }
 
+    // 1. KULCS ELLENŐRZÉSE
     const apiKey = process.env.GEMINI_API_KEY || process.env.GENINI_API_KEY;
     if (!apiKey) {
-      return NextResponse.json({ error: 'Rendszerhiba: Az AI kulcs nem olvasható.' }, { status: 500 });
+      return NextResponse.json({ 
+        error: 'Rendszerhiba: Az AI kulcs nem olvasható a szerveren. Kérjük, végezzen egy CLEAN REDEPLOY-t a Vercelen!' 
+      }, { status: 500 });
     }
 
     const genAI = new GoogleGenerativeAI(apiKey);
@@ -45,7 +51,7 @@ export async function POST(req: Request) {
     
     SZABÁLYOK:
     1. Ha egy tétel nincs a listán, adj meg egy 25%-kal olcsóbb árat nálunk, mint a fájlban talált ár.
-    2. Csak érvényes JSON struktúrában válaszolj!
+    2. Csak érvényes JSON struktúrában válaszolj, mindenféle magyarázat és markdown jelölés nélkül!
     
     FORMÁTUM:
     {
@@ -55,36 +61,55 @@ export async function POST(req: Request) {
       "savings": 35000
     }`;
 
-    let aiResponse;
     let responseText = "";
+    let success = false;
 
-    // --- FALLBACK ÉS RETRY LOGIKA ---
-    try {
-      console.log("Próbálkozás a Gemini 2.5 Flash modellel...");
-      const model25 = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
-      const result = await model25.generateContent([
-        prompt,
-        { inlineData: { data: base64Data, mimeType: file.type } }
-      ]);
-      aiResponse = await result.response;
-      responseText = aiResponse.text();
-    } catch (err: any) {
-      // Ha 503 (High Demand) vagy egyéb szerverhiba, akkor azonnal váltunk a stabil 1.5-re
-      console.warn("Gemini 2.5 túlterhelt, váltás a stabil 1.5 Flash modellre...");
-      const model15 = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-      const result = await model15.generateContent([
-        prompt,
-        { inlineData: { data: base64Data, mimeType: file.type } }
-      ]);
-      aiResponse = await result.response;
-      responseText = aiResponse.text();
+    // --- A LISTÁD ALAPJÁN ELÉRHETŐ MODELLEK ---
+    const modelsToTry = [
+      "gemini-2.5-flash",       // 1. számú választás (Nagyon okos)
+      "gemini-3.1-flash-lite",  // 2. számú választás (Legmagasabb RPM kereted van rá)
+      "gemini-2.5-flash-lite",  // 3. számú választás (Stabil tartalék)
+      "gemini-3-flash"          // 4. számú választás
+    ];
+
+    for (const modelName of modelsToTry) {
+      if (success) break;
+      
+      console.log(`Próbálkozás a nálad elérhető modellel: ${modelName}`);
+      
+      try {
+        const model = genAI.getGenerativeModel({ model: modelName });
+        const result = await model.generateContent([
+          prompt,
+          { inlineData: { data: base64Data, mimeType: file.type } }
+        ]);
+        
+        const response = await result.response;
+        responseText = response.text();
+        
+        if (responseText && responseText.includes('{')) {
+          success = true;
+          console.log(`SIKER! Használt modell: ${modelName}`);
+          break;
+        }
+      } catch (err: any) {
+        console.warn(`Hiba a(z) ${modelName} modellnél: ${err.message}`);
+        // Ha túlterhelt (503), várunk egy kicsit a következő modell előtt
+        if (err.message?.includes("503")) await wait(1000);
+        continue; 
+      }
     }
 
+    if (!success || !responseText) {
+      throw new Error("Minden elérhető AI modellünk túlterhelt jelenleg.");
+    }
+
+    // JSON kinyerése és tisztítása
     const jsonMatch = responseText.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) throw new Error("Érvénytelen AI válasz");
+    if (!jsonMatch) throw new Error("Hibás válaszformátum az AI-tól.");
     const aiResult = JSON.parse(jsonMatch[0]);
 
-    // 3. SUPABASE MENTÉS
+    // 2. SUPABASE MENTÉS
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
     if (supabaseUrl && supabaseKey) {
@@ -96,10 +121,10 @@ export async function POST(req: Request) {
             new_total: aiResult.ourTotal,
             savings: aiResult.savings,
         }]);
-      } catch (dbErr) { console.error("DB hiba:", dbErr); }
+      } catch (dbErr) { console.error("DB mentési hiba:", dbErr); }
     }
 
-    // 4. RESEND E-MAIL
+    // 3. RESEND E-MAIL KÜLDÉS (Hitelesített domaineddel)
     const resendKey = process.env.RESEND_API_KEY;
     if (resendKey) {
       try {
@@ -111,12 +136,12 @@ export async function POST(req: Request) {
         await resend.emails.send({
           from: 'Crown Dental <info@crowndental.hu>',
           to: email,
-          subject: `Elkészült az elemzése! ${aiResult.savings.toLocaleString()} Ft-ot spórolhat nálunk`,
+          subject: `Kész az elemzése! ${aiResult.savings.toLocaleString()} Ft-ot spórolhat nálunk`,
           html: `
             <div style="font-family:sans-serif; max-width:600px; margin:0 auto; border:1px solid #e5e7eb; border-radius:12px; overflow:hidden;">
               <div style="background-color:#0284c7; padding:30px; text-align:center; color:white;">
                 <h1 style="margin:0;">Kedves ${nickname || name}!</h1>
-                <p style="margin-top:10px; opacity:0.9;">Kielemeztük a feltöltött árajánlatot.</p>
+                <p style="margin-top:10px; opacity:0.9;">Kielemeztük a feltöltött árajánlatot a legújabb AI technológiával.</p>
               </div>
               <div style="padding:30px;">
                 <p style="font-size:16px;">Saját laborunknak köszönhetően <strong>${aiResult.savings.toLocaleString()} Ft-ot spórolhat</strong> velünk!</p>
@@ -132,13 +157,15 @@ export async function POST(req: Request) {
               </div>
             </div>`
         });
-      } catch (mailErr) { console.error("Mail hiba:", mailErr); }
+      } catch (mailErr) { console.error("Email küldési hiba:", mailErr); }
     }
 
     return NextResponse.json({ success: true, result: aiResult });
 
   } catch (error: any) {
     console.error("Végzetes API hiba:", error);
-    return NextResponse.json({ error: 'A szolgáltatás átmenetileg túlterhelt. Kérjük, próbálja meg 1 perc múlva!' }, { status: 500 });
+    return NextResponse.json({ 
+      error: 'Az AI szolgáltatás jelenleg túlterhelt. Kérjük, próbálja meg újra 30 másodperc múlva!' 
+    }, { status: 500 });
   }
 }
