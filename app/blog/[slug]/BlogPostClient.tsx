@@ -14,29 +14,21 @@ const client = createClient({
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const query = `*[_type == "post" && slug.current == $slug][0]{ title, seoTitle, seoDescription, excerpt }`;
   const post = await client.fetch(query, { slug: params.slug });
-  
   if (!post) return { title: 'Cikk nem található | Crown Dental' };
-  
   return {
     title: post.seoTitle || `${post.title} | Crown Dental`,
     description: post.seoDescription || post.excerpt || 'Olvassa el legújabb fogászati cikkünket.',
-    openGraph: {
-      title: post.seoTitle || post.title,
-      description: post.seoDescription || post.excerpt,
-    }
+    openGraph: { title: post.seoTitle || post.title, description: post.seoDescription || post.excerpt }
   };
 }
 
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
   const query = `*[_type == "post" && slug.current == $slug][0]{
-    title,
-    publishedAt,
-    "imageUrl": mainImage.asset->url,
-    content
+    title, publishedAt, "imageUrl": mainImage.asset->url, content
   }`;
   const post = await client.fetch(query, { slug: params.slug });
 
-  // Megkerüljük a Vercel TypeScript hibáját
-  const ClientView = BlogPostClient as any;
-  return <ClientView post={post} />;
+  // A TypeScript hiba megkerülése build közben:
+  const Client = BlogPostClient as any;
+  return <Client post={post} />;
 }
