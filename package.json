@@ -27,7 +27,8 @@
     "@supabase/supabase-js": "^2.39.7",
     "resend": "^3.2.0",
     "jspdf": "^2.5.1",
-    "jspdf-autotable": "^3.8.2"
+    "jspdf-autotable": "^3.8.2",
+    "@google/generative-ai": "^0.21.0"
   },
   "devDependencies": {
     "@types/node": "^20",
