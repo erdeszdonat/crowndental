@@ -27,9 +27,12 @@ export async function POST(req: Request) {
       }, { status: 500 });
     }
 
-    // 2. GEMINI KONFIGURÁCIÓ
+    // 2. GEMINI KONFIGURÁCIÓ - JAVÍTOTT MODELL NÉVVEL
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    
+    // A "gemini-1.5-flash-latest" az ajánlott, legstabilabb elnevezés
+    // Ha ez is 404-et dobna, próbáljuk meg a "gemini-1.5-flash" formátumot újra, de "latest" toldalékkal
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
 
     const arrayBuffer = await file.arrayBuffer();
     const base64Data = Buffer.from(arrayBuffer).toString('base64');
@@ -61,7 +64,7 @@ export async function POST(req: Request) {
       "savings": 35000
     }`;
 
-    console.log("Fájl küldése a Gemini-nek...");
+    console.log("Fájl küldése a Gemini-nek (v1.5-flash-latest)...");
     
     let responseText = "";
     try {
@@ -72,25 +75,23 @@ export async function POST(req: Request) {
       const response = await result.response;
       responseText = response.text();
     } catch (aiErr: any) {
-      console.error("Gemini API Hiba:", aiErr);
-      return NextResponse.json({ error: `Az AI hibaüzenete: ${aiErr.message}` }, { status: 500 });
+      console.error("Gemini API Hiba részletei:", aiErr);
+      // Ha a "latest" sem megy, próbáljuk meg a sima "gemini-1.5-flash" verziót fixen
+      return NextResponse.json({ error: `AI Kapcsolódási hiba: ${aiErr.message}` }, { status: 500 });
     }
 
     console.log("AI Válasz érkezett, feldolgozás...");
 
-    // JSON Tisztítás: Kikeressük az első { és az utolsó } közötti részt
     const jsonMatch = responseText.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
-      console.error("Nem található JSON a válaszban:", responseText);
-      return NextResponse.json({ error: 'Az AI nem tudta értelmezni a dokumentumot JSON formátumban.' }, { status: 500 });
+      return NextResponse.json({ error: 'Az AI válasza nem tartalmaz feldolgozható adatokat.' }, { status: 500 });
     }
 
     let aiResult;
     try {
       aiResult = JSON.parse(jsonMatch[0]);
     } catch (parseErr) {
-      console.error("JSON Parse hiba:", responseText);
-      return NextResponse.json({ error: 'Hiba történt az adatok feldolgozásakor.' }, { status: 500 });
+      return NextResponse.json({ error: 'Hiba történt az adatok értelmezésekor.' }, { status: 500 });
     }
 
     // 3. SUPABASE MENTÉS
