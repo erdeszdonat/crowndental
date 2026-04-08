@@ -29,7 +29,7 @@ import {
 } from 'lucide-react';
 
 // ═══════════════════════════════════════════════════════════════════════════
-// NAVIGÁCIÓ (Stabil fehér, letisztult menü)
+// NAVIGÁCIÓ
 // ═══════════════════════════════════════════════════════════════════════════
 function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -49,21 +49,11 @@ function Navigation() {
           </a>
 
           <div className="hidden lg:flex items-center gap-6 xl:gap-8">
-            <a href="/" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">
-              Főoldal
-            </a>
-            <a href="/kezelesek" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">
-              Szolgáltatások & Árak
-            </a>
-            <a href="/rolunk" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">
-              Rólunk
-            </a>
-            <a href="/blog" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">
-              Blog
-            </a>
-            <a href="/karrier" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">
-              Karrier
-            </a>
+            <a href="/" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">Főoldal</a>
+            <a href="/kezelesek" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">Szolgáltatások & Árak</a>
+            <a href="/rolunk" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">Rólunk</a>
+            <a href="/blog" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">Blog</a>
+            <a href="/karrier" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">Karrier</a>
           </div>
 
           <div className="flex items-center gap-4 z-50">
@@ -239,9 +229,6 @@ function TrustBadges() {
   );
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// ANIMÁLT TELJESÍTMÉNY SZÁMLÁLÓ
-// ═══════════════════════════════════════════════════════════════════════════
 function AnimatedCounter({ end, suffix = "", text, desc }: { end: number, suffix?: string, text: string, desc: string }) {
   const [count, setCount] = useState(0);
 
@@ -253,12 +240,8 @@ function AnimatedCounter({ end, suffix = "", text, desc }: { end: number, suffix
         const increment = end / (duration / 16);
         const timer = setInterval(() => {
           start += increment;
-          if (start >= end) {
-            setCount(end);
-            clearInterval(timer);
-          } else {
-            setCount(Math.ceil(start));
-          }
+          if (start >= end) { setCount(end); clearInterval(timer); } 
+          else { setCount(Math.ceil(start)); }
         }, 16);
       }}
       viewport={{ once: true, margin: "-100px" }}
@@ -279,9 +262,7 @@ function StatsSection() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-sky-600 font-bold uppercase tracking-widest mb-3">Tények és Számok</h2>
-          <h3 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">
-            Teljesítményeink
-          </h3>
+          <h3 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">Teljesítményeink</h3>
           <p className="text-xl text-gray-500 max-w-2xl mx-auto">
             Büszkék vagyunk az elmúlt évtizedek munkájára és a ránk bízott mosolyokra.
           </p>
@@ -298,9 +279,6 @@ function StatsSection() {
   );
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// PRÉMIUM LOKÁCIÓ VÁLASZTÓ
-// ═══════════════════════════════════════════════════════════════════════════
 function LocationSelector() {
   return (
     <section className="py-24 bg-white border-t border-gray-100">
@@ -316,14 +294,12 @@ function LocationSelector() {
               <img src="https://images.unsplash.com/photo-1563212035-715a3bc32204?q=80&w=2070&auto=format&fit=crop" alt="Esztergom" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
             </div>
             <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/40 to-transparent transition-opacity group-hover:opacity-90" />
-            
             <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-end">
               <div className="flex items-center gap-2 text-sky-400 font-bold uppercase tracking-wider mb-3">
                 <MapPin className="w-5 h-5" /> Komárom-Esztergom
               </div>
               <h3 className="text-4xl md:text-5xl font-extrabold text-white mb-2">Esztergomi Rendelő</h3>
               <p className="text-gray-300 text-lg font-medium mb-4">Esztergom, Petőfi Sándor utca 11.</p>
-              <p className="text-gray-400 text-base mb-8 max-w-md hidden md:block">30 éves múlt, saját fogtechnikai labor és családias, modern környezet a város szívében.</p>
               <div className="inline-flex items-center gap-3 text-white font-bold group-hover:text-sky-400 transition-colors">
                 Tovább a rendelőhöz <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-sky-500 group-hover:text-white transition-all"><ArrowRight className="w-5 h-5" /></div>
               </div>
@@ -338,14 +314,12 @@ function LocationSelector() {
               <span className="px-4 py-2 bg-amber-500 text-white font-bold rounded-full text-sm shadow-lg">Hamarosan Nyitunk!</span>
             </div>
             <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/40 to-transparent transition-opacity group-hover:opacity-90" />
-            
             <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-end">
               <div className="flex items-center gap-2 text-amber-400 font-bold uppercase tracking-wider mb-3">
                 <MapPin className="w-5 h-5" /> Főváros - Római Part
               </div>
               <h3 className="text-4xl md:text-5xl font-extrabold text-white mb-2">Budapesti Rendelő</h3>
               <p className="text-gray-300 text-lg font-medium mb-4">1039 Budapest, Királyok útja 55.</p>
-              <p className="text-gray-400 text-base mb-8 max-w-md hidden md:block">A megszokott esztergomi minőség és árak, kompromisszumok nélkül, hamarosan a Római parton is.</p>
               <div className="inline-flex items-center gap-3 text-white font-bold group-hover:text-amber-400 transition-colors">
                 Részletek megtekintése <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-amber-500 group-hover:text-white transition-all"><ArrowRight className="w-5 h-5" /></div>
               </div>
@@ -360,21 +334,9 @@ function LocationSelector() {
 // ═══════════════════════════════════════════════════════════════════════════
 // PDF GENERÁLÓ HTML ALAPÚ SABLON
 // ═══════════════════════════════════════════════════════════════════════════
-function buildPrintableHtml(
-  result: any,
-  patientName: string,
-  phone: string,
-  email: string,
-  nickname: string
-): string {
-  const today = new Date().toLocaleDateString('hu-HU', {
-    year: 'numeric', month: 'long', day: 'numeric',
-  });
-
-  const fmt = (n: number) => {
-    const s = n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-    return s + ' Ft';
-  };
+function buildPrintableHtml(result: any, patientName: string, phone: string, email: string, nickname: string): string {
+  const today = new Date().toLocaleDateString('hu-HU', { year: 'numeric', month: 'long', day: 'numeric' });
+  const fmt = (n: number) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' Ft';
 
   const rows = result.items.map((item: any, i: number) => {
     const diff = item.competitorPrice - item.ourPrice;
@@ -395,21 +357,11 @@ function buildPrintableHtml(
 <style>
   @page { size: A4; margin: 16mm 18mm 18mm 18mm; }
   * { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, Arial, sans-serif;
-    color: #1e293b;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-  @media print {
-    body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-  }
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, Arial, sans-serif; color: #1e293b; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
 </style>
 </head>
 <body>
 <div style="max-width:700px;margin:0 auto">
-
-  <!-- FEJLÉC -->
   <table style="width:100%;margin-bottom:6px">
     <tr>
       <td style="vertical-align:middle">
@@ -421,22 +373,13 @@ function buildPrintableHtml(
       </td>
     </tr>
   </table>
-
   <div style="height:3px;background:linear-gradient(90deg,#0284c7,#38bdf8,#7dd3fc);border-radius:2px;margin-bottom:22px"></div>
-
-  <!-- CÍM -->
   <div style="font-size:19px;font-weight:700;color:#0f172a;margin-bottom:5px">Személyre szabott árajánlat</div>
-  <div style="font-size:12px;color:#6b7280;margin-bottom:20px;line-height:1.5">
-    Készült: <strong style="color:#1e293b">${nickname || patientName}</strong> részére &nbsp;|&nbsp; Tel: ${phone} &nbsp;|&nbsp; E-mail: ${email}
-  </div>
-
-  <!-- MEGTAKARÍTÁS DOBOZ -->
+  <div style="font-size:12px;color:#6b7280;margin-bottom:20px;line-height:1.5">Készült: <strong style="color:#1e293b">${nickname || patientName}</strong> részére &nbsp;|&nbsp; Tel: ${phone} &nbsp;|&nbsp; E-mail: ${email}</div>
   <div style="background:#f0f9ff;border:1.5px solid #bae6fd;border-radius:10px;padding:18px;text-align:center;margin-bottom:22px">
     <div style="font-size:11px;color:#0369a1;text-transform:uppercase;letter-spacing:1.2px;font-weight:600">Az Ön megtakarítása</div>
     <div style="font-size:32px;font-weight:800;color:#059669;margin-top:4px">${fmt(result.savings)}</div>
   </div>
-
-  <!-- TÁBLÁZAT -->
   <div style="font-size:13px;font-weight:700;color:#0369a1;margin-bottom:8px">Kezelések részletezése</div>
   <table style="width:100%;border-collapse:collapse;border:1px solid #e2e8f0;margin-bottom:8px">
     <thead>
@@ -447,9 +390,7 @@ function buildPrintableHtml(
         <th style="padding:9px 12px;text-align:right;font-size:10px;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px;border-bottom:2px solid #0284c7;font-weight:700">Megtakarítás</th>
       </tr>
     </thead>
-    <tbody>
-      ${rows}
-    </tbody>
+    <tbody>${rows}</tbody>
     <tfoot>
       <tr style="background:#f0f9ff">
         <td style="padding:10px 12px;font-weight:700;font-size:13px;border-top:2px solid #0284c7;color:#1e293b">Összesen</td>
@@ -459,8 +400,6 @@ function buildPrintableHtml(
       </tr>
     </tfoot>
   </table>
-
-  <!-- ALÁÍRÁS MEZŐK -->
   <div style="margin-top:50px;border-top:1px solid #e5e7eb;padding-top:12px">
     <div style="font-size:13px;font-weight:700;color:#0369a1;margin-bottom:40px">Aláírások</div>
     <table style="width:100%">
@@ -477,29 +416,18 @@ function buildPrintableHtml(
       </tr>
     </table>
   </div>
-
-  <!-- LÁBLÉC -->
   <div style="margin-top:40px;border-top:1px solid #e5e7eb;padding-top:12px">
-    <p style="font-size:9px;color:#9ca3af;text-align:center;line-height:1.6;margin-bottom:5px">
-      Ez egy automatikusan generált árajánlat. A dokumentum kizárólag akkor válik hitelessé,
-      amikor a páciens kinyomtatva magával hozza rendelőnkbe, és a kezelőorvos aláírásával, pecsétjével hitelesíti.
-    </p>
-    <p style="font-size:9px;color:#9ca3af;text-align:center;line-height:1.6;margin-bottom:8px">
-      Az árajánlat a kiállítás napjától számított 30 napig érvényes. Az árak az ÁFÁ-t tartalmazzák.
-      A végleges kezelési terv és összeg a szájüregi vizsgálat után kerül meghatározásra.
-    </p>
-    <p style="font-size:10px;color:#0284c7;text-align:center;font-weight:700">
-      Crown Dental – Saját labor, kiemelkedő minőség, elérhető árak.
-    </p>
+    <p style="font-size:9px;color:#9ca3af;text-align:center;line-height:1.6;margin-bottom:5px">Ez egy automatikusan generált árajánlat. A dokumentum kizárólag akkor válik hitelessé, amikor a páciens kinyomtatva magával hozza rendelőnkbe, és a kezelőorvos aláírásával, pecsétjével hitelesíti.</p>
+    <p style="font-size:9px;color:#9ca3af;text-align:center;line-height:1.6;margin-bottom:8px">Az árajánlat a kiállítás napjától számított 30 napig érvényes. Az árak az ÁFÁ-t tartalmazzák. A végleges kezelési terv és összeg a szájüregi vizsgálat után kerül meghatározásra.</p>
+    <p style="font-size:10px;color:#0284c7;text-align:center;font-weight:700">Crown Dental – Saját labor, kiemelkedő minőség, elérhető árak.</p>
   </div>
-
 </div>
 </body>
 </html>`;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// AI ÁRAJÁNLAT ELEMZŐ (AKTÍV, MŰKÖDŐ VERZIÓ!)
+// AI ÁRAJÁNLAT ELEMZŐ (RETRY LOGIKÁVAL ÉS ZOOM FIX-SZEL)
 // ═══════════════════════════════════════════════════════════════════════════
 function QuoteAnalyzerSection() {
   const [isDragging, setIsDragging] = useState(false);
@@ -542,97 +470,80 @@ function QuoteAnalyzerSection() {
     setIsLoading(true);
     setStep(3);
 
-    try {
-      const data = new FormData();
-      data.append('file', file);
-      data.append('name', formData.name);
-      data.append('nickname', formData.nickname);
-      data.append('email', formData.email);
-      data.append('phone', formData.phone);
+    let attempts = 0;
+    let isSuccess = false;
 
-      const res = await fetch('/api/analyze-quote', {
-        method: 'POST',
-        body: data,
-      });
-      
-      const responseData = await res.json();
-      
-      if (responseData.success) {
-        setResult(responseData.result);
-        setStep(4);
-      } else {
-        alert("Hiba történt az elemzés során: " + (responseData.error || "Ismeretlen hiba"));
-        setStep(2);
+    // Retry logika: Ha kommunikációs hiba van (Vercel alszik), megpróbálja újra
+    while (attempts < 2 && !isSuccess) {
+      try {
+        const data = new FormData();
+        data.append('file', file);
+        data.append('name', formData.name);
+        data.append('nickname', formData.nickname);
+        data.append('email', formData.email);
+        data.append('phone', formData.phone);
+
+        const res = await fetch('/api/analyze-quote', {
+          method: 'POST',
+          body: data,
+        });
+        
+        const responseData = await res.json();
+        
+        if (responseData.success) {
+          setResult(responseData.result);
+          setStep(4);
+          isSuccess = true;
+        } else {
+          attempts++;
+          if (attempts >= 2) {
+            alert("Hiba történt az elemzés során: " + (responseData.error || "Ismeretlen hiba"));
+            setStep(2);
+          } else {
+            await new Promise(r => setTimeout(r, 1500));
+          }
+        }
+      } catch (error) {
+        attempts++;
+        if (attempts >= 2) {
+          console.error("Hálózati hiba:", error);
+          alert("Kommunikációs hiba történt. Kérjük, próbálja újra később.");
+          setStep(2);
+        } else {
+          await new Promise(r => setTimeout(r, 1500));
+        }
       }
-    } catch (error) {
-      console.error("Hálózati hiba:", error);
-      alert("Hálózati hiba történt a kommunikáció során.");
-      setStep(2);
-    } finally {
-      setIsLoading(false);
     }
+    
+    setIsLoading(false);
   };
 
-  // ═══════════════════════════════════════════════════════════════
-  // PDF LETÖLTÉS – Apple eszközökre optimalizált javítás
-  // ═══════════════════════════════════════════════════════════════
   const downloadPDF = () => {
     if (!result) return;
-
-    const htmlContent = buildPrintableHtml(
-      result,
-      formData.name,
-      formData.phone,
-      formData.email,
-      formData.nickname
-    );
-
-    // Apple eszköz felismerése (iOS, iPadOS, macOS Safari)
-    const isApple = /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform) || 
-                    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) || 
-                    /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    const htmlContent = buildPrintableHtml(result, formData.name, formData.phone, formData.email, formData.nickname);
+    const isApple = /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) || /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
     if (isApple) {
-      // APPLE ESZKÖZÖKÖN: Új fülön nyitjuk meg a nyomtatást, mert az Apple blokkolja a rejtett iframe-et
       const printWindow = window.open('', '_blank');
       if (printWindow) {
         printWindow.document.open();
         printWindow.document.write(htmlContent);
         printWindow.document.close();
-        
-        // Rövid késleltetés a DOM és a stílusok betöltéséhez
-        setTimeout(() => {
-          printWindow.focus();
-          printWindow.print();
-        }, 500);
+        setTimeout(() => { printWindow.focus(); printWindow.print(); }, 500);
       } else {
         alert("Kérjük, engedélyezze a felugró ablakokat (pop-ups) a letöltéshez!");
       }
     } else {
-      // WINDOWS / ANDROID: Iframe megoldás (marad az eredeti, mert ott tökéletes és észrevétlen)
       const iframe = document.createElement('iframe');
-      iframe.style.position = 'absolute';
-      iframe.style.left = '-9999px';
-      iframe.style.top = '-9999px';
-      iframe.style.width = '1px';
-      iframe.style.height = '1px';
-      iframe.style.opacity = '0.01'; // Minimális láthatóság kell egyes böngészőknek
-      iframe.style.border = 'none';
+      iframe.style.position = 'absolute'; iframe.style.left = '-9999px'; iframe.style.top = '-9999px'; iframe.style.width = '1px'; iframe.style.height = '1px'; iframe.style.opacity = '0.01'; iframe.style.border = 'none';
       document.body.appendChild(iframe);
-
       const iframeDoc = iframe.contentWindow?.document;
       if (iframeDoc) {
-        iframeDoc.open();
-        iframeDoc.write(htmlContent);
-        iframeDoc.close();
-
+        iframeDoc.open(); iframeDoc.write(htmlContent); iframeDoc.close();
         iframe.onload = () => {
           setTimeout(() => {
-            iframe.contentWindow?.focus();
-            iframe.contentWindow?.print();
-            setTimeout(() => {
-              document.body.removeChild(iframe);
-            }, 1000);
+            iframe.contentWindow?.focus(); iframe.contentWindow?.print();
+            setTimeout(() => document.body.removeChild(iframe), 1000);
           }, 300);
         };
       }
@@ -705,22 +616,23 @@ function QuoteAnalyzerSection() {
                       <div className="grid grid-cols-2 gap-4">
                         <div>
                           <label className="block text-xs font-bold text-gray-700 mb-1">Teljes Név *</label>
-                          <input required type="text" name="name" value={formData.name} onChange={handleInputChange} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-sky-600 outline-none text-sm" />
+                          {/* FONTOS JAVÍTÁS MOBILRA: A text-base osztály (16px) meggátolja az iOS zoomolást */}
+                          <input required type="text" name="name" value={formData.name} onChange={handleInputChange} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-sky-600 outline-none text-base md:text-sm" />
                         </div>
                         <div>
                           <label className="block text-xs font-bold text-gray-700 mb-1">Megszólítás (opcionális)</label>
-                          <input type="text" name="nickname" value={formData.nickname} onChange={handleInputChange} placeholder="Pl. Mari" className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-sky-600 outline-none text-sm" />
+                          <input type="text" name="nickname" value={formData.nickname} onChange={handleInputChange} placeholder="Pl. Mari" className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-sky-600 outline-none text-base md:text-sm" />
                         </div>
                       </div>
 
                       <div className="grid grid-cols-2 gap-4">
                         <div>
                           <label className="block text-xs font-bold text-gray-700 mb-1">Email cím *</label>
-                          <input required type="email" name="email" value={formData.email} onChange={handleInputChange} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-sky-600 outline-none text-sm" />
+                          <input required type="email" name="email" value={formData.email} onChange={handleInputChange} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-sky-600 outline-none text-base md:text-sm" />
                         </div>
                         <div>
                           <label className="block text-xs font-bold text-gray-700 mb-1">Telefonszám *</label>
-                          <input required type="tel" name="phone" value={formData.phone} onChange={handleInputChange} placeholder="+36..." className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-sky-600 outline-none text-sm" />
+                          <input required type="tel" name="phone" value={formData.phone} onChange={handleInputChange} placeholder="+36..." className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-sky-600 outline-none text-base md:text-sm" />
                         </div>
                       </div>
 
@@ -1005,7 +917,7 @@ function Footer() {
           
           <div>
             <div className="bg-white inline-block p-2 rounded-xl mb-6">
-              <img src="/logo.webp" alt="Crown Dental Logo" width={160} height={50} className="object-contain" />
+              <img src="/logo.webp" alt="Crown Dental Logo" className="h-10 w-auto object-contain" />
             </div>
             <p className="text-gray-400 mb-6 leading-relaxed">
               Kiváló minőségű fogászat saját fogtechnikai laborral, kompromisszumok nélkül. Kezelések Esztergomban, és hamarosan Budapesten is.
