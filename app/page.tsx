@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 import {
   MapPin,
   Phone,
@@ -23,7 +25,11 @@ import {
   Sparkles,
   Menu,
   X,
-  ChevronRight
+  ChevronRight,
+  User,
+  FileText,
+  Loader2,
+  Download
 } from 'lucide-react';
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -36,7 +42,6 @@ function Navigation() {
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl shadow-sm border-b border-gray-100">
       <nav className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
-          {/* MAXIMALIZÁLT LOGÓ: A h-full és py-1 garantálja, hogy kitölti a sávot anélkül, hogy növelné azt */}
           <Link href="/" className="flex items-center relative h-full py-1 z-50">
             <Image 
               src="/logo.webp" 
@@ -299,7 +304,7 @@ function StatsSection() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// PRÉMIUM LOKÁCIÓ VÁLASZTÓ (Visszaállítva)
+// PRÉMIUM LOKÁCIÓ VÁLASZTÓ
 // ═══════════════════════════════════════════════════════════════════════════
 function LocationSelector() {
   return (
@@ -360,15 +365,124 @@ function LocationSelector() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// AI ÁRAJÁNLAT ELEMZŐ
+// AI ÁRAJÁNLAT ELEMZŐ (AKTÍV, MŰKÖDŐ VERZIÓ!)
 // ═══════════════════════════════════════════════════════════════════════════
 function QuoteAnalyzerSection() {
   const [isDragging, setIsDragging] = useState(false);
+  const [step, setStep] = useState(1);
+  const [file, setFile] = useState<File | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [result, setResult] = useState<any>(null);
+  
+  const [formData, setFormData] = useState({
+    name: '', nickname: '', email: '', phone: '', acceptedTerms: false
+  });
+
+  const handleDragOver = (e: React.DragEvent) => { e.preventDefault(); setIsDragging(true); };
+  const handleDragLeave = () => setIsDragging(false);
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      setFile(e.dataTransfer.files[0]);
+      setStep(2);
+    }
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setFile(e.target.files[0]);
+      setStep(2);
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+    setFormData({ ...formData, [e.target.name]: value });
+  };
+
+  const analyzeQuote = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!file || !formData.acceptedTerms) return;
+
+    setIsLoading(true);
+    setStep(3);
+
+    try {
+      const data = new FormData();
+      data.append('file', file);
+      data.append('name', formData.name);
+      data.append('nickname', formData.nickname);
+      data.append('email', formData.email);
+      data.append('phone', formData.phone);
+
+      const res = await fetch('/api/analyze-quote', {
+        method: 'POST',
+        body: data,
+      });
+      
+      const responseData = await res.json();
+      
+      if (responseData.success) {
+        setResult(responseData.result);
+        setStep(4);
+      } else {
+        alert("Hiba történt az elemzés során: " + (responseData.error || "Ismeretlen hiba"));
+        setStep(2);
+      }
+    } catch (error) {
+      console.error("Hálózati hiba:", error);
+      alert("Hálózati hiba történt a kommunikáció során.");
+      setStep(2);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const downloadPDF = () => {
+    if (!result) return;
+    const doc = new jsPDF();
+    
+    doc.setFontSize(22);
+    doc.setTextColor(2, 132, 199);
+    doc.text("Crown Dental - AI Arajanlat Elemzes", 14, 20);
+    
+    doc.setFontSize(12);
+    doc.setTextColor(100, 100, 100);
+    doc.text(`Paciens neve: ${formData.name}`, 14, 30);
+    doc.text(`Datum: ${new Date().toLocaleDateString('hu-HU')}`, 14, 36);
+
+    const tableColumn = ["Kezeles megnevezese", "Masik rendelo", "Crown Dental"];
+    const tableRows = result.items.map((item: any) => [
+      item.name,
+      `${item.competitorPrice.toLocaleString('hu-HU')} Ft`,
+      `${item.ourPrice.toLocaleString('hu-HU')} Ft`
+    ]);
+
+    autoTable(doc, {
+      head: [tableColumn],
+      body: tableRows,
+      startY: 45,
+      theme: 'grid',
+      headStyles: { fillColor: [2, 132, 199] }
+    });
+
+    const finalY = (doc as any).lastAutoTable.finalY || 45;
+    doc.setFontSize(14);
+    doc.setTextColor(0, 0, 0);
+    doc.text(`Eredeti ajanlat osszege: ${result.competitorTotal.toLocaleString('hu-HU')} Ft`, 14, finalY + 15);
+    doc.text(`Crown Dental ajanlat: ${result.ourTotal.toLocaleString('hu-HU')} Ft`, 14, finalY + 25);
+    
+    doc.setFontSize(16);
+    doc.setTextColor(22, 163, 74);
+    doc.text(`On megtakaritasa: ${result.savings.toLocaleString('hu-HU')} Ft!`, 14, finalY + 40);
+
+    doc.save("Crown_Dental_Arajanlat.pdf");
+  };
 
   return (
-    <section id="arajanlat-elemzo" className="py-24 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gray-900" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-sky-700/40 via-transparent to-transparent" />
+    <section id="arajanlat-elemzo" className="py-24 relative overflow-hidden bg-gray-900">
+      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-sky-600/20 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3 pointer-events-none" />
 
       <div className="relative z-10 container mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -380,24 +494,150 @@ function QuoteAnalyzerSection() {
               Sokallja az árajánlatot amit egy <span className="text-sky-400">másik rendelőben kapott?</span>
             </h2>
             <p className="text-xl text-gray-300 mb-8 leading-relaxed font-light">
-              Töltse fel és azonnal megmutatjuk mennyit spórolhat ha minket választ!
+              Töltse fel a meglévő árajánlatát (kép vagy PDF formátumban). Rendszerünk azonnal kielemzi, és megmutatja, <strong>mennyit spórolhat</strong> saját laborunkkal!
             </p>
+            <div className="flex gap-4 items-center mt-8">
+              <div className="flex -space-x-4">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="w-12 h-12 rounded-full border-2 border-gray-900 bg-gray-800 flex items-center justify-center text-white font-bold">
+                    <User className="w-5 h-5 text-gray-400" />
+                  </div>
+                ))}
+              </div>
+              <p className="text-gray-400 text-sm">Több mint <span className="text-white font-bold">500+</span> páciens spórolt velünk.</p>
+            </div>
           </div>
 
           <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}>
-            <div 
-              className={`relative bg-white/5 backdrop-blur-xl border-2 border-dashed rounded-3xl p-10 lg:p-16 text-center transition-all duration-300 ${isDragging ? 'border-sky-400 bg-sky-500/10 scale-105' : 'border-gray-600'}`}
-              onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-              onDragLeave={() => setIsDragging(false)}
-              onDrop={(e) => { e.preventDefault(); setIsDragging(false); }}
-            >
-              <div className="w-24 h-24 bg-sky-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Upload className="w-10 h-10 text-sky-400" />
-              </div>
-              <h3 className="text-2xl font-bold text-white mb-3">Húzza ide a PDF-et</h3>
-              <button className="mt-6 w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-4 px-8 rounded-full shadow-lg transition-colors">
-                Fájl Kiválasztása
-              </button>
+            <div className="bg-white rounded-3xl shadow-2xl overflow-hidden relative min-h-[450px] flex flex-col">
+              <AnimatePresence mode="wait">
+                
+                {step === 1 && (
+                  <motion.div key="step1" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="p-10 text-center flex-1 flex flex-col justify-center">
+                    <div 
+                      className={`border-2 border-dashed rounded-2xl p-10 transition-all duration-300 ${isDragging ? 'border-sky-500 bg-sky-50 scale-105' : 'border-gray-300 hover:border-sky-400 hover:bg-gray-50'}`}
+                      onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop}
+                    >
+                      <Upload className={`w-16 h-16 mx-auto mb-6 ${isDragging ? 'text-sky-500' : 'text-gray-400'}`} />
+                      <h3 className="text-2xl font-bold text-gray-900 mb-2">Húzza ide az árajánlatot</h3>
+                      <p className="text-gray-500 mb-6 text-sm">vagy kattintson a fájl kiválasztásához (Kép vagy PDF)</p>
+                      <label className="cursor-pointer bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 px-8 rounded-full transition-colors inline-block">
+                        Fájl Kiválasztása
+                        <input type="file" className="hidden" accept=".pdf,image/*" onChange={handleFileSelect} />
+                      </label>
+                    </div>
+                  </motion.div>
+                )}
+
+                {step === 2 && (
+                  <motion.div key="step2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="p-8 md:p-10">
+                    <div className="flex items-center gap-4 mb-6 bg-sky-50 p-4 rounded-xl border border-sky-100">
+                      <FileText className="w-8 h-8 text-sky-600 flex-shrink-0" />
+                      <div className="overflow-hidden flex-1">
+                        <p className="font-bold text-gray-900 text-sm">Feltöltött fájl:</p>
+                        <p className="text-sky-700 font-medium truncate text-sm">{file?.name}</p>
+                      </div>
+                      <button onClick={() => setStep(1)} className="text-sm text-red-500 hover:text-red-700 font-bold whitespace-nowrap">Mégse</button>
+                    </div>
+
+                    <form onSubmit={analyzeQuote} className="space-y-4">
+                      <h3 className="text-lg font-bold text-gray-900 mb-4">Hova küldhetjük a részletes eredményt?</h3>
+                      
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-xs font-bold text-gray-700 mb-1">Teljes Név *</label>
+                          <input required type="text" name="name" value={formData.name} onChange={handleInputChange} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-sky-600 outline-none text-sm" />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-gray-700 mb-1">Megszólítás (opcionális)</label>
+                          <input type="text" name="nickname" value={formData.nickname} onChange={handleInputChange} placeholder="Pl. Mari" className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-sky-600 outline-none text-sm" />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-xs font-bold text-gray-700 mb-1">Email cím *</label>
+                          <input required type="email" name="email" value={formData.email} onChange={handleInputChange} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-sky-600 outline-none text-sm" />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-gray-700 mb-1">Telefonszám *</label>
+                          <input required type="tel" name="phone" value={formData.phone} onChange={handleInputChange} placeholder="+36..." className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-sky-600 outline-none text-sm" />
+                        </div>
+                      </div>
+
+                      <label className="flex items-start gap-3 mt-4 cursor-pointer">
+                        <input required type="checkbox" name="acceptedTerms" checked={formData.acceptedTerms} onChange={handleInputChange} className="mt-1 w-5 h-5 text-sky-600 rounded" />
+                        <span className="text-xs text-gray-600 leading-relaxed">
+                          Elfogadom az <Link href="/aszf" className="text-sky-600 hover:underline">ÁSZF</Link>-et és az Adatkezelési Tájékoztatót, és kérem az árajánlatot emailben.
+                        </span>
+                      </label>
+
+                      <button type="submit" disabled={!formData.acceptedTerms} className="w-full mt-4 bg-sky-600 hover:bg-sky-700 text-white font-bold py-3.5 px-8 rounded-xl shadow-lg transition-colors disabled:bg-gray-300 flex items-center justify-center gap-2">
+                        <Sparkles className="w-5 h-5" /> Elemzés Indítása
+                      </button>
+                    </form>
+                  </motion.div>
+                )}
+
+                {step === 3 && (
+                  <motion.div key="step3" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="p-16 text-center flex flex-col items-center justify-center h-full flex-1">
+                    <div className="relative w-24 h-24 mx-auto mb-8">
+                      <div className="absolute inset-0 border-4 border-sky-100 rounded-full"></div>
+                      <div className="absolute inset-0 border-4 border-sky-600 rounded-full border-t-transparent animate-spin"></div>
+                      <Loader2 className="absolute inset-0 m-auto w-10 h-10 text-sky-600 animate-pulse" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">AI Elemzés folyamatban...</h3>
+                    <p className="text-gray-500">Tételek felismerése és párosítása a Crown Dental áraival.</p>
+                  </motion.div>
+                )}
+
+                {step === 4 && result && (
+                  <motion.div key="step4" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-white flex flex-col h-full">
+                    <div className="bg-gradient-to-br from-sky-500 to-sky-700 p-8 text-center text-white relative overflow-hidden">
+                      <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-2xl" />
+                      <CheckCircle2 className="w-12 h-12 mx-auto mb-3 text-green-300 drop-shadow-md" />
+                      <h3 className="text-2xl font-bold mb-1">Kész az elemzés, {formData.nickname || formData.name.split(' ')[0]}!</h3>
+                      <p className="text-sky-100 mb-3 text-sm">Saját laborunkkal ennyit spórolhat nálunk:</p>
+                      <div className="text-5xl font-extrabold drop-shadow-md text-green-300">
+                        {result.savings.toLocaleString('hu-HU')} Ft
+                      </div>
+                    </div>
+                    
+                    <div className="p-6 flex-1 flex flex-col">
+                      <div className="max-h-[180px] overflow-y-auto mb-6 pr-2">
+                        <table className="w-full text-left text-sm">
+                          <thead>
+                            <tr className="border-b border-gray-200 text-gray-500">
+                              <th className="pb-2 font-medium">Kezelés</th>
+                              <th className="pb-2 font-medium text-right">Eredeti</th>
+                              <th className="pb-2 font-bold text-sky-600 text-right">Crown</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {result.items.map((item: any, i: number) => (
+                              <tr key={i} className="border-b border-gray-50">
+                                <td className="py-2 font-medium text-gray-900">{item.name}</td>
+                                <td className="py-2 text-right text-gray-400 line-through">{item.competitorPrice.toLocaleString('hu-HU')}</td>
+                                <td className="py-2 text-right font-bold text-sky-600">{item.ourPrice.toLocaleString('hu-HU')}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+
+                      <div className="mt-auto space-y-3">
+                        <button onClick={downloadPDF} className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl transition-colors">
+                          <Download className="w-5 h-5" /> PDF Letöltés
+                        </button>
+                        <Link href="/idopont" className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow-lg shadow-sky-600/30 transition-all">
+                          <Calendar className="w-5 h-5" /> Ingyenes Konzultáció Kérése
+                        </Link>
+                        <p className="text-center text-xs text-gray-400">A részletes ajánlatot elküldtük a(z) {formData.email} címre is!</p>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </motion.div>
         </div>
@@ -407,7 +647,7 @@ function QuoteAnalyzerSection() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// KIEMELT ÁRAK / KEZELÉSEK (Szigorúan fogászati fotókkal)
+// KIEMELT ÁRAK / KEZELÉSEK
 // ═══════════════════════════════════════════════════════════════════════════
 function FeaturedPricesSection() {
   const cards = [
@@ -470,15 +710,10 @@ function FeaturedPricesSection() {
               key={idx} 
               className="group [perspective:1000px] h-[400px] w-full cursor-pointer focus:outline-none"
               tabIndex={0}
-              onClick={(e) => {
-                // Mobilon ez a dummy kattintás aktiválja a focus/active pseudoclassokat a forgatáshoz
-              }}
             >
               <div className="relative w-full h-full duration-700 transition-transform [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] group-focus:[transform:rotateY(180deg)] focus-within:[transform:rotateY(180deg)]">
                 
-                {/* Front (Előlap - Fent kép, lent szöveg) */}
                 <div className="absolute inset-0 [backface-visibility:hidden] bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100 flex flex-col overflow-hidden group/front">
-                  {/* Kép része sötét átmenettel */}
                   <div className="relative h-[55%] w-full overflow-hidden">
                     <img src={card.image} alt={card.title} className="w-full h-full object-cover transition-transform duration-700 group-hover/front:scale-110" />
                     <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/20 to-transparent" />
@@ -489,7 +724,6 @@ function FeaturedPricesSection() {
                       <h4 className="text-xl font-bold text-white">{card.title}</h4>
                     </div>
                   </div>
-                  {/* Szöveges rész */}
                   <div className="p-6 flex flex-col flex-1 text-center justify-center">
                     <p className="text-gray-500 mb-3">{card.subtitle}</p>
                     <div className="mt-auto">
@@ -498,7 +732,6 @@ function FeaturedPricesSection() {
                   </div>
                 </div>
 
-                {/* Back (Hátlap) */}
                 <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] bg-gradient-to-br from-sky-600 to-sky-800 rounded-3xl p-8 shadow-2xl flex items-center justify-center">
                   <Link href="/idopont" className="flex flex-col items-center justify-center w-full h-full text-white group/link">
                     <Calendar className="w-16 h-16 mb-6 opacity-80 group-hover/link:scale-110 group-hover/link:opacity-100 transition-all duration-300" />
@@ -547,7 +780,6 @@ function ReviewsSection() {
           <h3 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">
             Pácienseink mondták
           </h3>
-          {/* Javított: Egy soros, flex elrendezésű, zsugorodó értékelés gomb a mobilos megjelenéshez */}
           <div className="flex items-center justify-center gap-1.5 sm:gap-2 text-amber-400 bg-gray-50 inline-flex px-4 sm:px-6 py-2 rounded-full shadow-sm border border-gray-100 whitespace-nowrap">
             <div className="flex items-center">
               {[...Array(5)].map((_, i) => (
