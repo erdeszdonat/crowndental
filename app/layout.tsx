@@ -1,44 +1,28 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: "--font-inter",
 });
 
 // ═══════════════════════════════════════════════════════════════════════════
-// ALAPÉRTELMEZETT METADATA - Ez vonatkozik a főoldalra (/) és minden oldalra,
-// ami nem definiál saját metadata-t
+// ALAPÉRTELMEZETT METADATA - Megtartva az eredeti SEO beállításokat
 // ═══════════════════════════════════════════════════════════════════════════
 export const metadata: Metadata = {
-  // Alapértelmezett title template - az al-oldalak title-je így jelenik meg: "Oldal neve | Crown Dental"
   title: {
     default: 'Crown Dental | Prémium Fogászat Saját Laborral – Esztergom & Budapest',
     template: '%s | Crown Dental',
   },
   description: 'Töltsd fel más klinika árajánlatát és nézd meg, mennyit spórolhatsz nálunk! Saját fogtechnikai labor = akár 40% megtakarítás. 30+ év tapasztalat, prémium minőség. Esztergom és Budapest.',
   keywords: [
-    'fogászat',
-    'fogorvos',
-    'crown dental',
-    'fogászat esztergom',
-    'fogászat budapest',
-    'saját fogtechnikai labor',
-    'implantátum',
-    'fogkorona',
-    'fogszabályozás',
+    'fogászat', 'fogorvos', 'crown dental', 'fogászat esztergom', 'fogászat budapest',
+    'saját fogtechnikai labor', 'implantátum', 'fogkorona', 'fogszabályozás',
   ],
   authors: [{ name: 'Crown Dental' }],
   creator: 'Crown Dental',
   publisher: 'Crown Dental Praxis és Labor Kft.',
-  
-  // Robots
   robots: {
     index: true,
     follow: true,
@@ -50,8 +34,6 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-
-  // Open Graph - Facebook, LinkedIn
   openGraph: {
     title: 'Crown Dental | Prémium Fogászat Saját Laborral',
     description: 'Saját fogtechnikai labor = akár 40% megtakarítás. 30+ év tapasztalat Esztergomban és Budapesten.',
@@ -68,22 +50,16 @@ export const metadata: Metadata = {
       },
     ],
   },
-
-  // Twitter Card
   twitter: {
     card: 'summary_large_image',
     title: 'Crown Dental | Prémium Fogászat',
     description: 'Saját labor = akár 40% megtakarítás. 30+ év tapasztalat.',
     images: ['https://www.crowndental.hu/og-image.jpg'],
   },
-
-  // Egyéb
   metadataBase: new URL('https://www.crowndental.hu'),
   alternates: {
     canonical: '/',
   },
-  
-  // Ikonok
   icons: {
     icon: '/favicon.ico',
     shortcut: '/favicon-16x16.png',
@@ -92,7 +68,7 @@ export const metadata: Metadata = {
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
-// JSON-LD STRUKTURÁLT ADATOK - Globális Organization schema
+// JSON-LD STRUKTURÁLT ADATOK
 // ═══════════════════════════════════════════════════════════════════════════
 const organizationJsonLd = {
   '@context': 'https://schema.org',
@@ -132,13 +108,6 @@ const organizationJsonLd = {
     'https://www.facebook.com/crowndental',
     'https://www.instagram.com/crowndental',
   ],
-  contactPoint: {
-    '@type': 'ContactPoint',
-    telephone: '+36705646837',
-    contactType: 'customer service',
-    availableLanguage: ['Hungarian'],
-    areaServed: 'HU',
-  },
 };
 
 export default function RootLayout({
@@ -147,18 +116,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="hu"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
+    <html lang="hu" className={`${inter.variable} h-full antialiased`}>
       <head>
-        {/* JSON-LD Organization schema - minden oldalon megjelenik */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
       </head>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className={`${inter.className} min-h-full flex flex-col`}>
+        {children}
+      </body>
     </html>
   );
 }
