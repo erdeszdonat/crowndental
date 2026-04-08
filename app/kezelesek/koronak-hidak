@@ -1,31 +1,12 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createClient } from 'next-sanity';
 import { dataset, projectId } from '@/sanity/env';
 import {
-  MapPin,
-  Phone,
-  Mail,
-  Calendar,
-  Menu,
-  X,
-  ChevronRight,
-  ChevronDown,
-  Sparkles,
-  Shield,
-  Clock,
-  Banknote,
-  Heart,
-  ArrowRight,
-  Plus,
-  Minus,
-  Crown,
-  Layers,
-  Gem
+  MapPin, Phone, Mail, Calendar, Menu, X, ChevronRight, ChevronDown,
+  Sparkles, Shield, Clock, Heart, ArrowRight, Plus, Minus, Crown, Gem, Layers
 } from 'lucide-react';
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -41,11 +22,14 @@ const client = createClient({
 // ═══════════════════════════════════════════════════════════════════════════
 // JSON-LD SEO ADATOK
 // ═══════════════════════════════════════════════════════════════════════════
+const seoTitle = "Fogkoronák és hidak – Esztétikus fogpótlás megoldások | Crown Dental";
+const seoDescription = "Tartós és esztétikus koronák, hidak foghiány esetén. Konzultáció, egyedi kezelési terv az esztergomi Crown Dental rendelőben.";
+
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'MedicalProcedure',
-  name: 'Fogpótlás koronával és híddal',
-  description: 'Esztétikus, tartós fémkerámia és cirkónium koronák saját fogtechnikai laborunkból, akár 3-5 nap alatt.',
+  name: 'Fogkoronák és hidak',
+  description: seoDescription,
   howPerformed: 'Helyi érzéstelenítésben történő fog-előkészítés, digitális vagy precíziós lenyomatvétel, laboratóriumi kidolgozás és rögzítés.',
   procedureType: 'Prosthodontic',
   bodyLocation: 'Fogak',
@@ -63,35 +47,47 @@ function Navigation() {
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl shadow-sm border-b border-gray-100">
       <nav className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
-          <Link href="/" className="flex items-center relative h-full py-1 z-50">
-            <Image src="/logo.webp" alt="Crown Dental Logo" width={280} height={80} className="object-contain h-full w-auto" priority />
-          </Link>
+          <a href="/" className="flex items-center relative h-full py-1 z-50">
+            <img src="/logo.webp" alt="Crown Dental Logo" className="object-contain h-12 w-auto" />
+          </a>
           <div className="hidden lg:flex items-center gap-6 xl:gap-8">
-            <Link href="/" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">Főoldal</Link>
-            <Link href="/kezelesek" className="font-bold text-sky-600 bg-sky-50 px-4 py-2 rounded-full transition-colors">Szolgáltatások & Árak</Link>
-            <Link href="/rolunk" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">Rólunk</Link>
-            <Link href="/blog" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">Blog</Link>
-            <Link href="/karrier" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">Karrier</Link>
+            <a href="/" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">Főoldal</a>
+            <a href="/kezelesek" className="font-bold text-sky-600 bg-sky-50 px-4 py-2 rounded-full transition-colors">Szolgáltatások & Árak</a>
+            <a href="/rolunk" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">Rólunk</a>
+            <a href="/blog" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">Blog</a>
+            <a href="/karrier" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">Karrier</a>
           </div>
           <div className="flex items-center gap-4 z-50">
             <a href="tel:+36705646837" className="hidden xl:flex items-center gap-2 font-bold text-sky-700 hover:text-sky-600 mr-2">
               <Phone className="w-5 h-5" /> +36 70 564 6837
             </a>
-            <Link href="/idopont" className="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 bg-sky-600 text-white font-bold rounded-full transition-all shadow-md hover:shadow-xl hover:bg-sky-700 transform hover:-translate-y-0.5 text-sm md:text-base">
+            <a href="/idopont" className="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 bg-sky-600 text-white font-bold rounded-full transition-all shadow-md hover:shadow-xl hover:bg-sky-700 transform hover:-translate-y-0.5 text-sm md:text-base">
               <Calendar className="w-4 h-4 md:w-5 md:h-5" /> Időpontot kérek
-            </Link>
+            </a>
             <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden p-2 rounded-lg text-gray-900 bg-gray-100 hover:bg-gray-200 transition-colors">
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </div>
+        
+        {/* Mobil menü */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="lg:hidden bg-white border-t border-gray-100 p-6 flex flex-col gap-4 font-bold shadow-2xl absolute w-full left-0">
+              <a href="/" className="px-4 py-2 hover:bg-sky-50 rounded-xl">Főoldal</a>
+              <a href="/kezelesek" className="px-4 py-2 text-sky-600 bg-sky-50 rounded-xl">Szolgáltatások & Árak</a>
+              <a href="/rolunk" className="px-4 py-2 hover:bg-sky-50 rounded-xl">Rólunk</a>
+              <a href="/blog" className="px-4 py-2 hover:bg-sky-50 rounded-xl">Blog</a>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
     </header>
   );
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// HERO SECTION (Sanity kép lekéréssel)
+// HERO SECTION
 // ═══════════════════════════════════════════════════════════════════════════
 function ServiceHero() {
   const [imageUrl, setImageUrl] = useState("https://images.unsplash.com/photo-1600170311833-c2cf5280ce49?q=80&w=2070&auto=format&fit=crop");
@@ -99,12 +95,9 @@ function ServiceHero() {
   useEffect(() => {
     const fetchImage = async () => {
       try {
-        // Ellenőrzi a mainImage és heroImage mezőket is a Sanityből
-        const query = `*[_type == "treatment" && slug.current == "koronak-hidak"][0]{"url": coalesce(mainImage.asset->url, heroImage.asset->url)}`;
+        const query = `*[_type == "treatment" && slug.current == "koronak-hidak"][0]{"url": heroImage.asset->url}`;
         const result = await client.fetch(query);
-        if (result?.url) {
-          setImageUrl(result.url);
-        }
+        if (result?.url) setImageUrl(result.url);
       } catch (error) {
         console.error("Sanity kép lekérési hiba:", error);
       }
@@ -127,12 +120,12 @@ function ServiceHero() {
               Cirkónium és <br/> <span className="text-sky-600">Kerámia Koronák</span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-500 leading-relaxed font-light mb-8 max-w-xl">
-              Természetes hatású, prémium fogpótlások. Saját laborunknak köszönhetően villámgyorsan, kompromisszumok nélkül.
+              Tartós és esztétikus koronák, hidak foghiány esetén. Saját laborunknak köszönhetően villámgyorsan, kompromisszumok nélkül.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/idopont" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-sky-600 text-white font-bold rounded-full hover:bg-sky-700 transition-all shadow-lg hover:shadow-sky-600/30">
+              <a href="/idopont" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-sky-600 text-white font-bold rounded-full hover:bg-sky-700 transition-all shadow-lg hover:shadow-sky-600/30">
                 <Calendar className="w-5 h-5" /> Konzultációt Kérek
-              </Link>
+              </a>
             </div>
           </motion.div>
 
@@ -286,10 +279,10 @@ function AppointmentCTASection() {
             <p className="text-lg md:text-xl text-sky-100 mb-10 max-w-2xl mx-auto font-light leading-relaxed">
               Jöjjön el egy állapotfelmérésre, és tudja meg, melyik fogpótlási megoldás lenne a legideálisabb az Ön számára.
             </p>
-            <Link href="/idopont" className="inline-flex items-center gap-3 px-10 py-5 bg-white text-sky-700 font-extrabold rounded-full shadow-xl hover:shadow-2xl hover:scale-105 hover:bg-gray-50 transition-all duration-300 group">
+            <a href="/idopont" className="inline-flex items-center gap-3 px-10 py-5 bg-white text-sky-700 font-extrabold rounded-full shadow-xl hover:shadow-2xl hover:scale-105 hover:bg-gray-50 transition-all duration-300 group">
               <span className="text-lg">Konzultációt Kérek</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
+            </a>
           </motion.div>
         </motion.div>
       </div>
@@ -337,7 +330,7 @@ function FAQSection() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// PRÉMIUM FOOTER
+// FOOTER
 // ═══════════════════════════════════════════════════════════════════════════
 function Footer() {
   return (
@@ -346,29 +339,20 @@ function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           <div>
             <div className="bg-white inline-block p-2 rounded-xl mb-6">
-              <Image src="/logo.webp" alt="Crown Dental Logo" width={160} height={50} className="object-contain" />
+              <img src="/logo.webp" alt="Crown Dental Logo" className="h-10 w-auto object-contain" />
             </div>
             <p className="text-gray-400 mb-6 leading-relaxed">
               Kiváló minőségű fogászat saját fogtechnikai laborral, kompromisszumok nélkül. Kezelések Esztergomban, és hamarosan Budapesten is.
             </p>
-            <div className="flex gap-4">
-              <a href="https://facebook.com" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-sky-600 hover:text-white transition-colors">
-                <span className="font-bold">f</span>
-              </a>
-              <a href="https://instagram.com" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-sky-600 hover:text-white transition-colors">
-                <span className="font-bold">in</span>
-              </a>
-            </div>
           </div>
 
           <div>
             <h4 className="text-white font-bold text-lg mb-6 uppercase tracking-wider">Szolgáltatások</h4>
             <ul className="space-y-4">
-              <li><Link href="/kezelesek/implantatum" className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Implantáció</Link></li>
-              <li><Link href="/kezelesek/fogszabalyozas" className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Fogszabályozás</Link></li>
-              <li><Link href="/kezelesek/koronak-es-hidak" className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Koronák és Hidak</Link></li>
-              <li><Link href="/kezelesek/fogfeherites" className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Fogfehérítés</Link></li>
-              <li><Link href="/kezelesek" className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Teljes Árlista</Link></li>
+              <li><a href="/kezelesek/implantatum" className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Implantáció</a></li>
+              <li><a href="/kezelesek/fogszabalyozas" className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Fogszabályozás</a></li>
+              <li><a href="/kezelesek/koronak-hidak" className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Koronák és Hidak</a></li>
+              <li><a href="/kezelesek/fogfeherites" className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Fogfehérítés</a></li>
             </ul>
           </div>
 
@@ -384,45 +368,16 @@ function Footer() {
                   </a>
                 </div>
               </li>
-              <li className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-amber-500 mt-1" />
-                <div>
-                  <span className="block text-white font-semibold">Budapesti Rendelő</span>
-                  <a href="https://maps.google.com/?q=1039+Budapest+Királyok+útja+55" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
-                    1039 Budapest, Királyok útja 55.
-                  </a>
-                </div>
-              </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-5 h-5 text-sky-500" />
                 <a href="tel:+36705646837" className="hover:text-white transition-colors">+36 70 564 6837</a>
               </li>
-              <li className="flex items-center gap-3">
-                <Mail className="w-5 h-5 text-sky-500" />
-                <a href="mailto:info@crowndental.hu" className="hover:text-white transition-colors">info@crowndental.hu</a>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-white font-bold text-lg mb-6 uppercase tracking-wider">Jogi Információk</h4>
-            <ul className="space-y-4">
-              <li><Link href="/aszf" className="text-gray-400 hover:text-white transition-colors">Általános Szerződési Feltételek</Link></li>
-              <li><Link href="/adatkezeles" className="text-gray-400 hover:text-white transition-colors">Adatkezelési Tájékoztató (GDPR)</Link></li>
-              <li><Link href="/impresszum" className="text-gray-400 hover:text-white transition-colors">Impresszum</Link></li>
-              <li><Link href="/cookie-tajekoztato" className="text-gray-400 hover:text-white transition-colors">Sütik (Cookie) kezelése</Link></li>
             </ul>
           </div>
         </div>
 
         <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
           <p>© 2026 Crown Dental Praxis és Labor Fogászati Kft. Minden jog fenntartva.</p>
-          <p className="flex items-center gap-2">
-            Készítette: 
-            <span className="text-white text-2xl tracking-wider ml-1" style={{ fontFamily: "'Great Vibes', 'Brush Script MT', cursive" }}>
-              Crown Dental
-            </span>
-          </p>
         </div>
       </div>
     </footer>
@@ -432,7 +387,10 @@ function Footer() {
 export default function KoronakHidakPage() {
   return (
     <div className="bg-white min-h-screen selection:bg-sky-200 selection:text-sky-900">
+      <title>{seoTitle}</title>
+      <meta name="description" content={seoDescription} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      
       <Navigation />
       <main>
         <ServiceHero />
