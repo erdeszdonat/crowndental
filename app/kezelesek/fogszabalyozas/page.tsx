@@ -22,8 +22,7 @@ import {
   ArrowRight,
   Plus,
   Minus,
-  Smile,
-  CheckCircle2
+  Smile
 } from 'lucide-react';
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -79,13 +78,12 @@ function Navigation() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// HERO SECTION (Sanity kép betöltéssel)
+// HERO SECTION
 // ═══════════════════════════════════════════════════════════════════════════
 function ServiceHero() {
   const [imageUrl, setImageUrl] = useState("https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80&w=2070&auto=format&fit=crop");
 
   useEffect(() => {
-    // Lekérjük a képet a Sanity-ből a 'fogszabalyozas' slug alapján
     const fetchImage = async () => {
       try {
         const query = `*[_type == "treatment" && slug.current == "fogszabalyozas"][0]{"url": mainImage.asset->url}`;
@@ -222,6 +220,7 @@ function ProcessSection() {
     { step: 4, title: 'Aktiválás és kontroll', desc: 'Rendszeres (általában havi) kontrollok során állítunk a készüléken, hogy a fogak a megfelelő irányba mozduljanak.', time: '12-24 hónap' },
     { step: 5, title: 'Retenció', desc: 'A rögzített készülék levétele után egy vékony sínnel fixáljuk az eredményt, hogy a mosolya örökre ilyen maradjon.', time: 'Folyamatos' },
   ];
+  
   return (
     <section className="py-24 bg-white">
       <div className="container mx-auto px-4 max-w-4xl">
@@ -232,4 +231,202 @@ function ProcessSection() {
         <div className="space-y-8">
           {steps.map((s, i) => (
             <div key={i} className="flex flex-col md:flex-row gap-6 bg-gray-50 p-6 md:p-8 rounded-3xl border border-gray-100 items-start md:items-center">
-              <div className="flex-shrink-0 w-16
+              <div className="flex-shrink-0 w-16 h-16 bg-white border-2 border-violet-100 text-violet-600 font-black text-2xl rounded-2xl flex items-center justify-center shadow-sm">
+                {s.step}.
+              </div>
+              <div className="flex-1">
+                <h4 className="text-2xl font-bold text-gray-900 mb-2">{s.title}</h4>
+                <p className="text-gray-600 text-lg leading-relaxed">{s.desc}</p>
+              </div>
+              <div className="flex-shrink-0 md:text-right">
+                <div className="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full border border-gray-200 text-gray-600 font-medium shadow-sm">
+                  <Clock className="w-4 h-4 text-violet-500" /> {s.time}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// ANIMÁLT IDŐPONTFOGLALÁS CTA
+// ═══════════════════════════════════════════════════════════════════════════
+function AppointmentCTASection() {
+  return (
+    <section className="py-24 bg-gray-50 relative overflow-hidden">
+      <div className="absolute inset-0 bg-violet-50/50" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-violet-200/40 rounded-full blur-[100px]" />
+      
+      <div className="relative z-10 container mx-auto px-4">
+        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-4xl mx-auto">
+          <motion.div animate={{ y: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }} className="bg-gradient-to-br from-violet-600 to-fuchsia-600 rounded-[2.5rem] p-10 md:p-16 text-center shadow-2xl shadow-violet-600/20 border border-white/10 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-black/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-white/10 backdrop-blur-md rounded-2xl text-white mb-8 border border-white/20 shadow-inner">
+              <Calendar className="w-10 h-10" />
+            </div>
+            <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight tracking-tight">Készen áll a <span className="text-violet-200">tökéletes mosolyra?</span></h2>
+            <p className="text-lg md:text-xl text-violet-100 mb-10 max-w-2xl mx-auto font-light leading-relaxed">
+              Ne halogassa tovább! Kérjen időpontot szakorvosi konzultációra, ahol részletesen átbeszéljük a lehetőségeit és megtervezzük a személyre szabott kezelését.
+            </p>
+            <Link href="/idopont" className="inline-flex items-center gap-3 px-10 py-5 bg-white text-violet-700 font-extrabold rounded-full shadow-xl hover:shadow-2xl hover:scale-105 hover:bg-gray-50 transition-all duration-300 group">
+              <span className="text-lg">Időpontot foglalok</span>
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// GYIK
+// ═══════════════════════════════════════════════════════════════════════════
+function FAQSection() {
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const faqs = [
+    { question: 'Fájdalmas a fogszabályozás?', answer: 'Maga a felhelyezés nem fájdalmas. Az aktiválásokat követő 2-3 napban enyhe feszítő érzés jelentkezhet, ami teljesen természetes, hiszen a fogak mozgásban vannak.' },
+    { question: 'Felnőttként is belekezdhetek?', answer: 'Természetesen! Manapság a pácienseink közel fele felnőtt. Nekik különösen ajánljuk az esztétikus kerámia vagy a szinte láthatatlan sínrendszerű megoldásainkat.' },
+    { question: 'Mennyi ideig tart a kezelés?', answer: 'Ettől függ a probléma súlyossága, de általában 1.5 - 2 év. Kisebb esztétikai korrekciók akár 6-10 hónap alatt is elvégezhetőek.' },
+    { question: 'Hogyan kell tisztítani a készüléket?', answer: 'A rögzített készülékhez speciális fogkefét és fogköztisztítót javasolunk, aminek használatát a felhelyezéskor alaposan megmutatjuk.' },
+  ];
+  return (
+    <section className="py-24 bg-white border-t border-gray-100">
+      <div className="container mx-auto px-4 max-w-3xl">
+        <div className="text-center mb-16">
+          <h2 className="text-violet-600 font-bold text-4xl mb-4">Gyakori Kérdések</h2>
+        </div>
+        <div className="space-y-4">
+          {faqs.map((faq, index) => (
+            <div key={index} className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
+              <button className="w-full px-6 py-5 text-left flex items-center justify-between" onClick={() => setOpenIndex(openIndex === index ? null : index)}>
+                <span className="font-bold text-gray-900 text-lg">{faq.question}</span>
+                <ChevronDown className={`w-5 h-5 text-violet-600 transition-transform ${openIndex === index ? 'rotate-180' : ''}`} />
+              </button>
+              {openIndex === index && (
+                <div className="px-6 pb-6 text-gray-600 text-lg border-t border-gray-50 pt-4">{faq.answer}</div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// PRÉMIUM 2026 FOOTER
+// ═══════════════════════════════════════════════════════════════════════════
+function Footer() {
+  return (
+    <footer className="bg-gray-950 pt-20 pb-10 border-t border-gray-900 text-gray-300">
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+          
+          <div>
+            <div className="bg-white inline-block p-2 rounded-xl mb-6">
+              <Image src="/logo.webp" alt="Crown Dental Logo" width={160} height={50} className="object-contain" />
+            </div>
+            <p className="text-gray-400 mb-6 leading-relaxed">
+              Kiváló minőségű fogászat saját fogtechnikai laborral, kompromisszumok nélkül. Kezelések Esztergomban, és hamarosan Budapesten is.
+            </p>
+            <div className="flex gap-4">
+              <a href="https://facebook.com" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-sky-600 hover:text-white transition-colors">
+                <span className="font-bold">f</span>
+              </a>
+              <a href="https://instagram.com" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-sky-600 hover:text-white transition-colors">
+                <span className="font-bold">in</span>
+              </a>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-white font-bold text-lg mb-6 uppercase tracking-wider">Szolgáltatások</h4>
+            <ul className="space-y-4">
+              <li><Link href="/kezelesek/implantatum" className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Implantáció</Link></li>
+              <li><Link href="/kezelesek/fogszabalyozas" className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Fogszabályozás</Link></li>
+              <li><Link href="/kezelesek/koronak-es-hidak" className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Koronák és Hidak</Link></li>
+              <li><Link href="/kezelesek/fogfeherites" className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Fogfehérítés</Link></li>
+              <li><Link href="/kezelesek" className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Teljes Árlista</Link></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-white font-bold text-lg mb-6 uppercase tracking-wider">Kapcsolat</h4>
+            <ul className="space-y-5">
+              <li className="flex items-start gap-3">
+                <MapPin className="w-5 h-5 text-sky-500 mt-1" />
+                <div>
+                  <span className="block text-white font-semibold">Esztergomi Rendelő</span>
+                  <a href="https://share.google/UV0bxLOGoyQdgH826" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
+                    2500 Esztergom, Petőfi Sándor utca 11.
+                  </a>
+                </div>
+              </li>
+              <li className="flex items-start gap-3">
+                <MapPin className="w-5 h-5 text-amber-500 mt-1" />
+                <div>
+                  <span className="block text-white font-semibold">Budapesti Rendelő</span>
+                  <a href="https://maps.google.com/?q=1039+Budapest+Királyok+útja+55" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
+                    1039 Budapest, Királyok útja 55.
+                  </a>
+                </div>
+              </li>
+              <li className="flex items-center gap-3">
+                <Phone className="w-5 h-5 text-sky-500" />
+                <a href="tel:+36705646837" className="hover:text-white transition-colors">+36 70 564 6837</a>
+              </li>
+              <li className="flex items-center gap-3">
+                <Mail className="w-5 h-5 text-sky-500" />
+                <a href="mailto:info@crowndental.hu" className="hover:text-white transition-colors">info@crowndental.hu</a>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-white font-bold text-lg mb-6 uppercase tracking-wider">Jogi Információk</h4>
+            <ul className="space-y-4">
+              <li><Link href="/aszf" className="text-gray-400 hover:text-white transition-colors">Általános Szerződési Feltételek</Link></li>
+              <li><Link href="/adatkezeles" className="text-gray-400 hover:text-white transition-colors">Adatkezelési Tájékoztató (GDPR)</Link></li>
+              <li><Link href="/impresszum" className="text-gray-400 hover:text-white transition-colors">Impresszum</Link></li>
+              <li><Link href="/cookie-tajekoztato" className="text-gray-400 hover:text-white transition-colors">Sütik (Cookie) kezelése</Link></li>
+            </ul>
+          </div>
+
+        </div>
+
+        <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
+          <p>© 2026 Crown Dental Praxis és Labor Fogászati Kft. Minden jog fenntartva.</p>
+          <p className="flex items-center gap-2">
+            Készítette: 
+            <span className="text-white text-2xl tracking-wider ml-1" style={{ fontFamily: "'Great Vibes', 'Brush Script MT', cursive" }}>
+              Crown Dental
+            </span>
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+export default function FogszabalyozasPage() {
+  return (
+    <div className="bg-white min-h-screen">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <Navigation />
+      <main>
+        <ServiceHero />
+        <ProblemSolution />
+        <Benefits />
+        <ProcessSection />
+        <AppointmentCTASection />
+        <FAQSection />
+      </main>
+      <Footer />
+    </div>
+  );
+}
