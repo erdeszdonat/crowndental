@@ -4,7 +4,7 @@ import { Resend } from 'resend';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export async function POST(req: Request) {
-  console.log("--- AI KALKULÁTOR ANALÍZIS INDÍTÁSA (Gemini 2.5) ---");
+  console.log("--- AI KALKULÁTOR ANALÍZIS INDÍTÁSA (Biztonsági Fallback verzió) ---");
   
   try {
     const formData = await req.formData();
@@ -18,21 +18,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Hiányzó adatok az űrlapból.' }, { status: 400 });
     }
 
-    // 1. KULCS ELLENŐRZÉSE
     const apiKey = process.env.GEMINI_API_KEY || process.env.GENINI_API_KEY;
-
     if (!apiKey) {
-      return NextResponse.json({ 
-        error: 'Rendszerhiba: Az AI kulcs nem olvasható a szerveren. Kérjük, végezzen egy CLEAN REDEPLOY-t!' 
-      }, { status: 500 });
+      return NextResponse.json({ error: 'Rendszerhiba: Az AI kulcs nem olvasható.' }, { status: 500 });
     }
 
-    // 2. GEMINI KONFIGURÁCIÓ - ÁTÁLLÍTVA GEMINI 2.5 FLASH MODELLRE
     const genAI = new GoogleGenerativeAI(apiKey);
-    
-    // A listád alapján ez a modell érhető el számodra a legmagasabb verzióban
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
-
     const arrayBuffer = await file.arrayBuffer();
     const base64Data = Buffer.from(arrayBuffer).toString('base64');
 
@@ -53,9 +44,8 @@ export async function POST(req: Request) {
     - Fogfehérítés: 45.000 Ft
     
     SZABÁLYOK:
-    1. Ha egy tétel nincs a listán, adj meg egy 25%-kal olcsóbb árat nálunk, mint amit a fájlban találtál.
-    2. Mindig számold ki a végösszeget mindkét oldalon.
-    3. Csak érvényes JSON struktúrában válaszolj!
+    1. Ha egy tétel nincs a listán, adj meg egy 25%-kal olcsóbb árat nálunk, mint a fájlban talált ár.
+    2. Csak érvényes JSON struktúrában válaszolj!
     
     FORMÁTUM:
     {
@@ -65,33 +55,38 @@ export async function POST(req: Request) {
       "savings": 35000
     }`;
 
-    console.log("Fájl küldése a Gemini 2.5 Flash AI-nak...");
-    
+    let aiResponse;
     let responseText = "";
+
+    // --- FALLBACK ÉS RETRY LOGIKA ---
     try {
-      const result = await model.generateContent([
+      console.log("Próbálkozás a Gemini 2.5 Flash modellel...");
+      const model25 = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+      const result = await model25.generateContent([
         prompt,
         { inlineData: { data: base64Data, mimeType: file.type } }
       ]);
-      const response = await result.response;
-      responseText = response.text();
-    } catch (aiErr: any) {
-      console.error("Gemini 2.5 API Hiba:", aiErr);
-      return NextResponse.json({ error: `AI hiba: ${aiErr.message}` }, { status: 500 });
+      aiResponse = await result.response;
+      responseText = aiResponse.text();
+    } catch (err: any) {
+      // Ha 503 (High Demand) vagy egyéb szerverhiba, akkor azonnal váltunk a stabil 1.5-re
+      console.warn("Gemini 2.5 túlterhelt, váltás a stabil 1.5 Flash modellre...");
+      const model15 = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+      const result = await model15.generateContent([
+        prompt,
+        { inlineData: { data: base64Data, mimeType: file.type } }
+      ]);
+      aiResponse = await result.response;
+      responseText = aiResponse.text();
     }
 
-    // JSON kinyerése a válaszból
     const jsonMatch = responseText.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
-      return NextResponse.json({ error: 'Az AI válasza nem tartalmaz feldolgozható adatokat.' }, { status: 500 });
-    }
-
+    if (!jsonMatch) throw new Error("Érvénytelen AI válasz");
     const aiResult = JSON.parse(jsonMatch[0]);
 
     // 3. SUPABASE MENTÉS
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    
     if (supabaseUrl && supabaseKey) {
       try {
         const supabase = createClient(supabaseUrl, supabaseKey);
@@ -101,12 +96,10 @@ export async function POST(req: Request) {
             new_total: aiResult.ourTotal,
             savings: aiResult.savings,
         }]);
-      } catch (dbErr) {
-        console.error("Adatbázis hiba:", dbErr);
-      }
+      } catch (dbErr) { console.error("DB hiba:", dbErr); }
     }
 
-    // 4. RESEND E-MAIL KÜLDÉS
+    // 4. RESEND E-MAIL
     const resendKey = process.env.RESEND_API_KEY;
     if (resendKey) {
       try {
@@ -126,7 +119,7 @@ export async function POST(req: Request) {
                 <p style="margin-top:10px; opacity:0.9;">Kielemeztük a feltöltött árajánlatot.</p>
               </div>
               <div style="padding:30px;">
-                <p style="font-size:16px;">Örömmel értesítjük, hogy saját laborunknak köszönhetően <strong>${aiResult.savings.toLocaleString()} Ft-ot spórolhat</strong> velünk!</p>
+                <p style="font-size:16px;">Saját laborunknak köszönhetően <strong>${aiResult.savings.toLocaleString()} Ft-ot spórolhat</strong> velünk!</p>
                 <div style="background:#f0f9ff; padding:20px; border-radius:8px; text-align:center; margin:25px 0;">
                   <p style="margin:0; color:#0369a1;">Az Ön megtakarítása:</p>
                   <h2 style="margin:5px 0 0 0; color:#0284c7; font-size:32px;">${aiResult.savings.toLocaleString()} Ft</h2>
@@ -135,19 +128,17 @@ export async function POST(req: Request) {
                   <thead><tr style="text-align:left; color:#6b7280; font-size:12px; text-transform:uppercase;"><th>Kezelés</th><th>Másik hely</th><th>Crown Dental</th></tr></thead>
                   <tbody>${itemsHtml}</tbody>
                 </table>
-                <p style="margin-top:30px; color:#666; font-size:14px;">Kollégáink hamarosan keresni fogják a megadott (<strong>${phone}</strong>) telefonszámon konzultáció egyeztetése céljából.</p>
+                <p style="margin-top:30px; color:#666; font-size:14px;">Kollégáink hamarosan keresni fogják a megadott (<strong>${phone}</strong>) telefonszámon.</p>
               </div>
             </div>`
         });
-      } catch (mailErr) {
-        console.error("Email küldési hiba:", mailErr);
-      }
+      } catch (mailErr) { console.error("Mail hiba:", mailErr); }
     }
 
     return NextResponse.json({ success: true, result: aiResult });
 
   } catch (error: any) {
-    console.error("Váratlan hiba:", error);
-    return NextResponse.json({ error: `Szerverhiba történt: ${error.message}` }, { status: 500 });
+    console.error("Végzetes API hiba:", error);
+    return NextResponse.json({ error: 'A szolgáltatás átmenetileg túlterhelt. Kérjük, próbálja meg 1 perc múlva!' }, { status: 500 });
   }
 }
