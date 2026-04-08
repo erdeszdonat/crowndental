@@ -18,6 +18,16 @@ export const treatmentType = defineType({
       options: { source: 'title' },
       validation: (Rule) => Rule.required(),
     }),
+    // --- ÚJ KÉPFELTÖLTŐ MEZŐ ---
+    defineField({
+      name: 'mainImage',
+      title: 'Főkép (Ezt fogja optimalizálni a Sanity)',
+      type: 'image',
+      options: {
+        hotspot: true, // Engedélyezi a kép kivágásának megadását az adminban
+      },
+    }),
+    // ---------------------------
     defineField({
       name: 'seoTitle',
       title: 'SEO Title (A CSV-ből)',
