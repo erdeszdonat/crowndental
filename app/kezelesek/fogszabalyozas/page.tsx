@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { client } from '@/sanity/lib/client';
+import { createClient } from 'next-sanity';
+import { dataset, projectId } from '@/sanity/env';
 import {
   MapPin,
   Phone,
@@ -24,6 +25,16 @@ import {
   Minus,
   Smile
 } from 'lucide-react';
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SANITY KLIENS (Helyben inicializálva a biztos működésért)
+// ═══════════════════════════════════════════════════════════════════════════
+const client = createClient({
+  projectId,
+  dataset,
+  apiVersion: '2024-03-08',
+  useCdn: true,
+});
 
 // ═══════════════════════════════════════════════════════════════════════════
 // JSON-LD SEO ADATOK
@@ -78,7 +89,7 @@ function Navigation() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// HERO SECTION
+// HERO SECTION (Sanity kép lekéréssel)
 // ═══════════════════════════════════════════════════════════════════════════
 function ServiceHero() {
   const [imageUrl, setImageUrl] = useState("https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80&w=2070&auto=format&fit=crop");
@@ -92,7 +103,7 @@ function ServiceHero() {
           setImageUrl(result.url);
         }
       } catch (error) {
-        console.error("Hiba a Sanity kép betöltésekor:", error);
+        console.error("Sanity kép lekérési hiba:", error);
       }
     };
     fetchImage();
