@@ -1,11 +1,9 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
 import {
   MapPin, Phone, Calendar, ArrowRight, CheckCircle2, Upload, 
   User, Menu, X, ChevronRight, FileText, Loader2, Download, 
@@ -114,7 +112,122 @@ function Hero() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// AI ÁRAJÁNLAT ELEMZŐ (Működő funkciókkal)
+// PDF GENERÁLÓ SEGÉDFÜGGVÉNY (HTML → PDF, ékezetekkel)
+// ═══════════════════════════════════════════════════════════════════════════
+function generateQuotePdfHtml(
+  result: any,
+  patientName: string,
+  phone: string,
+  email: string,
+  nickname: string
+): string {
+  const today = new Date().toLocaleDateString('hu-HU', {
+    year: 'numeric', month: 'long', day: 'numeric',
+  });
+
+  const formatPrice = (n: number) =>
+    n.toLocaleString('hu-HU').replace(/\u00a0/g, ' ') + ' Ft';
+
+  const rows = result.items
+    .map((item: any, i: number) => {
+      const diff = item.competitorPrice - item.ourPrice;
+      const isEven = i % 2 === 0;
+      return `
+        <tr style="background:${isEven ? '#ffffff' : '#f8fafc'};">
+          <td style="padding:10px 14px;border-bottom:1px solid #e5e7eb;font-size:13px;color:#1e293b;">${item.name}</td>
+          <td style="padding:10px 14px;border-bottom:1px solid #e5e7eb;text-align:right;font-size:13px;color:#9ca3af;text-decoration:line-through;">${formatPrice(item.competitorPrice)}</td>
+          <td style="padding:10px 14px;border-bottom:1px solid #e5e7eb;text-align:right;font-size:13px;color:#0369a1;font-weight:600;">${formatPrice(item.ourPrice)}</td>
+          <td style="padding:10px 14px;border-bottom:1px solid #e5e7eb;text-align:right;font-size:13px;color:${diff > 0 ? '#059669' : '#6b7280'};font-weight:600;">${diff > 0 ? '-' + formatPrice(diff) : '—'}</td>
+        </tr>`;
+    })
+    .join('');
+
+  return `
+    <div id="pdf-content" style="width:700px;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;color:#1e293b;padding:40px 44px;background:#fff;">
+      
+      <!-- FEJLÉC -->
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <div>
+          <div style="font-size:28px;font-weight:800;color:#0369a1;letter-spacing:-0.5px;">CROWN DENTAL</div>
+          <div style="font-size:11px;color:#94a3b8;margin-top:2px;letter-spacing:1px;text-transform:uppercase;">Praxis és Labor · Esztergom · Budapest</div>
+        </div>
+        <div style="text-align:right;font-size:12px;color:#6b7280;line-height:1.6;">
+          <div>${today}</div>
+          <div>Tel: +36 70 564 6837</div>
+        </div>
+      </div>
+      <div style="height:3px;background:linear-gradient(90deg,#0284c7,#38bdf8);border-radius:2px;margin-bottom:28px;"></div>
+
+      <!-- CÍM -->
+      <div style="margin-bottom:6px;">
+        <div style="font-size:20px;font-weight:700;color:#0f172a;">Személyre szabott árajánlat</div>
+      </div>
+      <div style="font-size:13px;color:#6b7280;margin-bottom:24px;line-height:1.5;">
+        Készült: <strong style="color:#1e293b;">${nickname || patientName}</strong> részére &nbsp;|&nbsp; Tel: ${phone} &nbsp;|&nbsp; E-mail: ${email}
+      </div>
+
+      <!-- MEGTAKARÍTÁS DOBOZ -->
+      <div style="background:#f0f9ff;border:1.5px solid #bae6fd;border-radius:12px;padding:20px;text-align:center;margin-bottom:28px;">
+        <div style="font-size:12px;color:#0369a1;text-transform:uppercase;letter-spacing:1px;font-weight:600;">Az Ön megtakarítása</div>
+        <div style="font-size:34px;font-weight:800;color:#059669;margin-top:4px;">${formatPrice(result.savings)}</div>
+      </div>
+
+      <!-- TÁBLÁZAT -->
+      <div style="font-size:14px;font-weight:700;color:#0369a1;margin-bottom:10px;">Kezelések részletezése</div>
+      <table style="width:100%;border-collapse:collapse;border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;">
+        <thead>
+          <tr style="background:#f1f5f9;">
+            <th style="padding:10px 14px;text-align:left;font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px;border-bottom:2px solid #0284c7;">Kezelés</th>
+            <th style="padding:10px 14px;text-align:right;font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px;border-bottom:2px solid #0284c7;">Másik árajánlat</th>
+            <th style="padding:10px 14px;text-align:right;font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px;border-bottom:2px solid #0284c7;">Crown Dental</th>
+            <th style="padding:10px 14px;text-align:right;font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px;border-bottom:2px solid #0284c7;">Megtakarítás</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows}
+        </tbody>
+        <tfoot>
+          <tr style="background:#f0f9ff;">
+            <td style="padding:12px 14px;font-weight:700;font-size:14px;border-top:2px solid #0284c7;">Összesen</td>
+            <td style="padding:12px 14px;font-weight:700;font-size:14px;text-align:right;color:#9ca3af;border-top:2px solid #0284c7;text-decoration:line-through;">${formatPrice(result.competitorTotal)}</td>
+            <td style="padding:12px 14px;font-weight:700;font-size:14px;text-align:right;color:#0284c7;border-top:2px solid #0284c7;">${formatPrice(result.ourTotal)}</td>
+            <td style="padding:12px 14px;font-weight:700;font-size:14px;text-align:right;color:#059669;border-top:2px solid #0284c7;">-${formatPrice(result.savings)}</td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <!-- ALÁÍRÁS MEZŐ -->
+      <div style="margin-top:48px;display:flex;justify-content:space-between;">
+        <div style="text-align:center;width:44%;">
+          <div style="border-bottom:1.5px solid #cbd5e1;margin-bottom:8px;height:50px;"></div>
+          <div style="font-size:12px;color:#6b7280;">Páciens aláírása</div>
+        </div>
+        <div style="text-align:center;width:44%;">
+          <div style="border-bottom:1.5px solid #cbd5e1;margin-bottom:8px;height:50px;"></div>
+          <div style="font-size:12px;color:#6b7280;">Kezelőorvos aláírása és pecsétje</div>
+        </div>
+      </div>
+
+      <!-- LÁBLÉC -->
+      <div style="margin-top:40px;padding-top:16px;border-top:1px solid #e5e7eb;">
+        <p style="font-size:10px;color:#9ca3af;text-align:center;line-height:1.6;margin:0 0 6px 0;">
+          Ez egy automatikusan generált árajánlat. A dokumentum kizárólag akkor válik hitelessé,
+          amikor a páciens kinyomtatva magával hozza rendelőnkbe, és a kezelőorvos aláírásával, pecsétjével hitelesíti.
+        </p>
+        <p style="font-size:10px;color:#9ca3af;text-align:center;line-height:1.6;margin:0 0 10px 0;">
+          Az árajánlat a kiállítás napjától számított 30 napig érvényes. Az árak az ÁFÁ-t tartalmazzák.
+          A végleges kezelési terv és összeg a szájüregi vizsgálat után kerül meghatározásra.
+        </p>
+        <p style="font-size:11px;color:#0284c7;text-align:center;font-weight:700;margin:0;">
+          Crown Dental – Saját labor, kiemelkedő minőség, elérhető árak.
+        </p>
+      </div>
+    </div>
+  `;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// AI ÁRAJÁNLAT ELEMZŐ
 // ═══════════════════════════════════════════════════════════════════════════
 function QuoteAnalyzerSection() {
   const [isDragging, setIsDragging] = useState(false);
@@ -122,6 +235,7 @@ function QuoteAnalyzerSection() {
   const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
+  const [pdfGenerating, setPdfGenerating] = useState(false);
   
   const [formData, setFormData] = useState({
     name: '',
@@ -169,7 +283,6 @@ function QuoteAnalyzerSection() {
       data.append('email', formData.email);
       data.append('phone', formData.phone);
 
-      // Itt hívjuk a megírt API-t
       const res = await fetch('/api/analyze-quote', {
         method: 'POST',
         body: data,
@@ -179,10 +292,10 @@ function QuoteAnalyzerSection() {
       
       if (responseData.success) {
         setResult(responseData.result);
-        setStep(4); // Siker esetén átlép a 4. (Eredmény) lépésre
+        setStep(4);
       } else {
         alert("Hiba történt az elemzés során: " + (responseData.error || "Ismeretlen hiba"));
-        setStep(2); // Vissza az űrlaphoz
+        setStep(2);
       }
     } catch (error) {
       console.error("Hálózati hiba:", error);
@@ -193,51 +306,52 @@ function QuoteAnalyzerSection() {
     }
   };
 
-  // PDF Generáló Funkció
-  const downloadPDF = () => {
-    if (!result) return;
-    const doc = new jsPDF();
-    
-    // Fejléc beállítása
-    doc.setFontSize(22);
-    doc.setTextColor(2, 132, 199); // Tailwind sky-600
-    doc.text("Crown Dental - AI Arajanlat Elemzes", 14, 20);
-    
-    doc.setFontSize(12);
-    doc.setTextColor(100, 100, 100);
-    doc.text(`Paciens neve: ${formData.name}`, 14, 30);
-    doc.text(`Datum: ${new Date().toLocaleDateString('hu-HU')}`, 14, 36);
+  // ═══════════════════════════════════════════════════════════════
+  // ELEGÁNS PDF LETÖLTÉS (HTML → Canvas → PDF, ékezetekkel)
+  // ═══════════════════════════════════════════════════════════════
+  const downloadPDF = async () => {
+    if (!result || pdfGenerating) return;
+    setPdfGenerating(true);
 
-    // Táblázat adatok összeállítása
-    const tableColumn = ["Kezeles megnevezese", "Masik rendelo ara", "Crown Dental ar"];
-    const tableRows = result.items.map((item: any) => [
-      item.name,
-      `${item.competitorPrice.toLocaleString('hu-HU')} Ft`,
-      `${item.ourPrice.toLocaleString('hu-HU')} Ft`
-    ]);
+    try {
+      // html2pdf.js dinamikus betöltése
+      const html2pdfModule = await import('html2pdf.js');
+      const html2pdf = html2pdfModule.default;
 
-    // Táblázat generálása a jspdf-autotable segítségével
-    autoTable(doc, {
-      head: [tableColumn],
-      body: tableRows,
-      startY: 45,
-      theme: 'grid',
-      headStyles: { fillColor: [2, 132, 199] }
-    });
+      // Rejtett konténer létrehozása a HTML rendereléshez
+      const container = document.createElement('div');
+      container.style.position = 'fixed';
+      container.style.left = '-9999px';
+      container.style.top = '0';
+      container.innerHTML = generateQuotePdfHtml(
+        result,
+        formData.name,
+        formData.phone,
+        formData.email,
+        formData.nickname
+      );
+      document.body.appendChild(container);
 
-    // Összesítés a táblázat alatt
-    const finalY = (doc as any).lastAutoTable.finalY || 45;
-    doc.setFontSize(14);
-    doc.setTextColor(0, 0, 0);
-    doc.text(`Eredeti ajanlat osszege: ${result.competitorTotal.toLocaleString('hu-HU')} Ft`, 14, finalY + 15);
-    doc.text(`Crown Dental ajanlat: ${result.ourTotal.toLocaleString('hu-HU')} Ft`, 14, finalY + 25);
-    
-    doc.setFontSize(16);
-    doc.setTextColor(22, 163, 74); // Tailwind green-600
-    doc.text(`On megtakaritasa: ${result.savings.toLocaleString('hu-HU')} Ft!`, 14, finalY + 40);
+      const element = container.querySelector('#pdf-content') as HTMLElement;
 
-    // Fájl mentése
-    doc.save("Crown_Dental_Arajanlat.pdf");
+      const opt = {
+        margin:       [8, 0, 8, 0],
+        filename:     `Crown_Dental_Arajanlat_${formData.name.replace(/\s+/g, '_')}.pdf`,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' as const },
+      };
+
+      await html2pdf().set(opt).from(element).save();
+
+      // Tisztítás
+      document.body.removeChild(container);
+    } catch (err) {
+      console.error('PDF generálási hiba:', err);
+      alert('A PDF generálás során hiba történt. Kérjük, próbálja újra.');
+    } finally {
+      setPdfGenerating(false);
+    }
   };
 
   return (
@@ -390,8 +504,16 @@ function QuoteAnalyzerSection() {
                       </div>
 
                       <div className="mt-auto space-y-3">
-                        <button onClick={downloadPDF} className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl transition-colors">
-                          <Download className="w-5 h-5" /> PDF Letöltés
+                        <button 
+                          onClick={downloadPDF} 
+                          disabled={pdfGenerating}
+                          className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl transition-colors disabled:opacity-50"
+                        >
+                          {pdfGenerating ? (
+                            <><Loader2 className="w-5 h-5 animate-spin" /> PDF készítése...</>
+                          ) : (
+                            <><Download className="w-5 h-5" /> PDF Letöltés</>
+                          )}
                         </button>
                         <Link href="/idopont" className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow-lg shadow-sky-600/30 transition-all">
                           <Calendar className="w-5 h-5" /> Ingyenes Konzultáció Kérése
