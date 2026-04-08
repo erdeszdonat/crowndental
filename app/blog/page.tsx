@@ -6,16 +6,15 @@ import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createClient } from 'next-sanity';
 import { dataset, projectId } from '@/sanity/env';
-import { Phone, Calendar, Menu, X, ChevronRight, ChevronDown, BookOpen, Clock, ArrowRight, MapPin, Mail } from 'lucide-react';
+import { Phone, Calendar, Menu, X, ChevronRight, BookOpen, Clock, ArrowRight, MapPin, Mail } from 'lucide-react';
 
 const client = createClient({ projectId, dataset, apiVersion: '2024-03-08', useCdn: true });
 
 // ═══════════════════════════════════════════════════════════════════════════
-// EGYSÉGES NAVIGÁCIÓ (Legördülővel)
+// EGYSÉGES NAVIGÁCIÓ
 // ═══════════════════════════════════════════════════════════════════════════
 function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
-  const [servicesOpen, setServicesOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -23,16 +22,6 @@ function Navigation() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const services = [
-    { name: 'Implantátumok', href: '/kezelesek/implantatum' },
-    { name: 'Fogszabályozás', href: '/kezelesek/fogszabalyozas' },
-    { name: 'Koronák és Hidak', href: '/kezelesek/koronak-hidak' },
-    { name: 'Fogfehérítés', href: '/kezelesek/fogfeherites' },
-    { name: 'Fogsorok', href: '/kezelesek/fogsor' },
-    { name: 'Gyökérkezelés', href: '/kezelesek/gyokerkezeles' },
-    { name: 'Szájsebészet', href: '/kezelesek/szajsebeszet' },
-  ];
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-sm py-0' : 'bg-white border-b border-gray-100 py-2'}`}>
@@ -42,41 +31,12 @@ function Navigation() {
             <Image src="/logo.webp" alt="Crown Dental Logo" width={240} height={70} className="object-contain h-14 w-auto drop-shadow-sm" priority />
           </Link>
 
-          <div className="hidden lg:flex items-center gap-4">
-            <Link href="/" className="px-3 py-2 font-bold text-gray-600 hover:text-sky-600 transition-colors">Főoldal</Link>
-            
-            <div className="relative group">
-              <button
-                className="flex items-center gap-1 px-4 py-2 font-bold text-gray-600 hover:text-sky-600 transition-colors"
-                onMouseEnter={() => setServicesOpen(true)}
-                onMouseLeave={() => setServicesOpen(false)}
-              >
-                Szolgáltatások és Árak <ChevronDown className="w-4 h-4" />
-              </button>
-              
-              <AnimatePresence>
-                {servicesOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute top-full left-0 w-72 bg-white shadow-2xl rounded-2xl border border-gray-100 py-3 z-50 overflow-hidden"
-                    onMouseEnter={() => setServicesOpen(true)}
-                    onMouseLeave={() => setServicesOpen(false)}
-                  >
-                    {services.map((service) => (
-                      <Link key={service.name} href={service.href} className="block px-6 py-3 text-gray-700 hover:bg-sky-50 hover:text-sky-600 hover:pl-8 transition-all font-medium">
-                        {service.name}
-                      </Link>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
-            <Link href="/rolunk" className="px-3 py-2 font-bold text-gray-600 hover:text-sky-600 transition-colors">Rólunk</Link>
-            <Link href="/blog" className="px-4 py-2 font-bold text-sky-600 bg-sky-50 rounded-full transition-colors">Blog</Link>
+          <div className="hidden lg:flex items-center gap-6 xl:gap-8">
+            <Link href="/" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">Főoldal</Link>
+            <Link href="/kezelesek" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">Szolgáltatások & Árak</Link>
+            <Link href="/rolunk" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">Rólunk</Link>
+            <Link href="/blog" className="font-bold text-sky-600 bg-sky-50 px-4 py-2 rounded-full transition-colors">Blog</Link>
+            <Link href="/karrier" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">Karrier</Link>
           </div>
 
           <div className="flex items-center gap-4 z-50">
@@ -107,19 +67,19 @@ function Navigation() {
                 <div className="block px-4 py-3 text-sky-700 bg-sky-50 font-bold rounded-xl">Blog</div>
                 
                 <div className="pt-6 pb-2 border-t border-gray-100 mt-4">
-                  <a href="tel:+36705646837" className="flex justify-center items-center gap-2 w-full py-4 bg-gray-50 text-sky-700 font-bold rounded-xl mb-3">
-                    <Phone className="w-5 h-5" /> +36 70 564 6837
-                  </a>
-                  <Link href="/idopont" className="flex justify-center items-center gap-2 w-full py-4 bg-sky-600 text-white font-bold rounded-xl shadow-md" onClick={() => setIsOpen(false)}>
-                    <Calendar className="w-5 h-5" /> Időpont Foglalás
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </nav>
-    </header>
+              <a href="tel:+36705646837" className="flex justify-center items-center gap-2 w-full py-4 bg-gray-50 text-sky-700 font-bold rounded-xl mb-3">
+                <Phone className="w-5 h-5" /> +36 70 564 6837
+              </a>
+              <Link href="/idopont" className="flex justify-center items-center gap-2 w-full py-4 bg-sky-600 text-white font-bold rounded-xl shadow-md" onClick={() => setIsOpen(false)}>
+                <Calendar className="w-5 h-5" /> Időpont Foglalás
+              </Link>
+            </div>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  </nav>
+</header>
   );
 }
 
