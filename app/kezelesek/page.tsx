@@ -14,17 +14,11 @@ import {
   Menu,
   X,
   ChevronRight,
-  ChevronDown,
   Sparkles,
   Shield,
-  Clock,
-  Banknote,
   Heart,
   ArrowRight,
-  Plus,
-  Minus,
   Smile,
-  CheckCircle2,
   Building2,
   Crown,
   Zap,
@@ -37,7 +31,7 @@ import {
 } from 'lucide-react';
 
 // ═══════════════════════════════════════════════════════════════════════════
-// SANITY KLIENS
+// SANITY KLIENS (Helyi inicializálás a biztos működésért)
 // ═══════════════════════════════════════════════════════════════════════════
 const client = createClient({
   projectId,
@@ -53,110 +47,98 @@ const treatmentCards = [
   {
     id: 'implantatum',
     title: 'Implantátum',
-    description: 'Élethű fogpótlás titánium implantátummal, akár egy nap alatt',
-    icon: <Shield className="w-7 h-7" />,
+    description: 'Élethű fogpótlás titánium implantátummal, akár egy nap alatt.',
+    icon: <Shield className="w-6 h-6 sm:w-7 sm:h-7" />,
     href: '/kezelesek/implantatum',
     color: 'from-rose-500 to-orange-500',
-    bgPattern: 'radial-gradient(circle at 80% 20%, rgba(255,255,255,0.15) 0%, transparent 50%)',
   },
   {
     id: 'fogszabalyozas',
     title: 'Fogszabályozás',
-    description: 'Rögzített és kivehető készülékek gyerekeknek és felnőtteknek',
-    icon: <Smile className="w-7 h-7" />,
+    description: 'Rögzített és kivehető készülékek gyerekeknek és felnőtteknek.',
+    icon: <Smile className="w-6 h-6 sm:w-7 sm:h-7" />,
     href: '/kezelesek/fogszabalyozas',
     color: 'from-violet-500 to-purple-600',
-    bgPattern: 'radial-gradient(circle at 20% 80%, rgba(255,255,255,0.15) 0%, transparent 50%)',
   },
   {
     id: 'koronak-hidak',
     title: 'Koronák és Hidak',
-    description: 'Fémkerámia és cirkónium koronák saját laborból',
-    icon: <Crown className="w-7 h-7" />,
+    description: 'Fémkerámia és cirkónium koronák prémium minőségben, saját laborból.',
+    icon: <Crown className="w-6 h-6 sm:w-7 sm:h-7" />,
     href: '/kezelesek/koronak-es-hidak',
     color: 'from-amber-500 to-yellow-500',
-    bgPattern: 'radial-gradient(circle at 80% 80%, rgba(255,255,255,0.15) 0%, transparent 50%)',
   },
   {
     id: 'fogfeherites',
     title: 'Fogfehérítés',
-    description: 'Professzionális fehérítés otthoni vagy rendelői módszerrel',
-    icon: <Sparkles className="w-7 h-7" />,
+    description: 'Professzionális fehérítés otthoni vagy rendelői módszerrel.',
+    icon: <Sparkles className="w-6 h-6 sm:w-7 sm:h-7" />,
     href: '/kezelesek/fogfeherites',
     color: 'from-sky-400 to-cyan-500',
-    bgPattern: 'radial-gradient(circle at 20% 20%, rgba(255,255,255,0.15) 0%, transparent 50%)',
   },
   {
     id: 'fogsor',
     title: 'Fogsorok',
-    description: 'Kivehető és rögzített fogsorok, alábélelés',
-    icon: <Wrench className="w-7 h-7" />,
+    description: 'Kivehető és rögzített fogsorok, precíz illeszkedés, alábélelés.',
+    icon: <Wrench className="w-6 h-6 sm:w-7 sm:h-7" />,
     href: '/kezelesek/fogsor',
     color: 'from-teal-500 to-emerald-500',
-    bgPattern: 'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.15) 0%, transparent 50%)',
   },
   {
     id: 'gyokerkezeles',
     title: 'Gyökérkezelés',
-    description: 'Fájdalommentes gyökértömés modern technikával',
-    icon: <Activity className="w-7 h-7" />,
+    description: 'Fájdalommentes gépi gyökértömés a legmodernebb technikával.',
+    icon: <Activity className="w-6 h-6 sm:w-7 sm:h-7" />,
     href: '/kezelesek/gyokerkezeles',
     color: 'from-indigo-500 to-blue-600',
-    bgPattern: 'radial-gradient(circle at 80% 50%, rgba(255,255,255,0.15) 0%, transparent 50%)',
   },
   {
     id: 'szajsebeszet',
     title: 'Szájsebészet',
-    description: 'Bölcsességfog eltávolítás, gyökércsúcs rezekció',
-    icon: <Zap className="w-7 h-7" />,
+    description: 'Bölcsességfog eltávolítás és gyökércsúcs rezekció szakértelemmel.',
+    icon: <Zap className="w-6 h-6 sm:w-7 sm:h-7" />,
     href: '/kezelesek/szajsebeszet',
     color: 'from-red-500 to-pink-500',
-    bgPattern: 'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.15) 0%, transparent 50%)',
   },
   {
     id: 'allapotfelmeres',
     title: 'Állapotfelmérés',
-    description: 'Konzultáció, góckutatás, kezelési terv',
-    icon: <Search className="w-7 h-7" />,
+    description: 'Részletes konzultáció, panoráma röntgen és személyre szabott kezelési terv.',
+    icon: <Search className="w-6 h-6 sm:w-7 sm:h-7" />,
     href: '/kezelesek/allapotfelmeres',
     color: 'from-green-500 to-lime-500',
-    bgPattern: 'radial-gradient(circle at 50% 20%, rgba(255,255,255,0.15) 0%, transparent 50%)',
   },
   {
     id: 'esztetikai-fogaszat',
     title: 'Esztétikai Fogászat',
-    description: 'Héjak, tömések, fogkőeltávolítás a tökéletes mosolyért',
-    icon: <Eye className="w-7 h-7" />,
+    description: 'Kerámia héjak és láthatatlan tömések a tökéletes mosolyért.',
+    icon: <Eye className="w-6 h-6 sm:w-7 sm:h-7" />,
     href: '/kezelesek/esztetikai-fogaszat',
     color: 'from-fuchsia-500 to-pink-500',
-    bgPattern: 'radial-gradient(circle at 80% 80%, rgba(255,255,255,0.15) 0%, transparent 50%)',
   },
   {
     id: 'foghuzas',
     title: 'Foghúzás',
-    description: 'Kíméletes fogeltávolítás, műtéti és hagyományos',
-    icon: <Heart className="w-7 h-7" />,
+    description: 'Kíméletes fogeltávolítás gyors gyógyulással.',
+    icon: <Heart className="w-6 h-6 sm:w-7 sm:h-7" />,
     href: '/kezelesek/foghuzas',
     color: 'from-orange-500 to-red-500',
-    bgPattern: 'radial-gradient(circle at 20% 80%, rgba(255,255,255,0.15) 0%, transparent 50%)',
   },
   {
     id: 'gockutatas',
     title: 'Góckutatás',
-    description: 'Rejtett gyulladások felderítése, háttér-panaszok',
-    icon: <Microscope className="w-7 h-7" />,
+    description: 'Rejtett gyulladások és gócok felderítése modern 3D CT-vel.',
+    icon: <Microscope className="w-6 h-6 sm:w-7 sm:h-7" />,
     href: '/kezelesek/gockutatas',
     color: 'from-slate-500 to-gray-600',
-    bgPattern: 'radial-gradient(circle at 50% 80%, rgba(255,255,255,0.15) 0%, transparent 50%)',
   },
   {
     id: 'gyerekfogaszat',
     title: 'Gyermekfogászat',
-    description: 'Tejfog kezelések, barázdazárás játékos környezetben',
-    icon: <Baby className="w-7 h-7" />,
+    description: 'Tejfog kezelések és barázdazárás barátságos, türelmes környezetben.',
+    icon: <Baby className="w-6 h-6 sm:w-7 sm:h-7" />,
     href: '/kezelesek/gyerekfogaszat',
     color: 'from-pink-400 to-rose-400',
-    bgPattern: 'radial-gradient(circle at 80% 20%, rgba(255,255,255,0.15) 0%, transparent 50%)',
   },
 ];
 
@@ -237,75 +219,42 @@ const priceCategories = [
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════
-// NAVIGÁCIÓ (Legördülővel)
+// NAVIGÁCIÓ (Pontosan a Főoldallal megegyező, letisztult)
 // ═══════════════════════════════════════════════════════════════════════════
 function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
-  const [servicesOpen, setServicesOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-  const services = [
-    { name: 'Implantátumok', href: '/kezelesek/implantatum' },
-    { name: 'Fogszabályozás', href: '/kezelesek/fogszabalyozas' },
-    { name: 'Koronák és Hidak', href: '/kezelesek/koronak-es-hidak' },
-    { name: 'Fogfehérítés', href: '/kezelesek/fogfeherites' },
-    { name: 'Fogsorok', href: '/kezelesek/fogsor' },
-    { name: 'Gyökérkezelés', href: '/kezelesek/gyokerkezeles' },
-    { name: 'Szájsebészet', href: '/kezelesek/szajsebeszet' },
-  ];
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm border-b border-gray-100">
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-sm py-0' : 'bg-white border-b border-gray-100 py-2'}`}>
       <nav className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-20">
-          <Link href="/" className="flex items-center relative h-full py-2 z-50">
-            <Image src="/logo.webp" alt="Crown Dental Logo" width={240} height={70} className="object-contain h-14 w-auto drop-shadow-sm" priority />
+        <div className="flex items-center justify-between h-16 md:h-20">
+          <Link href="/" className="flex items-center relative h-full py-1 z-50">
+            <Image src="/logo.webp" alt="Crown Dental Logo" width={280} height={80} className="object-contain h-full w-auto" priority />
           </Link>
-
-          <div className="hidden lg:flex items-center gap-4">
-            <Link href="/" className="px-3 py-2 font-bold text-gray-600 hover:text-sky-600 transition-colors">Főoldal</Link>
-            
-            <div className="relative group">
-              <button
-                className="flex items-center gap-1 px-4 py-2 font-bold text-sky-600 bg-sky-50 rounded-full transition-colors"
-                onMouseEnter={() => setServicesOpen(true)}
-                onMouseLeave={() => setServicesOpen(false)}
-              >
-                Szolgáltatások és Árak <ChevronDown className="w-4 h-4" />
-              </button>
-              
-              <AnimatePresence>
-                {servicesOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute top-full left-0 w-72 bg-white shadow-2xl rounded-2xl border border-gray-100 py-3 z-50 overflow-hidden"
-                    onMouseEnter={() => setServicesOpen(true)}
-                    onMouseLeave={() => setServicesOpen(false)}
-                  >
-                    {services.map((service) => (
-                      <Link key={service.name} href={service.href} className="block px-6 py-3 text-gray-700 hover:bg-sky-50 hover:text-sky-600 hover:pl-8 transition-all font-medium">
-                        {service.name}
-                      </Link>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
-            <Link href="/rolunk" className="px-3 py-2 font-bold text-gray-600 hover:text-sky-600 transition-colors">Rólunk</Link>
+          <div className="hidden lg:flex items-center gap-6 xl:gap-8">
+            <Link href="/" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">Főoldal</Link>
+            {/* Itt már nincs legördülő, csak a gyönyörű kék háttér */}
+            <Link href="/kezelesek" className="font-bold text-sky-600 bg-sky-50 px-4 py-2 rounded-full transition-colors">Szolgáltatások & Árak</Link>
+            <Link href="/rolunk" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">Rólunk</Link>
+            <Link href="/blog" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">Blog</Link>
+            <Link href="/karrier" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">Karrier</Link>
           </div>
-
           <div className="flex items-center gap-4 z-50">
             <a href="tel:+36705646837" className="hidden xl:flex items-center gap-2 font-bold text-sky-700 hover:text-sky-600 mr-2">
               <Phone className="w-5 h-5" /> +36 70 564 6837
             </a>
-            <Link href="/idopont" className="hidden sm:inline-flex items-center gap-2 px-6 py-3 bg-sky-600 text-white font-bold rounded-full transition-all shadow-md hover:shadow-xl hover:bg-sky-700 transform hover:-translate-y-0.5">
-              <Calendar className="w-5 h-5" /> Időpontot kérek
+            <Link href="/idopont" className="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 bg-sky-600 text-white font-bold rounded-full transition-all shadow-md hover:shadow-xl hover:bg-sky-700 transform hover:-translate-y-0.5 text-sm md:text-base">
+              <Calendar className="w-4 h-4 md:w-5 md:h-5" /> Időpontot kérek
             </Link>
             <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden p-2 rounded-lg text-gray-900 bg-gray-100 hover:bg-gray-200 transition-colors">
-              {isOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
+              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </div>
@@ -316,19 +265,14 @@ function Navigation() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="lg:hidden absolute top-20 left-0 right-0 bg-white shadow-2xl border-t border-gray-100 overflow-hidden z-40"
+              className="lg:hidden absolute top-[72px] md:top-20 left-0 right-0 bg-white shadow-2xl border-t border-gray-100 overflow-hidden z-40"
             >
               <div className="px-6 py-6 space-y-3 max-h-[80vh] overflow-y-auto">
-                <Link href="/" className="block px-4 py-3 text-gray-600 font-bold rounded-xl hover:bg-sky-50" onClick={() => setIsOpen(false)}>Főoldal</Link>
-                <div className="block px-4 py-3 text-sky-700 bg-sky-50 font-bold rounded-xl">Szolgáltatások és Árak</div>
-                <div className="pl-4 border-l-2 border-sky-100 ml-6 space-y-1 my-2">
-                  {services.map((s) => (
-                    <Link key={s.name} href={s.href} className="block px-4 py-2 text-gray-600 hover:text-sky-600 text-sm font-medium" onClick={() => setIsOpen(false)}>
-                      • {s.name}
-                    </Link>
-                  ))}
-                </div>
-                <Link href="/rolunk" className="block px-4 py-3 text-gray-600 font-bold rounded-xl hover:bg-sky-50" onClick={() => setIsOpen(false)}>Rólunk</Link>
+                <Link href="/" className="block px-4 py-3 text-gray-800 font-bold rounded-xl hover:bg-sky-50" onClick={() => setIsOpen(false)}>Főoldal</Link>
+                <Link href="/kezelesek" className="block px-4 py-3 text-sky-700 bg-sky-50 font-bold rounded-xl" onClick={() => setIsOpen(false)}>Szolgáltatások & Árak</Link>
+                <Link href="/rolunk" className="block px-4 py-3 text-gray-800 font-bold rounded-xl hover:bg-sky-50" onClick={() => setIsOpen(false)}>Rólunk</Link>
+                <Link href="/blog" className="block px-4 py-3 text-gray-800 font-bold rounded-xl hover:bg-sky-50" onClick={() => setIsOpen(false)}>Blog</Link>
+                <Link href="/karrier" className="block px-4 py-3 text-gray-800 font-bold rounded-xl hover:bg-sky-50" onClick={() => setIsOpen(false)}>Karrier</Link>
                 
                 <div className="pt-6 pb-2 border-t border-gray-100 mt-4">
                   <a href="tel:+36705646837" className="flex justify-center items-center gap-2 w-full py-4 bg-gray-50 text-sky-700 font-bold rounded-xl mb-3">
@@ -375,41 +319,51 @@ function HeroSection() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// KEZELÉS KÁRTYÁK SZEKCIÓ (Sanity képekkel és leírásokkal)
+// ÚJRATERVEZETT: PRÉMIUM KÉPES KÁRTYÁK
 // ═══════════════════════════════════════════════════════════════════════════
 function TreatmentCard({ treatment, index, imageUrl }: { treatment: typeof treatmentCards[0]; index: number; imageUrl?: string }) {
   return (
     <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ delay: index * 0.05, duration: 0.4 }}>
-      <Link href={treatment.href} className="group block h-full">
-        <div 
-          className={`relative h-full bg-gradient-to-br ${treatment.color} rounded-2xl sm:rounded-3xl p-5 sm:p-6 overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-gray-900/20`}
-          style={{ backgroundImage: treatment.bgPattern }}
-        >
-          {/* SANITY KÉP OVERLAY (Javított, élesebb verzió) */}
+      <Link href={treatment.href} className="group block h-[320px] sm:h-[360px]">
+        <div className={`relative h-full w-full rounded-[2rem] overflow-hidden shadow-lg transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-sky-900/20 ${!imageUrl ? `bg-gradient-to-br ${treatment.color}` : 'bg-gray-900'}`}>
+          
+          {/* TELJES HÁTTÉRKÉP SÖTÉTÍTŐ GRADIENSSEL */}
           {imageUrl && (
-            <div className="absolute top-0 right-0 w-36 h-36 opacity-30 group-hover:opacity-50 transition-opacity duration-300 z-0">
-              <img src={`${imageUrl}?auto=format&w=200`} alt={treatment.title} className="object-cover w-full h-full rounded-bl-[4rem] shadow-inner" />
-            </div>
+            <>
+              <img 
+                src={`${imageUrl}?auto=format&w=600`} 
+                alt={treatment.title} 
+                className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700" 
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-900/60 to-transparent opacity-90" />
+            </>
           )}
 
-          {/* Shine effect on hover */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 z-0" />
-          
-          <div className="relative z-10">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white/20 backdrop-blur-sm rounded-xl sm:rounded-2xl flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform duration-300">
+          {/* HA NINCS KÉP, AKKOR A SZÍNES HÁTTÉR */}
+          {!imageUrl && (
+            <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_80%_20%,_rgba(255,255,255,0.4)_0%,_transparent_50%)]" />
+          )}
+
+          {/* TARTALOM (Mindig fehér, árnyékolt, hogy jól olvasható legyen) */}
+          <div className="absolute inset-0 p-6 sm:p-8 flex flex-col justify-end z-10">
+            <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform duration-300 border border-white/20 shadow-inner">
               {treatment.icon}
             </div>
             
-            <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 leading-tight">{treatment.title}</h3>
-            {/* LEÍRÁS HOZZÁADVA */}
-            <p className="text-white/80 text-sm sm:text-base leading-relaxed mb-4">{treatment.description}</p>
+            <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-2 leading-tight drop-shadow-md">
+              {treatment.title}
+            </h3>
             
-            {/* "RÉSZLETEK" ÉS NYILACSKA VISSZATÉVE ÉS STÍLUSOZVA */}
-            <div className="flex items-center gap-2 text-white/90 text-sm sm:text-base font-semibold group-hover:gap-3 transition-all">
+            <p className="text-gray-200 text-sm sm:text-base leading-relaxed mb-6 line-clamp-2 drop-shadow-sm font-light">
+              {treatment.description}
+            </p>
+            
+            <div className="flex items-center gap-2 text-sky-400 text-sm sm:text-base font-bold uppercase tracking-wider group-hover:gap-3 transition-all mt-auto">
               <span>Részletek</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform duration-300" />
             </div>
           </div>
+
         </div>
       </Link>
     </motion.div>
@@ -425,13 +379,9 @@ function TreatmentCardsSection() {
         const query = `*[_type == "treatment"]{ "slug": slug.current, "imageUrl": mainImage.asset->url }`;
         const results = await client.fetch(query);
         const imageMap: Record<string, string> = {};
-        
         results.forEach((item: any) => {
-          if (item.slug && item.imageUrl) {
-            imageMap[item.slug] = item.imageUrl;
-          }
+          if (item.slug && item.imageUrl) { imageMap[item.slug] = item.imageUrl; }
         });
-        
         setSanityImages(imageMap);
       } catch (error) {
         console.error("Hiba a Sanity képek lekérésekor:", error);
@@ -441,9 +391,10 @@ function TreatmentCardsSection() {
   }, []);
 
   return (
-    <section className="py-12 sm:py-16 bg-gradient-to-b from-gray-50 to-white">
+    <section className="py-12 sm:py-16 bg-white">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
+        {/* Itt 1, 2 vagy 3 oszlopos elrendezés lesz, hogy jó nagyok legyenek a képek */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {treatmentCards.map((treatment, index) => (
             <TreatmentCard 
               key={treatment.id} 
@@ -463,9 +414,8 @@ function TreatmentCardsSection() {
 // ═══════════════════════════════════════════════════════════════════════════
 function PriceListSection() {
   return (
-    <section id="arlista" className="py-16 sm:py-24 bg-white relative overflow-hidden">
-      {/* Dekoratív blur háttér */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-violet-100/50 rounded-full blur-[100px]" />
+    <section id="arlista" className="py-16 sm:py-24 bg-gray-50 relative overflow-hidden">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-sky-100/50 rounded-full blur-[100px]" />
 
       <div className="relative z-10 container mx-auto px-4">
         <div className="max-w-3xl mx-auto text-center mb-12 sm:mb-16">
@@ -479,7 +429,7 @@ function PriceListSection() {
 
         <div className="max-w-4xl mx-auto space-y-8 sm:space-y-12">
           {priceCategories.map((category, catIndex) => (
-            <motion.div key={category.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ delay: catIndex * 0.1 }} className="bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl shadow-gray-100/50 border border-gray-100">
+            <motion.div key={category.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ delay: catIndex * 0.1 }} className="bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl shadow-gray-200/50 border border-gray-100">
               <div className="bg-gradient-to-r from-gray-800 to-gray-900 px-6 sm:px-8 py-5 sm:py-6">
                 <h3 className="text-xl sm:text-2xl font-bold text-white">{category.title}</h3>
               </div>
@@ -523,7 +473,6 @@ function PriceListSection() {
 function CTASection() {
   return (
     <section className="py-16 sm:py-20 bg-gradient-to-br from-sky-600 via-sky-500 to-violet-600 relative overflow-hidden">
-      {/* Decorative elements */}
       <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-white/10 rounded-full blur-[60px] translate-x-1/2 -translate-y-1/2" />
       <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-white/10 rounded-full blur-[60px] -translate-x-1/2 translate-y-1/2" />
       
@@ -534,7 +483,6 @@ function CTASection() {
           <a href="tel:+36705646837" className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-bold rounded-full transition-all border border-white/30 text-base md:text-lg shadow-inner">
             <Phone className="w-5 h-5" /> +36 70 564 6837
           </a>
-          {/* KONZULTÁCIÓ SZÖVEGE MÓDOSÍTVA */}
           <Link href="/idopont" className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-white hover:bg-gray-50 text-sky-700 font-bold rounded-full transition-all shadow-xl shadow-sky-900/20 text-base md:text-lg">
             <Calendar className="w-5 h-5" /> Szakorvosi Konzultáció
           </Link>
@@ -545,13 +493,13 @@ function CTASection() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// FOOTER (Prémium, négy oszlopos verzió visszaállítva)
+// FOOTER (Megegyezik a főoldallal)
 // ═══════════════════════════════════════════════════════════════════════════
 function Footer() {
   return (
-    <footer className="bg-gray-950 pt-16 sm:pt-20 pb-8 sm:pb-10 border-t border-gray-900 text-gray-300">
+    <footer className="bg-gray-950 pt-20 pb-10 border-t border-gray-900 text-gray-300">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 sm:gap-12 mb-12 sm:mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           
           <div>
             <div className="bg-white inline-block p-2 rounded-xl mb-6">
@@ -572,7 +520,7 @@ function Footer() {
 
           <div>
             <h4 className="text-white font-bold text-lg mb-6 uppercase tracking-wider">Szolgáltatások</h4>
-            <ul className="space-y-3 sm:space-y-4">
+            <ul className="space-y-4">
               <li><Link href="/kezelesek/implantatum" className="hover:text-sky-400 transition-colors flex items-center gap-2 text-sm sm:text-base font-light"><ChevronRight className="w-4 h-4 text-sky-600" /> Implantáció</Link></li>
               <li><Link href="/kezelesek/fogszabalyozas" className="hover:text-sky-400 transition-colors flex items-center gap-2 text-sm sm:text-base font-light"><ChevronRight className="w-4 h-4 text-sky-600" /> Fogszabályozás</Link></li>
               <li><Link href="/kezelesek/koronak-es-hidak" className="hover:text-sky-400 transition-colors flex items-center gap-2 text-sm sm:text-base font-light"><ChevronRight className="w-4 h-4 text-sky-600" /> Koronák és Hidak</Link></li>
@@ -583,22 +531,31 @@ function Footer() {
 
           <div>
             <h4 className="text-white font-bold text-lg mb-6 uppercase tracking-wider">Kapcsolat</h4>
-            <ul className="space-y-4 sm:space-y-5">
+            <ul className="space-y-5">
               <li className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-sky-500 mt-0.5 flex-shrink-0" />
+                <MapPin className="w-5 h-5 text-sky-500 mt-1" />
                 <div>
                   <span className="block text-white font-semibold text-sm sm:text-base">Esztergomi Rendelő</span>
                   <a href="https://share.google/UV0bxLOGoyQdgH826" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors text-sm font-light">
-                    2500 Esztergom, Hősök tere 5.
+                    2500 Esztergom, Petőfi Sándor utca 11.
+                  </a>
+                </div>
+              </li>
+              <li className="flex items-start gap-3">
+                <MapPin className="w-5 h-5 text-amber-500 mt-1" />
+                <div>
+                  <span className="block text-white font-semibold text-sm sm:text-base">Budapesti Rendelő</span>
+                  <a href="https://maps.google.com/?q=1039+Budapest+Királyok+útja+55" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors text-sm font-light">
+                    1039 Budapest, Királyok útja 55.
                   </a>
                 </div>
               </li>
               <li className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-sky-500 flex-shrink-0" />
+                <Phone className="w-5 h-5 text-sky-500" />
                 <a href="tel:+36705646837" className="hover:text-white transition-colors text-sm sm:text-base font-light">+36 70 564 6837</a>
               </li>
               <li className="flex items-center gap-3">
-                <Mail className="w-5 h-5 text-sky-500 flex-shrink-0" />
+                <Mail className="w-5 h-5 text-sky-500" />
                 <a href="mailto:info@crowndental.hu" className="hover:text-white transition-colors text-sm sm:text-base font-light">info@crowndental.hu</a>
               </li>
             </ul>
@@ -606,7 +563,7 @@ function Footer() {
 
           <div>
             <h4 className="text-white font-bold text-lg mb-6 uppercase tracking-wider">Jogi Információk</h4>
-            <ul className="space-y-3 sm:space-y-4">
+            <ul className="space-y-4">
               <li><Link href="/aszf" className="text-gray-400 hover:text-white transition-colors text-sm sm:text-base font-light">Általános Szerződési Feltételek</Link></li>
               <li><Link href="/adatkezeles" className="text-gray-400 hover:text-white transition-colors text-sm sm:text-base font-light">Adatkezelési Tájékoztató (GDPR)</Link></li>
               <li><Link href="/impresszum" className="text-gray-400 hover:text-white transition-colors text-sm sm:text-base font-light">Impresszum</Link></li>
