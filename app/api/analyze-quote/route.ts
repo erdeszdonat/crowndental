@@ -2,9 +2,6 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { execSync } from 'child_process';
-import fs from 'fs';
-import path from 'path';
 
 const wait = (ms: number) => new Promise(res => setTimeout(res, ms));
 
@@ -47,7 +44,7 @@ const CROWN_DENTAL_PRICES: Record<string, string> = {
 };
 
 export async function POST(req: Request) {
-  console.log("--- AI KALKULÁTOR ANALÍZIS INDÍTÁSA (PDF GENERÁLÁSSAL) ---");
+  console.log("--- AI KALKULÁTOR ANALÍZIS INDÍTÁSA ---");
 
   try {
     const formData = await req.formData();
@@ -145,47 +142,7 @@ FORMÁTUM:
     if (!jsonMatch) throw new Error("Hibás válaszformátum az AI-tól.");
     const aiResult = JSON.parse(jsonMatch[0]);
 
-    // 2. PDF GENERÁLÁS Python scripttel
-    let pdfBase64 = "";
-    try {
-      const pdfPayload = JSON.stringify({
-        name: nickname || name,
-        phone,
-        email,
-        items: aiResult.items,
-        competitorTotal: aiResult.competitorTotal,
-        ourTotal: aiResult.ourTotal,
-        savings: aiResult.savings,
-        date: new Date().toLocaleDateString('hu-HU', { year: 'numeric', month: 'long', day: 'numeric' }),
-      });
-
-      // Python scriptet írunk ki temp fájlba és futtatjuk
-      const scriptPath = path.join('/tmp', 'generate_pdf.py');
-      const payloadPath = path.join('/tmp', 'pdf_payload.json');
-      const outputPath = path.join('/tmp', 'arajanlat.pdf');
-
-      fs.writeFileSync(payloadPath, pdfPayload, 'utf-8');
-      fs.writeFileSync(scriptPath, PYTHON_PDF_SCRIPT, 'utf-8');
-
-      execSync(`python3 ${scriptPath} ${payloadPath} ${outputPath}`, {
-        timeout: 15000,
-        encoding: 'utf-8',
-      });
-
-      const pdfBuffer = fs.readFileSync(outputPath);
-      pdfBase64 = pdfBuffer.toString('base64');
-
-      // Tisztítás
-      try { fs.unlinkSync(scriptPath); } catch {}
-      try { fs.unlinkSync(payloadPath); } catch {}
-      try { fs.unlinkSync(outputPath); } catch {}
-
-    } catch (pdfErr: any) {
-      console.error("PDF generálási hiba:", pdfErr.message);
-      // Ha a PDF generálás nem sikerül, folytatjuk a nélkül
-    }
-
-    // 3. SUPABASE MENTÉS
+    // 2. SUPABASE MENTÉS
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
     if (supabaseUrl && supabaseKey) {
@@ -200,78 +157,114 @@ FORMÁTUM:
       } catch (dbErr) { console.error("DB mentési hiba:", dbErr); }
     }
 
-    // 4. RESEND E-MAIL KÜLDÉS PDF CSATOLMÁNNYAL
+    // 3. RESEND E-MAIL KÜLDÉS
     const resendKey = process.env.RESEND_API_KEY;
     if (resendKey) {
       try {
         const resend = new Resend(resendKey);
 
-        const itemsHtml = aiResult.items.map((item: any) =>
-          `<tr>
-            <td style="padding:12px 16px; border-bottom:1px solid #e5e7eb; font-size:14px;">${item.name}</td>
+        const itemsHtml = aiResult.items.map((item: any, index: number) =>
+          `<tr style="background:${index % 2 === 0 ? '#ffffff' : '#f8fafc'};">
+            <td style="padding:12px 16px; border-bottom:1px solid #e5e7eb; font-size:14px; color:#1e293b;">${item.name}</td>
             <td style="padding:12px 16px; border-bottom:1px solid #e5e7eb; color:#9ca3af; text-align:right; font-size:14px;"><del>${item.competitorPrice.toLocaleString('hu-HU')} Ft</del></td>
             <td style="padding:12px 16px; border-bottom:1px solid #e5e7eb; color:#0369a1; font-weight:700; text-align:right; font-size:14px;">${item.ourPrice.toLocaleString('hu-HU')} Ft</td>
+            <td style="padding:12px 16px; border-bottom:1px solid #e5e7eb; color:#059669; font-weight:600; text-align:right; font-size:14px;">-${(item.competitorPrice - item.ourPrice).toLocaleString('hu-HU')} Ft</td>
           </tr>`
         ).join('');
 
-        const emailPayload: any = {
+        await resend.emails.send({
           from: 'Crown Dental <info@crowndental.hu>',
           to: email,
           subject: `Személyre szabott árajánlata elkészült – ${aiResult.savings.toLocaleString('hu-HU')} Ft megtakarítás`,
           html: `
             <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width:640px; margin:0 auto; background:#ffffff;">
+              
+              <!-- FEJLÉC – szöveges, logó nélkül -->
               <div style="background: linear-gradient(135deg, #0369a1, #0ea5e9); padding:40px 30px; text-align:center; border-radius:12px 12px 0 0;">
-                <img src="https://crowndental.hu/logo.webp" alt="Crown Dental" style="height:50px; margin-bottom:16px;" />
+                <div style="font-size:28px; font-weight:800; color:#ffffff; letter-spacing:-0.5px; margin-bottom:4px;">CROWN DENTAL</div>
+                <div style="font-size:11px; color:rgba(255,255,255,0.6); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:20px;">Praxis és Labor · Esztergom · Budapest</div>
                 <h1 style="margin:0; color:#ffffff; font-size:22px; font-weight:600;">Kedves ${nickname || name}!</h1>
                 <p style="margin:8px 0 0 0; color:rgba(255,255,255,0.85); font-size:15px;">Elkészítettük az Ön személyre szabott árajánlatát.</p>
               </div>
+
+              <!-- TARTALOM -->
               <div style="padding:32px 30px;">
+
+                <!-- MEGTAKARÍTÁS DOBOZ -->
                 <div style="background: linear-gradient(135deg, #f0f9ff, #e0f2fe); padding:24px; border-radius:12px; text-align:center; margin-bottom:28px; border:1px solid #bae6fd;">
-                  <p style="margin:0; color:#0369a1; font-size:13px; text-transform:uppercase; letter-spacing:1px; font-weight:600;">Az Ön megtakarítása</p>
-                  <h2 style="margin:8px 0 0 0; color:#0284c7; font-size:36px; font-weight:800;">${aiResult.savings.toLocaleString('hu-HU')} Ft</h2>
+                  <p style="margin:0; color:#0369a1; font-size:12px; text-transform:uppercase; letter-spacing:1.5px; font-weight:600;">Az Ön megtakarítása</p>
+                  <h2 style="margin:8px 0 0 0; color:#059669; font-size:38px; font-weight:800;">${aiResult.savings.toLocaleString('hu-HU')} Ft</h2>
                 </div>
-                <table style="width:100%; border-collapse:collapse; margin-bottom:24px;">
+
+                <p style="font-size:15px; color:#374151; line-height:1.6; margin-bottom:24px;">
+                  Saját fogtechnikai laborunknak köszönhetően <strong>${aiResult.savings.toLocaleString('hu-HU')} Ft-ot spórolhat</strong> a másik árajánlathoz képest. Az alábbiakban láthatja a tételes összehasonlítást:
+                </p>
+
+                <!-- TÁBLÁZAT -->
+                <table style="width:100%; border-collapse:collapse; margin-bottom:24px; border:1px solid #e2e8f0;">
                   <thead>
-                    <tr style="background:#f8fafc;">
-                      <th style="padding:12px 16px; text-align:left; color:#6b7280; font-size:11px; text-transform:uppercase; letter-spacing:0.5px; border-bottom:2px solid #e5e7eb;">Kezelés</th>
-                      <th style="padding:12px 16px; text-align:right; color:#6b7280; font-size:11px; text-transform:uppercase; letter-spacing:0.5px; border-bottom:2px solid #e5e7eb;">Másik árajánlat</th>
-                      <th style="padding:12px 16px; text-align:right; color:#6b7280; font-size:11px; text-transform:uppercase; letter-spacing:0.5px; border-bottom:2px solid #e5e7eb;">Crown Dental</th>
+                    <tr style="background:#f1f5f9;">
+                      <th style="padding:12px 16px; text-align:left; color:#6b7280; font-size:11px; text-transform:uppercase; letter-spacing:0.5px; border-bottom:2px solid #0284c7;">Kezelés</th>
+                      <th style="padding:12px 16px; text-align:right; color:#6b7280; font-size:11px; text-transform:uppercase; letter-spacing:0.5px; border-bottom:2px solid #0284c7;">Másik ajánlat</th>
+                      <th style="padding:12px 16px; text-align:right; color:#6b7280; font-size:11px; text-transform:uppercase; letter-spacing:0.5px; border-bottom:2px solid #0284c7;">Crown Dental</th>
+                      <th style="padding:12px 16px; text-align:right; color:#6b7280; font-size:11px; text-transform:uppercase; letter-spacing:0.5px; border-bottom:2px solid #0284c7;">Spórolás</th>
                     </tr>
                   </thead>
                   <tbody>${itemsHtml}</tbody>
                   <tfoot>
                     <tr style="background:#f0f9ff;">
-                      <td style="padding:14px 16px; font-weight:700; font-size:15px; border-top:2px solid #0284c7;">Összesen</td>
+                      <td style="padding:14px 16px; font-weight:700; font-size:15px; border-top:2px solid #0284c7; color:#1e293b;">Összesen</td>
                       <td style="padding:14px 16px; font-weight:700; font-size:15px; text-align:right; color:#9ca3af; border-top:2px solid #0284c7;"><del>${aiResult.competitorTotal.toLocaleString('hu-HU')} Ft</del></td>
                       <td style="padding:14px 16px; font-weight:700; font-size:15px; text-align:right; color:#0284c7; border-top:2px solid #0284c7;">${aiResult.ourTotal.toLocaleString('hu-HU')} Ft</td>
+                      <td style="padding:14px 16px; font-weight:700; font-size:15px; text-align:right; color:#059669; border-top:2px solid #0284c7;">-${aiResult.savings.toLocaleString('hu-HU')} Ft</td>
                     </tr>
                   </tfoot>
                 </table>
-                ${pdfBase64 ? '<p style="font-size:14px; color:#374151; margin-bottom:20px;">📄 <strong>A részletes árajánlatot PDF formátumban csatoltuk</strong> ehhez az e-mailhez. Kinyomtatva és aláírva hozza magával az első konzultációra!</p>' : ''}
-                <p style="font-size:14px; color:#6b7280; line-height:1.6;">Kollégáink hamarosan keresni fogják a megadott telefonszámon (<strong>${phone}</strong>) az időpont egyeztetés céljából.</p>
-                <div style="text-align:center; margin:32px 0;">
-                  <a href="tel:+36XXXXXXXXX" style="display:inline-block; background:#0284c7; color:#ffffff; text-decoration:none; padding:14px 32px; border-radius:8px; font-weight:600; font-size:15px;">Hívjon minket</a>
+
+                <!-- PDF TIPP -->
+                <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:8px; padding:16px; margin-bottom:24px;">
+                  <p style="margin:0; font-size:13px; color:#92400e; line-height:1.5;">
+                    📄 <strong>Tipp:</strong> Az árajánlatot a weboldalunkon a „PDF Letöltés" gombbal mentheti el nyomtatható formátumban. 
+                    Kinyomtatva és a kezelőorvos aláírásával hitelesítve válik érvényessé.
+                  </p>
+                </div>
+
+                <p style="font-size:14px; color:#6b7280; line-height:1.6; margin-bottom:24px;">
+                  Kollégáink hamarosan keresni fogják a megadott telefonszámon (<strong>${phone}</strong>) az időpont egyeztetés céljából.
+                </p>
+
+                <!-- CTA GOMB -->
+                <div style="text-align:center; margin:32px 0 16px 0;">
+                  <a href="tel:+36705646837" style="display:inline-block; background:#0284c7; color:#ffffff; text-decoration:none; padding:16px 36px; border-radius:8px; font-weight:700; font-size:16px;">
+                    Hívjon minket: +36 70 564 6837
+                  </a>
                 </div>
               </div>
-              <div style="background:#f8fafc; padding:20px 30px; text-align:center; border-radius:0 0 12px 12px; border-top:1px solid #e5e7eb;">
-                <p style="margin:0; color:#9ca3af; font-size:12px;">Crown Dental – Saját labor, kiemelkedő minőség, elérhető árak.</p>
+
+              <!-- LÁBLÉC -->
+              <div style="background:#f8fafc; padding:24px 30px; border-radius:0 0 12px 12px; border-top:1px solid #e5e7eb;">
+                <p style="margin:0 0 8px 0; color:#6b7280; font-size:12px; text-align:center; line-height:1.5;">
+                  Az árajánlat a kiállítás napjától számított 30 napig érvényes. Az árak az ÁFÁ-t tartalmazzák.<br/>
+                  A végleges kezelési terv és összeg a szájüregi vizsgálat után kerül meghatározásra.
+                </p>
+                <p style="margin:0 0 12px 0; color:#0284c7; font-size:12px; text-align:center; font-weight:600;">
+                  Crown Dental – Saját labor, kiemelkedő minőség, elérhető árak.
+                </p>
+                <div style="border-top:1px solid #e5e7eb; padding-top:12px;">
+                  <p style="margin:0; color:#9ca3af; font-size:11px; text-align:center; line-height:1.6;">
+                    Kérjük, erre az e-mailre ne válaszoljon, mert a válaszok nem kerülnek feldolgozásra.<br/>
+                    Ha kérdése van, írjon nekünk az <a href="mailto:info@crowndental.hu" style="color:#0284c7; text-decoration:underline;">info@crowndental.hu</a> címre,<br/>
+                    vagy hívjon minket a <a href="tel:+36705646837" style="color:#0284c7; text-decoration:underline;">+36 70 564 6837</a> telefonszámon.
+                  </p>
+                </div>
               </div>
+
             </div>`,
-        };
-
-        // Ha van PDF, csatoljuk
-        if (pdfBase64) {
-          emailPayload.attachments = [{
-            filename: `Crown_Dental_Arajanlat_${name.replace(/\s+/g, '_')}.pdf`,
-            content: pdfBase64,
-          }];
-        }
-
-        await resend.emails.send(emailPayload);
+        });
       } catch (mailErr) { console.error("Email küldési hiba:", mailErr); }
     }
 
-    return NextResponse.json({ success: true, result: aiResult, hasPdf: !!pdfBase64 });
+    return NextResponse.json({ success: true, result: aiResult });
 
   } catch (error: any) {
     console.error("Végzetes API hiba:", error);
@@ -280,305 +273,3 @@ FORMÁTUM:
     }, { status: 500 });
   }
 }
-
-// --- PYTHON SCRIPT A PDF GENERÁLÁSHOZ ---
-const PYTHON_PDF_SCRIPT = `
-# -*- coding: utf-8 -*-
-import json
-import sys
-import os
-
-from reportlab.lib.pagesizes import A4
-from reportlab.lib.units import mm, cm
-from reportlab.lib.colors import HexColor, white, black, Color
-from reportlab.lib.styles import ParagraphStyle
-from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
-from reportlab.platypus import (
-    SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image, HRFlowable
-)
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.ttfonts import TTFont
-
-# --- Betűtípus regisztrálás ---
-# Próbáljuk a rendszeren elérhető betűtípusokat az ékezetek miatt
-FONT_PATHS = [
-    ("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", "DejaVuSans"),
-    ("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", "DejaVuSans-Bold"),
-    ("/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf", "LiberationSans"),
-    ("/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf", "LiberationSans-Bold"),
-]
-
-FONT_REGULAR = "Helvetica"
-FONT_BOLD = "Helvetica-Bold"
-
-for fpath, fname in FONT_PATHS:
-    if os.path.exists(fpath):
-        try:
-            pdfmetrics.registerFont(TTFont(fname, fpath))
-            if "Bold" not in fname:
-                FONT_REGULAR = fname
-            else:
-                FONT_BOLD = fname
-        except:
-            pass
-
-# --- Színek ---
-PRIMARY = HexColor("#0284c7")
-PRIMARY_DARK = HexColor("#0369a1")
-LIGHT_BG = HexColor("#f0f9ff")
-BORDER_COLOR = HexColor("#bae6fd")
-TEXT_DARK = HexColor("#1e293b")
-TEXT_GRAY = HexColor("#6b7280")
-TEXT_LIGHT_GRAY = HexColor("#9ca3af")
-ROW_ALT = HexColor("#f8fafc")
-WHITE = white
-ACCENT_GREEN = HexColor("#059669")
-
-def format_price(val):
-    try:
-        return f"{int(val):,} Ft".replace(",", " ")
-    except:
-        return str(val)
-
-def generate_pdf(data, output_path):
-    width, height = A4
-    doc = SimpleDocTemplate(
-        output_path,
-        pagesize=A4,
-        leftMargin=20*mm,
-        rightMargin=20*mm,
-        topMargin=15*mm,
-        bottomMargin=20*mm,
-    )
-
-    elements = []
-
-    # --- STÍLUSOK ---
-    style_title = ParagraphStyle(
-        "Title", fontName=FONT_BOLD, fontSize=20, textColor=PRIMARY_DARK,
-        alignment=TA_LEFT, spaceAfter=2*mm
-    )
-    style_subtitle = ParagraphStyle(
-        "Subtitle", fontName=FONT_REGULAR, fontSize=10, textColor=TEXT_GRAY,
-        alignment=TA_LEFT, spaceAfter=6*mm
-    )
-    style_section = ParagraphStyle(
-        "Section", fontName=FONT_BOLD, fontSize=12, textColor=PRIMARY_DARK,
-        spaceBefore=6*mm, spaceAfter=3*mm
-    )
-    style_normal = ParagraphStyle(
-        "Normal2", fontName=FONT_REGULAR, fontSize=9.5, textColor=TEXT_DARK,
-        leading=13
-    )
-    style_small = ParagraphStyle(
-        "Small", fontName=FONT_REGULAR, fontSize=8, textColor=TEXT_LIGHT_GRAY,
-        alignment=TA_CENTER, leading=11
-    )
-    style_savings_label = ParagraphStyle(
-        "SavingsLabel", fontName=FONT_REGULAR, fontSize=9, textColor=PRIMARY_DARK,
-        alignment=TA_CENTER
-    )
-    style_savings_value = ParagraphStyle(
-        "SavingsValue", fontName=FONT_BOLD, fontSize=22, textColor=ACCENT_GREEN,
-        alignment=TA_CENTER, spaceBefore=1*mm
-    )
-
-    # --- FEJLÉC: Logó + Cím ---
-    logo_path = os.path.join(os.getcwd(), "public", "logo.webp")
-    header_items = []
-
-    if os.path.exists(logo_path):
-        try:
-            logo = Image(logo_path, width=45*mm, height=15*mm)
-            logo.hAlign = "LEFT"
-            header_items.append([logo, ""])
-        except:
-            header_items.append([Paragraph("CROWN DENTAL", style_title), ""])
-    else:
-        header_items.append([Paragraph("CROWN DENTAL", style_title), ""])
-
-    date_text = data.get("date", "")
-    header_items[0][1] = Paragraph(
-        f'<font name="{FONT_REGULAR}" size="9" color="#6b7280">{date_text}</font>',
-        ParagraphStyle("DateRight", alignment=TA_RIGHT)
-    )
-
-    header_table = Table(header_items, colWidths=[100*mm, 70*mm])
-    header_table.setStyle(TableStyle([
-        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-    ]))
-    elements.append(header_table)
-    elements.append(Spacer(1, 3*mm))
-
-    # Vonal
-    elements.append(HRFlowable(width="100%", thickness=1.5, color=PRIMARY, spaceAfter=4*mm))
-
-    # --- CÍM ---
-    elements.append(Paragraph("Személyre szabott árajánlat", style_title))
-    elements.append(Paragraph(
-        f"Készült: {data.get('name', '')} részére | Tel: {data.get('phone', '')} | E-mail: {data.get('email', '')}",
-        style_subtitle
-    ))
-
-    # --- MEGTAKARÍTÁS DOBOZ ---
-    savings_data = [
-        [Paragraph("Az Ön megtakarítása", style_savings_label)],
-        [Paragraph(format_price(data.get("savings", 0)), style_savings_value)],
-    ]
-    savings_table = Table(savings_data, colWidths=[170*mm])
-    savings_table.setStyle(TableStyle([
-        ("BACKGROUND", (0, 0), (-1, -1), LIGHT_BG),
-        ("BOX", (0, 0), (-1, -1), 0.75, BORDER_COLOR),
-        ("TOPPADDING", (0, 0), (-1, 0), 4*mm),
-        ("BOTTOMPADDING", (0, -1), (-1, -1), 4*mm),
-        ("ALIGN", (0, 0), (-1, -1), "CENTER"),
-        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-        ("ROUNDEDCORNERS", [3*mm, 3*mm, 3*mm, 3*mm]),
-    ]))
-    elements.append(savings_table)
-    elements.append(Spacer(1, 6*mm))
-
-    # --- TÁBLÁZAT ---
-    elements.append(Paragraph("Kezelések részletezése", style_section))
-
-    # Fejléc sor
-    col_style_header = ParagraphStyle(
-        "ColH", fontName=FONT_BOLD, fontSize=8.5, textColor=TEXT_GRAY,
-    )
-    col_style_header_right = ParagraphStyle(
-        "ColHR", fontName=FONT_BOLD, fontSize=8.5, textColor=TEXT_GRAY, alignment=TA_RIGHT,
-    )
-
-    table_data = [[
-        Paragraph("Kezelés", col_style_header),
-        Paragraph("Másik árajánlat", col_style_header_right),
-        Paragraph("Crown Dental ár", col_style_header_right),
-        Paragraph("Megtakarítás", col_style_header_right),
-    ]]
-
-    items = data.get("items", [])
-
-    cell_style = ParagraphStyle("Cell", fontName=FONT_REGULAR, fontSize=9, textColor=TEXT_DARK)
-    cell_style_right = ParagraphStyle("CellR", fontName=FONT_REGULAR, fontSize=9, textColor=TEXT_DARK, alignment=TA_RIGHT)
-    cell_style_strike = ParagraphStyle("CellS", fontName=FONT_REGULAR, fontSize=9, textColor=TEXT_LIGHT_GRAY, alignment=TA_RIGHT)
-    cell_style_save = ParagraphStyle("CellSave", fontName=FONT_BOLD, fontSize=9, textColor=ACCENT_GREEN, alignment=TA_RIGHT)
-
-    for item in items:
-        comp = int(item.get("competitorPrice", 0))
-        ours = int(item.get("ourPrice", 0))
-        diff = comp - ours
-        table_data.append([
-            Paragraph(item.get("name", ""), cell_style),
-            Paragraph(f"<strike>{format_price(comp)}</strike>", cell_style_strike),
-            Paragraph(format_price(ours), cell_style_right),
-            Paragraph(f"-{format_price(diff)}" if diff > 0 else "—", cell_style_save if diff > 0 else cell_style_right),
-        ])
-
-    # Összesen sor
-    total_style = ParagraphStyle("TotalCell", fontName=FONT_BOLD, fontSize=10, textColor=TEXT_DARK)
-    total_style_right = ParagraphStyle("TotalR", fontName=FONT_BOLD, fontSize=10, textColor=PRIMARY_DARK, alignment=TA_RIGHT)
-    total_style_strike = ParagraphStyle("TotalS", fontName=FONT_BOLD, fontSize=10, textColor=TEXT_LIGHT_GRAY, alignment=TA_RIGHT)
-    total_style_save = ParagraphStyle("TotalSave", fontName=FONT_BOLD, fontSize=10, textColor=ACCENT_GREEN, alignment=TA_RIGHT)
-
-    table_data.append([
-        Paragraph("Összesen", total_style),
-        Paragraph(f"<strike>{format_price(data.get('competitorTotal', 0))}</strike>", total_style_strike),
-        Paragraph(format_price(data.get('ourTotal', 0)), total_style_right),
-        Paragraph(f"-{format_price(data.get('savings', 0))}", total_style_save),
-    ])
-
-    col_widths = [68*mm, 36*mm, 36*mm, 30*mm]
-    table = Table(table_data, colWidths=col_widths, repeatRows=1)
-
-    table_style_cmds = [
-        # Fejléc
-        ("BACKGROUND", (0, 0), (-1, 0), HexColor("#f1f5f9")),
-        ("BOTTOMPADDING", (0, 0), (-1, 0), 3*mm),
-        ("TOPPADDING", (0, 0), (-1, 0), 3*mm),
-        ("LINEBELOW", (0, 0), (-1, 0), 1.5, PRIMARY),
-        # Összesen sor
-        ("LINEABOVE", (0, -1), (-1, -1), 1.5, PRIMARY),
-        ("BACKGROUND", (0, -1), (-1, -1), LIGHT_BG),
-        ("TOPPADDING", (0, -1), (-1, -1), 3*mm),
-        ("BOTTOMPADDING", (0, -1), (-1, -1), 3*mm),
-        # Általános
-        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-        ("LEFTPADDING", (0, 0), (-1, -1), 3*mm),
-        ("RIGHTPADDING", (0, 0), (-1, -1), 3*mm),
-        ("TOPPADDING", (0, 1), (-1, -2), 2.5*mm),
-        ("BOTTOMPADDING", (0, 1), (-1, -2), 2.5*mm),
-        ("BOX", (0, 0), (-1, -1), 0.5, HexColor("#e2e8f0")),
-    ]
-
-    # Alternáló sorok
-    for i in range(1, len(table_data) - 1):
-        if i % 2 == 0:
-            table_style_cmds.append(("BACKGROUND", (0, i), (-1, i), ROW_ALT))
-        table_style_cmds.append(("LINEBELOW", (0, i), (-1, i), 0.5, HexColor("#e5e7eb")))
-
-    table.setStyle(TableStyle(table_style_cmds))
-    elements.append(table)
-    elements.append(Spacer(1, 10*mm))
-
-    # --- ALÁÍRÁS MEZŐK ---
-    elements.append(HRFlowable(width="100%", thickness=0.5, color=HexColor("#e5e7eb"), spaceAfter=6*mm))
-    elements.append(Paragraph("Aláírások", style_section))
-    elements.append(Spacer(1, 8*mm))
-
-    sig_style_label = ParagraphStyle("SigLabel", fontName=FONT_REGULAR, fontSize=9, textColor=TEXT_GRAY, alignment=TA_CENTER)
-    sig_style_line = ParagraphStyle("SigLine", fontName=FONT_REGULAR, fontSize=9, textColor=TEXT_DARK, alignment=TA_CENTER)
-
-    sig_data = [[
-        Paragraph("_" * 35, sig_style_line),
-        Paragraph("", sig_style_line),
-        Paragraph("_" * 35, sig_style_line),
-    ], [
-        Paragraph("Páciens aláírása", sig_style_label),
-        Paragraph("", sig_style_label),
-        Paragraph("Kezelőorvos aláírása és pecsétje", sig_style_label),
-    ]]
-
-    sig_table = Table(sig_data, colWidths=[70*mm, 30*mm, 70*mm])
-    sig_table.setStyle(TableStyle([
-        ("VALIGN", (0, 0), (-1, -1), "BOTTOM"),
-        ("TOPPADDING", (0, 0), (-1, -1), 1*mm),
-    ]))
-    elements.append(sig_table)
-    elements.append(Spacer(1, 10*mm))
-
-    # --- LÁBLÉC ---
-    elements.append(HRFlowable(width="100%", thickness=0.5, color=HexColor("#e5e7eb"), spaceAfter=3*mm))
-
-    footer_style = ParagraphStyle(
-        "Footer", fontName=FONT_REGULAR, fontSize=7.5, textColor=TEXT_LIGHT_GRAY,
-        alignment=TA_CENTER, leading=11, spaceBefore=2*mm
-    )
-    elements.append(Paragraph(
-        "Ez egy automatikusan generált árajánlat. A dokumentum kizárólag akkor válik hitelessé, "
-        "amikor a páciens kinyomtatva magával hozza rendelőnkbe, és a kezelőorvos aláírásával, pecsétjével hitelesíti.",
-        footer_style
-    ))
-    elements.append(Spacer(1, 2*mm))
-    elements.append(Paragraph(
-        "Az árajánlat a kiállítás napjától számított 30 napig érvényes. Az árak az ÁFÁ-t tartalmazzák. "
-        "A végleges kezelési terv és összeg a szájüregi vizsgálat után kerül meghatározásra.",
-        footer_style
-    ))
-    elements.append(Spacer(1, 2*mm))
-    elements.append(Paragraph(
-        "Crown Dental – Saját labor, kiemelkedő minőség, elérhető árak.",
-        ParagraphStyle("FooterBrand", fontName=FONT_BOLD, fontSize=8, textColor=PRIMARY, alignment=TA_CENTER)
-    ))
-
-    # BUILD
-    doc.build(elements)
-
-
-if __name__ == "__main__":
-    payload_path = sys.argv[1]
-    output_path = sys.argv[2]
-    with open(payload_path, "r", encoding="utf-8") as f:
-        data = json.load(f)
-    generate_pdf(data, output_path)
-    print("PDF OK")
-`;
