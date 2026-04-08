@@ -4,6 +4,8 @@ import { Resend } from 'resend';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export async function POST(req: Request) {
+  console.log("--- AI KALKULÁTOR ANALÍZIS INDÍTÁSA ---");
+  
   try {
     const formData = await req.formData();
     const file = formData.get('file') as File;
@@ -16,85 +18,139 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Hiányzó adatok az űrlapból.' }, { status: 400 });
     }
 
-    // 1. KULCSOK ELLENŐRZÉSE (Golyóálló verzió)
-    const geminiApiKey = process.env.GEMINI_API_KEY || process.env.GENINI_API_KEY;
-    const resendKey = process.env.RESEND_API_KEY;
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    // 1. KULCS ELLENŐRZÉSE
+    const apiKey = process.env.GEMINI_API_KEY || process.env.GENINI_API_KEY;
 
-    if (!geminiApiKey) {
+    if (!apiKey) {
       return NextResponse.json({ 
-        error: 'Rendszerhiba: A Gemini AI kulcs nem olvasható a Vercelen. Kérjük, végezzen egy Clean Redeploy-t!' 
+        error: 'Rendszerhiba: Az AI kulcs nem olvasható a szerveren. Kérjük, végezzen egy CLEAN REDEPLOY-t!' 
       }, { status: 500 });
     }
 
-    // 2. GEMINI AI FOLYAMAT
-    const genAI = new GoogleGenerativeAI(geminiApiKey);
+    // 2. GEMINI KONFIGURÁCIÓ
+    const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const arrayBuffer = await file.arrayBuffer();
     const base64Data = Buffer.from(arrayBuffer).toString('base64');
 
     const prompt = `
-    Te egy profi fogászati elemző vagy a Crown Dentalnál.
-    Feltöltöttek egy árajánlatot. Olvasd ki a tételeket és árakat.
-    Párosítsd őket a Crown Dental áraival (korona: 55000, implant: 190000, röntgen: 10000 stb).
-    Mindig adj 25% kedvezményt a konkurens árakhoz képest a nem listázott tételeknél.
+    Te egy profi fogászati árajánlat elemző vagy a Crown Dental klinikánál.
+    A feladatod, hogy a feltöltött dokumentumban lévő kezeléseket és azok árait felismerd.
     
-    VÁLASZ: Kizárólag érvényes JSON, magyarázat nélkül!
+    Crown Dental Fix Árak:
+    - Fémkerámia korona: 42.000 Ft
+    - Cirkónium korona: 55.000 Ft
+    - Implantátum beültetés: 190.000 Ft
+    - Konzultáció/Röntgen: 10.000 Ft
+    - Foghúzás: 25.000 Ft
+    - Fogtömés: 30.000 Ft
+    - Gyökérkezelés: 30.000 Ft
+    - Kivehető fogsor: 110.000 Ft
+    - Fogkőeltávolítás: 15.000 Ft
+    - Fogfehérítés: 45.000 Ft
+    
+    SZABÁLY: Ha egy tétel nincs a listán, adj meg egy 25%-kal olcsóbb árat nálunk.
+    FONTOS: Kizárólag az alábbi JSON struktúrában válaszolj, mindenféle kísérőszöveg és markdown jelölés nélkül!
+    
+    FORMÁTUM:
     {
-      "items": [{ "name": "Kezelés", "competitorPrice": 1000, "ourPrice": 800 }],
-      "competitorTotal": 1000,
-      "ourTotal": 800,
-      "savings": 200
+      "items": [{ "name": "Kezelés neve", "competitorPrice": 120000, "ourPrice": 85000 }],
+      "competitorTotal": 120000,
+      "ourTotal": 85000,
+      "savings": 35000
     }`;
 
-    const result = await model.generateContent([
-      prompt,
-      { inlineData: { data: base64Data, mimeType: file.type } }
-    ]);
-
-    const responseText = result.response.text();
-    const cleanJson = responseText.replace(/```json/gi, '').replace(/```/g, '').trim();
-    const aiResult = JSON.parse(cleanJson);
-
-    // 3. SUPABASE MENTÉS (Csak ha megvannak a kulcsok)
-    if (supabaseUrl && supabaseKey) {
-      const supabase = createClient(supabaseUrl, supabaseKey);
-      await supabase.from('quote_leads').insert([{
-          name, nickname: nickname || '', email, phone,
-          original_total: aiResult.competitorTotal,
-          new_total: aiResult.ourTotal,
-          savings: aiResult.savings,
-      }]);
+    console.log("Fájl küldése a Gemini-nek...");
+    
+    let responseText = "";
+    try {
+      const result = await model.generateContent([
+        prompt,
+        { inlineData: { data: base64Data, mimeType: file.type } }
+      ]);
+      const response = await result.response;
+      responseText = response.text();
+    } catch (aiErr: any) {
+      console.error("Gemini API Hiba:", aiErr);
+      return NextResponse.json({ error: `Az AI hibaüzenete: ${aiErr.message}` }, { status: 500 });
     }
 
-    // 4. RESEND E-MAIL (Csak ha megvan a kulcs)
-    if (resendKey) {
-      const resend = new Resend(resendKey);
-      const itemsHtml = aiResult.items.map((item: any) => 
-        `<tr><td>${item.name}</td><td><del>${item.competitorPrice} Ft</del></td><td><strong>${item.ourPrice} Ft</strong></td></tr>`
-      ).join('');
+    console.log("AI Válasz érkezett, feldolgozás...");
 
-      await resend.emails.send({
-        from: 'Crown Dental <info@crowndental.hu>',
-        to: email,
-        subject: `Kész az AI elemzés! ${aiResult.savings.toLocaleString()} Ft megtakarítás`,
-        html: `<div style="font-family: sans-serif; padding: 20px;">
-                <h1>Kedves ${nickname || name}!</h1>
-                <p>Kiszámoltuk a megtakarítását: <strong>${aiResult.savings.toLocaleString()} Ft</strong>.</p>
-                <table border="1" cellpadding="10" style="border-collapse: collapse;">
-                  <thead><tr><th>Kezelés</th><th>Eredeti ár</th><th>Crown Dental ár</th></tr></thead>
+    // JSON Tisztítás: Kikeressük az első { és az utolsó } közötti részt
+    const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) {
+      console.error("Nem található JSON a válaszban:", responseText);
+      return NextResponse.json({ error: 'Az AI nem tudta értelmezni a dokumentumot JSON formátumban.' }, { status: 500 });
+    }
+
+    let aiResult;
+    try {
+      aiResult = JSON.parse(jsonMatch[0]);
+    } catch (parseErr) {
+      console.error("JSON Parse hiba:", responseText);
+      return NextResponse.json({ error: 'Hiba történt az adatok feldolgozásakor.' }, { status: 500 });
+    }
+
+    // 3. SUPABASE MENTÉS
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    
+    if (supabaseUrl && supabaseKey) {
+      try {
+        const supabase = createClient(supabaseUrl, supabaseKey);
+        await supabase.from('quote_leads').insert([{
+            name, nickname: nickname || '', email, phone,
+            original_total: aiResult.competitorTotal,
+            new_total: aiResult.ourTotal,
+            savings: aiResult.savings,
+        }]);
+      } catch (dbErr) {
+        console.error("Supabase mentési hiba:", dbErr);
+      }
+    }
+
+    // 4. RESEND E-MAIL
+    const resendKey = process.env.RESEND_API_KEY;
+    if (resendKey) {
+      try {
+        const resend = new Resend(resendKey);
+        const itemsHtml = aiResult.items.map((item: any) => 
+          `<tr><td style="padding:8px; border-bottom:1px solid #eee;">${item.name}</td><td style="padding:8px; border-bottom:1px solid #eee;"><del>${item.competitorPrice.toLocaleString()} Ft</del></td><td style="padding:8px; border-bottom:1px solid #eee; color:#0284c7; font-weight:bold;">${item.ourPrice.toLocaleString()} Ft</td></tr>`
+        ).join('');
+
+        await resend.emails.send({
+          from: 'Crown Dental <info@crowndental.hu>',
+          to: email,
+          subject: `Elkészült az árajánlat elemzése! (${aiResult.savings.toLocaleString()} Ft megtakarítás)`,
+          html: `
+            <div style="font-family:sans-serif; max-width:600px; margin:0 auto; border:1px solid #e5e7eb; border-radius:12px; overflow:hidden;">
+              <div style="background-color:#0284c7; padding:20px; text-align:center; color:white;">
+                <h1 style="margin:0;">Kedves ${nickname || name}!</h1>
+              </div>
+              <div style="padding:20px;">
+                <p>Sikeresen kielemeztük a feltöltött árajánlatot. Nálunk ennyit spórolhat:</p>
+                <div style="background:#f0f9ff; padding:15px; border-radius:8px; text-align:center; margin:20px 0;">
+                  <h2 style="color:#0284c7; margin:0;">${aiResult.savings.toLocaleString()} Ft</h2>
+                </div>
+                <table style="width:100%; border-collapse:collapse;">
+                  <thead><tr style="text-align:left; color:#6b7280;"><th>Kezelés</th><th>Másik helyen</th><th>Crown Dental</th></tr></thead>
                   <tbody>${itemsHtml}</tbody>
                 </table>
-               </div>`
-      });
+                <p style="margin-top:30px;">Kollégáink hamarosan keresni fogják a megadott telefonszámon: <strong>${phone}</strong></p>
+              </div>
+            </div>`
+        });
+      } catch (mailErr) {
+        console.error("Resend hiba:", mailErr);
+      }
     }
 
     return NextResponse.json({ success: true, result: aiResult });
 
-  } catch (error) {
-    console.error("API Error:", error);
-    return NextResponse.json({ error: 'Hiba történt az elemzés során. Kérjük, töltsön fel egy tisztább képet!' }, { status: 500 });
+  } catch (error: any) {
+    console.error("ÁLTALÁNOS KRITIKUS HIBA:", error);
+    return NextResponse.json({ error: `Szerverhiba történt: ${error.message}` }, { status: 500 });
   }
 }
