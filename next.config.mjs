@@ -35,10 +35,13 @@ const nextConfig = {
 
       // BLOG
       { source: '/cpg/930300/Blog', destination: '/blog', permanent: true },
+      { source: '/cpg/930300,3399946/Faj-vagy-csak-kellemetlen', destination: '/blog/faj-vagy-csak-kellemetlen', permanent: true },
+      { source: '/cpg/930300,3494336/Fogorvos-es-Fogtechnikus-egy-Csapatban', destination: '/blog/fogorvos-es-fogtechnikus-egy-csapatban', permanent: true },
+      { source: '/cpg/930300,3466371/Hagyomanyos-vagy-elektromos-fogkefe-A-tiszta-fogak', destination: '/blog/hagyomanyos-vagy-elektromos-fogkefe-a-tiszta-fogak', permanent: true },
+      { source: '/cpg/930300,3348316/Hogyan-valasszunk-fogorvost-5-szempont-ami-segit-a', destination: '/blog/fogorvos-valasztas', permanent: true },
       { source: '/cpg/930300,3348306/Ragyogo-mosoly-egy-ora-alatt-igy-mukodik-a-valodi', destination: '/blog/ragyogo-mosoly-egy-ora-alatt', permanent: true },
       { source: '/cpg/930300,3348311/Soha-nincs-keso-a-tokeletes-mosolyhoz-fogszabalyoz', destination: '/blog/fogszabalyozas-felnottkent', permanent: true },
       { source: '/cpg/930300,3348301/Uj-mosoly-varakozas-nelkul-minden-a-modern-fogsoro', destination: '/blog/modern-fogsorok', permanent: true },
-      { source: '/cpg/930300,3348316/Hogyan-valasszunk-fogorvost-5-szempont-ami-segit-a', destination: '/blog/fogorvos-valasztas', permanent: true },
 
       // WILDCARD - minden maradék régi URL
       { source: '/cpg/:path*', destination: '/', permanent: false },
