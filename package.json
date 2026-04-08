@@ -13,7 +13,11 @@
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "framer-motion": "^11.0.0",
-    "lucide-react": "^0.400.0"
+    "lucide-react": "^0.400.0,
+    @sanity/image-url": "^1.0.2",
+    "next-sanity": "^7.1.4",
+    "sanity": "^3.30.0",
+    "styled-components": "^6.1.8"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
