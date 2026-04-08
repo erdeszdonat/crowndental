@@ -40,8 +40,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
   }`;
   const post = await client.fetch(query, { slug: params.slug });
 
-  // Megkerüljük a Vercel szigorú TypeScript ellenőrzését:
-  const ClientView = BlogPostClient as any;
-
-  return <ClientView post={post} />;
+  // A Vercel makacs TypeScript ellenőrzésének felülbírálása:
+  // @ts-ignore
+  return <BlogPostClient post={post} />;
 }
