@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Phone, 
   Calendar, 
@@ -56,29 +57,55 @@ function Navigation() {
         </div>
       </nav>
       
-      {isOpen && (
-        <div className="lg:hidden bg-white border-t border-gray-100 p-4 flex flex-col gap-4 font-bold shadow-xl">
-          <a href="/" className="px-4 py-2 hover:bg-sky-50 rounded-xl">Főoldal</a>
-          <a href="/kezelesek" className="px-4 py-2 hover:bg-sky-50 rounded-xl">Szolgáltatások</a>
-          <a href="/blog" className="px-4 py-2 text-sky-600 bg-sky-50 rounded-xl">Blog</a>
-          <a href="/rolunk" className="px-4 py-2 hover:bg-sky-50 rounded-xl">Rólunk</a>
-        </div>
-      )}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="lg:hidden bg-white border-t border-gray-100 p-4 flex flex-col gap-4 font-bold shadow-xl absolute w-full"
+          >
+            <a href="/" className="px-4 py-2 hover:bg-sky-50 rounded-xl">Főoldal</a>
+            <a href="/kezelesek" className="px-4 py-2 hover:bg-sky-50 rounded-xl">Szolgáltatások</a>
+            <a href="/blog" className="px-4 py-2 text-sky-600 bg-sky-50 rounded-xl">Blog</a>
+            <a href="/rolunk" className="px-4 py-2 hover:bg-sky-50 rounded-xl">Rólunk</a>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// ANIMÁLT SZÁMLÁLÓ
+// ANIMÁLT SZÁMLÁLÓ (Görgetésre indul)
 // ═══════════════════════════════════════════════════════════════════════════
 function AnimatedCounter({ end, suffix = "", text, desc }: { end: number, suffix?: string, text: string, desc: string }) {
   const [count, setCount] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (!isVisible) return;
+    
     let start = 0;
-    const duration = 2000;
+    const duration = 2000; // 2 másodperc alatt pörög le
     const increment = end / (duration / 16);
     const timer = setInterval(() => {
       start += increment;
@@ -94,7 +121,7 @@ function AnimatedCounter({ end, suffix = "", text, desc }: { end: number, suffix
 
   return (
     <div 
-      onMouseEnter={() => setIsVisible(true)}
+      ref={ref}
       className="text-center p-8 bg-white rounded-3xl shadow-sm border border-gray-50 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1"
     >
       <div className="text-5xl font-extrabold text-sky-600 mb-4 tracking-tight">
@@ -145,7 +172,7 @@ function ReviewsSection() {
       </div>
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } } 
-        .animate-marquee { display: flex; width: max-content; animation: marquee 40s linear infinite; } 
+        .animate-marquee { display: flex; width: max-content; animation: marquee 50s linear infinite; } 
         .animate-marquee:hover { animation-play-state: paused; }
       `}} />
       <div className="animate-marquee gap-6 px-6">
@@ -185,9 +212,9 @@ function Footer() {
           <div>
             <h4 className="text-white font-bold text-lg mb-6 uppercase tracking-wider">Szolgáltatások</h4>
             <ul className="space-y-4 text-sm">
-              <li><a href="/kezelesek/implantatum" className="hover:text-sky-400 flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Implantáció</a></li>
-              <li><a href="/kezelesek/fogszabalyozas" className="hover:text-sky-400 flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Fogszabályozás</a></li>
-              <li><a href="/kezelesek" className="hover:text-sky-400 flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Teljes Árlista</a></li>
+              <li><a href="/kezelesek/implantatum" className="hover:text-sky-400 flex items-center gap-2 transition-colors"><ChevronRight className="w-4 h-4 text-sky-600" /> Implantáció</a></li>
+              <li><a href="/kezelesek/fogszabalyozas" className="hover:text-sky-400 flex items-center gap-2 transition-colors"><ChevronRight className="w-4 h-4 text-sky-600" /> Fogszabályozás</a></li>
+              <li><a href="/kezelesek" className="hover:text-sky-400 flex items-center gap-2 transition-colors"><ChevronRight className="w-4 h-4 text-sky-600" /> Teljes Árlista</a></li>
             </ul>
           </div>
           <div>
@@ -285,7 +312,7 @@ export default function BlogPostClient({ post }: { post: any }) {
           })}
         </div>
 
-        <div className="p-10 md:p-16 bg-gradient-to-br from-sky-600 to-sky-800 rounded-[3rem] shadow-2xl text-center relative overflow-hidden text-white mt-24">
+        <div className="p-10 md:p-16 bg-gradient-to-br from-sky-600 to-sky-800 rounded-[3rem] shadow-2xl text-center relative overflow-hidden text-white mt-24 transform hover:scale-[1.01] transition-transform duration-500">
           <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-black/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
           
