@@ -1,11 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
 import {
   MapPin,
   Phone,
@@ -42,42 +38,41 @@ function Navigation() {
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl shadow-sm border-b border-gray-100">
       <nav className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
-          <Link href="/" className="flex items-center relative h-full py-1 z-50">
-            <Image 
+          <a href="/" className="flex items-center relative h-full py-1 z-50">
+            <img 
               src="/logo.webp" 
               alt="Crown Dental Logo" 
               width={280} 
               height={80} 
               className="object-contain h-full w-auto drop-shadow-sm" 
-              priority 
             />
-          </Link>
+          </a>
 
           <div className="hidden lg:flex items-center gap-6 xl:gap-8">
-            <Link href="/" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">
+            <a href="/" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">
               Főoldal
-            </Link>
-            <Link href="/kezelesek" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">
+            </a>
+            <a href="/kezelesek" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">
               Szolgáltatások & Árak
-            </Link>
-            <Link href="/rolunk" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">
+            </a>
+            <a href="/rolunk" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">
               Rólunk
-            </Link>
-            <Link href="/blog" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">
+            </a>
+            <a href="/blog" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">
               Blog
-            </Link>
-            <Link href="/karrier" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">
+            </a>
+            <a href="/karrier" className="font-bold text-gray-800 hover:text-sky-600 transition-colors">
               Karrier
-            </Link>
+            </a>
           </div>
 
           <div className="flex items-center gap-4 z-50">
             <a href="tel:+36705646837" className="hidden xl:flex items-center gap-2 font-bold text-sky-700 hover:text-sky-600 mr-2">
               <Phone className="w-5 h-5" /> +36 70 564 6837
             </a>
-            <Link href="/idopont" className="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 bg-sky-600 text-white font-bold rounded-full transition-all shadow-md hover:shadow-xl hover:bg-sky-700 transform hover:-translate-y-0.5 text-sm md:text-base">
+            <a href="/idopont" className="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 bg-sky-600 text-white font-bold rounded-full transition-all shadow-md hover:shadow-xl hover:bg-sky-700 transform hover:-translate-y-0.5 text-sm md:text-base">
               <Calendar className="w-4 h-4 md:w-5 md:h-5" /> Időpontot kérek
-            </Link>
+            </a>
             <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden p-2 rounded-lg text-gray-900 bg-gray-100 hover:bg-gray-200 transition-colors">
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -93,19 +88,19 @@ function Navigation() {
               className="lg:hidden absolute top-16 left-0 right-0 bg-white shadow-2xl border-t border-gray-100 overflow-hidden z-40"
             >
               <div className="px-6 py-6 space-y-3 max-h-[80vh] overflow-y-auto">
-                <Link href="/" className="block px-4 py-3 text-gray-800 font-bold rounded-xl hover:bg-sky-50" onClick={() => setIsOpen(false)}>Főoldal</Link>
-                <Link href="/kezelesek" className="block px-4 py-3 text-gray-800 font-bold rounded-xl hover:bg-sky-50" onClick={() => setIsOpen(false)}>Szolgáltatások & Árak</Link>
-                <Link href="/rolunk" className="block px-4 py-3 text-gray-800 font-bold rounded-xl hover:bg-sky-50" onClick={() => setIsOpen(false)}>Rólunk</Link>
-                <Link href="/blog" className="block px-4 py-3 text-gray-800 font-bold rounded-xl hover:bg-sky-50" onClick={() => setIsOpen(false)}>Blog</Link>
-                <Link href="/karrier" className="block px-4 py-3 text-gray-800 font-bold rounded-xl hover:bg-sky-50" onClick={() => setIsOpen(false)}>Karrier</Link>
+                <a href="/" className="block px-4 py-3 text-gray-800 font-bold rounded-xl hover:bg-sky-50" onClick={() => setIsOpen(false)}>Főoldal</a>
+                <a href="/kezelesek" className="block px-4 py-3 text-gray-800 font-bold rounded-xl hover:bg-sky-50" onClick={() => setIsOpen(false)}>Szolgáltatások & Árak</a>
+                <a href="/rolunk" className="block px-4 py-3 text-gray-800 font-bold rounded-xl hover:bg-sky-50" onClick={() => setIsOpen(false)}>Rólunk</a>
+                <a href="/blog" className="block px-4 py-3 text-gray-800 font-bold rounded-xl hover:bg-sky-50" onClick={() => setIsOpen(false)}>Blog</a>
+                <a href="/karrier" className="block px-4 py-3 text-gray-800 font-bold rounded-xl hover:bg-sky-50" onClick={() => setIsOpen(false)}>Karrier</a>
                 
                 <div className="pt-6 pb-2 border-t border-gray-100 mt-4">
                   <a href="tel:+36705646837" className="flex justify-center items-center gap-2 w-full py-4 bg-gray-50 text-sky-700 font-bold rounded-xl mb-3">
                     <Phone className="w-5 h-5" /> +36 70 564 6837
                   </a>
-                  <Link href="/idopont" className="flex justify-center items-center gap-2 w-full py-4 bg-sky-600 text-white font-bold rounded-xl shadow-md" onClick={() => setIsOpen(false)}>
+                  <a href="/idopont" className="flex justify-center items-center gap-2 w-full py-4 bg-sky-600 text-white font-bold rounded-xl shadow-md" onClick={() => setIsOpen(false)}>
                     <Calendar className="w-5 h-5" /> Időpont Foglalás
-                  </Link>
+                  </a>
                 </div>
               </div>
             </motion.div>
@@ -188,12 +183,12 @@ function HeroSlider() {
           </AnimatePresence>
 
           <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-            <Link href="/idopont" className="w-full sm:w-auto">
+            <a href="/idopont" className="w-full sm:w-auto">
               <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-5 bg-sky-600 text-white text-lg font-bold rounded-full shadow-[0_0_40px_rgba(2,132,199,0.5)] transition-all">
                 <Calendar className="w-6 h-6" />
                 Azonnali Időpontfoglalás
               </motion.button>
-            </Link>
+            </a>
             <a href="tel:+36705646837" className="w-full sm:w-auto">
               <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-5 bg-white text-sky-700 hover:bg-gray-50 text-lg font-bold rounded-full shadow-xl transition-all border border-gray-100">
                 <Phone className="w-5 h-5 text-sky-600" />
@@ -316,7 +311,7 @@ function LocationSelector() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 lg:gap-12 max-w-6xl mx-auto">
-          <Link href="/esztergom" className="group relative rounded-[2rem] overflow-hidden shadow-xl aspect-[4/3] lg:aspect-video cursor-pointer">
+          <a href="/esztergom" className="group relative rounded-[2rem] overflow-hidden shadow-xl aspect-[4/3] lg:aspect-video cursor-pointer">
             <div className="absolute inset-0">
               <img src="https://images.unsplash.com/photo-1563212035-715a3bc32204?q=80&w=2070&auto=format&fit=crop" alt="Esztergom" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
             </div>
@@ -333,9 +328,9 @@ function LocationSelector() {
                 Tovább a rendelőhöz <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-sky-500 group-hover:text-white transition-all"><ArrowRight className="w-5 h-5" /></div>
               </div>
             </div>
-          </Link>
+          </a>
 
-          <Link href="/budapest" className="group relative rounded-[2rem] overflow-hidden shadow-xl aspect-[4/3] lg:aspect-video cursor-pointer">
+          <a href="/budapest" className="group relative rounded-[2rem] overflow-hidden shadow-xl aspect-[4/3] lg:aspect-video cursor-pointer">
             <div className="absolute inset-0">
               <img src="https://images.unsplash.com/photo-1597818451878-c0b7fb562547?q=80&w=2070&auto=format&fit=crop" alt="Budapest Római Part" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
             </div>
@@ -355,7 +350,7 @@ function LocationSelector() {
                 Részletek megtekintése <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-amber-500 group-hover:text-white transition-all"><ArrowRight className="w-5 h-5" /></div>
               </div>
             </div>
-          </Link>
+          </a>
         </div>
       </div>
     </section>
@@ -732,7 +727,7 @@ function QuoteAnalyzerSection() {
                       <label className="flex items-start gap-3 mt-4 cursor-pointer">
                         <input required type="checkbox" name="acceptedTerms" checked={formData.acceptedTerms} onChange={handleInputChange} className="mt-1 w-5 h-5 text-sky-600 rounded" />
                         <span className="text-xs text-gray-600 leading-relaxed">
-                          Elfogadom az <Link href="/aszf" className="text-sky-600 hover:underline">ÁSZF</Link>-et és az Adatkezelési Tájékoztatót, és kérem az árajánlatot emailben.
+                          Elfogadom az <a href="/aszf" className="text-sky-600 hover:underline">ÁSZF</a>-et és az Adatkezelési Tájékoztatót, és kérem az árajánlatot emailben.
                         </span>
                       </label>
 
@@ -793,9 +788,9 @@ function QuoteAnalyzerSection() {
                         <button onClick={downloadPDF} className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl transition-colors">
                           <Download className="w-5 h-5" /> PDF Letöltés
                         </button>
-                        <Link href="/idopont" className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow-lg shadow-sky-600/30 transition-all">
+                        <a href="/idopont" className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow-lg shadow-sky-600/30 transition-all">
                           <Calendar className="w-5 h-5" /> Szakorvosi Konzultáció Kérése
-                        </Link>
+                        </a>
                         <p className="text-center text-xs text-gray-400">A részletes ajánlatot elküldtük a(z) {formData.email} címre is!</p>
                       </div>
                     </div>
@@ -897,11 +892,11 @@ function FeaturedPricesSection() {
                 </div>
 
                 <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] bg-gradient-to-br from-sky-600 to-sky-800 rounded-3xl p-8 shadow-2xl flex items-center justify-center">
-                  <Link href="/idopont" className="flex flex-col items-center justify-center w-full h-full text-white group/link">
+                  <a href="/idopont" className="flex flex-col items-center justify-center w-full h-full text-white group/link">
                     <Calendar className="w-16 h-16 mb-6 opacity-80 group-hover/link:scale-110 group-hover/link:opacity-100 transition-all duration-300" />
                     <span className="text-2xl font-bold text-center mb-2">Konzultáció Foglalása</span>
                     <span className="text-sky-200 text-sm font-medium">Kattintson ide az időponthoz</span>
-                  </Link>
+                  </a>
                 </div>
 
               </div>
@@ -910,9 +905,9 @@ function FeaturedPricesSection() {
         </div>
         
         <div className="text-center mt-16">
-           <Link href="/kezelesek" className="inline-flex items-center gap-2 text-gray-500 hover:text-sky-600 font-bold transition-colors">
+           <a href="/kezelesek" className="inline-flex items-center gap-2 text-gray-500 hover:text-sky-600 font-bold transition-colors">
              Teljes árlista megtekintése <ArrowRight className="w-4 h-4" />
-           </Link>
+           </a>
         </div>
       </div>
     </section>
@@ -1010,7 +1005,7 @@ function Footer() {
           
           <div>
             <div className="bg-white inline-block p-2 rounded-xl mb-6">
-              <Image src="/logo.webp" alt="Crown Dental Logo" width={160} height={50} className="object-contain" />
+              <img src="/logo.webp" alt="Crown Dental Logo" width={160} height={50} className="object-contain" />
             </div>
             <p className="text-gray-400 mb-6 leading-relaxed">
               Kiváló minőségű fogászat saját fogtechnikai laborral, kompromisszumok nélkül. Kezelések Esztergomban, és hamarosan Budapesten is.
@@ -1028,11 +1023,11 @@ function Footer() {
           <div>
             <h4 className="text-white font-bold text-lg mb-6 uppercase tracking-wider">Szolgáltatások</h4>
             <ul className="space-y-4">
-              <li><Link href="/kezelesek/implantatum" className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Implantáció</Link></li>
-              <li><Link href="/kezelesek/fogszabalyozas" className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Fogszabályozás</Link></li>
-              <li><Link href="/kezelesek/koronak-hidak" className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Koronák és Hidak</Link></li>
-              <li><Link href="/kezelesek/fogfeherites" className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Fogfehérítés</Link></li>
-              <li><Link href="/kezelesek" className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Teljes Árlista</Link></li>
+              <li><a href="/kezelesek/implantatum" className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Implantáció</a></li>
+              <li><a href="/kezelesek/fogszabalyozas" className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Fogszabályozás</a></li>
+              <li><a href="/kezelesek/koronak-hidak" className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Koronák és Hidak</a></li>
+              <li><a href="/kezelesek/fogfeherites" className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Fogfehérítés</a></li>
+              <li><a href="/kezelesek" className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Teljes Árlista</a></li>
             </ul>
           </div>
 
@@ -1071,10 +1066,10 @@ function Footer() {
           <div>
             <h4 className="text-white font-bold text-lg mb-6 uppercase tracking-wider">Jogi Információk</h4>
             <ul className="space-y-4">
-              <li><Link href="/aszf" className="text-gray-400 hover:text-white transition-colors">Általános Szerződési Feltételek</Link></li>
-              <li><Link href="/adatkezeles" className="text-gray-400 hover:text-white transition-colors">Adatkezelési Tájékoztató (GDPR)</Link></li>
-              <li><Link href="/impresszum" className="text-gray-400 hover:text-white transition-colors">Impresszum</Link></li>
-              <li><Link href="/cookie-tajekoztato" className="text-gray-400 hover:text-white transition-colors">Sütik (Cookie) kezelése</Link></li>
+              <li><a href="/aszf" className="text-gray-400 hover:text-white transition-colors">Általános Szerződési Feltételek</a></li>
+              <li><a href="/adatkezeles" className="text-gray-400 hover:text-white transition-colors">Adatkezelési Tájékoztató (GDPR)</a></li>
+              <li><a href="/impresszum" className="text-gray-400 hover:text-white transition-colors">Impresszum</a></li>
+              <li><a href="/cookie-tajekoztato" className="text-gray-400 hover:text-white transition-colors">Sütik (Cookie) kezelése</a></li>
             </ul>
           </div>
 
