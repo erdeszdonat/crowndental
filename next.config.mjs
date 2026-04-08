@@ -21,7 +21,7 @@ const nextConfig = {
       { source: '/foghuzas', destination: '/kezelesek/foghuzas', permanent: true },
       { source: '/gyokerkezeles', destination: '/kezelesek/gyokerkezeles', permanent: true },
       { source: '/fogszabalyozas', destination: '/kezelesek/fogszabalyozas', permanent: true },
-      { source: '/koronak-hidak', destination: '/kezelesek/koronak-es-hidak', permanent: true },
+      { source: '/koronak-hidak', destination: '/kezelesek/koronak-hidak', permanent: true },
       { source: '/fogaszati-szolgaltatasok', destination: '/kezelesek', permanent: true },
       { source: '/gockutatas-fogaszati-hater-panaszok', destination: '/kezelesek/gockutatas', permanent: true },
       { source: '/fajdalommentes-fogaszat-esztergom', destination: '/esztergom', permanent: true },
