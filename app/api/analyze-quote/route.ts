@@ -71,7 +71,7 @@ export async function POST(req: Request) {
     } catch (err: any) {
       // Ha 503 (High Demand) vagy egyéb szerverhiba, akkor azonnal váltunk a stabil 1.5-re
       console.warn("Gemini 2.5 túlterhelt, váltás a stabil 1.5 Flash modellre...");
-      const model15 = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+      const model15 = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
       const result = await model15.generateContent([
         prompt,
         { inlineData: { data: base64Data, mimeType: file.type } }
