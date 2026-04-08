@@ -65,7 +65,7 @@ const treatmentCards = [
     title: 'Koronák és Hidak',
     description: 'Fémkerámia és cirkónium koronák prémium minőségben, saját laborból.',
     icon: <Crown className="w-6 h-6 sm:w-7 sm:h-7" />,
-    href: '/kezelesek/koronak-es-hidak',
+    href: '/kezelesek/koronak-hidak',
     color: 'from-amber-500 to-yellow-500',
   },
   {
