@@ -10,7 +10,9 @@ import {
   Menu, 
   X, 
   ChevronRight, 
-  BookOpen 
+  BookOpen, 
+  Building2,
+  Mail
 } from 'lucide-react';
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -30,7 +32,7 @@ function Navigation() {
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-sm' : 'bg-white border-b border-gray-100'}`}>
       <nav className="container mx-auto px-4 flex items-center justify-between h-20">
         <a href="/">
-          <img src="/logo.webp" alt="Crown Dental Logo" className="h-12 md:h-14 w-auto object-contain" />
+          <img src="/logo.webp" alt="Crown Dental Logo" width="240" height="70" className="h-12 md:h-14 w-auto object-contain" />
         </a>
         
         <div className="hidden lg:flex items-center gap-8 font-bold text-gray-800">
@@ -66,64 +68,94 @@ function Navigation() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// PRÉMIUM 2026 FOOTER 
+// PRÉMIUM 2026 FOOTER (Megegyezik a többi oldallal)
 // ═══════════════════════════════════════════════════════════════════════════
 function Footer() {
   return (
     <footer className="bg-gray-950 pt-20 pb-10 border-t border-gray-900 text-gray-300">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+          
           <div>
             <div className="bg-white inline-block p-2 rounded-xl mb-6">
-              <img src="/logo.webp" alt="Logo" className="h-10 w-auto" />
+              <img src="/logo.webp" alt="Crown Dental Logo" width="160" height="50" className="object-contain" />
             </div>
-            <p className="text-gray-400 text-sm leading-relaxed font-light">
-              Prémium fogászat Esztergomban és hamarosan Budapesten is. Saját laborunkkal spórolunk Önnek időt és költséget.
+            <p className="text-gray-400 mb-6 leading-relaxed">
+              Kiváló minőségű fogászat saját fogtechnikai laborral, kompromisszumok nélkül. Kezelések Esztergomban, és hamarosan Budapesten is.
             </p>
+            <div className="flex gap-4">
+              <a href="https://facebook.com" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-sky-600 hover:text-white transition-colors">
+                <span className="font-bold">f</span>
+              </a>
+              <a href="https://instagram.com" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-sky-600 hover:text-white transition-colors">
+                <span className="font-bold">in</span>
+              </a>
+            </div>
           </div>
+
           <div>
             <h4 className="text-white font-bold text-lg mb-6 uppercase tracking-wider">Szolgáltatások</h4>
-            <ul className="space-y-4 text-sm">
-              <li><a href="/kezelesek/implantatum" className="hover:text-sky-400 flex items-center gap-2 transition-colors"><ChevronRight className="w-4 h-4 text-sky-600" /> Implantáció</a></li>
-              <li><a href="/kezelesek/fogszabalyozas" className="hover:text-sky-400 flex items-center gap-2 transition-colors"><ChevronRight className="w-4 h-4 text-sky-600" /> Fogszabályozás</a></li>
-              <li><a href="/kezelesek/koronak-hidak" className="hover:text-sky-400 flex items-center gap-2 transition-colors"><ChevronRight className="w-4 h-4 text-sky-600" /> Koronák és Hidak</a></li>
-              <li><a href="/kezelesek" className="hover:text-sky-400 flex items-center gap-2 transition-colors"><ChevronRight className="w-4 h-4 text-sky-600" /> Teljes Árlista</a></li>
+            <ul className="space-y-4">
+              <li><a href="/kezelesek/implantatum" className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Implantáció</a></li>
+              <li><a href="/kezelesek/fogszabalyozas" className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Fogszabályozás</a></li>
+              <li><a href="/kezelesek/koronak-hidak" className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Koronák és Hidak</a></li>
+              <li><a href="/kezelesek/fogfeherites" className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Fogfehérítés</a></li>
+              <li><a href="/kezelesek" className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-4 h-4 text-sky-600" /> Teljes Árlista</a></li>
             </ul>
           </div>
+
           <div>
             <h4 className="text-white font-bold text-lg mb-6 uppercase tracking-wider">Kapcsolat</h4>
-            <ul className="space-y-5 text-sm">
+            <ul className="space-y-5">
               <li className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-sky-500 mt-1 flex-shrink-0" />
+                <MapPin className="w-5 h-5 text-sky-500 mt-1" />
                 <div>
                   <span className="block text-white font-semibold">Esztergomi Rendelő</span>
-                  <span className="text-gray-400">2500 Esztergom, Petőfi Sándor u. 11.</span>
+                  <a href="https://share.google/UV0bxLOGoyQdgH826" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
+                    2500 Esztergom, Petőfi Sándor utca 11.
+                  </a>
                 </div>
               </li>
               <li className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-amber-500 mt-1 flex-shrink-0" />
+                <MapPin className="w-5 h-5 text-amber-500 mt-1" />
                 <div>
                   <span className="block text-white font-semibold">Budapesti Rendelő</span>
-                  <span className="text-gray-400">1039 Budapest, Királyok útja 55.</span>
+                  <a href="https://maps.google.com/?q=1039+Budapest+Királyok+útja+55" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
+                    1039 Budapest, Királyok útja 55.
+                  </a>
                 </div>
               </li>
               <li className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-sky-500 flex-shrink-0" />
-                <a href="tel:+36705646837" className="hover:text-white transition-colors font-bold">+36 70 564 6837</a>
+                <Phone className="w-5 h-5 text-sky-500" />
+                <a href="tel:+36705646837" className="hover:text-white transition-colors">+36 70 564 6837</a>
+              </li>
+              <li className="flex items-center gap-3">
+                <Mail className="w-5 h-5 text-sky-500" />
+                <a href="mailto:info@crowndental.hu" className="hover:text-white transition-colors">info@crowndental.hu</a>
               </li>
             </ul>
           </div>
+
           <div>
             <h4 className="text-white font-bold text-lg mb-6 uppercase tracking-wider">Jogi Információk</h4>
-            <ul className="space-y-3 text-sm">
-              <li><a href="/aszf" className="hover:text-white transition-colors">Általános Szerződési Feltételek</a></li>
-              <li><a href="/adatkezeles" className="hover:text-white transition-colors">Adatkezelési Tájékoztató</a></li>
-              <li><a href="/impresszum" className="hover:text-white transition-colors">Impresszum</a></li>
+            <ul className="space-y-4">
+              <li><a href="/aszf" className="text-gray-400 hover:text-white transition-colors">Általános Szerződési Feltételek</a></li>
+              <li><a href="/adatkezeles" className="text-gray-400 hover:text-white transition-colors">Adatkezelési Tájékoztató (GDPR)</a></li>
+              <li><a href="/impresszum" className="text-gray-400 hover:text-white transition-colors">Impresszum</a></li>
+              <li><a href="/cookie-tajekoztato" className="text-gray-400 hover:text-white transition-colors">Sütik (Cookie) kezelése</a></li>
             </ul>
           </div>
+
         </div>
-        <div className="text-center pt-8 border-t border-gray-800 text-xs text-gray-500">
-          © 2026 Crown Dental Praxis és Labor Fogászati Kft. Minden jog fenntartva.
+
+        <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
+          <p>© 2026 Crown Dental Praxis és Labor Fogászati Kft. Minden jog fenntartva.</p>
+          <p className="flex items-center gap-2">
+            Készítette: 
+            <span className="text-white text-2xl tracking-wider ml-1" style={{ fontFamily: "'Great Vibes', 'Brush Script MT', cursive" }}>
+              Crown Dental
+            </span>
+          </p>
         </div>
       </div>
     </footer>
@@ -140,8 +172,10 @@ export default function BlogPage() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'h68mmabs';
-        const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
+        // Biztonságos ellenőrzés a 'process' objektumhoz, hogy megelőzzük a hivatkozási hibákat böngésző környezetben
+        const projectId = (typeof process !== 'undefined' && process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) ? process.env.NEXT_PUBLIC_SANITY_PROJECT_ID : 'h68mmabs';
+        const dataset = (typeof process !== 'undefined' && process.env.NEXT_PUBLIC_SANITY_DATASET) ? process.env.NEXT_PUBLIC_SANITY_DATASET : 'production';
+        
         const query = encodeURIComponent(`*[_type == "post"] | order(publishedAt desc) { _id, title, "slug": slug.current, publishedAt, excerpt, "imageUrl": mainImage.asset->url }`);
         const url = `https://${projectId}.api.sanity.io/v2024-03-08/data/query/${dataset}?query=${query}`;
         
