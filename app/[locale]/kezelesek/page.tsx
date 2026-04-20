@@ -173,13 +173,13 @@ const EUR_RATE = 350;
 
 function hufToEur(priceStr: string): string {
   const cleaned = priceStr.replace(/\s*Ft\s*/g, '').trim();
-  if (cleaned.includes('-')) {
-    const parts = cleaned.split('-').map(p => parseInt(p.trim().replace(/\./g, ''), 10));
-    if (parts.every(n => !isNaN(n))) {
+  if (cleaned.includes('–') || cleaned.includes('-')) {
+    const parts = cleaned.split(/\s*[–-]\s*/).map(p => parseInt(p.trim().replace(/[\s.]/g, ''), 10));
+    if (parts.length === 2 && parts.every(n => !isNaN(n))) {
       return `~€${Math.ceil(parts[0] / EUR_RATE)} – €${Math.ceil(parts[1] / EUR_RATE)}`;
     }
   }
-  const num = parseInt(cleaned.replace(/\./g, ''), 10);
+  const num = parseInt(cleaned.replace(/[\s.]/g, ''), 10);
   return !isNaN(num) ? `~€${Math.ceil(num / EUR_RATE)}` : '';
 }
 
