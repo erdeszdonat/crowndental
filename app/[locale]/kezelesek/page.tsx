@@ -169,8 +169,24 @@ function TreatmentCardsSection() {
   );
 }
 
+const EUR_RATE = 350;
+
+function hufToEur(priceStr: string): string {
+  const cleaned = priceStr.replace(/\s*Ft\s*/g, '').trim();
+  if (cleaned.includes('-')) {
+    const parts = cleaned.split('-').map(p => parseInt(p.trim().replace(/\./g, ''), 10));
+    if (parts.every(n => !isNaN(n))) {
+      return `~€${Math.ceil(parts[0] / EUR_RATE)} – €${Math.ceil(parts[1] / EUR_RATE)}`;
+    }
+  }
+  const num = parseInt(cleaned.replace(/\./g, ''), 10);
+  return !isNaN(num) ? `~€${Math.ceil(num / EUR_RATE)}` : '';
+}
+
 function PriceListSection() {
   const t = useTranslations('treatments');
+  const locale = useLocale();
+  const showEur = locale === 'en' || locale === 'sk';
   // @ts-ignore
   const priceCategories = t.raw('priceCategories') as Array<{ id: string; title: string; items: Array<{ name: string; price: string; highlight?: boolean }> }>;
   return (
@@ -198,9 +214,16 @@ function PriceListSection() {
                     <span className={`text-base sm:text-lg mb-2 sm:mb-0 pr-4 ${item.highlight ? 'font-semibold text-gray-900' : 'text-gray-700'}`}>
                       {item.name}
                     </span>
-                    <span className={`text-lg sm:text-xl font-bold whitespace-nowrap ${item.highlight ? 'bg-gradient-to-r from-sky-600 to-violet-600 bg-clip-text text-transparent' : 'text-gray-900'}`}>
-                      {item.price}
-                    </span>
+                    <div className="flex flex-col items-end gap-0.5">
+                      <span className={`text-lg sm:text-xl font-bold whitespace-nowrap ${item.highlight ? 'bg-gradient-to-r from-sky-600 to-violet-600 bg-clip-text text-transparent' : 'text-gray-900'}`}>
+                        {item.price}
+                      </span>
+                      {showEur && hufToEur(item.price) && (
+                        <span className="text-sm font-medium text-emerald-600 whitespace-nowrap">
+                          {hufToEur(item.price)}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>
