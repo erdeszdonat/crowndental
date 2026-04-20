@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import '../globals.css';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
@@ -118,32 +117,26 @@ export default async function LocaleLayout({ children, params }: Props) {
   const messages = await getMessages();
 
   return (
-    <html lang={locale}>
-      <head>
-        {/* SEO JSON-LD adatok bekötése */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(esztergomJsonLd) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(budapestJsonLd) }}
-        />
-      </head>
-      <body>
-        <Script src="https://www.googletagmanager.com/gtag/js?id=G-9BS3P1DC4T" strategy="afterInteractive" />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-9BS3P1DC4T');`}
-        </Script>
-
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          <ClientLayout>{children}</ClientLayout>
-        </NextIntlClientProvider>
-      </body>
-    </html>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(esztergomJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(budapestJsonLd) }}
+      />
+      <Script src="https://www.googletagmanager.com/gtag/js?id=G-9BS3P1DC4T" strategy="afterInteractive" />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-9BS3P1DC4T');`}
+      </Script>
+      <NextIntlClientProvider locale={locale} messages={messages}>
+        <ClientLayout>{children}</ClientLayout>
+      </NextIntlClientProvider>
+    </>
   );
 }
