@@ -1,0 +1,1071 @@
+{
+  "common": {
+    "bookAppointment": "Objednať sa",
+    "callNow": "Zavolajte teraz",
+    "learnMore": "Zistiť viac",
+    "allTreatments": "Všetky ošetrenia",
+    "from": "od",
+    "cancel": "Zrušiť",
+    "send": "Odoslať",
+    "next": "Ďalej",
+    "back": "Späť",
+    "close": "Zavrieť",
+    "loading": "Načítavam...",
+    "scrollDown": "Rolujte nadol",
+    "phoneNumber": "+36 70 564 6837",
+    "email": "info@crowndental.hu",
+    "openingHours": "Po–Pia: 08:00–18:00"
+  },
+
+  "nav": {
+    "home": "Domov",
+    "services": "Ošetrenia & Ceny",
+    "about": "O nás",
+    "blog": "Blog",
+    "career": "Kariéra",
+    "bookAppointment": "Objednať sa"
+  },
+
+  "footer": {
+    "tagline": "Crown Dental dáva vášmu úsmevu slobodu.",
+    "description": "Prémiová stomatológia s vlastným zubnotechnickým laboratóriom – bez kompromisov. Ošetrenia v Ostrihome a čoskoro aj v Budapešti.",
+    "treatments": "Ošetrenia",
+    "usefulLinks": "Užitočné odkazy",
+    "legalInfo": "Právne informácie",
+    "contact": "Kontakt",
+    "fullPriceList": "Úplný cenník",
+    "bookingLink": "Objednať sa",
+    "aboutLink": "O nás",
+    "contactLink": "Kontakt",
+    "blogLink": "Blog & Magazín",
+    "careerLink": "Kariéra",
+    "aszf": "Všeobecné obchodné podmienky",
+    "privacy": "Ochrana osobných údajov",
+    "cookie": "Zásady cookies",
+    "imprint": "Impressum",
+    "cookieSettings": "Nastavenia cookies",
+    "esztergomClinic": "Ambulancia Ostrihom",
+    "budapestClinic": "Ambulancia Budapešť",
+    "copyright": "© 2026 Crown Dental Praxis és Labor Fogászati Kft. Všetky práva vyhradené.",
+    "treatmentLinks": {
+      "implant": "Zubné implantáty",
+      "crowns": "Korunky a mosty",
+      "orthodontics": "Ortodontia",
+      "whitening": "Bielenie zubov",
+      "dentures": "Zubné protézy",
+      "surgery": "Orálna chirurgia & Extrakcia",
+      "rootCanal": "Koreňová liečba & Plomby",
+      "aesthetic": "Estetická stomatológia",
+      "assessment": "Stomatologické vyšetrenie",
+      "focal": "Fokálna infekcia",
+      "labTech": "Zubnotechnické služby"
+    }
+  },
+
+  "home": {
+    "floatingCta": {
+      "callNow": "Zavolajte teraz",
+      "bookAppointment": "Objednať sa"
+    },
+    "hero": {
+      "slides": [
+        {
+          "tag": "AI Analyzátor cenovej ponuky",
+          "titleTop": "Zdá sa vám cena",
+          "titleBottom": "inde príliš vysoká?",
+          "subtitle": "Vyskúšajte náš AI kalkulátor a zistite okamžite, koľko ušetríte vďaka nášmu vlastnému laboratóriu!",
+          "primaryText": "Analyzovať ponuku"
+        },
+        {
+          "tag": "Vlastné zubné laboratórium",
+          "titleTop": "Maximálna kvalita,",
+          "titleBottom": "bez sprostredkovateľských poplatkov.",
+          "subtitle": "Vďaka vlastnému laboratóriu sú zubné náhrady a korunky hotové rýchlejšie a pod prísnou kontrolou kvality.",
+          "primaryText": "Objednať sa"
+        },
+        {
+          "tag": "30 rokov skúseností",
+          "titleTop": "Nový úsmev,",
+          "titleBottom": "nová sebadôvera.",
+          "subtitle": "Viac ako 15 000 úspešných ošetrení dokazuje naše odborné znalosti. Zvertesvoj úsmev do našich rúk!",
+          "primaryText": "Objednať sa"
+        }
+      ]
+    },
+    "trustBadges": {
+      "experience": { "title": "30+ rokov skúseností", "desc": "Pevné odborné zázemie" },
+      "lab": { "title": "Vlastné laboratórium", "desc": "Dokonalá kvalita na mieste" },
+      "materials": { "title": "Prémiové materiály", "desc": "Najvyššia kvalita bez kompromisov" },
+      "painless": { "title": "Bezbolestné ošetrenie", "desc": "Empatická starostlivosť" }
+    },
+    "locations": {
+      "label": "Naše ambulancie",
+      "title": "Dve ambulancie,",
+      "titleHighlight": "jedna vynikajúca kvalita.",
+      "subtitle": "Vyberte si pobočku, ktorá je vám najbližšie.",
+      "visitClinic": "Prejsť na ambulanciu",
+      "details": "Podrobnosti",
+      "comingSoon": "Čoskoro otvárame!"
+    },
+    "stats": {
+      "label": "Fakty a čísla",
+      "title": "Čísla, ktoré",
+      "titleHighlight": "hovoria samy za seba.",
+      "years": { "label": "rokov skúseností", "desc": "Na trhu od roku 1994." },
+      "patients": { "label": "spokojných pacientov", "desc": "Dôvera naprieč generáciami." },
+      "savings": { "label": "úspora", "desc": "Vďaka vlastnému laboratóriu." },
+      "days": { "label": "zhotovenie korunky", "desc": "Rýchle, presné zubné náhrady." }
+    },
+    "quoteAnalyzer": {
+      "badge": "AI Kalkulátor cien",
+      "title": "Zdá sa vám cenová ponuka inde",
+      "titleHighlight": "príliš drahá?",
+      "desc": "Nahrajte svoju existujúcu cenovú ponuku (obrázok alebo PDF). Náš systém ju okamžite analyzuje a ukáže, koľko ušetríte s naším vlastným laboratóriom!",
+      "socialProof": "Viac ako <b>500+</b> pacientov ušetrilo s nami.",
+      "step1": {
+        "dropzone": "Sem pretiahnite cenovú ponuku",
+        "dropzoneHint": "alebo kliknite pre výber súboru (fotografia alebo PDF)",
+        "compressionActive": "✓ Automatická kompresia obrázkov aktívna",
+        "selectFile": "Vybrať súbor",
+        "optimizing": "Optimalizujem obrázok..."
+      },
+      "step2": {
+        "uploadedFile": "Nahraný súbor:",
+        "formTitle": "Kam máme poslať podrobné výsledky?",
+        "fullName": "Celé meno *",
+        "salutation": "Oslovenie (nepovinné)",
+        "salutationPlaceholder": "napr. Ján",
+        "email": "E-mailová adresa *",
+        "phone": "Telefónne číslo *",
+        "phonePlaceholder": "+421...",
+        "terms": "Súhlasím s <aszf>Obchodnými podmienkami</aszf> a Ochranou osobných údajov a žiadam cenovú ponuku e-mailom.",
+        "analyzeButton": "Spustiť analýzu"
+      },
+      "step3": {
+        "title": "Analýza AI prebieha...",
+        "subtitle": "Tento proces môže trvať 15–40 sekúnd."
+      },
+      "step4": {
+        "doneTitle": "Analýza je hotová, {name}!",
+        "doneSubtitle": "S naším vlastným laboratóriom môžete ušetriť:",
+        "treatment": "Ošetrenie",
+        "original": "Pôvodná cena",
+        "downloadPDF": "Stiahnuť PDF",
+        "bookConsultation": "Objednať sa na konzultáciu",
+        "newAnalysis": "Spustiť novú analýzu",
+        "emailSent": "Podrobná ponuka bola odoslaná aj na {email}!"
+      },
+      "errors": {
+        "tooLarge": "Obrázok je aj po kompresii príliš veľký ({size} MB). Skúste prosím fotku s nižším rozlíšením.",
+        "pdfTooLarge": "PDF súbor je príliš veľký (max. 4,2 MB). Tip: Urobte screenshot PDF — náš systém ho automaticky skomprimuje!",
+        "analysisFailed": "Pri analýze nastala chyba: {error}",
+        "networkError": "Nastala komunikačná chyba. Skúste to prosím neskôr."
+      }
+    },
+    "lab": {
+      "badge": "Vlastné zubné laboratórium",
+      "title": "Kľúč k dokonalosti: všetko vyrábame u nás.",
+      "features": [
+        "Digitálny dizajn a výroba CAD/CAM",
+        "Korunky, mosty, protézy do 3 dní",
+        "Okamžité opravy a úpravy priamo na mieste",
+        "Žiadne sprostredkovateľské prirážky – šetríte priamo",
+        "Prémiové materiály: zirkón, porcelán, PEEK"
+      ],
+      "learnMore": "Spoznajte naše laboratórium"
+    },
+    "services": {
+      "label": "Vybrané ošetrenia",
+      "title": "Prémiové ošetrenia,",
+      "titleHighlight": "za dostupné ceny.",
+      "subtitle": "Vďaka vlastnému laboratóriu poskytujeme vynikajúcu kvalitu bez kompromisov.",
+      "bookConsultation": "Objednať sa na konzultáciu",
+      "clickForAppointment": "Kliknite pre objednanie",
+      "viewAllPrices": "Zobraziť úplný cenník",
+      "cards": [
+        { "title": "Diagnostika & Základy", "subtitle": "Prehliadky, RTG, plomby", "price": "Od 10 000 HUF" },
+        { "title": "Koreňová liečba", "subtitle": "Bezbolestná záchrana zuba", "price": "Od 10 000 HUF" },
+        { "title": "Estetika & Prevencia", "subtitle": "Čistenie zubného kameňa, bielenie", "price": "Od 15 000 HUF" },
+        { "title": "Protetika & Korunky", "subtitle": "Zirkón, keramika, protézy", "price": "Od 42 000 HUF" },
+        { "title": "Chirurgia & Implantáty", "subtitle": "Extrakcie, prémiové implantáty", "price": "Od 55 000 HUF" },
+        { "title": "Deti & Ortodontia", "subtitle": "Fixné a snímateľné aparáty", "price": "Od 15 000 HUF" }
+      ]
+    },
+    "reviews": {
+      "label": "Hodnotenia",
+      "title": "Čo hovoria naši pacienti",
+      "ratingCount": "(320+ hodnotení)",
+      "items": [
+        { "name": "Kovács Mária", "text": "Chodím sem už 10 rokov — najlepšie rozhodnutie. Aj moje deti sem chodia, nikdy sme neboli sklamaní.", "date": "Marec 2026" },
+        { "name": "Nagy József", "text": "Veľmi profesionálni, implantát mi vyšiel dokonale. Čakal som chvíľu na termín, ale absolútne to stálo za to.", "date": "Február 2026" },
+        { "name": "Szabó Anna", "text": "Korunka bola hotová za 3 dni vďaka vlastnému laboratóriu. Veľmi som sa bála, ale bolo to úplne bezbolestné!", "date": "Január 2026" },
+        { "name": "Tóth Gábor", "text": "Chodím výhradne k nim 8 rokov. Vždy milí, rýchli a pracujú s najmodernejším vybavením.", "date": "December 2025" },
+        { "name": "Horváth Éva", "text": "Moja snímateľná protéza vyšla krásne, technik vedel okamžite korigovať odtieň. Skvelí odborníci.", "date": "November 2025" },
+        { "name": "Varga Péter", "text": "Som pacient 5 rokov. Prvýkrát v živote nejdem k zubárovi s bolesťou brucha — sú veľmi empatickí.", "date": "Október 2025" },
+        { "name": "Kiss László", "text": "Mal som zložitú koreňovú liečbu, ale zachránili mi zub. Presná, rýchla a dôkladná práca.", "date": "September 2025" },
+        { "name": "Farkas Zita", "text": "Som ich verný pacient 10 rokov. Každému, kto hľadá zubára, ich môžem len odporučiť!", "date": "Júl 2025" },
+        { "name": "Molnár Katalin", "text": "Dala som si urobiť bielenie zubov, výsledok je úžasný. Parkovanie je trochu náročné, ale ambulancia je skvelá.", "date": "Máj 2025" },
+        { "name": "Balogh Tamás", "text": "Vymenili mi celý horný rad za zirkónové korunky. Pôsobia ako vlastné zuby. Fantastická práca!", "date": "Marec 2025" }
+      ]
+    },
+    "cta": {
+      "title": "Ste pripravení urobiť prvý krok?",
+      "subtitle": "Objednajte sa online alebo nám zavolajte – a spoznajte osobne Crown Dental rozdiel.",
+      "bookOnline": "Online objednanie"
+    },
+    "faq": {
+      "label": "Vedomostná báza",
+      "title": "Často kladené otázky",
+      "subtitle": "Všetko, čo potrebujete vedieť o našich ošetreniach a ambulancii.",
+      "items": [
+        {
+          "question": "Prečo sú zubné náhrady v Crown Dental lacnejšie?",
+          "answer": "Naša najväčšia výhoda je **vlastné špičkové zubné laboratórium**. Keďže neplatíme externému laboratóriu, nie sú žiadne sprostredkovateľské poplatky — pacientom ušetríme značné sumy bez toho, aby sme museli pristúpiť na kompromis v kvalite materiálov (napr. zirkón)."
+        },
+        {
+          "question": "Bude ošetrenie bolieť?",
+          "answer": "Bezbolestnosť u nás nie je len reklamný slogan, ale základný princíp. Používame najmodernejšie anestézne techniky a ultra-tenké ihly. Naši lekári dbajú na to, aby ste sa počas každého zákroku cítili úplne uvoľnene a pohodlne."
+        },
+        {
+          "question": "Ako dlho trvá výroba zubnej korunky alebo mosta?",
+          "answer": "Kým v iných ambulanciách môžete čakať na korunky týždne, vďaka nášmu vlastnému laboratóriu je zirkónová alebo keramokovová korunka hotová **do 3–5 pracovných dní** — od otisku po definitívne nasadenie patríme k najrýchlejším."
+        },
+        {
+          "question": "Aké implantáty používate?",
+          "answer": "Používame výhradne prémiové implantáty svetových značiek (napr. Alpha Bio, DIO). Tieto implantáty majú doživotnú záruku a vynikajúcu mieru oseointegrálnosti (nad 98 %)."
+        },
+        {
+          "question": "Kedy je vhodné navštíviť ortodontistu?",
+          "answer": "Pre deti sa odporúča prvá konzultácia vo veku 7–8 rokov, ale **nikdy nie je neskoro ani v dospelosti!** Dnes existujú vysoko estetické (dokonca neviditeľné) riešenia, ktorými možno dosiahnuť dokonalý, zdravý úsmev v každom veku."
+        },
+        {
+          "question": "Prijímate karty zdravotných poisťovní (EP)?",
+          "answer": "Samozrejme! Pred ošetrením prosím informujte našich kolegov, ak si prajete faktúru na kartu zdravotnej poisťovne."
+        },
+        {
+          "question": "Ako funguje AI Analyzátor cenovej ponuky?",
+          "answer": "Ak už máte cenovú ponuku z inej ambulancie (na papieri alebo ako PDF), jednoducho ju odfotografujte a nahrajte do kalkulátora na našej domovskej stránke. Náš systém ju okamžite porovná s našimi cenami a ukáže, koľko ušetríte za rovnaké ošetrenia."
+        },
+        {
+          "question": "Ako sa môžem objednať?",
+          "answer": "Najrýchlejší spôsob je použiť náš online systém kliknutím na tlačidlo 'Objednať sa', kde sa môžete objednať okamžite. Počas pracovnej doby nás môžete tiež kontaktovať telefonicky na +36 70 564 6837."
+        }
+      ]
+    }
+  },
+
+  "booking": {
+    "title": "Objednať sa",
+    "subtitle": "Vyplňte svoje údaje a náš kolega vás čoskoro kontaktuje.",
+    "step1Title": "Vaše údaje",
+    "step2Title": "Výber ošetrenia",
+    "fullName": "Celé meno",
+    "salutation": "Meno / Oslovenie",
+    "email": "E-mailová adresa",
+    "phone": "Telefónne číslo",
+    "city": "Vyberte ambulanciu",
+    "treatment": "Požadované ošetrenie",
+    "selectTreatment": "Vyberte ošetrenie...",
+    "nextStep": "Ďalší krok",
+    "prevStep": "Späť",
+    "submit": "Žiadosť o termín",
+    "successTitle": "Ďakujeme za vašu správu!",
+    "successText": "Čoskoro vás kontaktujeme pre potvrdenie termínu.",
+    "submitting": "Odosielam...",
+    "treatments": [
+      "Vyšetrenie a konzultácia",
+      "Zubný implantát",
+      "Zirkónová alebo keramokovová korunka",
+      "Ortodontia",
+      "Estetická stomatológia (bielenie, zubný kameň)",
+      "Výroba / oprava protézy",
+      "Orálna chirurgia / Extrakcia",
+      "Koreňová liečba / Plomba",
+      "Iné / Neviem presne"
+    ]
+  },
+
+  "about": {
+    "badge": "Viac ako stomatológia",
+    "title": "Spoznajte",
+    "titleHighlight": "Crown Dental!",
+    "subtitle": "Od roku 1994 pracujeme v zákulisí, aby ste sa mohli kedykoľvek, v akejkoľvek situácii, bez zábran usmievať.",
+    "centralTitle1": "Crown Dental",
+    "centralTitle2": "dáva vášmu úsmevu",
+    "centralTitle3": "slobodu.",
+    "missionTitle": "Nevyrábame len zuby,",
+    "missionHighlight": "budujeme sebavedomie.",
+    "mission1Bold": "Budeme úprimní:",
+    "mission1Rest": "vieme, že väčšina ľudí nemá rada návštevy u zubára. Rozumieme tomu – a s nami sa tento strach stane minulosťou.",
+    "mission2Plain": "V Crown Dental sme opakom všetkého, čo ste si o stomatológii mysleli.",
+    "mission2Bold": "Ponúkame skutočnú slobodu.",
+    "mission3": "Ponúkame celoživotné partnerstvo: sme s vami od prvých mliečnych zubov až do momentu, keď sa vo veku 80 rokov hrdo pozriete do zrkadla.",
+    "storyLabel": "Náš príbeh",
+    "storyTitle": "Pevné zázemie.",
+    "story1Part1": "Príbeh Crown Dental",
+    "story1Bold": "sa začal v roku 1994 v Ostrihome",
+    "story2Part1": "Silou našej kliniky je",
+    "story2Bold": "vlastné zubnotechnické laboratórium",
+    "story2Part2": ". Keďže všetko riešime interne, sme rýchlejší a cenovo dostupnejší.",
+    "story3Part1": "Dnes sme zodpovední za úsmevy viac ako",
+    "story3Bold": "15 000 spokojných pacientov",
+    "story3Part2": ".",
+    "storySince": "Pre váš úsmev od samého začiatku."
+  },
+
+  "career": {
+    "badge": "Pridajte sa k nám",
+    "title": "Pracujte s nami na",
+    "titleHighlight": "budúcnosti stomatológie!",
+    "subtitle": "Hľadáme odhodlaných odborníkov, ktorí chcú byť súčasťou dynamicky sa rozvíjajúceho tímu.",
+    "heroBadge": "Pridajte sa k nášmu tímu",
+    "heroTitle": "Budujte s nami",
+    "heroTitleHighlight": "úsmev budúcnosti!",
+    "heroSubtitle": "Vynikajúci plat, podporná komunita a neustály rozvoj v ambulanciách Crown Dental v Ostrihome a Budapešti.",
+    "heroBtn": "Prihlásiť sa teraz",
+    "benefitsTitle": "Prečo Crown Dental?",
+    "benefitsSubtitle": "Odborná komunita.",
+    "benefits": [
+      { "title": "Vynikajúce benefity", "desc": "Garantujeme konkurencieschopný plat nad trhovou úrovňou a skutočné ocenenie." },
+      { "title": "Synergia lekár-technik", "desc": "Keďže ambulancia a laboratórium sú na jednom mieste, okamžitá konzultácia je zaručená." },
+      { "title": "Neustály rozvoj", "desc": "U nás sa môžete každý deň stávať lepším odborníkom vďaka najnovším technológiám." },
+      { "title": "Podporná atmosféra", "desc": "U nás je každý rovnocenný — dôležitý článok v tíme." }
+    ],
+    "reviewsLabel": "Povedali naši kolegovia",
+    "employeeReviews": [
+      { "role": "Zubný lekár", "text": "Vďaka blízkosti laboratória sa v praxi veľa naučím o zubných náhradách." },
+      { "role": "Zubný technik", "text": "Je super, že môžeme priamo komunikovať s ošetrujúcim lekárom." },
+      { "role": "Asistentka", "text": "Prišla som ako absolventka, ale tím je taký podporný, že som sa to naučila v okamihu." },
+      { "role": "Dentálna hygienička", "text": "Predvídateľné, moderné pracovné prostredie a odborné ocenenie." }
+    ],
+    "formName": "Celé meno",
+    "formPhone": "Telefón",
+    "formEmail": "Email",
+    "formLocationPlaceholder": "Vyberte ambulanciu",
+    "formPositionPlaceholder": "Vyberte pozíciu",
+    "formPositionDoctor": "Zubný lekár",
+    "formPositionAssistant": "Dentálna asistentka",
+    "formSubmit": "Odoslať prihlášku",
+    "formSubmitting": "Odosielanie...",
+    "formSuccess": "Ďakujeme za vašu prihlášku!",
+    "formError": "Vyskytla sa chyba. Skúste to znova."
+  },
+
+  "blog": {
+    "title": "Blog & Magazín",
+    "subtitle": "Stomatologické tipy, správy a odborné články pre našich pacientov.",
+    "badge": "Crown Dental Magazín",
+    "mainTitle": "Stomatologická",
+    "mainTitleHighlight": "znalostná báza",
+    "description1": "Vitajte na stomatologickom blogu Crown Dental! Naši odborní lekári vytvorili túto znalostná bázu, aby vám poskytli zrozumiteľné a spoľahlivé informácie o každodennej ústnej hygiene a zubných ošetreniach.",
+    "description2": "Či už ide o správnu techniku čistenia zubov, moderné implantáty alebo výhody bezbolestných ošetrení — u nás nájdete odpoveď na každú otázku.",
+    "freshPost": "Nový článok",
+    "readMore": "Čítať viac",
+    "backToBlog": "Späť na blog",
+    "postNotFound": "Článok sa nenašiel.",
+    "backToBlogLabel": "Späť na blog",
+    "freshContent": "Nový obsah",
+    "ctaTitle": "Spravme prvý krok k dokonalému úsmevu!",
+    "ctaSubtitle": "Objednajte sa na odbornú konzultáciu, kde zodpovieme všetky vaše otázky a spoločne naplánujeme váš nový úsmev.",
+    "ctaBtn": "Objednať sa",
+    "statsLabel": "Naša klinika v číslach",
+    "statsTitle": "Naše výsledky, vo vašich službách",
+    "stats": [
+      { "end": 30, "suffix": "+", "text": "Rokov skúseností", "desc": "V praxi od roku 1994" },
+      { "end": 15000, "suffix": "+", "text": "Spokojných pacientov", "desc": "Dôvera generácií" },
+      { "end": 40, "suffix": "%", "text": "Úspora", "desc": "Vďaka vlastnému laboratóriu" },
+      { "end": 3, "suffix": " dni", "text": "Výroba korunky", "desc": "Bleskurýchla protetika" }
+    ],
+    "reviewsTitle": "Povedali naši pacienti"
+  },
+
+  "contact": {
+    "title": "Kontakt",
+    "subtitle": "Neváhajte nás kontaktovať — odpovieme a pomôžeme!",
+    "esztergom": "Ambulancia Ostrihom",
+    "budapest": "Ambulancia Budapešť",
+    "openingHours": "Otváracie hodiny",
+    "weekdays": "Pondelok – Piatok"
+  },
+
+  "cookie": {
+    "message": "Naša webová stránka používa súbory cookie na zlepšenie vášho zážitku.",
+    "accept": "Prijať",
+    "decline": "Odmietnuť",
+    "settings": "Nastavenia",
+    "bannerTitle": "Vaše súkromie je pre nás dôležité!",
+    "bannerDesc": "Webová stránka Crown Dental používa súbory cookie na plynulé prehliadanie, analýzu prevádzky a personalizovaný zážitok. V súlade so zásadami Google si prosím vyberte z nasledujúcich možností.",
+    "bannerLink": "Podrobné informácie.",
+    "settingsBtn": "Nastavenia",
+    "necessaryOnly": "Len nevyhnutné",
+    "acceptAll": "Prijať všetky",
+    "settingsTitle": "Správa nastavení súborov cookie",
+    "settingsSubtitle": "Tu si môžete prispôsobiť, aké typy zberu údajov nám povolíte.",
+    "necessaryTitle": "Základná funkčnosť (Povinné)",
+    "alwaysActive": "Vždy aktívne",
+    "necessaryDesc": "Tieto súbory cookie sú nevyhnutné pre základné funkcie webovej stránky (napr. navigácia, bezpečnosť, pamäť AI kalkulačky).",
+    "analyticsTitle": "Štatistiky (Google Analytics)",
+    "analyticsDesc": "Zbierame anonymné údaje o tom, ako návštevníci používajú stránku, čo nám pomáha zlepšovať používateľský zážitok.",
+    "marketingTitle": "Marketing a cielená reklama",
+    "marketingDesc": "Umožňuje tretím stranám zobrazovať vám relevantné reklamy.",
+    "acceptAllBtn": "Prijať všetky",
+    "saveSelectionBtn": "Uložiť nastavenia"
+  },
+
+  "treatments": {
+    "pageTitle": "Ošetrenia & Ceny",
+    "pageSubtitle": "Prémiové stomatologické ošetrenia s vlastným laboratóriom za dostupné ceny.",
+    "bookConsultation": "Rezervovať konzultáciu",
+    "from": "Od:",
+    "allTreatments": "Všetky ošetrenia",
+    "heroBadge": "Vlastné laboratórium = Nižšie ceny",
+    "heroTitle1": "Stomatologické",
+    "heroTitle2": "ošetrenia",
+    "heroSubtitleStart": "Vyberte si ošetrenie z kariet nižšie, alebo sa posuňte nadol pre celý cenník. Vďaka vlastnému zubnotechnickému laboratóriu ponúkame ceny",
+    "heroSavings": "až o 40 % nižšie",
+    "heroSubtitleEnd": "ako je priemer trhu.",
+    "cardDetails": "Podrobnosti",
+    "priceListTitle": "Náš kompletný cenník",
+    "priceListSubtitle": "Transparentné ceny, bez skrytých poplatkov.",
+    "disclaimerTitle": "Dôležitá poznámka",
+    "disclaimerText": "Ceny sú orientačné. Keďže každý chrup je jedinečný, konečná cena sa stanoví po osobnom vyšetrení a podrobnom liečebnom pláne.",
+    "ctaTitle": "Máte otázky ohľadom cien?",
+    "ctaSubtitle": "Objednajte sa na osobné vyšetrenie, kde vám poskytneme podrobný liečebný plán.",
+    "ctaBtn": "Objednať sa na konzultáciu",
+    "cards": [
+      { "id": "implantatum", "title": "Zubné implantáty", "description": "Prirodzená náhrada zubu titánovým implantátom, niekedy za jediný deň." },
+      { "id": "fogszabalyozas", "title": "Ortodontia", "description": "Fixné a snímateľné aparáty pre deti aj dospelých." },
+      { "id": "koronak-hidak", "title": "Korunky a mosty", "description": "Kovo-keramické a zirkónové korunky prémiové kvality z vlastného laboratória." },
+      { "id": "fogfeherites", "title": "Bielenie zubov", "description": "Profesionálne bielenie domácou alebo ambulantnou metódou." },
+      { "id": "fogsor", "title": "Zubné protézy", "description": "Snímateľné a fixné protézy, presné osadenie, podbitie." },
+      { "id": "gyokerkezeles", "title": "Koreňová liečba", "description": "Bezbolestná strojová koreňová výplň najmodernejšou technikou." },
+      { "id": "szajsebeszet", "title": "Orálna chirurgia", "description": "Extrakcia múdrosti a resekcia koreňového hrotu s odbornou starostlivosťou." },
+      { "id": "allapotfelmeres", "title": "Vstupné vyšetrenie", "description": "Podrobná konzultácia, panoramatický RTG a individuálny liečebný plán." },
+      { "id": "esztetikai-fogaszat", "title": "Estetická stomatológia", "description": "Keramické fazety a neviditeľné výplne pre dokonalý úsmev." },
+      { "id": "foghuzas", "title": "Extrakcia zuba", "description": "Šetrné odstránenie zuba s rýchlym hojením." },
+      { "id": "gockutatas", "title": "Hľadanie ložísk nákazy", "description": "Odhalenie skrytých zápalov moderným 3D CT." },
+      { "id": "gyerekfogaszat", "title": "Detská stomatológia", "description": "Ošetrenia mliečnych zubov a zapečatenie v priateľskom, trpezlivom prostredí." }
+    ],
+    "priceCategories": [
+      {
+        "id": "diagnosztika",
+        "title": "Diagnostika a základné ošetrenia",
+        "items": [
+          { "name": "Vstupné vyšetrenie, písomné stanovisko, hľadanie ložísk, liečebný plán", "price": "10 000 Ft" },
+          { "name": "Výplne", "price": "30 000 – 35 000 Ft" },
+          { "name": "Extrakcia zuba", "price": "25 000 – 35 000 Ft" },
+          { "name": "RTG snímka (malá / jeden zub)", "price": "5 000 Ft" },
+          { "name": "Panoramatický RTG", "price": "6 000 Ft" }
+        ]
+      },
+      {
+        "id": "gyokerkezeles",
+        "title": "Koreňová liečba",
+        "items": [
+          { "name": "Koreňová výplň (jednokorienková)", "price": "25 000 Ft" },
+          { "name": "Koreňová výplň (dvojkorienková)", "price": "30 000 Ft" },
+          { "name": "Koreňová výplň (trojkorienková)", "price": "33 000 Ft" },
+          { "name": "Odstránenie koreňovej výplne", "price": "20 000 Ft" },
+          { "name": "Koreňová liečba za sedenie", "price": "10 000 Ft" }
+        ]
+      },
+      {
+        "id": "esztetika",
+        "title": "Zachovanie zubov a estetika",
+        "items": [
+          { "name": "Odstránenie zubného kameňa (na čeľusť)", "price": "15 000 Ft" },
+          { "name": "Bielenie silikónovou dlahou (domáce) / na oblúk", "price": "30 000 Ft" },
+          { "name": "Bielenie v ambulancii (lampou) / na oblúk", "price": "45 000 Ft", "highlight": true }
+        ]
+      },
+      {
+        "id": "fogpotlas",
+        "title": "Protetika a korunky",
+        "items": [
+          { "name": "Dočasná korunka (krátkodobá, 1–2 týždne)", "price": "6 000 Ft" },
+          { "name": "Dočasná korunka (dlhodobá, max. 1 rok)", "price": "15 000 Ft" },
+          { "name": "Kovo-keramická korunka", "price": "42 000 Ft" },
+          { "name": "Zirkónová korunka (bez kovu)", "price": "55 000 Ft", "highlight": true },
+          { "name": "Individuálne tieňovanie (za zub)", "price": "15 000 Ft" },
+          { "name": "Snímateľná protéza na jednu čeľusť (kompozitná)", "price": "110 000 Ft" },
+          { "name": "Kovovová platničková protéza na jednu čeľusť", "price": "150 000 Ft" },
+          { "name": "Odstránenie starého mosta (za pilierový zub)", "price": "12 000 Ft" },
+          { "name": "Podbitie protézy", "price": "25 000 Ft" }
+        ]
+      },
+      {
+        "id": "szajsebeszet",
+        "title": "Orálna chirurgia a implantológia",
+        "items": [
+          { "name": "Chirurgická extrakcia zuba", "price": "55 000 Ft" },
+          { "name": "Odstránenie múdrosti", "price": "55 000 Ft" },
+          { "name": "Resekcia koreňového hrotu", "price": "55 000 Ft" },
+          { "name": "DIO Implantát", "price": "240 000 Ft", "highlight": true },
+          { "name": "ALPHA BIO Implantát", "price": "180 000 Ft" },
+          { "name": "Kostná augmentácia", "price": "190 000 Ft" }
+        ]
+      },
+      {
+        "id": "gyermek",
+        "title": "Detská stomatológia a ortodontia",
+        "items": [
+          { "name": "Výplň mliečneho zuba", "price": "15 000 Ft" },
+          { "name": "Zapečatenie fisúr", "price": "15 000 Ft" },
+          { "name": "Fixný aparát", "price": "190 000 – 285 000 Ft", "highlight": true },
+          { "name": "Snímateľný aparát", "price": "60 000 – 90 000 Ft" },
+          { "name": "Aktivácia fixného aparátu", "price": "10 000 – 15 000 Ft" },
+          { "name": "Aktivácia snímateľného aparátu", "price": "5 000 – 8 000 Ft" }
+        ]
+      }
+    ]
+  },
+
+  "langSwitch": {
+    "hu": "Magyar",
+    "en": "English",
+    "sk": "Slovenčina",
+    "ariaLabel": "Zmeniť jazyk"
+  },
+
+  "treatmentPages": {
+    "shared": {
+      "consultationBtn": "Lekárska konzultácia",
+      "appointmentBtn": "Rezervovať termín",
+      "requestBtn": "Požiadať o konzultáciu",
+      "whyCrownBadge": "Prečo Crown Dental?",
+      "processBadge": "Postup",
+      "processTitle": "Krok za krokom",
+      "faqTitle": "Často kladené otázky"
+    },
+    "allapotfelmeres": {
+      "heroBadge": "Komplexná diagnostika",
+      "heroTitle": "Vstupné vyšetrenie podľa Crown Dental",
+      "heroDesc": "Stav vašich zubov a ústnej dutiny mapujeme modernými diagnostickými nástrojmi. Presná diagnóza, personalizovaný liečebný plán.",
+      "heroPriceLabel": "Konzultácia",
+      "heroPriceValue": "Špecialistická",
+      "problemTitle": "Problém: Skryté zubné ťažkosti",
+      "problemDesc": "Mnohé zubné problémy – kazivosť, zápal ďasien, úbytok kosti – sa rozvíjajú roky bez príznakov. Keď sa objaví bolesť, liečba je už zložitejšia a drahšia.",
+      "solutionTitle": "Riešenie: Komplexné vstupné vyšetrenie",
+      "solutionDesc": "Moderným panoramatickým röntgenom a 3D CT odhalíme aj tie najmenšie zmeny. Dôkladné vyšetrenie umožňuje včasnú intervenciu.",
+      "includedBadge": "Čo je zahrnuté?",
+      "includedTitle": "Úplný diagnostický balík",
+      "items": [
+        { "title": "Vizuálne vyšetrenie", "desc": "Zubný lekár dôkladne vyšetrí vaše zuby, ďasná a každú časť ústnej dutiny." },
+        { "title": "Panoramatický röntgen", "desc": "Na jednom snímku vidíme všetky zuby, korienky a stav čeľustnej kosti." },
+        { "title": "3D CT vyšetrenie", "desc": "Pred implantáciou plánujeme liečbu pomocou trojrozmerného zobrazovania." },
+        { "title": "Intraorálna kamera", "desc": "Malou kamerou vám ukážeme presne, kde a aký problém sme našli." },
+        { "title": "Písomná diagnóza", "desc": "Dostanete podrobnú dokumentáciu o vašom stave a odporúčaných liečbách." },
+        { "title": "Liečebný plán", "desc": "Personalizovaný liečebný plán s transparentnými cenami a harmonogramom." }
+      ],
+      "benefitsTitle": "Vaše zdravie je na prvom mieste",
+      "benefitItems": [
+        { "title": "Prevencia je kľúčová", "desc": "Včasná detekcia je nákladovo a časovo efektívnejšia ako neskoršia komplexná liečba." },
+        { "title": "Rýchle a bezbolestné", "desc": "Vyšetrenie trvá len 30–45 minút." },
+        { "title": "Špecialistická konzultácia", "desc": "Podrobné špecialistické vyšetrenie, kde dostanete odpoveď na všetky otázky." },
+        { "title": "Moderná technológia", "desc": "Panoramatický röntgen, 3D CT a intraorálna kamera pre presnú diagnózu." },
+        { "title": "Transparentné ceny", "desc": "Všetky náklady sú vopred oznámené v liečebnom pláne – žiadne skryté poplatky." },
+        { "title": "Písomná dokumentácia", "desc": "Dostanete podrobnú písomnú dokumentáciu, ktorú si môžete preštudovať doma." }
+      ],
+      "processTitle": "Ako prebieha vstupné vyšetrenie",
+      "processSteps": [
+        { "title": "Rezervácia termínu", "desc": "Rezervujte si termín online alebo telefonicky v našej ordinácii v Budapešti alebo Ostrihome.", "time": "2 min" },
+        { "title": "Vyšetrenie a röntgen", "desc": "Panoramatický röntgen a podrobné vizuálne vyšetrenie zubov, ďasien a čeľuste.", "time": "30–45 min" },
+        { "title": "Preberanie diagnózy", "desc": "Lekár vysvetlí nálezy a prediskutuje s vami možnosti.", "time": "15 min" },
+        { "title": "Liečebný plán", "desc": "Vypracujeme personalizovaný liečebný plán s podrobnými cenami a harmonogramom.", "time": "1–2 dni" }
+      ],
+      "ctaTitle": "Zistite, v akom stave sú vaše zuby!",
+      "ctaDesc": "Rezervujte si termín na špecialistickú konzultáciu v Budapešti alebo Ostrihome!",
+      "faqs": [
+        { "q": "Koľko stojí vstupné vyšetrenie?", "a": "Panoramatický röntgen stojí 5 000–15 000 Ft, pričom je zahrnutá aj špecialistická konzultácia." },
+        { "q": "Je potrebná nejaká príprava?", "a": "Žiadna príprava nie je potrebná. Ak máte predchádzajúce röntgenové snímky, prineste ich so sebou." },
+        { "q": "Ako dlho trvá vyšetrenie?", "a": "Komplexné vstupné vyšetrenie trvá 30–45 minút." },
+        { "q": "Čo ak sa bojím zubára?", "a": "Náš tím je trpezlivý a empatický – každý krok vopred vysvetlíme." },
+        { "q": "Dostanem písomnú dokumentáciu?", "a": "Áno, vypracujeme podrobnú písomnú diagnózu a liečebný plán." }
+      ]
+    },
+    "implantatum": {
+      "heroBadge": "Prémiová služba",
+      "heroTitle": "Zubné implantáty",
+      "heroDesc": "Trvalé riešenie chýbajúcich zubov – prémiové implantáty z vlastného laboratória, až o 40 % cenovo dostupnejšie.",
+      "heroPriceLabel": "Ceny od",
+      "heroPriceValue": "190 000 Ft",
+      "quoteAnalyzerBadge": "AI kalkulačka cien",
+      "quoteAnalyzerTitle": "Zdá sa vám cenová ponuka príliš vysoká?",
+      "quoteAnalyzerDesc": "Nahrajte liečebný plán, ktorý ste dostali inde, a AI ukáže, koľko môžete ušetriť u nás!",
+      "quoteAnalyzerDropTitle": "Presuňte PDF sem",
+      "quoteAnalyzerBtn": "Vybrať súbor",
+      "problemTitle": "Problém: Chýbajúce zuby",
+      "problemDesc": "Medzera v úsmeve nie je len estetický problém – susedné zuby sa posúvajú, kosť ustupuje. Tradičný mostík vyžaduje obrúsenie zdravých zubov.",
+      "solutionTitle": "Riešenie: Zubné implantáty",
+      "solutionDesc": "Implantát nahrádza prirodzený koreň zuba titánovým skrutkou. Nie je potrebné zasahovať do susedných zubov a vlastné laboratórium ho robí až o 40 % lacnejším.",
+      "benefitsBadge": "Prečo si vybrať nás?",
+      "benefitsTitle": "Výhody implantácie",
+      "benefitItems": [
+        { "title": "Doživotná záruka", "desc": "Na implantát poskytujeme doživotnú záruku a na korunku 5-ročnú záruku." },
+        { "title": "Rýchle zhotovenie", "desc": "Vlastné laboratórium = žiadne čakanie. Korunka môže byť hotová za 3–5 dní." },
+        { "title": "Transparentné ceny", "desc": "Žiadne skryté náklady. Cena dohodnutá pri konzultácii sa do konca liečby nemení." },
+        { "title": "Bezbolestné", "desc": "S modernou anestézou je zákrok bezbolestný a rýchly." },
+        { "title": "Prémiové materiály", "desc": "Pracujeme s kvalitnými implantátmi Alpha Bio a DIO." },
+        { "title": "30 rokov skúseností", "desc": "Tisíce úspešných implantácií za nami. Vaša bezpečnosť je pre nás prioritou." }
+      ],
+      "processBadge": "Krok za krokom",
+      "processTitle": "Ako prebieha implantácia?",
+      "processSteps": [
+        { "title": "Konzultácia", "desc": "Röntgen, 3D CT, podrobné vyšetrenie a príprava presnej cenovej ponuky.", "time": "30–45 min" },
+        { "title": "Implantácia", "desc": "V lokálnej anestéze zavedieme titánovú skrutku. Bezbolestný postup.", "time": "30–60 min" },
+        { "title": "Hojenie", "desc": "Implantát splynie s kosťou a vytvorí stabilný základ pre náhradu.", "time": "3–6 mesiacov" },
+        { "title": "Zhotovenie korunky", "desc": "Vlastné laboratórium zhotoví korunku s digitálnou presnosťou.", "time": "3–5 dní" },
+        { "title": "Odovzdanie", "desc": "Upevníme definitívnu korunku. Môžete ju používať ako váš pôvodný zub!", "time": "30 min" }
+      ],
+      "faqs": [
+        { "q": "Koľko stojí implantát?", "a": "Zavedenie implantátov Alpha Bio a DIO začína od 190 000 Ft. Presnú cenu môžeme stanoviť po 3D CT snímke." },
+        { "q": "Bolí zavedenie?", "a": "Nie. S modernou anestézou je úplne bezbolestné – mnohí pacienti hovoria, že je to ľahšie ako trhanie zuba." },
+        { "q": "Ako dlho trvá hojenie?", "a": "Oseointegrácia zvyčajne trvá 3–6 mesiacov." },
+        { "q": "Prečo je Crown Dental lacnejší?", "a": "Pretože naše laboratórium je priamo v ordinácii, neplatíte sprostredkovateľské poplatky – táto úspora sa prenáša na vás." }
+      ]
+    },
+    "fogsor": {
+      "heroBadge": "Vlastné zubnotechnické laboratórium",
+      "heroTitle": "Pohodlné a estetické zubné náhrady",
+      "heroDesc": "Vďaka vlastnému laboratóriu vyrábame dokonale priliehajúce, životné snímateľné a fixné protézy, oveľa rýchlejšie ako obvykle.",
+      "heroPriceLabel": "Prémiová kvalita",
+      "heroPriceValue": "od 110 000 Ft",
+      "problemTitle": "Problém: Čiastočná alebo úplná strata zubov",
+      "problemDesc": "Výrazná strata zubov nie je len estetickou otázkou. Sťažuje žuvanie, deformuje rysy tváre a znižuje sebavedomie. Zle priliehajúce zubné náhrady dráždia ďasná a spôsobujú nepohodlie.",
+      "solutionTitle": "Riešenie: Prémiové zubné náhrady",
+      "solutionDesc": "V našom vlastnom laboratóriu vyrábame snímateľné, kovové alebo na implantátoch fixované zubné náhrady pomocou špičkových technológií. Vraciame slobodu žuvania a estetický úsmev.",
+      "servicesBadge": "Možnosti",
+      "servicesTitle": "Naše protetické riešenia",
+      "services": [
+        { "title": "Úplná snímateľná protéza", "desc": "Kompletná protéza zhotovená z estetických prémiových kompozitných zubov.", "price": "110 000 Ft / čeľusť" },
+        { "title": "Kovová čiastočná protéza", "desc": "Mimoriadne stabilná protéza so skrytými háčikmi, opierajúca sa o zostávajúce zuby.", "price": "od 150 000 Ft" },
+        { "title": "Protéza fixovaná na implantátoch", "desc": "Maximálna stabilita! Protéza uchytená na 2 alebo 4 implantátoch.", "price": "Individuálna ponuka" },
+        { "title": "Podloženie protézy", "desc": "Ak vaša stará protéza povolila, naše laboratórium ju rýchlo upraví na nový tvar ďasiel.", "price": "25 000 Ft" }
+      ],
+      "benefitsTitle": "Tajomstvo pohodlnej protézy",
+      "benefitItems": [
+        { "title": "Vlastné laboratórium, rýchle opravy", "desc": "Keďže laboratórium je priamo u nás, zlomenia a opravy možno riešiť okamžite." },
+        { "title": "Dokonalé priliehanie", "desc": "Okamžitá konzultácia lekára a technika zaručuje, že protéza nebude dráždiť ďasná." },
+        { "title": "Prirodzený vzhľad", "desc": "Používame prémiové, vrstvené umelé zuby, ktoré sú na nerozoznanie od skutočných." },
+        { "title": "Fixné riešenia", "desc": "Unavili vás snímateľné protézy? Naše implantátové riešenia vám vyčarujú stabilné, fixné zuby." }
+      ],
+      "processSteps": [
+        { "title": "Konzultácia", "desc": "Špecialistické posúdenie a podrobná diskusia o možnostiach a očakávaniach.", "time": "30 min" },
+        { "title": "Odtlačky", "desc": "Anatomické odtlačky presnými materiálmi pre dokonalé priliehanie.", "time": "20 min" },
+        { "title": "Skúšky v ordinácii", "desc": "Skúšky konštrukcie a zubov na kontrolu skusu, výšky a farieb.", "time": "Niekoľko krátkych návštev" },
+        { "title": "Definitívne odovzdanie", "desc": "Nasadenie a odovzdanie hotovej protézy s radami ohľadom čistenia a nosenia.", "time": "30 min" },
+        { "title": "Kontrola", "desc": "Kontrola o niekoľko dní neskôr a prípadné doladenia.", "time": "15 min" }
+      ],
+      "ctaTitle": "Rezervujte si termín ešte dnes!",
+      "ctaDesc": "Príďte na špecialistickú konzultáciu a spoločne nájdeme správne protetické riešenie!",
+      "faqs": [
+        { "q": "Môže snímateľná protéza vypadnúť počas reči alebo jedenia?", "a": "Prémiové protézy presne priliehajú vďaka sacím efektom. Ak je objem kosti nedostatočný, odporúčame protézu fixovanú na implantátoch." },
+        { "q": "Ako dlho trvá zhotovenie celej protézy?", "a": "Keďže máme vlastné laboratórium, protéza vrátane skúšok je zvyčajne hotová za 1–2 týždne." },
+        { "q": "Čo mám robiť, ak mi stará protéza povolila?", "a": "Naše laboratórium rýchlo vykoná podloženie, aby znovu presne a pevne priliehala." },
+        { "q": "Bude protéza vyzerať prirodzene?", "a": "Áno! V laboratóriu pracujeme s prémiovými, životnými zubmi, prispôsobenými vašim rysm tváre farbou aj tvarom." }
+      ]
+    },
+    "koronak-hidak": {
+      "heroBadge": "Vlastné zubnotechnické laboratórium",
+      "heroTitle": "Zirkónové a keramické korunky",
+      "heroDesc": "Trvanlivé a estetické korunky a mostíky pri chýbajúcich zuboch. Vďaka vlastnému laboratóriu – bleskovo rýchlo, bez kompromisov.",
+      "heroPriceLabel": "Prémiové korunky",
+      "heroPriceValue": "od 42 000 Ft",
+      "problemTitle": "Problém: Poškodené alebo chýbajúce zuby",
+      "problemDesc": "Silne zhryznuté alebo zlomené zuby strácajú svoju štrukturálnu integritu. Chýbajúce zuby sťažujú žuvanie a môžu spôsobiť posúvanie susedných zubov.",
+      "solutionTitle": "Riešenie: Korunky a mostíky",
+      "solutionDesc": "Korunka posilní poškodený zub a mostík nahradí chýbajúce. Vlastné laboratórium používa CAD/CAM technológiu na výrobu dokonale životnej náhrady.",
+      "benefitsTitle": "Tajomstvo trvalej náhrady",
+      "benefitItems": [
+        { "title": "Hotové za 3–5 dní", "desc": "Laboratórium je priamo u nás, takže náhrady sú hotové za dni, nie týždne." },
+        { "title": "Zirkón: 100 % bez kovu", "desc": "Dokonale hypoalergénne, priehľadnosťou rovnaké ako prirodzené zuby." },
+        { "title": "5-ročná záruka", "desc": "Na fixné náhrady zhotovené u nás poskytujeme 5-ročnú komplexnú záruku." },
+        { "title": "Digitálna presnosť", "desc": "CAD/CAM systémy zaručujú priliehanie s presnosťou na mikrony." },
+        { "title": "Bez bolesti", "desc": "Pracujeme v hlbokej lokálnej anestéze, takže nič neucítite." },
+        { "title": "Dočasná korunka ihneď", "desc": "Ani minútu nebudete bez zuba – ihneď nasadíme dočasnú ochrannú korunku." }
+      ],
+      "processSteps": [
+        { "title": "Konzultácia", "desc": "Röntgen, posúdenie stavu a príprava presného liečebného plánu.", "time": "30 min" },
+        { "title": "Príprava", "desc": "V lokálnej anestéze tvarujeme zub pre dokonalé priliehanie.", "time": "60–90 min" },
+        { "title": "Odtlačky", "desc": "Odobertíme presné odtlačky a nasadíme dočasnú korunku.", "time": "30 min" },
+        { "title": "Výroba", "desc": "Naši technici navrhnú a vyfrézujú definitívnu zirkónovú náhradu.", "time": "3–5 dní" },
+        { "title": "Odovzdanie", "desc": "Hotovú korunku vyskúšame a definitívne zacementujeme.", "time": "30–45 min" }
+      ],
+      "ctaTitle": "Rezervujte si termín ešte dnes!",
+      "ctaDesc": "Príďte na posúdenie a zistite, ktorá náhrada je pre vás najlepšia.",
+      "faqs": [
+        { "q": "Mám si vybrať kovovo-keramickú alebo zirkónovú korunku?", "a": "Zirkón je bez kovu a vyzerá prirodzene – odporúčame ho na predné zuby. Kovová keramika je mimoriadne pevná a vynikajúca na stoličky." },
+        { "q": "Bolí brúsenie zuba?", "a": "Nie. Robíme to v lokálnej anestéze, takže počas celého procesu nič necítite." },
+        { "q": "Budem mať zub počas čakania na definitívnu náhradu?", "a": "Áno! Ihneď nasadíme dočasnú korunku, takže neodídete s medzerou." },
+        { "q": "Ako dlho vydrží korunka?", "a": "Pri dobrej ústnej hygiene 10–15 rokov, no môže vydržať celý život." }
+      ]
+    },
+    "gyokerkezeles": {
+      "heroBadge": "Zubozáchranné postupy",
+      "heroTitle": "Bezbolestné endodontické ošetrenie",
+      "heroDesc": "Zachráňte si vlastné zuby šetrnými, modernými metódami – vyhnite sa extrakcii. Rýchle a bezpečné riešenie zubného zápalu.",
+      "heroPriceLabel": "Koreňová výplň",
+      "heroPriceValue": "od 25 000 Ft",
+      "problemTitle": "Problém: Silná bolesť zubov, zápal",
+      "problemDesc": "Keď kaz dosiahne nervy v zubnej dreni, spôsobuje ostrú, pulzujúcu bolesť. Ak sa zápal nelieči včas, môže sa šíriť do kosti a viesť k strate zuba.",
+      "solutionTitle": "Riešenie: Endodontické ošetrenie",
+      "solutionDesc": "Pri endodontickom ošetrení odstraňujeme zapálené nervové tkanivo, dôkladne dezinfikujeme kanáliky a hermeticky ich uzatvoríme. Bolesť okamžite ustúpi a zub sa zachráni.",
+      "servicesBadge": "Zákroky",
+      "servicesTitle": "Naše endodontické riešenia",
+      "services": [
+        { "title": "Jednokoreňové zuby", "desc": "Endodontické ošetrenie predných zubov, kde zvyčajne treba vyčistiť len jeden kanálik.", "price": "25 000 Ft" },
+        { "title": "Viackorenenné zuby", "desc": "Komplexnejšie ošetrenie stoličiek s 2, 3 alebo dokonca 4 kanálikmi.", "price": "30 000–33 000 Ft" },
+        { "title": "Výmena starej výplne", "desc": "Odstránenie predchádzajúcej, neúspešnej alebo zostarenej koreňovej výplne a odborné znovu uzatvorenie zuba.", "price": "20 000 Ft" }
+      ],
+      "benefitsTitle": "Tajomstvo úspešnej liečby",
+      "benefitItems": [
+        { "title": "Bezbolestnosť", "desc": "Ošetrenie vykonávame v maximálne účinnej anestéze, takže postup je úplne bezbolestný." },
+        { "title": "Zachovanie vlastného zuba", "desc": "Nič nie je lepšie ako vlastný zub! Endodontické ošetrenie je posledná a najlepšia šanca zabrániť extrakcii." },
+        { "title": "Strojové rozšírenie kanálikov", "desc": "Používame moderné rotačné nástroje pre rýchle a presné čistenie kanálikov." },
+        { "title": "Trvalý výsledok", "desc": "Dezinfikovaný a hermeticky uzatvorený zub môže slúžiť bez problémov desaťročia, dokonca celý život." }
+      ],
+      "processSteps": [
+        { "title": "Konzultácia a röntgen", "desc": "Urobíme röntgenový snímok pre presnú diagnózu.", "time": "15 min" },
+        { "title": "Anestéza a prístup", "desc": "Zub úplne znecitlivíme, potom vytvoríme prístup k infikovanej dreni.", "time": "10 min" },
+        { "title": "Čistenie kanálikov", "desc": "Zápalové tkanivo sa presne odstráni modernými rotačnými nástrojmi.", "time": "30–45 min" },
+        { "title": "Koreňová výplň (uzatvorenie)", "desc": "Kanáliky sa hermeticky uzatvoria špeciálnym materiálom na zabránenie opakovanej infekcie.", "time": "30 min" },
+        { "title": "Definitívna rekonštrukcia", "desc": "Zub sa obnoví estetickou výplňou alebo korunkou zhotovenou vo vlastnom laboratóriu.", "time": "Samostatná návšteva" }
+      ],
+      "ctaTitle": "Zachráňte zub pred extrakciou!",
+      "ctaDesc": "Silná bolesť zubov je varovný signál. Neodkladajte – rezervujte si špecialistickú konzultáciu ešte dnes!",
+      "faqs": [
+        { "q": "Bude endodontické ošetrenie bolieť?", "a": "S dnešnými modernými anestetikami je endodontické ošetrenie úplne bezbolestné. Nepríjemnosť zvyčajne spôsobuje predchádzajúca bolesť zubov, ktorú tento zákrok okamžite odstráni." },
+        { "q": "Koľko návštev je potrebných?", "a": "Záleží to od závažnosti infekcie. V jednoduchších prípadoch je možné definitívnu výplň urobiť pri jednej návšteve. Pri silnom zápale sú potrebné 2–3 návštevy." },
+        { "q": "Prečo endodonticky ošetrený zub niekedy stmavne?", "a": "Keďže zub stráca živé nervy a zásobovanie krvou, môže časom zmeniť farbu. Toto možno napraviť estetickou stomatológiou." },
+        { "q": "Kedy potrebuje endodonticky ošetrený zub korunku?", "a": "Endodonticky ošetrený zub vysychá a stáva sa krehkejším. Najmä pri stoličkách sa takmer vždy odporúča ochranná korunka." }
+      ]
+    },
+    "fogfeherites": {
+      "heroBadge": "Snehobiele, zdravé zuby",
+      "heroTitle": "Profesionálne bielenie zubov",
+      "heroDesc": "Dosiahните až o 8 odtieňov svetlejšie zuby s našimi bezpečnými klinickými procedúrami bielenia. Vraciame prirodzenú žiarivosť vášho úsmevu!",
+      "heroPriceLabel": "Domáci systém",
+      "heroPriceValue": "od 30 000 Ft",
+      "problemTitle": "Problém: Sfarbené zuby",
+      "problemDesc": "Káva, čaj, červené víno, fajčenie a starnutie prispievajú k žltnutiu zubov. Nekontrolované domáce bielenie môže poškodiť sklovina.",
+      "solutionTitle": "Riešenie: Klinické bielenie",
+      "solutionDesc": "Používame bezpečné materiály šetrné k sklovine. Vyberte si okamžité klinické lampové bielenie alebo náš pohodlný domáci systém s individuálnou dlahou.",
+      "servicesBadge": "Možnosti",
+      "servicesTitle": "Vyberte si, čo vám vyhovuje",
+      "services": [
+        { "title": "Klinické lampové bielenie", "desc": "Okamžité výsledky za 1 hodinu! Špeciálna UV/LED lampa aktivuje gél.", "price": "45 000 Ft / oblúk" },
+        { "title": "Domáci bieliaci systém", "desc": "Individuálna dlaha zhotovená v laboratóriu, dokonale pasujúca na vaše zuby.", "price": "30 000 Ft / oblúk" },
+        { "title": "Profesionálne odstránenie zubného kameňa", "desc": "Nevyhnutný prvý krok pred akýmkoľvek bielením. Ultrazvukový scaling a leštenie.", "price": "15 000 Ft / čeľusť" }
+      ],
+      "benefitsBadge": "Prečo u nás?",
+      "benefitsTitle": "Záruka bezpečného bielenia",
+      "benefitItems": [
+        { "title": "Materiály šetrné k sklovine", "desc": "Používame len prísne testované materiály, ktoré nepoškodzujú zubnú sklovinu." },
+        { "title": "Rýchle výsledky", "desc": "Klinické bielenie prinesie viditeľný, okamžitý rozdiel za 60 minút." },
+        { "title": "Dlhotrvajúca belosť", "desc": "Pri správnej ústnej hygiene môže výsledok trvať roky." },
+        { "title": "Bezbolestné", "desc": "Procedúra nebolí – môže sa vyskytnúť len mierna prechodná citlivosť." },
+        { "title": "Prirodzený efekt", "desc": "Vyzdvihneme najsvetlejší prirodzený odtieň vašich vlastných zubov." },
+        { "title": "Individuálne dlahy", "desc": "Naše laboratórium zaručuje, že domáca dlaha dokonale tesní a je pohodlná." }
+      ],
+      "processTitle": "Ako prebieha klinické bielenie?",
+      "processSteps": [
+        { "title": "Konzultácia", "desc": "Určenie odtieňa a posúdenie stavu. Prediskutujeme očakávania a možnosti.", "time": "15 min" },
+        { "title": "Odstránenie zubného kameňa", "desc": "Pre dokonalý a rovnomerný výsledok je potrebný čistý povrch zubov.", "time": "30 min" },
+        { "title": "Ochrana ďasien (pri klinickom)", "desc": "Nanesieme špeciálny ochranný gél, aby bieliaca látka pôsobila len na zuby.", "time": "10 min" },
+        { "title": "Bielenie", "desc": "Nanesenie gélu a osvietenie UV lampou.", "time": "45–60 min" },
+        { "title": "Starostlivosť po ošetrení", "desc": "Kontrola výsledku a pokyny k bielej diéte.", "time": "10 min" }
+      ],
+      "ctaTitle": "Ste pripravení na snehobiely úsmev?",
+      "ctaDesc": "Rezervujte si špecialistické posúdenie a zistite, ktorá metóda bielenia vám prinesie najlepšie výsledky!",
+      "faqs": [
+        { "q": "Poškodí bielenie zubnú sklovinu?", "a": "Nie. Klinicky testované a schválené profesionálne materiály rozkladajú len pigmenty spôsobujúce sfarbenie." },
+        { "q": "Čo je biela diéta?", "a": "48–72 hodín po ošetrení sa vyhýbajte farbiacim jedlám a nápojom (káva, čaj, kola, červené víno, fajčenie)." },
+        { "q": "Zbielie sa aj korunky a výplne?", "a": "Nie – bieliace látky pôsobia len na prirodzené zubné tkanivo." },
+        { "q": "Ako dlho účinok trvá?", "a": "V závislosti od životného štýlu a ústnej hygieny môžu výsledky pretrvávať 1–3 roky." },
+        { "q": "Je ošetrenie bolestivé?", "a": "Samotná procedúra je bezbolestná. Po ošetrení sa môže 1–2 dni objaviť mierna prechodná citlivosť, ktorá sama odíde." }
+      ]
+    },
+    "esztetikai-fogaszat": {
+      "heroBadge": "Žiarivý úsmev",
+      "heroTitle": "Estetická stomatológia podľa Crown Dental",
+      "heroDesc": "Bielenie, fazety, odstránenie zubného kameňa – modernou technológiou vytvárame úsmev vašich snov. Pretože si zaslúžite to najlepšie.",
+      "heroPriceLabel": "Bielenie",
+      "heroPriceValue": "od 35 000 Ft",
+      "problemTitle": "Problém: Estetické nedostatky",
+      "problemDesc": "Sfarbené, žlté zuby, viditeľný zubný kameň, drobné praskliny alebo nepravidelný chrup – to všetko znižuje sebavedomie. Mnohí ľudia si zakrývajú úsmev.",
+      "solutionTitle": "Riešenie: Estetická stomatológia",
+      "solutionDesc": "Moderné estetické zákroky – profesionálne bielenie, porcelánové fazety, odstránenie zubného kameňa – môžu obnoviť prirodzenú žiarivosť vášho úsmevu.",
+      "servicesBadge": "Naše služby",
+      "servicesTitle": "Estetické riešenia",
+      "services": [
+        { "title": "Profesionálne bielenie zubov", "desc": "Zuby až o 8 odtieňov svetlejšie po jednom ošetrení.", "price": "od 35 000 Ft" },
+        { "title": "Porcelánové fazety (Veneer)", "desc": "Ultratenkí porcelánové fazety – dokonalý tvar a farba.", "price": "od 120 000 Ft" },
+        { "title": "Odstránenie zubného kameňa", "desc": "Ultrazvukový scaling a leštenie pre zdravé ďasná.", "price": "od 15 000 Ft" },
+        { "title": "Farebne zhodné výplne", "desc": "Kompozitné výplne zodpovedajúce farbe zuba – prakticky neviditeľné.", "price": "od 25 000 Ft" },
+        { "title": "Kompletná premena úsmevu", "desc": "Komplexná premena úsmevu: bielenie, fazety, tvarovanie zubov.", "price": "Individuálna ponuka" },
+        { "title": "Korekcia ďasien", "desc": "Estetická korekcia línie ďasien pre harmonický úsmev.", "price": "od 45 000 Ft" }
+      ],
+      "benefitsTitle": "Krása je v detailoch",
+      "benefitItems": [
+        { "title": "Bezpečné materiály", "desc": "Používame len prémiové, klinicky testované materiály." },
+        { "title": "Rýchle výsledky", "desc": "Väčšinu zákrokov možno dokončiť za 1–2 sedenia." },
+        { "title": "Flexibilné platby", "desc": "Splátková možnosť dostupná pri väčších ošetreniach." },
+        { "title": "Personalizované", "desc": "Každý liečebný plán je prispôsobený vašim individuálnym potrebám." },
+        { "title": "Prirodzený efekt", "desc": "Naším cieľom je prirodzený, harmonický vzhľad." },
+        { "title": "Vlastné laboratórium", "desc": "Vlastné zubnotechnické laboratórium zaručuje rýchlosť." }
+      ],
+      "processTitle": "Cesta k dokonalému úsmevu",
+      "processSteps": [
+        { "title": "Konzultácia", "desc": "Zoznámime sa s vašimi cieľmi a posúdime stav vašich zubov.", "time": "30 min" },
+        { "title": "Liečebný plán", "desc": "Pripravíme podrobný plán s cenami a harmonogramom.", "time": "1–2 dni" },
+        { "title": "Príprava", "desc": "Odstránenie zubného kameňa a profesionálne čistenie.", "time": "45 min" },
+        { "title": "Estetické ošetrenie", "desc": "Vykonanie zvoleného zákroku.", "time": "1–3 hodiny" },
+        { "title": "Starostlivosť po ošetrení", "desc": "Rady na udržanie výsledku.", "time": "Priebežne" }
+      ],
+      "ctaTitle": "Ste pripravení na žiarivý úsmev?",
+      "ctaDesc": "Rezervujte si špecialistickú estetickú konzultáciu v Budapešti alebo Ostrihome!",
+      "faqs": [
+        { "q": "Ako dlho trvá účinok bielenia?", "a": "Výsledky profesionálneho bielenia trvajú 1–3 roky v závislosti od životného štýlu." },
+        { "q": "Je bielenie bolestivé?", "a": "Moderné techniky sú spravidla bezbolestné. Môže sa vyskytnúť prechodná citlivosť." },
+        { "q": "Koľko stojí porcelánová fazeta?", "a": "Porcelánové fazety začínajú od 120 000 Ft za kus." },
+        { "q": "Bude výsledok vyzerať prirodzene?", "a": "Naším cieľom je prirodzený, harmonický vzhľad prispôsobený rysám vašej tváre." },
+        { "q": "Ako často treba odstrániť zubný kameň?", "a": "Profesionálne čistenie sa odporúča 1–2-krát ročne." }
+      ]
+    },
+    "foghuzas": {
+      "heroBadge": "Šetrná starostlivosť",
+      "heroTitle": "Bezbolestná extrakcia zuba",
+      "heroDesc": "Rýchle a bezpečné odstránenie zuba s najmodernejšími anestetikami v bezstresovom prostredí.",
+      "heroPriceLabel": "Zákrok",
+      "heroPriceValue": "od 25 000 Ft",
+      "problemTitle": "Problém: Zuby, ktoré sa nedajú zachrániť",
+      "problemDesc": "Silne zhryznuté, zlomené alebo pohyblivé zuby môžu spôsobovať neustály zápal a bolesť a ohrozovať okolité zdravé zuby.",
+      "solutionTitle": "Riešenie: Šetrné odstránenie",
+      "solutionDesc": "Vždy sa snažíme zachrániť zuby, ale keď to už nie je možné, zub odstraňujeme rýchlo a šetrne s najmodernejšími anestetikami.",
+      "servicesBadge": "Zákroky",
+      "servicesTitle": "Naše extrakčné riešenia",
+      "services": [
+        { "title": "Jednoduchá extrakcia", "desc": "Bezbolestné a rýchle odstránenie pohyblivých alebo jednokoreňových ľahko vyberateľných zubov.", "price": "25 000–35 000 Ft" },
+        { "title": "Chirurgická extrakcia", "desc": "Odstránenie viackorenenných, zlomených alebo silne poškodených zubov chirurgickým prístupom.", "price": "55 000 Ft" },
+        { "title": "Odstránenie zuba múdrosti", "desc": "Odborné chirurgické odstránenie čiastočne alebo úplne zaklesnených zubov múdrosti.", "price": "55 000 Ft" }
+      ],
+      "benefitsTitle": "Bezpečná extrakcia zuba",
+      "benefitItems": [
+        { "title": "Bezbolestnosť", "desc": "Hlboká lokálna anestéza zaručuje, že počas zákroku neucítite žiadnu bolesť." },
+        { "title": "Krátky čas ošetrenia", "desc": "Skúsenosti našich lekárov znamenajú, že odstránenie je rýchle a záťaž pre pacienta minimálna." },
+        { "title": "Šetrná technika", "desc": "Starostlivo chránime kosti a mäkké tkanivá, aby budúca implantácia prebehla hladko." },
+        { "title": "Presná diagnostika", "desc": "Pred extrakciou sa vždy robí digitálny röntgen na zmapovanie polohy koreňov." }
+      ],
+      "processTitle": "Ako prebieha zákrok",
+      "processSteps": [
+        { "title": "Konzultácia a diagnostika", "desc": "Röntgen a posúdenie stavu zuba na výber najvhodnejšej metódy extrakcie.", "time": "10 min" },
+        { "title": "Anestéza", "desc": "Dôkladná lokálna anestéza oblasti okolo zuba pre úplnú bezbolestnosť.", "time": "5 min" },
+        { "title": "Odstránenie zuba", "desc": "Šetrné odstránenie pripraveného zuba s maximálnou ochranou okolitých tkanív.", "time": "10–30 min" },
+        { "title": "Ošetrenie rany a následná starostlivosť", "desc": "Čistenie rany, šitie v prípade potreby a podrobné pokyny pre domácu starostlivosť.", "time": "5 min" }
+      ],
+      "ctaTitle": "Ukončite bolesť zubov!",
+      "ctaDesc": "Naši skúsení lekári vám rýchlo a bezbolestne pomôžu. Rezervujte si termín ešte dnes!",
+      "faqs": [
+        { "q": "Bude extrakcia bolieť?", "a": "Počas zákroku garantovane neucítite bolesť vďaka lokálnej anestéze. Môžete pocítiť len mierny tlak alebo napätie." },
+        { "q": "Čo môžem jesť a piť po extrakcii?", "a": "Odporúča sa vyhýbať mliečnym výrobkom, jedlám s malými semienkami a horúcim alebo korenistým jedlám." },
+        { "q": "Kedy si môžem znovu čistiť zuby?", "a": "Zuby si môžete a mali by ste si čistiť už v ten istý večer, ale vyhnite sa miestu extrakcie, aby sa nenarušila krvná zrazenina." },
+        { "q": "Kedy môže implantát nahradiť vytrhaný zub?", "a": "Ak to miera zápalu dovoľuje, implantát môže byť niekedy zavedený okamžite. Inak treba počkať na regeneráciu kosti, zvyčajne 3–4 mesiace." }
+      ]
+    },
+    "fogszabalyozas": {
+      "heroBadge": "Estetický a zdravý chrup",
+      "heroTitle": "Ortodontia podľa Crown Dental",
+      "heroDesc": "Moderné ortodontické riešenia pre deti aj dospelých. Rovný chrup, sebavedomý úsmev.",
+      "heroPriceLabel": "Aparáty",
+      "heroPriceValue": "od 190 000 Ft",
+      "problemTitle": "Problém: Stlačené zuby",
+      "problemDesc": "Nepravidelné, stlačené zuby nielen spôsobujú nedostatok sebavedomia, ale predstavujú aj zdravotné riziko. Ťažko čistiteľné medzery umožňujú hromadenie plaku, čo vedie ku kazivosti a zápalogám ďasien.",
+      "solutionTitle": "Riešenie: Ortodontická liečba",
+      "solutionDesc": "Ortodontia naviguje zuby do ideálnej polohy. Prináša nielen estetické zlepšenie, ale obnovuje aj žuvaciu funkciu a uľahčuje ústnu hygienu.",
+      "benefitsTitle": "Tajomstvo dokonalého úsmevu",
+      "benefitItems": [
+        { "title": "Široký výber", "desc": "Od tradičných kovových aparátov po estetické zafírové a neviditeľné dlahy – ponúkame každé riešenie." },
+        { "title": "Pre všetky vekové skupiny", "desc": "V detstve vedieme vývoj, v dospelosti korigujeme zakorenené chyby. Nikdy nie je neskoro začať!" },
+        { "title": "Flexibilné platby", "desc": "Vieme, že ortodontia je investícia. Flexibilné platobné plány pomáhajú rozložiť náklady." },
+        { "title": "Vlastné laboratórium", "desc": "Snímateľné aparáty a dlahy sa vyrábajú vo vlastnom laboratóriu." },
+        { "title": "Zameranie na estetiku tváre", "desc": "Nepresúvame len zuby – dbáme aj na harmonický vzhľad vašej tváre." },
+        { "title": "Moderná technológia", "desc": "Digitálne plánovanie a moderné materiály skracujú čas liečby." }
+      ],
+      "processTitle": "Cesta k rovnému úsmevu",
+      "processSteps": [
+        { "title": "Konzultácia a diagnostika", "desc": "Komplexné vyšetrenie, panoramatický röntgen a digitálne odtlačky na posúdenie chrupu.", "time": "45 min" },
+        { "title": "Liečebný plán", "desc": "Ukážeme vám očakávaný výsledok pomocou vizuálnej ukážky a prediskutujeme typ aparátu a trvanie.", "time": "1 týždeň" },
+        { "title": "Nasadenie aparátu", "desc": "Presné a bezbolestné nasadenie s inštrukciami na nosenie a čistenie.", "time": "60–90 min" },
+        { "title": "Aktivácia a kontroly", "desc": "Pravidelné (zvyčajne mesačné) kontroly na úpravu aparátu.", "time": "12–24 mesiacov" },
+        { "title": "Retencia", "desc": "Po sňatí fixného aparátu stabilizujeme výsledok tenkou retainerom.", "time": "Priebežne" }
+      ],
+      "ctaTitle": "Ste pripravení na dokonalý úsmev?",
+      "ctaDesc": "Nečakajte dlhšie! Požiadajte o špecialistickú konzultáciu na podrobné prediskutovanie vašich možností.",
+      "faqs": [
+        { "q": "Je ortodontická liečba bolestivá?", "a": "Samotné nasadenie nie je bolestivé. Po aktiváciách sa môže 2–3 dni objaviť mierne napätie." },
+        { "q": "Môžu dospelí začať liečbu?", "a": "Určite! Dnes takmer polovica našich pacientov sú dospelí. Osobitne im odporúčame naše estetické keramické alebo prakticky neviditeľné systémy dlah." },
+        { "q": "Ako dlho trvá liečba?", "a": "Zvyčajne 1,5–2 roky. Menšie estetické korekcie možno vykonať za 6–10 mesiacov." },
+        { "q": "Ako čistiť aparát?", "a": "Pre fixné aparáty odporúčame špeciálnu kefku a medzizubnú kefku, ktorých použitie dôkladne ukážeme pri nasadení." }
+      ]
+    },
+    "fogtechnikai-megoldasok": {
+      "heroBadge": "Motor za úsmevmi",
+      "heroTitle": "Vlastné zubnotechnické laboratórium",
+      "heroDesc": "V rovnakom budove ako naši lekári od roku 1994. Prémiové náhrady bez kompromisov – expresná oprava protézy za 1 deň!",
+      "heroPriceLabel": "Oprava protézy",
+      "heroPriceValue": "Za 1 deň",
+      "teamBadge": "30 rokov odbornosti",
+      "teamTitle": "Skúsenosti, ktoré sa nedajú urýchliť.",
+      "teamText1": "Zubnotechnické laboratórium Crown Dental nevzniklo včera. Od roku 1994 nepretržite fungujeme, rozvíjame sa a integrujeme najnovšie technológie.",
+      "teamText2": "Naša najväčšia hrdosť je náš tím: niektorí naši zubotechnickí kolegovia pracujú s nami takmer od prvého dňa – takmer tri desaťročia.",
+      "teamFoundingLabel": "Rok založenia",
+      "teamProsthesesLabel": "Zhotovených náhrad",
+      "teamWhyTitle": "Prečo je vlastné laboratórium obrovskou výhodou pre pacientov?",
+      "teamBenefits": [
+        { "title": "Blesková rýchlosť", "desc": "Žiadne zasielanie, žiadna preprava medzi laboratóriom a ordináciou trvajúca dni." },
+        { "title": "Priama komunikácia lekár–technik", "desc": "Lekár môže okamžite ukázať technikovi individuálne požiadavky pacienta." },
+        { "title": "Osobný výber farby zuba", "desc": "Pri zložitejších prípadoch technik osobne navštívi ordináciu pre dokonalé namixovanie farby." }
+      ],
+      "problemTitle": "Problém: Zlomená protéza, dlhé čakanie",
+      "problemDesc": "Keď sa snímateľná protéza zlomí, pacient potrebuje okamžitú pomoc. Väčšina ordinácií posiela práce do externých laboratórií, čo môže trvať týždne.",
+      "solutionTitle": "Riešenie: Expresná oprava za 1 deň",
+      "solutionDesc": "Keďže naši technici pracujú v rovnakej budove, zlomenia, prasknutia alebo podloženia protéz možno vykonať do 24 hodín.",
+      "servicesBadge": "Vyrábame všetko",
+      "servicesTitle": "Naše laboratórne služby",
+      "services": [
+        { "title": "Expresná oprava protézy", "desc": "Okamžitá, presná oprava a spevnenie zlomených alebo prasknutých snímateľných protéz." },
+        { "title": "Zirkónové korunky a mostíky", "desc": "Prémiové náhrady bez kovu, mimoriadne trvanlivé, pomocou CAD/CAM technológie." },
+        { "title": "Kovovo-keramické náhrady", "desc": "Tradičné, mimoriadne pevné a záťažné korunky a mostíky s porcelánovým obkladom." },
+        { "title": "Implantátové abutmenty", "desc": "Individuálne titánové a zirkónové abutmenty pre zavedené implantáty s mikronovou presnosťou." },
+        { "title": "Podloženie protézy", "desc": "Ak vaša stará protéza povolila kvôli ústupu ďasien, rýchlo ju prispôsobíme aktuálnej anatómii." },
+        { "title": "Dočasné náhrady", "desc": "Nikoho nepúšťame bez zuba! Poskytujeme okamžité dočasné korunky, kým nie je hotová definitívna práca." }
+      ],
+      "ctaTitle": "Zlomila sa vám protéza? Nečakajte týždne!",
+      "ctaDesc": "Prineste ju k nám a naše laboratórium ju opraví alebo podloží za 1 pracovný deň. Rezervujte si termín!",
+      "faqTitle": "Často kladené otázky o laboratóriu",
+      "faqs": [
+        { "q": "Je oprava protézy skutočne hotová za 1 deň?", "a": "Vo väčšine prípadov áno! Jednoduchá oprava zlomenia odovzdaná ráno je zvyčajne hotová ešte ten istý poobede alebo najneskôr nasledujúci deň." },
+        { "q": "Môžem sa stretnúť so zubotechnikm počas liečby?", "a": "Áno – to je jedna z najväčších výhod Crown Dental! Pri väčších, esteticky citlivých prácach technik osobne príde do ordinácii." },
+        { "q": "Vyrábate CAD/CAM protézy?", "a": "Samozrejme. Naše laboratórium je vybavené modernými počítačovými návrhmi a frézovacími jednotkami schopnými vyrábať práce z zirkónu a titánu s mikronovou presnosťou." },
+        { "q": "Čo znamená podloženie protézy?", "a": "Ďasná a čeľustná kosť sa v priebehu rokov menia, takže protéza povolí. Pri podložení sa na vnútorný povrch existujúcej protézy nanesie nová vrstva, aby znovu stabilne priliehala." }
+      ]
+    },
+    "gockutatas": {
+      "heroBadge": "Presná diagnostika",
+      "heroTitle": "Vyšetrenie dentálnych fokusov",
+      "heroDesc": "Odhaľte skryté zápaly modernou diagnostikou 3D CT a panoramatickým röntgenom, aby ste mohli byť opäť zdraví.",
+      "heroPriceLabel": "Vyšetrenie a plán",
+      "heroPriceValue": "10 000 Ft",
+      "problemTitle": "Problém: Neviditeľné choroby",
+      "problemDesc": "Mnohí nevedia, že chronická únava, vypadávanie vlasov, bolesti kĺbov alebo kožné problémy majú často príčinu v skrytom, bezpríznakovom dentálnom fokuse. Keďže zriedka spôsobujú miestnu bolesť, je ťažké ich odhaliť.",
+      "solutionTitle": "Riešenie: Moderné zobrazovanie",
+      "solutionDesc": "V našej ordinácii pracujeme s najmodernejšími panoramatickými röntgenovými a 3D CT zariadeniami. Mapujeme ústnu dutinu s presnosťou na desatinu milimetra.",
+      "servicesBadge": "Diagnostika",
+      "servicesTitle": "Naše vyšetrovacie metódy",
+      "services": [
+        { "title": "Komplexná konzultácia", "desc": "Fyzikálne vyšetrenie, prediskutovanie príznakov a mapovanie fokusov v ústnej dutine.", "price": "10 000 Ft" },
+        { "title": "Panoramatický röntgen (OPG)", "desc": "Výborný prehľad všetkých zubov, čeľustných kostí a spodnej časti dutín.", "price": "6 000 Ft" },
+        { "title": "3D CBCT snímka", "desc": "Trojrozmerné, vysoko presné zobrazovanie, ktoré odhalí aj najskrytejšie cysty a zápaly.", "price": "V ordinácii" }
+      ],
+      "benefitsTitle": "Spoľahlivá diagnóza",
+      "benefitItems": [
+        { "title": "Okamžité výsledky", "desc": "Röntgenové a CT snímky sú hotové za sekundy; vyhodnotenie prebieha okamžite priamo u nás." },
+        { "title": "Holistický prístup", "desc": "Nefokusujeme sa len na zuby – skúmame celý organizmus v kontexte fokusov." },
+        { "title": "Bezbolestné", "desc": "Samotné vyšetrenie a zobrazovanie je 100% bezbolestný a nepohodlný postup." },
+        { "title": "Riešenie na jednom mieste", "desc": "Keď nájdeme fokus, môžeme ho okamžite liečiť priamo u nás." }
+      ],
+      "processTitle": "Ako prebieha vyšetrenie?",
+      "processSteps": [
+        { "title": "Konzultácia", "desc": "Prediskutujeme vaše existujúce ťažkosti, príznaky a anamnézu.", "time": "15 min" },
+        { "title": "Zobrazovanie", "desc": "Urobíme potrebné snímky (panoramatický röntgen alebo pri indikácii 3D CT).", "time": "5 min" },
+        { "title": "Odborná analýza", "desc": "Lekár podrobne analyzuje snímky a fyzikálne vyšetrí podozrivé zuby.", "time": "15 min" },
+        { "title": "Liečebný plán", "desc": "Ak nájdeme fokus, pripravíme podrobný písomný plán jeho odstránenia.", "time": "10 min" }
+      ],
+      "ctaTitle": "Odhaľme problém spoločne!",
+      "ctaDesc": "Požiadajte o termín na rýchle a bezbolestné vyšetrenie fokusov a nájdime skryté príčiny!",
+      "faqs": [
+        { "q": "Čo presne je dentálny fokus?", "a": "Fokus je chronická, bezpríznaková oblasť zápalu v ústach, odkiaľ sa baktérie dostávajú do krvi a spôsobujú ochorenia na iných miestach tela (kĺby, srdce, koža)." },
+        { "q": "Aké sú najčastejšie príznaky fokusovej choroby?", "a": "Bežné sú vypadávanie vlasov v oblastiach, bolesti kĺbov, reumatické ťažkosti, nevysvetliteľná únava, kožné vyrážky a opakovaný zápal prinosových dutín." },
+        { "q": "Musím prísť nalačno?", "a": "Nie – nalačno nie je potrebné prísť na vyšetrenie dentálnych fokusov ani na röntgen/CT snímky." },
+        { "q": "Spoľahlivo odhalí röntgen fokus?", "a": "2D panoramatický röntgen väčšinu problémov ukáže. V niektorých komplexných prípadoch môže byť potrebná 3D CBCT snímka." }
+      ]
+    },
+    "gyerekfogaszat": {
+      "heroBadge": "Starostlivosť zameraná na deti",
+      "heroTitle": "Zábavná stomatológia podľa Crown Dental",
+      "heroDesc": "Kde zubárske kreslo je magický trón a ošetrenie je usmiaty dobrodružstvo. Budujme spolu sebavedomie vášho dieťaťa!",
+      "heroPriceLabel": "Detské ošetrenia",
+      "heroPriceValue": "od 15 000 Ft",
+      "parentsBadge": "Pre rodičov",
+      "parentsTitle": "Detská zubná trauma sa dá predísť",
+      "problemTitle": "Problém: Strach a odkladanie",
+      "problemDesc": "Mnohé deti sa boja zubára kvôli predchádzajúcim zlým skúsenostiam. Strach spôsobuje, že rodičia odkladajú prehliadky, takže kaz mliečnych zubov rýchlo progreduje.",
+      "solutionTitle": "Riešenie: Empatia a prevencia",
+      "solutionDesc": "V našej ordinácii oboznamujeme deti s nástrojmi s veľkou trpezlivosťou, zábavnou formou. Pozitívna prvá skúsenosť je určujúca na celý život.",
+      "kidsSectionBadge": "Ukáž toto malému!",
+      "kidsSectionTitle": "Ahoj! Veľmi sa na teba tešíme!",
+      "kidsFunFacts": [
+        { "title": "Magický trón", "desc": "Predstav si – naše zubárske kreslo funguje ako vesmírna loď! Ide hore, ide dole a je naozaj pohodlné." },
+        { "title": "Magická palička", "desc": "U nás nie sú žiadne strašidelné stroje. Malou magickou paličkou odfúkneme zubné škriatky, ktorí sa ukrývajú na tvojich zuboch." },
+        { "title": "Darček superhrdinu", "desc": "Na konci každej prehliadky každý statočný malý dostane darček hodný superhrdinu!" }
+      ],
+      "servicesBadge": "Ošetrenia",
+      "servicesTitle": "Naše detské stomatologické riešenia",
+      "services": [
+        { "title": "Zapečatenie fisúr", "desc": "Uzatvorenie hlbokých rýh stoličiek, čo zabraňuje usadeniu baktérií.", "price": "15 000 Ft / zub" },
+        { "title": "Výplň mliečneho zuba", "desc": "Mliečne zuby treba tiež liečiť! Bezbolestné, estetické výplne pre malých.", "price": "15 000 Ft" },
+        { "title": "Šetrná extrakcia mliečneho zuba", "desc": "Po magickom znecitlivujúcom géle je problematický zub vyňatý v okamihu.", "price": "od 10 000 Ft" },
+        { "title": "Ortodontická konzultácia", "desc": "Vývin zubov sa oplatí kontrolovať už vo veku 7–8 rokov pre včasné odhalenie.", "price": "10 000 Ft" }
+      ],
+      "ctaTitle": "Urobme zo stomatológie skvelý zážitok!",
+      "ctaDesc": "Priveďte vaše dieťa na priateľské vstupné vyšetrenie ešte dnes!",
+      "faqs": [
+        { "q": "V akom veku je vhodná prvá návšteva zubára?", "a": "Ideálne by prvá návšteva mala byť okolo 2–3 rokov veku na priateľské zoznámenie." },
+        { "q": "Treba plombiť aj mliečne zuby?", "a": "Áno! Zhnité mliečne zuby spôsobujú bolesť a môžu poškodiť zárodky trvalých zubov." },
+        { "q": "Čo robiť, ak sa dieťa bojí?", "a": "Nič nenútíme. Pracujeme s trpezlivosťou, hračkami a odvádzaním pozornosti." },
+        { "q": "Čo je zapečatenie fisúr?", "a": "Bezbolestné vyplnenie hlbokých rýh trvalých stoličiek na prevenciu kazu." }
+      ]
+    },
+    "szajsebeszet": {
+      "heroBadge": "Bezpečnosť a odbornosť",
+      "heroTitle": "Orálna chirurgia bezbolestne",
+      "heroDesc": "Odstránenie zuba múdrosti, komplikované extrakcie a resekcia koreňového hrotu – v plnej bezpečnosti, s modernými anestetikami.",
+      "heroPriceLabel": "Extrakcia",
+      "heroPriceValue": "od 25 000 Ft",
+      "problemTitle": "Problém: Zápaly, bolestivé zuby",
+      "problemDesc": "Čiastočne prederastené zuby múdrosti rastúce nesprávnym smerom, zaklinené korene alebo chronické zápaly môžu spôsobovať silnú bolesť a fokusové infekcie. Mnohí odkladajú zákrok zo strachu z bolesti.",
+      "solutionTitle": "Riešenie: Odborná orálna chirurgia",
+      "solutionDesc": "Moderné anestetiká zaručujú bezbolestný zákrok. Naši skúsení špecialisti chirurgovia vykonávajú aj tie najzložitejšie orálne chirurgické operácie šetrne.",
+      "servicesBadge": "Zákroky",
+      "servicesTitle": "Naše orálno-chirurgické riešenia",
+      "services": [
+        { "title": "Jednoduchá extrakcia", "desc": "Šetrné odstránenie silne poškodených, nezachrániteľných zubov v plnej anestéze.", "price": "od 25 000 Ft" },
+        { "title": "Odstránenie zuba múdrosti", "desc": "Odborné chirurgické odstránenie dokonca úplne zaklesnených zubov múdrosti.", "price": "55 000 Ft" },
+        { "title": "Resekcia koreňového hrotu", "desc": "Chirurgické odstránenie zapáleného koreňového hrotu, čím sa zachráni problematický zub.", "price": "55 000 Ft" },
+        { "title": "Kostná augmentácia", "desc": "Pred-implantačná augmentácia kosti, keď čeľustná kosť nie je dostatočná pre implantát.", "price": "190 000 Ft" }
+      ],
+      "benefitsTitle": "Bezpečná orálna chirurgia",
+      "benefitItems": [
+        { "title": "Bezbolestné", "desc": "Používame moderné lokálne anestetiká, takže aj najzložitejšia operácia neprichádza s bolesťou." },
+        { "title": "Skúsení chirurgovia", "desc": "Náš orálny chirurg má za sebou tisíce úspešných zákrokov, čo zaručuje maximálnu bezpečnosť." },
+        { "title": "Moderná 3D CT diagnostika", "desc": "Zákroky plánujeme s presnosťou na desatinu milimetra na základe 3D CBCT zobrazenia." },
+        { "title": "Bezpečnosť a sterilita", "desc": "V našich ordináciách uplatňujeme najprísnejšie hygienické štandardy na zabránenie infekciám." }
+      ],
+      "processSteps": [
+        { "title": "Diagnostika", "desc": "Panoramatický röntgen alebo 3D CT na presné zobrazenie polohy koreňov a nervov.", "time": "15 min" },
+        { "title": "Anestéza", "desc": "Maximálne účinná lokálna anestéza s čakaním na plný efekt.", "time": "5–10 min" },
+        { "title": "Zákrok", "desc": "Vykonanie vopred naplánovanej orálnej chirurgickej operácie šetrne, s ochranou zdravého tkaniva.", "time": "20–60 min" },
+        { "title": "Uzatvorenie rany (ak potrebné)", "desc": "Pri chirurgickej extrakcii alebo resekcii sa rana prešije pre rýchlejšie hojenie.", "time": "5 min" },
+        { "title": "Vybratie stehov a kontrola", "desc": "Pozveme vás späť o týždeň na rýchle, bezbolestné vybratie stehov a kontrolu.", "time": "10 min" }
+      ],
+      "ctaTitle": "Ste pripravení na bezbolestné riešenie?",
+      "ctaDesc": "Netrpte ďalej bolestivými zubmi! Rezervujte si špecialistickú konzultáciu a zverejte sa našim skúseným chirurgom.",
+      "faqs": [
+        { "q": "Ako veľmi bolí extrakcia alebo orálna chirurgia?", "a": "Vôbec! Používame najmodernejšie lokálne anestetiká, takže počas zákroku ucítite len mierny tlak alebo napätie." },
+        { "q": "Ako dlho trvá zotavenie po operácii zuba múdrosti?", "a": "Rana sa zvyčajne zahojí za niekoľko dní; stehy sa vyberajú týždeň po operácii." },
+        { "q": "Čo môžem jesť po extrakcii?", "a": "V dňoch po zákroku sa vyhýbajte horúcim, korenistým jedlám s malými semienkami a mliečnym výrobkom." },
+        { "q": "Prečo je 3D CT potrebné pre orálnu chirurgiu?", "a": "3D CT nám umožňuje vidieť korene zubov, dutiny a hlavné nervové dráhy s milimetrovou presnosťou." }
+      ]
+    }
+  }
+}

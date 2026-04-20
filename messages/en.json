@@ -1,0 +1,1071 @@
+{
+  "common": {
+    "bookAppointment": "Book Appointment",
+    "callNow": "Call Now",
+    "learnMore": "Learn More",
+    "allTreatments": "All Treatments",
+    "from": "from",
+    "cancel": "Cancel",
+    "send": "Send",
+    "next": "Next",
+    "back": "Back",
+    "close": "Close",
+    "loading": "Loading...",
+    "scrollDown": "Scroll down",
+    "phoneNumber": "+36 70 564 6837",
+    "email": "info@crowndental.hu",
+    "openingHours": "Mon–Fri: 08:00–18:00"
+  },
+
+  "nav": {
+    "home": "Home",
+    "services": "Treatments & Prices",
+    "about": "About Us",
+    "blog": "Blog",
+    "career": "Career",
+    "bookAppointment": "Book Appointment"
+  },
+
+  "footer": {
+    "tagline": "Crown Dental gives your smile the freedom it deserves.",
+    "description": "Premium dentistry with our own dental lab — no compromises. Treatments in Esztergom, and soon in Budapest.",
+    "treatments": "Treatments",
+    "usefulLinks": "Useful Links",
+    "legalInfo": "Legal Information",
+    "contact": "Contact",
+    "fullPriceList": "Full Price List",
+    "bookingLink": "Book Appointment",
+    "aboutLink": "About Us",
+    "contactLink": "Contact",
+    "blogLink": "Blog & Magazine",
+    "careerLink": "Career",
+    "aszf": "Terms & Conditions",
+    "privacy": "Privacy Policy",
+    "cookie": "Cookie Policy",
+    "imprint": "Imprint",
+    "cookieSettings": "Cookie Settings",
+    "esztergomClinic": "Esztergom Clinic",
+    "budapestClinic": "Budapest Clinic",
+    "copyright": "© 2026 Crown Dental Praxis és Labor Fogászati Kft. All rights reserved.",
+    "treatmentLinks": {
+      "implant": "Dental Implants",
+      "crowns": "Crowns & Bridges",
+      "orthodontics": "Orthodontics",
+      "whitening": "Teeth Whitening",
+      "dentures": "Dentures",
+      "surgery": "Oral Surgery & Extraction",
+      "rootCanal": "Root Canal & Fillings",
+      "aesthetic": "Aesthetic Dentistry",
+      "assessment": "Dental Assessment",
+      "focal": "Focal Infection Check",
+      "labTech": "Dental Lab Services"
+    }
+  },
+
+  "home": {
+    "floatingCta": {
+      "callNow": "Call Now",
+      "bookAppointment": "Book Appointment"
+    },
+    "hero": {
+      "slides": [
+        {
+          "tag": "AI Quote Analyzer",
+          "titleTop": "Think the quote you received",
+          "titleBottom": "is too expensive?",
+          "subtitle": "Try our AI-powered price calculator and find out instantly how much you can save with our in-house lab!",
+          "primaryText": "Analyze Quote"
+        },
+        {
+          "tag": "In-House Dental Lab",
+          "titleTop": "Maximum quality,",
+          "titleBottom": "no middleman fees.",
+          "subtitle": "With our own lab, dental restorations and crowns are completed faster and under strict quality control.",
+          "primaryText": "Book Appointment"
+        },
+        {
+          "tag": "30 Years of Experience",
+          "titleTop": "A new smile,",
+          "titleBottom": "a new confidence.",
+          "subtitle": "More than 15,000 successful treatments prove our expertise. Trust us with your smile!",
+          "primaryText": "Book Appointment"
+        }
+      ]
+    },
+    "trustBadges": {
+      "experience": { "title": "30+ Years Experience", "desc": "A solid professional background" },
+      "lab": { "title": "Own Laboratory", "desc": "Perfect quality, in-house" },
+      "materials": { "title": "Premium Materials", "desc": "Top quality without compromise" },
+      "painless": { "title": "Painless Treatment", "desc": "Empathetic, gentle care" }
+    },
+    "locations": {
+      "label": "Our Clinics",
+      "title": "Two clinics,",
+      "titleHighlight": "one outstanding quality.",
+      "subtitle": "Choose the location closest to you.",
+      "visitClinic": "Visit this clinic",
+      "details": "Details",
+      "comingSoon": "Opening Soon!"
+    },
+    "stats": {
+      "label": "Facts & Figures",
+      "title": "Numbers that",
+      "titleHighlight": "speak for themselves.",
+      "years": { "label": "years of experience", "desc": "In practice since 1994." },
+      "patients": { "label": "satisfied patients", "desc": "Trust across generations." },
+      "savings": { "label": "savings", "desc": "Thanks to our own lab." },
+      "days": { "label": "crown turnaround", "desc": "Fast, precise restorations." }
+    },
+    "quoteAnalyzer": {
+      "badge": "AI Price Calculator",
+      "title": "Think the quote you received elsewhere is",
+      "titleHighlight": "too expensive?",
+      "desc": "Upload your existing quote (image or PDF). Our system instantly analyzes it and shows you how much you can save with our in-house lab!",
+      "socialProof": "More than <b>500+</b> patients have saved money with us.",
+      "step1": {
+        "dropzone": "Drop your quote here",
+        "dropzoneHint": "or click to select a file (Photo or PDF)",
+        "compressionActive": "✓ Auto image compression active",
+        "selectFile": "Select File",
+        "optimizing": "Optimizing image..."
+      },
+      "step2": {
+        "uploadedFile": "Uploaded file:",
+        "formTitle": "Where should we send the detailed results?",
+        "fullName": "Full Name *",
+        "salutation": "Salutation (optional)",
+        "salutationPlaceholder": "e.g. John",
+        "email": "Email address *",
+        "phone": "Phone number *",
+        "phonePlaceholder": "+36...",
+        "terms": "I accept the <aszf>Terms & Conditions</aszf> and Privacy Policy, and request the quote by email.",
+        "analyzeButton": "Start Analysis"
+      },
+      "step3": {
+        "title": "AI Analysis in progress...",
+        "subtitle": "This process may take 15–40 seconds."
+      },
+      "step4": {
+        "doneTitle": "Analysis ready, {name}!",
+        "doneSubtitle": "With our in-house lab, you can save:",
+        "treatment": "Treatment",
+        "original": "Original",
+        "downloadPDF": "Download PDF",
+        "bookConsultation": "Book Medical Consultation",
+        "newAnalysis": "Start new analysis",
+        "emailSent": "The detailed quote has also been sent to {email}!"
+      },
+      "errors": {
+        "tooLarge": "Unfortunately the image is still too large after compression ({size} MB). Please try a lower resolution photo.",
+        "pdfTooLarge": "The PDF file is too large (max. 4.2MB). Tip: Take a screenshot of the PDF — our system can automatically compress it!",
+        "analysisFailed": "An error occurred during analysis: {error}",
+        "networkError": "A communication error occurred. Please try again later."
+      }
+    },
+    "lab": {
+      "badge": "Our own dental lab",
+      "title": "The key to perfection: everything made in-house.",
+      "features": [
+        "CAD/CAM digital design and manufacturing",
+        "Crowns, bridges, dentures in as little as 3 days",
+        "Instant repairs and adjustments on-site",
+        "No middleman surcharge — you save directly",
+        "Premium materials: zirconia, porcelain, PEEK"
+      ],
+      "learnMore": "Discover our lab"
+    },
+    "services": {
+      "label": "Featured Treatments",
+      "title": "Premium treatments,",
+      "titleHighlight": "at affordable prices.",
+      "subtitle": "Our in-house lab lets us deliver outstanding quality without compromise.",
+      "bookConsultation": "Book Consultation",
+      "clickForAppointment": "Click here to book",
+      "viewAllPrices": "View full price list",
+      "cards": [
+        { "title": "Diagnostics & Basics", "subtitle": "Check-ups, X-rays, fillings", "price": "From 10,000 HUF" },
+        { "title": "Root Canal Treatment", "subtitle": "Painless tooth preservation", "price": "From 10,000 HUF" },
+        { "title": "Aesthetics & Prevention", "subtitle": "Scaling, teeth whitening", "price": "From 15,000 HUF" },
+        { "title": "Prosthetics & Crowns", "subtitle": "Zirconia, metal-ceramic, dentures", "price": "From 42,000 HUF" },
+        { "title": "Surgery & Implants", "subtitle": "Extractions, premium implants", "price": "From 55,000 HUF" },
+        { "title": "Children & Orthodontics", "subtitle": "Fixed and removable appliances", "price": "From 15,000 HUF" }
+      ]
+    },
+    "reviews": {
+      "label": "Reviews",
+      "title": "What our patients say",
+      "ratingCount": "(320+ reviews)",
+      "items": [
+        { "name": "Kovács Mária", "text": "I've been coming here for 10 years — best decision ever. My kids come too, we've never been disappointed.", "date": "March 2026" },
+        { "name": "Nagy József", "text": "Very professional, my implant turned out perfect. Had to wait a bit for an appointment but it was absolutely worth it.", "date": "February 2026" },
+        { "name": "Szabó Anna", "text": "The crown was ready in 3 days thanks to the in-house lab. I was very nervous but it was completely painless!", "date": "January 2026" },
+        { "name": "Tóth Gábor", "text": "I've been going exclusively to them for 8 years. Always friendly, fast, and they work with the most modern equipment.", "date": "December 2025" },
+        { "name": "Horváth Éva", "text": "My removable denture turned out beautifully, the technician could correct the shade right away. Great professionals.", "date": "November 2025" },
+        { "name": "Varga Péter", "text": "I've been a patient for 5 years. For the first time in my life I don't have a stomachache going to the dentist — they're so empathetic.", "date": "October 2025" },
+        { "name": "Kiss László", "text": "Had a complex root canal but they saved my tooth. Precise, fast and thorough work.", "date": "September 2025" },
+        { "name": "Farkas Zita", "text": "I've been their loyal patient for 10 years. I can only recommend them to anyone looking for a dentist!", "date": "July 2025" },
+        { "name": "Molnár Katalin", "text": "I had teeth whitening done, the result is amazing. Parking is a bit tricky but the clinic is superb.", "date": "May 2025" },
+        { "name": "Balogh Tamás", "text": "They replaced my entire upper row with zirconia crowns. They feel like my own teeth. Fantastic work!", "date": "March 2025" }
+      ]
+    },
+    "cta": {
+      "title": "Ready to take the first step?",
+      "subtitle": "Book an appointment online, or give us a call — and experience the Crown Dental difference in person.",
+      "bookOnline": "Book Appointment Online"
+    },
+    "faq": {
+      "label": "Knowledge Base",
+      "title": "Frequently Asked Questions",
+      "subtitle": "Everything you need to know about our treatments and clinic.",
+      "items": [
+        {
+          "question": "Why are dental restorations cheaper at Crown Dental?",
+          "answer": "Our biggest advantage is our **own state-of-the-art dental lab**. Because we don't pay an external lab, there are no middleman fees — we pass on significant savings to patients without compromising on premium materials like zirconia."
+        },
+        {
+          "question": "Will the treatment hurt?",
+          "answer": "Pain-free treatment is not just a slogan for us — it's a core principle. We use the most modern anesthesia techniques and ultra-thin needles. Our doctors take special care to ensure you feel completely relaxed and comfortable during every procedure."
+        },
+        {
+          "question": "How long does it take to make a dental crown or bridge?",
+          "answer": "While other clinics can make you wait weeks for a crown, our in-house lab means a zirconia or metal-ceramic crown can be ready **in as little as 3–5 working days** — from impression to final fitting, we're among the fastest."
+        },
+        {
+          "question": "What implants do you use?",
+          "answer": "We exclusively use premium, world-brand implants (e.g. Alpha Bio, DIO). These come with a lifetime guarantee and an excellent osseointegration rate (above 98%)."
+        },
+        {
+          "question": "When should I see an orthodontist?",
+          "answer": "For children, the first consultation is recommended at age 7–8, but **it's never too late as an adult!** Today there are highly aesthetic (even invisible aligner) solutions that can achieve a perfect, healthy smile at any age."
+        },
+        {
+          "question": "Do you accept health fund (EP) cards?",
+          "answer": "Of course! Please let our colleagues know before treatment if you'd like the invoice issued to your health fund card."
+        },
+        {
+          "question": "How does the AI Quote Analyzer work?",
+          "answer": "If you already have a quote from another clinic (on paper or as a PDF), simply take a photo and upload it to the calculator on our homepage. Our system instantly compares it with our prices and shows how much you can save for the same treatments."
+        },
+        {
+          "question": "How can I book an appointment?",
+          "answer": "The fastest way is to use our online booking system by clicking the 'Book Appointment' button, where you can book instantly. You can also call us during opening hours at +36 70 564 6837."
+        }
+      ]
+    }
+  },
+
+  "booking": {
+    "title": "Book an Appointment",
+    "subtitle": "Fill in your details and one of our colleagues will contact you shortly.",
+    "step1Title": "Your Details",
+    "step2Title": "Select Treatment",
+    "fullName": "Full Name",
+    "salutation": "First name / Salutation",
+    "email": "Email address",
+    "phone": "Phone number",
+    "city": "Select clinic",
+    "treatment": "Desired treatment",
+    "selectTreatment": "Choose a treatment...",
+    "nextStep": "Next step",
+    "prevStep": "Back",
+    "submit": "Request Appointment",
+    "successTitle": "Thank you for your enquiry!",
+    "successText": "We will contact you shortly to confirm your appointment.",
+    "submitting": "Sending...",
+    "treatments": [
+      "Assessment & Consultation",
+      "Dental Implant",
+      "Zirconia or Metal-Ceramic Crown",
+      "Orthodontics",
+      "Aesthetic Dentistry (Whitening, Scaling)",
+      "Denture Making / Repair",
+      "Oral Surgery / Extraction",
+      "Root Canal / Filling",
+      "Other / Not sure"
+    ]
+  },
+
+  "about": {
+    "badge": "More than dentistry",
+    "title": "Get to know",
+    "titleHighlight": "Crown Dental!",
+    "subtitle": "Since 1994, we have been working behind the scenes so you can smile freely, at any time, in any situation.",
+    "centralTitle1": "Crown Dental",
+    "centralTitle2": "gives your smile",
+    "centralTitle3": "the freedom it deserves.",
+    "missionTitle": "We don't just make teeth,",
+    "missionHighlight": "we build confidence.",
+    "mission1Bold": "We'll be honest:",
+    "mission1Rest": "we know that most people don't enjoy sitting in the dentist's chair. We understand — and with us, that fear becomes a thing of the past.",
+    "mission2Plain": "At Crown Dental, we are the opposite of everything you thought dentistry was.",
+    "mission2Bold": "We offer real freedom.",
+    "mission3": "We offer a lifelong partnership: we're with you from your first baby teeth to the moment at 80 when you look proudly in the mirror.",
+    "storyLabel": "Our Story",
+    "storyTitle": "The solid foundation.",
+    "story1Part1": "The story of Crown Dental",
+    "story1Bold": "began in Esztergom in 1994",
+    "story2Part1": "The strength of our clinic is our",
+    "story2Bold": "in-house dental laboratory",
+    "story2Part2": ". Since we handle everything internally, we are faster and more affordable.",
+    "story3Part1": "Today we are responsible for the smiles of more than",
+    "story3Bold": "15,000 satisfied patients",
+    "story3Part2": ".",
+    "storySince": "For your smile, since the very beginning."
+  },
+
+  "career": {
+    "badge": "Join our team",
+    "title": "Work with us on",
+    "titleHighlight": "the future of dentistry!",
+    "subtitle": "We are looking for dedicated professionals who want to be part of a dynamically growing team.",
+    "heroBadge": "Join Our Team",
+    "heroTitle": "Build with us the",
+    "heroTitleHighlight": "smile of the future!",
+    "heroSubtitle": "Outstanding salary, a supportive community and continuous growth opportunities at Crown Dental's Esztergom and Budapest clinics.",
+    "heroBtn": "Apply now",
+    "benefitsTitle": "Why Crown Dental?",
+    "benefitsSubtitle": "A professional community.",
+    "benefits": [
+      { "title": "Outstanding benefits", "desc": "We guarantee a competitive salary above market rate and true recognition." },
+      { "title": "Doctor-Technician Synergy", "desc": "Since the practice and the lab are in one place, instant consultation is guaranteed." },
+      { "title": "Continuous Growth", "desc": "With us, you can become a better professional day by day using the latest technologies." },
+      { "title": "Supportive Atmosphere", "desc": "Everyone is equally valued here — an important link in the team." }
+    ],
+    "reviewsLabel": "Our Colleagues Said",
+    "employeeReviews": [
+      { "role": "Dentist", "text": "Because the lab is so close, I learn a huge amount about prosthetics in practice." },
+      { "role": "Dental Technician", "text": "It's great that we can communicate directly with the treating doctor." },
+      { "role": "Assistant", "text": "I arrived as a fresh graduate, but the team is so supportive I picked it up in no time." },
+      { "role": "Dental Hygienist", "text": "Predictable, modern work environment and professional recognition." }
+    ],
+    "formName": "Full Name",
+    "formPhone": "Phone",
+    "formEmail": "Email",
+    "formLocationPlaceholder": "Select clinic",
+    "formPositionPlaceholder": "Select position",
+    "formPositionDoctor": "Dentist",
+    "formPositionAssistant": "Dental Assistant",
+    "formSubmit": "Submit Application",
+    "formSubmitting": "Sending...",
+    "formSuccess": "Thank you for your application!",
+    "formError": "An error occurred. Please try again."
+  },
+
+  "blog": {
+    "title": "Blog & Magazine",
+    "subtitle": "Dental tips, news and expert articles for our patients.",
+    "badge": "Crown Dental Magazine",
+    "mainTitle": "Dental",
+    "mainTitleHighlight": "Knowledge Hub",
+    "description1": "Welcome to the Crown Dental blog! Our expert doctors created this knowledge hub to provide you with clear, reliable information on everyday oral care and dental treatments.",
+    "description2": "Whether it's the right brushing technique, modern implants, or the benefits of painless treatments — you'll find the answer to every question here.",
+    "freshPost": "New article",
+    "readMore": "Read more",
+    "backToBlog": "Back to Blog",
+    "postNotFound": "Article not found.",
+    "backToBlogLabel": "Back to Blog",
+    "freshContent": "New content",
+    "ctaTitle": "Let's take the first step towards your perfect smile!",
+    "ctaSubtitle": "Book an appointment for a specialist consultation where we answer all your questions and plan your new smile together.",
+    "ctaBtn": "Book Appointment",
+    "statsLabel": "Our Clinic in Numbers",
+    "statsTitle": "Our results, at your service",
+    "stats": [
+      { "end": 30, "suffix": "+", "text": "Years of Experience", "desc": "In practice since 1994" },
+      { "end": 15000, "suffix": "+", "text": "Satisfied Patients", "desc": "Trusted by generations" },
+      { "end": 40, "suffix": "%", "text": "Savings", "desc": "Thanks to our in-house lab" },
+      { "end": 3, "suffix": " days", "text": "Crown Fabrication", "desc": "Ultra-fast prosthetics" }
+    ],
+    "reviewsTitle": "Our patients said"
+  },
+
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Feel free to reach out — we answer and help!",
+    "esztergom": "Esztergom Clinic",
+    "budapest": "Budapest Clinic",
+    "openingHours": "Opening Hours",
+    "weekdays": "Monday – Friday"
+  },
+
+  "cookie": {
+    "message": "Our website uses cookies to improve your experience.",
+    "accept": "Accept",
+    "decline": "Decline",
+    "settings": "Settings",
+    "bannerTitle": "Your privacy matters to us!",
+    "bannerDesc": "The Crown Dental website uses cookies for smooth browsing, traffic analysis and a personalised experience. In accordance with Google's policies, please choose from the options below.",
+    "bannerLink": "Detailed information.",
+    "settingsBtn": "Settings",
+    "necessaryOnly": "Necessary only",
+    "acceptAll": "Accept all",
+    "settingsTitle": "Manage cookie settings",
+    "settingsSubtitle": "Here you can customise what types of data collection you allow us to carry out.",
+    "necessaryTitle": "Essential functionality (Required)",
+    "alwaysActive": "Always active",
+    "necessaryDesc": "These cookies are essential for the basic functionality of the website (e.g. navigation, security, AI calculator memory).",
+    "analyticsTitle": "Statistics (Google Analytics)",
+    "analyticsDesc": "We collect anonymous data about how visitors use the site, helping us improve the user experience.",
+    "marketingTitle": "Marketing and targeted advertising",
+    "marketingDesc": "Allows third parties to show you relevant advertisements.",
+    "acceptAllBtn": "Accept all",
+    "saveSelectionBtn": "Save settings"
+  },
+
+  "treatments": {
+    "pageTitle": "Treatments & Prices",
+    "pageSubtitle": "Premium dental treatments with our own lab, at accessible prices.",
+    "bookConsultation": "Book Consultation",
+    "from": "From:",
+    "allTreatments": "All Treatments",
+    "heroBadge": "In-house lab = Lower prices",
+    "heroTitle1": "Dental",
+    "heroTitle2": "Treatments",
+    "heroSubtitleStart": "Choose a treatment from the cards below, or scroll down for the full price list. Thanks to our in-house dental laboratory, we offer prices",
+    "heroSavings": "up to 40% lower",
+    "heroSubtitleEnd": "than the market average.",
+    "cardDetails": "Details",
+    "priceListTitle": "Our Full Price List",
+    "priceListSubtitle": "Transparent pricing, with no hidden costs.",
+    "disclaimerTitle": "Important Note",
+    "disclaimerText": "Prices are indicative. Since every dentition is unique, the final price is determined after a personal examination and detailed treatment plan.",
+    "ctaTitle": "Have questions about our prices?",
+    "ctaSubtitle": "Book an appointment for a personal assessment, where we provide a detailed treatment plan.",
+    "ctaBtn": "Book Specialist Consultation",
+    "cards": [
+      { "id": "implantatum", "title": "Dental Implants", "description": "Lifelike tooth replacement with titanium implants, in as little as one day." },
+      { "id": "fogszabalyozas", "title": "Orthodontics", "description": "Fixed and removable braces for children and adults." },
+      { "id": "koronak-hidak", "title": "Crowns & Bridges", "description": "Metal-ceramic and zirconia crowns in premium quality, from our own lab." },
+      { "id": "fogfeherites", "title": "Teeth Whitening", "description": "Professional whitening with at-home or in-clinic methods." },
+      { "id": "fogsor", "title": "Dentures", "description": "Removable and fixed dentures, precise fit, relining." },
+      { "id": "gyokerkezeles", "title": "Root Canal", "description": "Painless machine root canal filling with the latest technology." },
+      { "id": "szajsebeszet", "title": "Oral Surgery", "description": "Wisdom tooth extraction and apical resection performed with expertise." },
+      { "id": "allapotfelmeres", "title": "Dental Assessment", "description": "Detailed consultation, panoramic X-ray and personalised treatment plan." },
+      { "id": "esztetikai-fogaszat", "title": "Aesthetic Dentistry", "description": "Ceramic veneers and invisible fillings for a perfect smile." },
+      { "id": "foghuzas", "title": "Tooth Extraction", "description": "Gentle tooth removal with rapid recovery." },
+      { "id": "gockutatas", "title": "Focal Infection Search", "description": "Detection of hidden inflammations and focal infections with modern 3D CT." },
+      { "id": "gyerekfogaszat", "title": "Paediatric Dentistry", "description": "Baby tooth treatments and fissure sealing in a friendly, patient environment." }
+    ],
+    "priceCategories": [
+      {
+        "id": "diagnosztika",
+        "title": "Diagnostics & Basic Treatments",
+        "items": [
+          { "name": "Initial examination, written assessment, focal infection search, treatment plan", "price": "10,000 HUF" },
+          { "name": "Fillings", "price": "30,000 – 35,000 HUF" },
+          { "name": "Tooth extraction", "price": "25,000 – 35,000 HUF" },
+          { "name": "X-ray (small / single tooth)", "price": "5,000 HUF" },
+          { "name": "Panoramic X-ray", "price": "6,000 HUF" }
+        ]
+      },
+      {
+        "id": "gyokerkezeles",
+        "title": "Root Canal Treatment",
+        "items": [
+          { "name": "Root filling (single-rooted)", "price": "25,000 HUF" },
+          { "name": "Root filling (two-rooted)", "price": "30,000 HUF" },
+          { "name": "Root filling (three-rooted)", "price": "33,000 HUF" },
+          { "name": "Root filling removal", "price": "20,000 HUF" },
+          { "name": "Root canal treatment per session", "price": "10,000 HUF" }
+        ]
+      },
+      {
+        "id": "esztetika",
+        "title": "Preservation & Aesthetics",
+        "items": [
+          { "name": "Scale & polish (per jaw)", "price": "15,000 HUF" },
+          { "name": "Whitening with silicone tray (home) / per arch", "price": "30,000 HUF" },
+          { "name": "In-clinic whitening (lamp) / per arch", "price": "45,000 HUF", "highlight": true }
+        ]
+      },
+      {
+        "id": "fogpotlas",
+        "title": "Prosthetics & Crowns",
+        "items": [
+          { "name": "Temporary crown (short-term, 1–2 weeks)", "price": "6,000 HUF" },
+          { "name": "Temporary crown (long-term, up to 1 year)", "price": "15,000 HUF" },
+          { "name": "Metal-ceramic crown", "price": "42,000 HUF" },
+          { "name": "Zirconia crown (metal-free)", "price": "55,000 HUF", "highlight": true },
+          { "name": "Custom shade matching (per tooth)", "price": "15,000 HUF" },
+          { "name": "Removable denture for one jaw (composite)", "price": "110,000 HUF" },
+          { "name": "Metal-frame denture for one jaw", "price": "150,000 HUF" },
+          { "name": "Old bridge removal (per abutment tooth)", "price": "12,000 HUF" },
+          { "name": "Denture relining", "price": "25,000 HUF" }
+        ]
+      },
+      {
+        "id": "szajsebeszet",
+        "title": "Oral Surgery & Implantology",
+        "items": [
+          { "name": "Surgical tooth extraction", "price": "55,000 HUF" },
+          { "name": "Wisdom tooth removal", "price": "55,000 HUF" },
+          { "name": "Apical resection", "price": "55,000 HUF" },
+          { "name": "DIO Implant", "price": "240,000 HUF", "highlight": true },
+          { "name": "ALPHA BIO Implant", "price": "180,000 HUF" },
+          { "name": "Bone graft", "price": "190,000 HUF" }
+        ]
+      },
+      {
+        "id": "gyermek",
+        "title": "Paediatric Dentistry & Orthodontics",
+        "items": [
+          { "name": "Baby tooth filling", "price": "15,000 HUF" },
+          { "name": "Fissure sealing", "price": "15,000 HUF" },
+          { "name": "Fixed braces", "price": "190,000 – 285,000 HUF", "highlight": true },
+          { "name": "Removable braces", "price": "60,000 – 90,000 HUF" },
+          { "name": "Fixed brace activation", "price": "10,000 – 15,000 HUF" },
+          { "name": "Removable brace activation", "price": "5,000 – 8,000 HUF" }
+        ]
+      }
+    ]
+  },
+
+  "langSwitch": {
+    "hu": "Magyar",
+    "en": "English",
+    "sk": "Slovenčina",
+    "ariaLabel": "Switch language"
+  },
+
+  "treatmentPages": {
+    "shared": {
+      "consultationBtn": "Medical Consultation",
+      "appointmentBtn": "Book Appointment",
+      "requestBtn": "Request Consultation",
+      "whyCrownBadge": "Why Crown Dental?",
+      "processBadge": "The Process",
+      "processTitle": "Step by Step",
+      "faqTitle": "Frequently Asked Questions"
+    },
+    "allapotfelmeres": {
+      "heroBadge": "Comprehensive Diagnostics",
+      "heroTitle": "Dental Assessment the Crown Dental Way",
+      "heroDesc": "We map out the condition of your teeth and oral cavity using modern diagnostic tools. Accurate diagnosis, personalised treatment plan.",
+      "heroPriceLabel": "Consultation",
+      "heroPriceValue": "Specialist",
+      "problemTitle": "The Problem: Hidden Dental Issues",
+      "problemDesc": "Many dental problems — cavities, gum disease, bone loss — develop for years without symptoms. By the time pain appears, the treatment is already more complex and costly.",
+      "solutionTitle": "The Solution: Comprehensive Assessment",
+      "solutionDesc": "With modern panoramic X-ray and 3D CT we detect even the smallest changes. A thorough examination enables early intervention.",
+      "includedBadge": "What's Included?",
+      "includedTitle": "Full Diagnostic Package",
+      "items": [
+        { "title": "Visual Examination", "desc": "The dentist thoroughly examines your teeth, gums, and every part of the oral cavity." },
+        { "title": "Panoramic X-ray", "desc": "A single image shows all teeth, roots, and the condition of the jawbone." },
+        { "title": "3D CT Scan", "desc": "Before implant placement we plan treatment using three-dimensional imaging." },
+        { "title": "Intraoral Camera", "desc": "A small camera lets you see exactly where and what problem we found." },
+        { "title": "Written Diagnosis", "desc": "You receive detailed documentation of your condition and recommended treatments." },
+        { "title": "Treatment Plan", "desc": "Personalised treatment plan with transparent pricing and scheduling." }
+      ],
+      "benefitsTitle": "Your Health Comes First",
+      "benefitItems": [
+        { "title": "Prevention is Key", "desc": "Early detection is more cost- and time-efficient than complex treatment later." },
+        { "title": "Fast and Painless", "desc": "The assessment takes only 30–45 minutes." },
+        { "title": "Specialist Consultation", "desc": "Detailed specialist assessment where all your questions are answered." },
+        { "title": "Modern Technology", "desc": "Panoramic X-ray, 3D CT, and intraoral camera for accurate diagnosis." },
+        { "title": "Transparent Pricing", "desc": "All costs are communicated in advance in the treatment plan — no hidden fees." },
+        { "title": "Written Documentation", "desc": "You receive detailed written documentation to review at home." }
+      ],
+      "processTitle": "How the Assessment Works",
+      "processSteps": [
+        { "title": "Book an Appointment", "desc": "Book online or by phone at our Budapest or Esztergom clinic.", "time": "2 min" },
+        { "title": "Examination & X-ray", "desc": "Panoramic X-ray and detailed visual examination of teeth, gums, and jawbone.", "time": "30–45 min" },
+        { "title": "Diagnosis Discussion", "desc": "The dentist explains the findings and discusses the options with you.", "time": "15 min" },
+        { "title": "Treatment Plan", "desc": "We create a personalised treatment plan with detailed prices and scheduling.", "time": "1–2 days" }
+      ],
+      "ctaTitle": "Find Out the State of Your Teeth!",
+      "ctaDesc": "Book an appointment for a specialist consultation in Budapest or Esztergom!",
+      "faqs": [
+        { "q": "How much does the assessment cost?", "a": "Panoramic X-ray ranges from 5,000–15,000 HUF, and a specialist consultation is included." },
+        { "q": "Is any preparation required?", "a": "No preparation is needed. If you have previous X-rays, please bring them along." },
+        { "q": "How long does the assessment take?", "a": "The comprehensive assessment takes 30–45 minutes." },
+        { "q": "What if I'm afraid of the dentist?", "a": "Our team is patient and empathetic — we explain every step in advance." },
+        { "q": "Will I receive written documentation?", "a": "Yes, we prepare a detailed written diagnosis and treatment plan." }
+      ]
+    },
+    "implantatum": {
+      "heroBadge": "Premium Service",
+      "heroTitle": "Dental Implants",
+      "heroDesc": "A permanent solution for missing teeth — premium implants from our own laboratory, up to 40% more affordable.",
+      "heroPriceLabel": "Prices from",
+      "heroPriceValue": "190,000 HUF",
+      "quoteAnalyzerBadge": "AI Price Calculator",
+      "quoteAnalyzerTitle": "Think the quote is too expensive?",
+      "quoteAnalyzerDesc": "Upload the treatment plan you received elsewhere, and the AI will show how much you can save with us!",
+      "quoteAnalyzerDropTitle": "Drop the PDF here",
+      "quoteAnalyzerBtn": "Select File",
+      "problemTitle": "The Problem: Missing Teeth",
+      "problemDesc": "A gap in your smile is not just an aesthetic problem — neighbouring teeth shift, bone recedes. A traditional bridge requires grinding down healthy teeth.",
+      "solutionTitle": "The Solution: Dental Implants",
+      "solutionDesc": "An implant replaces the natural tooth root with a titanium screw. No need to touch neighbouring teeth, and our own laboratory makes it up to 40% cheaper.",
+      "benefitsBadge": "Why Choose Us?",
+      "benefitsTitle": "Advantages of Implantation",
+      "benefitItems": [
+        { "title": "Lifetime Guarantee", "desc": "We offer a lifetime guarantee on the implant and a 5-year guarantee on the crown." },
+        { "title": "Fast Turnaround", "desc": "Own lab = no waiting. The crown can be ready in as little as 3–5 days." },
+        { "title": "Transparent Pricing", "desc": "No hidden costs. The price given at consultation does not change until the end of treatment." },
+        { "title": "Painless", "desc": "With modern anaesthesia the procedure is painless and fast." },
+        { "title": "Premium Materials", "desc": "We work with high-quality Alpha Bio and DIO implants." },
+        { "title": "30 Years' Experience", "desc": "Thousands of successful placements behind us. Your safety is our priority." }
+      ],
+      "processBadge": "Step by Step",
+      "processTitle": "How Does the Placement Work?",
+      "processSteps": [
+        { "title": "Consultation", "desc": "X-ray, 3D CT, detailed examination, and precise quote preparation.", "time": "30–45 min" },
+        { "title": "Placement", "desc": "We place the titanium screw under local anaesthesia. A painless procedure.", "time": "30–60 min" },
+        { "title": "Healing", "desc": "The implant fuses with the bone, providing a stable foundation for the prosthesis.", "time": "3–6 months" },
+        { "title": "Crown Fabrication", "desc": "Our own lab manufactures the crown with digital precision.", "time": "3–5 days" },
+        { "title": "Delivery", "desc": "We fix the final crown. Use it just like your original tooth!", "time": "30 min" }
+      ],
+      "faqs": [
+        { "q": "How much does an implant cost?", "a": "Alpha Bio and DIO implant placement starts from 190,000 HUF. An exact price can be given after the 3D CT scan." },
+        { "q": "Does the placement hurt?", "a": "No. With modern anaesthesia it is completely painless — many patients say it is easier than a tooth extraction." },
+        { "q": "How long does healing take?", "a": "Osseointegration generally takes 3–6 months." },
+        { "q": "Why is Crown Dental cheaper?", "a": "Because our lab is on-site, you don't pay intermediary fees — that saving is passed on to you." }
+      ]
+    },
+    "fogsor": {
+      "heroBadge": "Own Dental Laboratory",
+      "heroTitle": "Comfortable and Aesthetic Dentures",
+      "heroDesc": "Thanks to our own laboratory we manufacture perfectly fitting, lifelike removable and fixed prostheses, much faster than you'd expect.",
+      "heroPriceLabel": "Premium quality",
+      "heroPriceValue": "from 110,000 HUF",
+      "problemTitle": "The Problem: Partial or Complete Tooth Loss",
+      "problemDesc": "Significant tooth loss is not just an aesthetic issue. It makes chewing difficult, distorts facial features, and reduces self-confidence. Ill-fitting dentures irritate the gums and cause discomfort.",
+      "solutionTitle": "The Solution: Premium Prostheses",
+      "solutionDesc": "Our own laboratory uses cutting-edge technology to create removable, metal-based, or implant-retained dentures. We restore the freedom of chewing and an aesthetic smile.",
+      "servicesBadge": "Options",
+      "servicesTitle": "Our Prosthetic Solutions",
+      "services": [
+        { "title": "Full Removable Denture", "desc": "Complete prosthesis made with aesthetic premium composite teeth.", "price": "110,000 HUF / jaw" },
+        { "title": "Metal-Base Partial Denture", "desc": "Extremely stable, hidden-clasp prosthesis supported by remaining teeth.", "price": "from 150,000 HUF" },
+        { "title": "Implant-Retained Denture", "desc": "Maximum stability! Snap-on denture on 2 or 4 implants.", "price": "Individual quote" },
+        { "title": "Denture Relining", "desc": "If your old denture has become loose, our lab quickly adjusts it to the new gum line.", "price": "25,000 HUF" }
+      ],
+      "benefitsTitle": "The Secret to a Comfortable Prosthesis",
+      "benefitItems": [
+        { "title": "Own Lab, Fast Repairs", "desc": "Because the lab is on-site, breaks and repairs can often be fixed immediately." },
+        { "title": "Perfect Fit", "desc": "Immediate consultation between dentist and technician ensures the prosthesis won't irritate the gums." },
+        { "title": "Natural Appearance", "desc": "We use premium-quality, layered artificial teeth that are indistinguishable from real ones." },
+        { "title": "Fixed Solutions", "desc": "Tired of removable dentures? Our implant solutions give you stable, fixed teeth." }
+      ],
+      "processSteps": [
+        { "title": "Consultation", "desc": "Specialist assessment and detailed discussion of options and expectations.", "time": "30 min" },
+        { "title": "Impression Taking", "desc": "We take an anatomical impression with precision materials for perfect fit.", "time": "20 min" },
+        { "title": "Try-ins at the Clinic", "desc": "Framework and tooth try-ins to check bite, height, and colour.", "time": "Multiple short visits" },
+        { "title": "Final Delivery", "desc": "Fitting and delivery of the finished denture, with advice on cleaning and wearing.", "time": "30 min" },
+        { "title": "Follow-up", "desc": "A check-up a few days later to make any fine adjustments needed.", "time": "15 min" }
+      ],
+      "ctaTitle": "Book an Appointment Today!",
+      "ctaDesc": "Come in for a specialist consultation and let us find the right prosthetic solution together!",
+      "faqs": [
+        { "q": "Can a removable denture fall out during speech or eating?", "a": "Premium-quality dentures fit precisely thanks to suction. If bone volume is low, we recommend implant-retained dentures." },
+        { "q": "How long does a full denture take?", "a": "Because we have our own dental lab, the prosthesis including try-ins is typically finished within 1–2 weeks." },
+        { "q": "What should I do if my old denture is loose?", "a": "Our lab can reline the denture quickly so it fits snugly and stably again." },
+        { "q": "Will the denture look natural?", "a": "Yes! Our laboratory works with premium, lifelike teeth matched to your facial features in colour and shape." }
+      ]
+    },
+    "koronak-hidak": {
+      "heroBadge": "Own Dental Laboratory",
+      "heroTitle": "Zirconia and Ceramic Crowns",
+      "heroDesc": "Durable and aesthetic crowns and bridges for missing teeth. Thanks to our own laboratory — lightning fast, without compromise.",
+      "heroPriceLabel": "Premium Crowns",
+      "heroPriceValue": "from 42,000 HUF",
+      "problemTitle": "The Problem: Damaged or Missing Teeth",
+      "problemDesc": "Heavily decayed or broken teeth lose their structural integrity. Missing teeth make chewing difficult and can cause neighbouring teeth to drift.",
+      "solutionTitle": "The Solution: Crowns and Bridges",
+      "solutionDesc": "A crown strengthens the damaged tooth; a bridge replaces missing ones. Our own laboratory uses CAD/CAM technology to craft a perfectly lifelike restoration.",
+      "benefitsTitle": "The Secret to Lasting Restoration",
+      "benefitItems": [
+        { "title": "Ready in 3–5 Days", "desc": "Our lab is on-site, so restorations are completed in days rather than weeks." },
+        { "title": "Zirconia: 100% Metal-Free", "desc": "Perfectly hypoallergenic, with translucency identical to natural teeth." },
+        { "title": "5-Year Guarantee", "desc": "We offer a full 5-year guarantee on fixed restorations made at our clinic." },
+        { "title": "Digital Precision", "desc": "CAD/CAM systems ensure micron-level accuracy of fit." },
+        { "title": "No Pain", "desc": "We work under deep local anaesthesia, so you will feel nothing." },
+        { "title": "Temporary Crown Immediately", "desc": "You will never be without a tooth — we fit a temporary crown straight away." }
+      ],
+      "processSteps": [
+        { "title": "Consultation", "desc": "X-ray, assessment, and precise treatment plan preparation.", "time": "30 min" },
+        { "title": "Preparation", "desc": "Under local anaesthesia we shape the tooth for a perfect fit.", "time": "60–90 min" },
+        { "title": "Impression", "desc": "We take a precise impression and place a temporary crown.", "time": "30 min" },
+        { "title": "Manufacturing", "desc": "Our in-house technicians design and mill the final zirconia restoration.", "time": "3–5 days" },
+        { "title": "Delivery", "desc": "We try in the finished crown and permanently cement it.", "time": "30–45 min" }
+      ],
+      "ctaTitle": "Book an Appointment Today!",
+      "ctaDesc": "Come in for an assessment and find out which restoration is best for you.",
+      "faqs": [
+        { "q": "Should I choose metal-ceramic or zirconia?", "a": "Zirconia is metal-free and natural-looking — we recommend it for front teeth. Metal-ceramic is extremely strong and excellent for molars." },
+        { "q": "Is tooth preparation painful?", "a": "No. We perform it under local anaesthesia, so you won't feel anything during the process." },
+        { "q": "Will I have a tooth while waiting for the final restoration?", "a": "Yes! We fit a temporary crown immediately, so you won't leave with a gap." },
+        { "q": "How long does a crown last?", "a": "With good oral hygiene, 10–15 years, but it can last a lifetime." }
+      ]
+    },
+    "gyokerkezeles": {
+      "heroBadge": "Tooth-Saving Procedures",
+      "heroTitle": "Painless Root Canal Treatment",
+      "heroDesc": "Save your own teeth with gentle, modern techniques — avoid extraction. Fast and safe solution for dental infection.",
+      "heroPriceLabel": "Root filling",
+      "heroPriceValue": "from 25,000 HUF",
+      "problemTitle": "The Problem: Severe Toothache, Infection",
+      "problemDesc": "When decay reaches the nerves inside the pulp, it causes sharp, throbbing pain. If the infection is not treated in time it can spread to the bone, leading to tooth loss.",
+      "solutionTitle": "The Solution: Root Canal Treatment",
+      "solutionDesc": "During root canal treatment we remove the inflamed nerve tissue, thoroughly disinfect the canals, and seal them hermetically. The pain disappears immediately and the tooth is saved.",
+      "servicesBadge": "Procedures",
+      "servicesTitle": "Our Root Canal Solutions",
+      "services": [
+        { "title": "Single-Root Teeth", "desc": "Root canal treatment of front teeth where typically only one canal needs cleaning.", "price": "25,000 HUF" },
+        { "title": "Multi-Root Teeth", "desc": "More complex treatment of molars with 2, 3, or even 4 canals.", "price": "30,000–33,000 HUF" },
+        { "title": "Old Filling Replacement", "desc": "Removal of a previous, failed or aged root filling and proper re-sealing of the tooth.", "price": "20,000 HUF" }
+      ],
+      "benefitsTitle": "The Secret to Successful Treatment",
+      "benefitItems": [
+        { "title": "Pain-Free", "desc": "Treatment is performed under maximum-efficacy anaesthesia, making the procedure completely painless." },
+        { "title": "Save Your Own Tooth", "desc": "Nothing is better than your natural tooth! Root canal treatment is the last and best chance to avoid extraction." },
+        { "title": "Mechanical Canal Preparation", "desc": "We use modern rotary instruments for fast and precise canal cleaning." },
+        { "title": "Lasting Result", "desc": "A disinfected and hermetically sealed tooth can serve problem-free for decades, even a lifetime." }
+      ],
+      "processSteps": [
+        { "title": "Consultation & X-ray", "desc": "We take an X-ray to establish an accurate diagnosis.", "time": "15 min" },
+        { "title": "Anaesthesia & Access", "desc": "The tooth is fully numbed, then access to the infected pulp is created.", "time": "10 min" },
+        { "title": "Canal Cleaning", "desc": "Inflamed tissue is precisely removed with modern rotary instruments.", "time": "30–45 min" },
+        { "title": "Root Filling (Sealing)", "desc": "Canals are sealed hermetically with a special material to prevent re-infection.", "time": "30 min" },
+        { "title": "Final Restoration", "desc": "The tooth is restored with an aesthetic filling or a crown made in our own lab.", "time": "Separate visit" }
+      ],
+      "ctaTitle": "Save Your Tooth from Extraction!",
+      "ctaDesc": "Severe toothache is a warning sign. Don't delay — book a specialist consultation today!",
+      "faqs": [
+        { "q": "Will root canal treatment hurt?", "a": "With today's modern anaesthetics root canal treatment is completely painless. The discomfort is usually caused by the toothache beforehand, which this procedure immediately relieves." },
+        { "q": "How many visits are needed?", "a": "This depends on the severity of the infection. In simpler cases the final filling can be done in one visit. Severe infections may require 2–3 visits." },
+        { "q": "Why does a root-treated tooth sometimes darken?", "a": "Because the tooth loses its living nerve and blood supply, it can discolour over the years. This can be corrected with cosmetic dentistry." },
+        { "q": "When does a root-treated tooth need a crown?", "a": "A root-treated tooth dries out and becomes more brittle. Especially for molars, a protective crown is almost always recommended." }
+      ]
+    },
+    "fogfeherites": {
+      "heroBadge": "Snow-White, Healthy Teeth",
+      "heroTitle": "Professional Teeth Whitening",
+      "heroDesc": "Achieve up to 8 shades lighter teeth with our safe, clinical whitening procedures. We restore the natural radiance of your smile!",
+      "heroPriceLabel": "Home System",
+      "heroPriceValue": "from 30,000 HUF",
+      "problemTitle": "The Problem: Stained Teeth",
+      "problemDesc": "Coffee, tea, red wine, smoking, and ageing all contribute to tooth yellowing. Uncontrolled home whitening products can damage enamel.",
+      "solutionTitle": "The Solution: Clinical Whitening",
+      "solutionDesc": "We use safe, enamel-friendly materials. Choose immediate in-clinic lamp whitening or our convenient custom tray home system.",
+      "servicesBadge": "Options",
+      "servicesTitle": "Choose What Suits You",
+      "services": [
+        { "title": "In-Clinic Lamp Whitening", "desc": "Immediate results in 1 hour! A special UV/LED lamp activates the gel.", "price": "45,000 HUF / arch" },
+        { "title": "Home Whitening System", "desc": "Custom tray made in our lab, perfectly fitting your dentition.", "price": "30,000 HUF / arch" },
+        { "title": "Professional Scale & Polish", "desc": "The essential first step before any whitening. Ultrasonic descaling and polishing.", "price": "15,000 HUF / jaw" }
+      ],
+      "benefitsBadge": "Why Us?",
+      "benefitsTitle": "The Guarantee of Safe Whitening",
+      "benefitItems": [
+        { "title": "Enamel-Safe Materials", "desc": "We use only rigorously tested materials that do not damage tooth enamel." },
+        { "title": "Fast Results", "desc": "In-clinic whitening delivers a visible, immediate difference in as little as 60 minutes." },
+        { "title": "Long-Lasting Whiteness", "desc": "With proper oral hygiene the result can last for years." },
+        { "title": "Painless", "desc": "The procedure doesn't hurt — at most, mild transient sensitivity may occur." },
+        { "title": "Natural Effect", "desc": "We bring out the lightest natural shade of your own teeth." },
+        { "title": "Custom Trays", "desc": "Our lab guarantees that the home tray seals perfectly and is comfortable to wear." }
+      ],
+      "processTitle": "How Does In-Clinic Whitening Work?",
+      "processSteps": [
+        { "title": "Consultation", "desc": "Shade determination and assessment. We discuss expectations and options.", "time": "15 min" },
+        { "title": "Scale & Polish", "desc": "A clean tooth surface is needed for a perfect, even result.", "time": "30 min" },
+        { "title": "Gum Protection (In-Clinic)", "desc": "A special protective gel is applied so the whitening agent only touches the teeth.", "time": "10 min" },
+        { "title": "Whitening", "desc": "Application of the gel and UV lamp illumination.", "time": "45–60 min" },
+        { "title": "Aftercare", "desc": "Result check and instructions for the white diet.", "time": "10 min" }
+      ],
+      "ctaTitle": "Ready for a Snow-White Smile?",
+      "ctaDesc": "Book a specialist assessment and find out which whitening method gives you the best results!",
+      "faqs": [
+        { "q": "Does whitening damage enamel?", "a": "No. Clinically tested and approved professional materials only break down pigments that cause staining." },
+        { "q": "What is the white diet?", "a": "For 48–72 hours after treatment, avoid staining foods and drinks (coffee, tea, cola, red wine, smoking)." },
+        { "q": "Will crowns and fillings also whiten?", "a": "No — whitening agents only act on natural tooth tissue." },
+        { "q": "How long does the effect last?", "a": "Depending on lifestyle and oral hygiene, results can last 1–3 years." },
+        { "q": "Is the treatment painful?", "a": "The procedure itself is painless. Mild temporary sensitivity may occur for 1–2 days afterwards but resolves on its own." }
+      ]
+    },
+    "esztetikai-fogaszat": {
+      "heroBadge": "Radiant Smile",
+      "heroTitle": "Cosmetic Dentistry the Crown Dental Way",
+      "heroDesc": "Whitening, veneers, scale & polish — we create your dream smile with modern technology. Because you deserve the best.",
+      "heroPriceLabel": "Whitening",
+      "heroPriceValue": "from 35,000 HUF",
+      "problemTitle": "The Problem: Aesthetic Imperfections",
+      "problemDesc": "Stained, yellow teeth, visible tartar, minor cracks, or an irregular dentition — these all reduce self-confidence. Many people hide their smile.",
+      "solutionTitle": "The Solution: Cosmetic Dentistry",
+      "solutionDesc": "Modern aesthetic procedures — professional whitening, porcelain veneers, scale & polish — can restore the natural radiance of your smile.",
+      "servicesBadge": "Our Services",
+      "servicesTitle": "Aesthetic Solutions",
+      "services": [
+        { "title": "Professional Teeth Whitening", "desc": "Up to 8 shades lighter teeth after a single treatment.", "price": "from 35,000 HUF" },
+        { "title": "Porcelain Veneers", "desc": "Ultra-thin porcelain veneers — perfect shape and colour.", "price": "from 120,000 HUF" },
+        { "title": "Scale & Polish", "desc": "Ultrasonic descaling and polishing for healthy gums.", "price": "from 15,000 HUF" },
+        { "title": "Tooth-Coloured Fillings", "desc": "Composite fillings matching the tooth colour — virtually invisible.", "price": "from 25,000 HUF" },
+        { "title": "Smile Makeover", "desc": "Comprehensive smile transformation: whitening, veneers, tooth reshaping.", "price": "Individual quote" },
+        { "title": "Gum Contouring", "desc": "Aesthetic correction of the gum line for a harmonious smile.", "price": "from 45,000 HUF" }
+      ],
+      "benefitsTitle": "Beauty Is in the Details",
+      "benefitItems": [
+        { "title": "Safe Materials", "desc": "We use only premium-quality, clinically tested materials." },
+        { "title": "Fast Results", "desc": "Most procedures can be completed in 1–2 sessions." },
+        { "title": "Flexible Payment", "desc": "Instalment options available for larger treatments." },
+        { "title": "Personalised", "desc": "Every treatment plan is tailored to your individual needs." },
+        { "title": "Natural Effect", "desc": "Our goal is a natural, harmonious appearance." },
+        { "title": "Own Lab", "desc": "Our own dental laboratory guarantees speed." }
+      ],
+      "processTitle": "The Path to the Perfect Smile",
+      "processSteps": [
+        { "title": "Consultation", "desc": "We get to know your goals and assess the condition of your teeth.", "time": "30 min" },
+        { "title": "Treatment Plan", "desc": "We prepare a detailed plan with prices and scheduling.", "time": "1–2 days" },
+        { "title": "Preparation", "desc": "Scale & polish and professional cleaning.", "time": "45 min" },
+        { "title": "Aesthetic Treatment", "desc": "Carrying out the chosen procedure.", "time": "1–3 hours" },
+        { "title": "Aftercare", "desc": "Tips for maintaining the result.", "time": "Ongoing" }
+      ],
+      "ctaTitle": "Ready for a Radiant Smile?",
+      "ctaDesc": "Book a specialist cosmetic consultation in Budapest or Esztergom!",
+      "faqs": [
+        { "q": "How long does the whitening effect last?", "a": "Professional whitening results last 1–3 years depending on lifestyle." },
+        { "q": "Is whitening painful?", "a": "Modern techniques are generally painless. Transient sensitivity may occur." },
+        { "q": "How much does a porcelain veneer cost?", "a": "Porcelain veneers start from 120,000 HUF per tooth." },
+        { "q": "Will the result look natural?", "a": "Our goal is a natural, harmonious appearance matched to your facial features." },
+        { "q": "How often should tartar be removed?", "a": "Professional cleaning is recommended 1–2 times per year." }
+      ]
+    },
+    "foghuzas": {
+      "heroBadge": "Gentle Care",
+      "heroTitle": "Painless Tooth Extraction",
+      "heroDesc": "Fast and safe tooth removal using the latest anaesthetic techniques in a stress-free environment.",
+      "heroPriceLabel": "Procedure",
+      "heroPriceValue": "from 25,000 HUF",
+      "problemTitle": "The Problem: Teeth Beyond Saving",
+      "problemDesc": "Severely decayed, broken, or mobile teeth can cause constant inflammation and pain, and endanger the surrounding healthy teeth.",
+      "solutionTitle": "The Solution: Gentle Removal",
+      "solutionDesc": "We always aim to save teeth first, but when that is no longer possible we remove the tooth quickly and gently with the most modern anaesthetics.",
+      "servicesBadge": "Procedures",
+      "servicesTitle": "Our Extraction Solutions",
+      "services": [
+        { "title": "Simple Extraction", "desc": "Painless and fast removal of mobile or single-root teeth that are easy to extract.", "price": "25,000–35,000 HUF" },
+        { "title": "Surgical Extraction", "desc": "Removal of multi-root, impacted, or severely damaged teeth with surgical access.", "price": "55,000 HUF" },
+        { "title": "Wisdom Tooth Removal", "desc": "Expert surgical removal of partially or fully impacted wisdom teeth.", "price": "55,000 HUF" }
+      ],
+      "benefitsTitle": "Safe Tooth Extraction",
+      "benefitItems": [
+        { "title": "Pain-Free", "desc": "Deep local anaesthesia guarantees you feel no pain during the procedure." },
+        { "title": "Short Treatment Time", "desc": "Our dentists' experience means removal is fast, minimising discomfort." },
+        { "title": "Gentle Technique", "desc": "We carefully protect bone and soft tissue so future implantation can proceed smoothly." },
+        { "title": "Precise Diagnostics", "desc": "A digital X-ray is always taken before extraction to map root positions." }
+      ],
+      "processTitle": "How the Procedure Works",
+      "processSteps": [
+        { "title": "Consultation & Diagnostics", "desc": "X-ray and assessment of tooth condition to choose the most appropriate extraction method.", "time": "10 min" },
+        { "title": "Anaesthesia", "desc": "Thorough local anaesthesia of the area around the tooth for complete pain-free treatment.", "time": "5 min" },
+        { "title": "Tooth Removal", "desc": "Gentle removal of the prepared tooth, maximally protecting surrounding tissue.", "time": "10–30 min" },
+        { "title": "Wound Care & Aftercare", "desc": "Cleaning the wound, suturing if necessary, and detailed instructions for home care.", "time": "5 min" }
+      ],
+      "ctaTitle": "Put an End to Toothache!",
+      "ctaDesc": "Our experienced dentists will help quickly and painlessly. Book an appointment today!",
+      "faqs": [
+        { "q": "Will the extraction hurt?", "a": "You are guaranteed not to feel pain during the procedure thanks to local anaesthesia. You may feel mild pressure or tension." },
+        { "q": "What can I eat and drink after extraction?", "a": "It is recommended to avoid dairy products, foods with small seeds, and hot or spicy food." },
+        { "q": "When can I brush my teeth again?", "a": "You can and should brush your teeth the same evening, but avoid the extraction site to protect the blood clot." },
+        { "q": "When can an implant replace the extracted tooth?", "a": "If the level of infection allows, the implant can sometimes be placed immediately. Otherwise bone regeneration must be awaited, typically 3–4 months." }
+      ]
+    },
+    "fogszabalyozas": {
+      "heroBadge": "Aesthetic and Healthy Dentition",
+      "heroTitle": "Orthodontics the Crown Dental Way",
+      "heroDesc": "Modern orthodontic solutions for children and adults. Straight teeth, a confident smile.",
+      "heroPriceLabel": "Appliances",
+      "heroPriceValue": "from 190,000 HUF",
+      "problemTitle": "The Problem: Crowded Teeth",
+      "problemDesc": "Crooked, crowded teeth not only cause a lack of self-confidence but also pose a health risk. Hard-to-clean gaps allow plaque to accumulate, leading to cavities and gum disease.",
+      "solutionTitle": "The Solution: Orthodontic Treatment",
+      "solutionDesc": "Orthodontics guides teeth into their ideal position. It brings not only aesthetic improvement but also restores chewing function and makes oral hygiene easier.",
+      "benefitsTitle": "The Secret to a Perfect Smile",
+      "benefitItems": [
+        { "title": "Wide Choice", "desc": "From traditional metal braces to aesthetic sapphire crystal and invisible aligners — we offer every solution." },
+        { "title": "For All Ages", "desc": "In childhood we guide development; in adulthood we correct established issues. It's never too late to start!" },
+        { "title": "Flexible Payment", "desc": "We know orthodontics is an investment. Flexible payment plans help spread the cost." },
+        { "title": "Own Lab Support", "desc": "Removable appliances and aligners are manufactured in our own dental laboratory." },
+        { "title": "Facial Aesthetics Focus", "desc": "We don't just move teeth — we keep the harmonious appearance of your face in mind." },
+        { "title": "Modern Technology", "desc": "Digital planning and modern materials shorten treatment time." }
+      ],
+      "processTitle": "The Path to a Straight Smile",
+      "processSteps": [
+        { "title": "Consultation & Diagnostics", "desc": "Comprehensive examination, panoramic X-ray, and digital impression to assess the dentition.", "time": "45 min" },
+        { "title": "Treatment Plan", "desc": "We show you the expected result with a visual preview and discuss appliance type and duration.", "time": "1 week" },
+        { "title": "Appliance Fitting", "desc": "Precise and painless fitting, with instruction on wearing and cleaning.", "time": "60–90 min" },
+        { "title": "Activation & Check-ups", "desc": "Regular (usually monthly) check-ups to adjust the appliance.", "time": "12–24 months" },
+        { "title": "Retention", "desc": "After the fixed appliance is removed, we stabilise the result with a thin retainer.", "time": "Ongoing" }
+      ],
+      "ctaTitle": "Ready for the Perfect Smile?",
+      "ctaDesc": "Don't wait any longer! Request a specialist consultation to discuss all your options in detail.",
+      "faqs": [
+        { "q": "Is orthodontic treatment painful?", "a": "The fitting itself is not painful. Mild tension may be felt for 2–3 days after activations." },
+        { "q": "Can adults start treatment?", "a": "Absolutely! Today nearly half our patients are adults. We especially recommend our aesthetic ceramic or virtually invisible aligner systems for them." },
+        { "q": "How long does treatment take?", "a": "Generally 1.5–2 years. Minor aesthetic corrections can be done in as little as 6–10 months." },
+        { "q": "How do I clean the appliance?", "a": "For fixed braces we recommend a special brush and interdental cleaner, which we demonstrate thoroughly at the fitting." }
+      ]
+    },
+    "fogtechnikai-megoldasok": {
+      "heroBadge": "The Engine Behind the Smiles",
+      "heroTitle": "Our Own Dental Laboratory",
+      "heroDesc": "In the same building as our dentists since 1994. Premium restorations without compromise — express denture repair in as little as 1 day!",
+      "heroPriceLabel": "Denture Repair",
+      "heroPriceValue": "In 1 Day",
+      "teamBadge": "30 years of expertise",
+      "teamTitle": "Experience You Cannot Rush.",
+      "teamText1": "Crown Dental's dental laboratory did not open yesterday. We have been operating, developing, and integrating the latest technologies continuously since 1994.",
+      "teamText2": "Our greatest pride is our team: some of our dental technician colleagues have been working with us almost from the very first day — nearly three decades.",
+      "teamFoundingLabel": "Year Founded",
+      "teamProsthesesLabel": "Prostheses Made",
+      "teamWhyTitle": "Why Is Having an In-House Lab a Huge Advantage for Patients?",
+      "teamBenefits": [
+        { "title": "Lightning-Fast Turnaround", "desc": "No postage, no days of transport between lab and clinic." },
+        { "title": "Direct Dentist–Technician Communication", "desc": "The dentist can immediately show the technician the patient's individual requirements." },
+        { "title": "Personal Shade Selection", "desc": "For more complex cases the technician attends in person to achieve the perfect colour match." }
+      ],
+      "problemTitle": "The Problem: Broken Denture, Long Wait",
+      "problemDesc": "When a removable denture breaks, the patient needs immediate help. Most clinics send work to external labs, which can take weeks.",
+      "solutionTitle": "The Solution: 1-Day Express Repair",
+      "solutionDesc": "Because our technicians work in the same building, denture breaks, cracks, or relinings can be completed within 24 hours.",
+      "servicesBadge": "We Make Everything",
+      "servicesTitle": "Our Laboratory Services",
+      "services": [
+        { "title": "Express Denture Repair", "desc": "Immediate, precise repair and reinforcement of broken or cracked removable prostheses." },
+        { "title": "Zirconia Crowns & Bridges", "desc": "Metal-free, extremely durable premium restorations using CAD/CAM technology." },
+        { "title": "Metal-Ceramic Restorations", "desc": "Traditional, extremely strong and load-bearing crowns and bridges with porcelain facing." },
+        { "title": "Implant Abutments", "desc": "Custom titanium and zirconia abutments for placed implants, with micron accuracy." },
+        { "title": "Denture Relining", "desc": "If your old denture has become loose due to gum recession, we quickly refit it to current anatomy." },
+        { "title": "Temporary Restorations", "desc": "No one leaves without a tooth! We provide immediate temporary crowns until the final work is ready." }
+      ],
+      "ctaTitle": "Broken Denture? Don't Wait Weeks!",
+      "ctaDesc": "Bring it to us and our in-house lab will repair or reline it in as little as 1 working day. Book now!",
+      "faqTitle": "Frequently Asked Questions About the Lab",
+      "faqs": [
+        { "q": "Is the denture repair really done in 1 day?", "a": "In most cases yes! A simple break repair dropped off in the morning is usually ready the same afternoon or at the latest the next day." },
+        { "q": "Can I meet the dental technician during treatment?", "a": "Yes — this is one of Crown Dental's greatest advantages! For larger, aesthetically sensitive work the technician personally comes to the clinic." },
+        { "q": "Do you make CAD/CAM prostheses?", "a": "Of course. Our lab is equipped with modern computer-aided design and milling units capable of producing micron-accurate zirconia and titanium work." },
+        { "q": "What does denture relining mean?", "a": "The gums and jawbone recede over the years, causing the denture to become loose. During relining, a new layer is added to the inner surface of the existing denture so it fits stably again." }
+      ]
+    },
+    "gockutatas": {
+      "heroBadge": "Precision Diagnostics",
+      "heroTitle": "Dental Focal Infection Testing",
+      "heroDesc": "Uncover hidden inflammations with modern 3D CT and panoramic X-ray diagnostics, so you can be healthy again.",
+      "heroPriceLabel": "Examination & Plan",
+      "heroPriceValue": "10,000 HUF",
+      "problemTitle": "The Problem: Invisible Diseases",
+      "problemDesc": "Many people don't know that chronic fatigue, hair loss, joint pain, or skin problems often stem from a hidden, symptom-free dental focal infection. Because they rarely cause local pain, they are hard to detect.",
+      "solutionTitle": "The Solution: Modern Imaging",
+      "solutionDesc": "Our clinic uses the most modern panoramic X-ray and 3D CT equipment. We map the oral cavity with tenth-millimetre accuracy.",
+      "servicesBadge": "Diagnostics",
+      "servicesTitle": "Our Examination Methods",
+      "services": [
+        { "title": "Comprehensive Consultation", "desc": "Physical examination, discussion of symptoms, and mapping of foci in the oral cavity.", "price": "10,000 HUF" },
+        { "title": "Panoramic X-ray (OPG)", "desc": "Excellent overview of all teeth, jaw bones, and the floor of the sinuses.", "price": "6,000 HUF" },
+        { "title": "3D CBCT Scan", "desc": "Three-dimensional, highly precise imaging that reveals even the most hidden cysts and inflammations.", "price": "At clinic" }
+      ],
+      "benefitsTitle": "Reliable Diagnosis",
+      "benefitItems": [
+        { "title": "Immediate Results", "desc": "X-ray and CT images are produced in seconds; evaluation takes place immediately on-site." },
+        { "title": "Holistic Approach", "desc": "We don't just focus on teeth — we examine the whole body in the context of focal infections." },
+        { "title": "Painless", "desc": "The examination and imaging is a 100% pain- and discomfort-free process." },
+        { "title": "One-Stop Solution", "desc": "Once we find the focus, we can treat it at our clinic immediately." }
+      ],
+      "processTitle": "How Does the Examination Work?",
+      "processSteps": [
+        { "title": "Consultation", "desc": "We discuss your existing complaints, symptoms, and medical history.", "time": "15 min" },
+        { "title": "Imaging", "desc": "We take the necessary images (panoramic X-ray or, if indicated, 3D CT).", "time": "5 min" },
+        { "title": "Specialist Analysis", "desc": "The doctor analyses the images in detail and physically examines the suspicious teeth.", "time": "15 min" },
+        { "title": "Treatment Plan", "desc": "If a focus is found, we prepare a detailed written plan for its elimination.", "time": "10 min" }
+      ],
+      "ctaTitle": "Let's Uncover the Problem Together!",
+      "ctaDesc": "Request an appointment for a quick and painless focal infection examination and let's find the hidden causes!",
+      "faqs": [
+        { "q": "What exactly is a dental focal infection?", "a": "A focal infection is a chronic, symptom-free area of inflammation in the mouth from which bacteria enter the bloodstream and cause disease at other points in the body (joints, heart, skin)." },
+        { "q": "What are the most common symptoms of focal infection disease?", "a": "Common symptoms include patchy hair loss, joint pain, rheumatic complaints, unexplained fatigue, skin rashes, and recurrent sinusitis." },
+        { "q": "Do I need to come on an empty stomach?", "a": "No — fasting is not required for dental focal infection testing or for X-ray/CT imaging." },
+        { "q": "Can X-ray reliably detect a focal infection?", "a": "2D panoramic X-ray shows most problems. In certain complex cases a 3D CBCT scan may be necessary." }
+      ]
+    },
+    "gyerekfogaszat": {
+      "heroBadge": "Child-Centred Care",
+      "heroTitle": "Fun Dentistry the Crown Dental Way",
+      "heroDesc": "Where the dental chair is a magic throne and treatment is a smiling adventure. Let's build your child's confidence together!",
+      "heroPriceLabel": "Children's Treatments",
+      "heroPriceValue": "from 15,000 HUF",
+      "parentsBadge": "For Parents",
+      "parentsTitle": "Childhood Dental Trauma Is Preventable",
+      "problemTitle": "The Problem: Fear and Postponement",
+      "problemDesc": "Many children are terrified of the dentist because of previous bad experiences. Fear causes parents to delay check-ups, so milk tooth decay quickly worsens.",
+      "solutionTitle": "The Solution: Empathy and Prevention",
+      "solutionDesc": "In our clinic we introduce children to the instruments with great patience, in a playful way. A positive first experience is defining for life.",
+      "kidsSectionBadge": "Show This to the Little One!",
+      "kidsSectionTitle": "Hi! We Really Can't Wait to Meet You!",
+      "kidsFunFacts": [
+        { "title": "The Magic Throne", "desc": "Imagine — our dental chair works just like a spaceship! It goes up, goes down, and is really comfortable." },
+        { "title": "The Magic Wand", "desc": "We don't have scary machines here. With a tiny magic wand we blow away the tooth gremlins hiding on your teeth." },
+        { "title": "Superhero Gift", "desc": "At the end of every check-up every brave little one earns a superhero gift!" }
+      ],
+      "servicesBadge": "Treatments",
+      "servicesTitle": "Our Paediatric Dental Solutions",
+      "services": [
+        { "title": "Fissure Sealant", "desc": "Sealing the deep fissures of molars to prevent bacteria from settling.", "price": "15,000 HUF / tooth" },
+        { "title": "Milk Tooth Filling", "desc": "Milk teeth need treating too! Painless, aesthetic fillings for little ones.", "price": "15,000 HUF" },
+        { "title": "Gentle Milk Tooth Extraction", "desc": "After a magic numbing gel, the problem tooth is removed in a flash.", "price": "from 10,000 HUF" },
+        { "title": "Orthodontic Consultation", "desc": "Tooth development is worth checking as early as age 7–8 for early detection.", "price": "10,000 HUF" }
+      ],
+      "ctaTitle": "Let's Make Dentistry a Great Experience!",
+      "ctaDesc": "Bring your child in for a friendly get-to-know-you assessment today!",
+      "faqs": [
+        { "q": "What age is best for the first dental visit?", "a": "Ideally the first visit should take place around 2–3 years of age for a friendly introduction." },
+        { "q": "Do milk teeth need filling too?", "a": "Yes! Decayed milk teeth cause pain and can damage the buds of permanent teeth." },
+        { "q": "What if the child is afraid?", "a": "We never force anything. We work with patience, toys, and distraction." },
+        { "q": "What is fissure sealing?", "a": "Painless filling of the deep fissures of permanent molars to prevent decay." }
+      ]
+    },
+    "szajsebeszet": {
+      "heroBadge": "Safety and Expertise",
+      "heroTitle": "Oral Surgery Painlessly",
+      "heroDesc": "Wisdom tooth removal, complex extractions, and apical resection — in complete safety, with modern anaesthetic techniques.",
+      "heroPriceLabel": "Extraction",
+      "heroPriceValue": "from 25,000 HUF",
+      "problemTitle": "The Problem: Infections, Painful Teeth",
+      "problemDesc": "Partially erupted wisdom teeth growing in the wrong direction, impacted roots, or chronic inflammations can cause severe pain and focal infections. Many people postpone treatment out of fear of pain.",
+      "solutionTitle": "The Solution: Expert Oral Surgery",
+      "solutionDesc": "Modern anaesthetic techniques guarantee a painless procedure. Our experienced specialist surgeons perform even the most complex oral surgery gently.",
+      "servicesBadge": "Procedures",
+      "servicesTitle": "Our Oral Surgery Solutions",
+      "services": [
+        { "title": "Simple Extraction", "desc": "Gentle removal of severely damaged, unsalvageable teeth under full anaesthesia.", "price": "from 25,000 HUF" },
+        { "title": "Wisdom Tooth Removal", "desc": "Expert surgical removal of even fully impacted wisdom teeth.", "price": "55,000 HUF" },
+        { "title": "Apical Resection", "desc": "Surgical removal of the inflamed root apex, saving the problematic tooth.", "price": "55,000 HUF" },
+        { "title": "Bone Grafting", "desc": "Pre-implant bone augmentation where the jawbone is insufficient for an implant.", "price": "190,000 HUF" }
+      ],
+      "benefitsTitle": "Safe Oral Surgery",
+      "benefitItems": [
+        { "title": "Pain-Free", "desc": "We use modern local anaesthetics, so even the most complex surgery involves no pain." },
+        { "title": "Experienced Surgeons", "desc": "Our oral surgeon has performed thousands of successful procedures, guaranteeing maximum safety." },
+        { "title": "Modern 3D CT Diagnostics", "desc": "Procedures are planned with tenth-millimetre accuracy based on 3D CBCT imaging." },
+        { "title": "Safety and Sterility", "desc": "We apply the strictest hygiene standards in our clinics to prevent infections." }
+      ],
+      "processSteps": [
+        { "title": "Diagnostics", "desc": "Panoramic X-ray or 3D CT to see the exact position of roots and nerves.", "time": "15 min" },
+        { "title": "Anaesthesia", "desc": "Maximum-efficacy local anaesthesia applied, waiting for full effect.", "time": "5–10 min" },
+        { "title": "The Procedure", "desc": "Performing the pre-planned oral surgery gently, protecting healthy tissue.", "time": "20–60 min" },
+        { "title": "Wound Closure (if needed)", "desc": "For surgical extraction or resection the wound is sutured for faster healing.", "time": "5 min" },
+        { "title": "Suture Removal & Check-up", "desc": "We invite you back one week later for a quick, painless suture removal and check-up.", "time": "10 min" }
+      ],
+      "ctaTitle": "Ready for a Pain-Free Solution?",
+      "ctaDesc": "Don't suffer from painful teeth any longer! Book a specialist consultation and trust our experienced surgeons.",
+      "faqs": [
+        { "q": "How much does tooth extraction or oral surgery hurt?", "a": "Not at all! We use the most advanced local anaesthetics, so you will feel only mild pressure or tension during the procedure." },
+        { "q": "How long is recovery after wisdom tooth surgery?", "a": "The wound generally heals within a few days; sutures are removed one week after surgery." },
+        { "q": "What can I eat after an extraction?", "a": "In the days after the procedure, avoid hot, spicy, small-seeded foods and dairy products." },
+        { "q": "Why is 3D CT necessary for oral surgery?", "a": "3D CT lets us see the tooth roots, sinuses, and main nerve pathways with millimetre precision." }
+      ]
+    }
+  }
+}
