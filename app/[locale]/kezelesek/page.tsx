@@ -172,15 +172,17 @@ function TreatmentCardsSection() {
 const EUR_RATE = 350;
 
 function hufToEur(priceStr: string): string {
-  const cleaned = priceStr.replace(/\s*Ft\s*/g, '').trim();
+  const cleaned = priceStr.replace(/\s*(HUF|Ft)\s*/g, '').trim();
+  const parseNum = (s: string) => parseInt(s.trim().replace(/[\s.,]/g, ''), 10);
   if (cleaned.includes('–') || cleaned.includes('-')) {
-    const parts = cleaned.split(/\s*[–-]\s*/).map(p => parseInt(p.trim().replace(/[\s.]/g, ''), 10));
-    if (parts.length === 2 && parts.every(n => !isNaN(n))) {
-      return `~€${Math.ceil(parts[0] / EUR_RATE)} – €${Math.ceil(parts[1] / EUR_RATE)}`;
+    const parts = cleaned.split(/\s*[–-]\s*/);
+    const nums = parts.map(parseNum);
+    if (nums.length === 2 && nums.every(n => !isNaN(n))) {
+      return `~€${Math.ceil(nums[0] / EUR_RATE)} – €${Math.ceil(nums[1] / EUR_RATE)}`;
     }
   }
-  const num = parseInt(cleaned.replace(/[\s.]/g, ''), 10);
-  return !isNaN(num) ? `~€${Math.ceil(num / EUR_RATE)}` : '';
+  const num = parseNum(cleaned);
+  return !isNaN(num) && num > 0 ? `~€${Math.ceil(num / EUR_RATE)}` : '';
 }
 
 function PriceListSection() {
