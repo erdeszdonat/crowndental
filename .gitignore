@@ -1,2 +1,2 @@
-app/studio/[[...index]]/
-sanity.config.ts
+node_modules/
+.next/

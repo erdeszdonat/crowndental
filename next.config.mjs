@@ -1,5 +1,8 @@
 import createNextIntlPlugin from 'next-intl/plugin';
+import { fileURLToPath } from 'url';
+import path from 'path';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 
 /** @type {import('next').NextConfig} */
@@ -8,6 +11,7 @@ const nextConfig = {
     config.resolve.alias = {
       ...config.resolve.alias,
       'react/compiler-runtime': false,
+      'react': path.resolve(__dirname, './shims/react.js'),
     };
     return config;
   },
@@ -62,8 +66,7 @@ const nextConfig = {
     return [
       { source: '/esztergom/:path*', destination: '/lokacio/esztergom/:path*' },
       { source: '/budapest/:path*', destination: '/lokacio/budapest/:path*' },
-      { source: '/studio', destination: 'https://crowndental-dun.vercel.app/studio' },
-      { source: '/studio/:path*', destination: 'https://crowndental-dun.vercel.app/studio/:path*' },
+
     ];
   },
 };
