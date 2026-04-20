@@ -281,7 +281,7 @@ function AnimatedNumber({ end, suffix='', label, desc }: { end:number; suffix?:s
   }, [inView, end]);
   return (
     <div ref={ref} className="text-center">
-      <div className="text-5xl md:text-6xl lg:text-7xl font-black text-sky-500 mb-3 tracking-tight tabular-nums">{count.toLocaleString()}{suffix}</div>
+      <div className="text-5xl md:text-6xl lg:text-7xl font-black text-sky-500 mb-3 tracking-tight tabular-nums whitespace-nowrap">{count.toLocaleString()}{suffix}</div>
       <div className="text-lg font-bold text-gray-900 mb-1">{label}</div>
       <p className="text-gray-500 text-sm leading-relaxed max-w-[200px] mx-auto">{desc}</p>
     </div>
