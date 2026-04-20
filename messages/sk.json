@@ -107,13 +107,13 @@
       "details": "Podrobnosti",
       "comingSoon": "Čoskoro otvárame!",
       "esztergomName": "Ordinácia Ostrihom",
-      "budapestName": "Ordinácia Budapešť",
-      "daysSuffix": " dni"
+      "budapestName": "Ordinácia Budapešť"
     },
     "stats": {
       "label": "Fakty a čísla",
       "title": "Čísla, ktoré",
       "titleHighlight": "hovoria samy za seba.",
+      "daysSuffix": " dni",
       "years": { "label": "rokov skúseností", "desc": "Na trhu od roku 1994." },
       "patients": { "label": "spokojných pacientov", "desc": "Dôvera naprieč generáciami." },
       "savings": { "label": "úspora", "desc": "Vďaka vlastnému laboratóriu." },

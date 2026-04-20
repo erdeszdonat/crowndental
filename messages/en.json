@@ -107,13 +107,13 @@
       "details": "Details",
       "comingSoon": "Opening Soon!",
       "esztergomName": "Esztergom Clinic",
-      "budapestName": "Budapest Clinic",
-      "daysSuffix": " days"
+      "budapestName": "Budapest Clinic"
     },
     "stats": {
       "label": "Facts & Figures",
       "title": "Numbers that",
       "titleHighlight": "speak for themselves.",
+      "daysSuffix": " days",
       "years": { "label": "years of experience", "desc": "In practice since 1994." },
       "patients": { "label": "satisfied patients", "desc": "Trust across generations." },
       "savings": { "label": "savings", "desc": "Thanks to our own lab." },

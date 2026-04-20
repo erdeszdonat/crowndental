@@ -107,13 +107,13 @@
       "details": "Részletek",
       "comingSoon": "Hamarosan Nyitunk!",
       "esztergomName": "Esztergomi Rendelő",
-      "budapestName": "Budapesti Rendelő",
-      "daysSuffix": " nap"
+      "budapestName": "Budapesti Rendelő"
     },
     "stats": {
       "label": "Tények és számok",
       "title": "Számok, amik",
       "titleHighlight": "magukért beszélnek.",
+      "daysSuffix": " nap",
       "years": { "label": "év tapasztalat", "desc": "1994 óta a pályán." },
       "patients": { "label": "elégedett páciens", "desc": "Generációk bizalma." },
       "savings": { "label": "megtakarítás", "desc": "Saját laborunknak köszönhetően." },
