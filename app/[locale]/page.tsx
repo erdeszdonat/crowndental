@@ -245,7 +245,7 @@ function LocationSelector() {
             <div className="absolute inset-0 bg-gradient-to-t from-gray-950/90 via-gray-950/40 to-transparent"/>
             <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-end">
               <div className="flex items-center gap-2 text-sky-400 font-bold uppercase tracking-wider mb-3 text-sm"><MapPin className="w-4 h-4"/>{locations.esztergom?.tag||'Komárom-Esztergom'}</div>
-              <h3 className="text-3xl md:text-4xl font-black text-white mb-2">{locations.esztergom?.title||'Esztergomi Rendelő'}</h3>
+              <h3 className="text-3xl md:text-4xl font-black text-white mb-2">{t('esztergomName')}</h3>
               <p className="text-gray-300 text-base md:text-lg font-medium mb-6">{locations.esztergom?.address||'Esztergom, Petőfi Sándor utca 11.'}</p>
               <div className="inline-flex items-center gap-3 text-white font-bold group-hover:text-sky-400 transition-colors">{t('visitClinic')}<div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-sky-500 transition-all"><ArrowRight className="w-5 h-5"/></div></div>
             </div>
@@ -257,7 +257,7 @@ function LocationSelector() {
             <div className="absolute inset-0 bg-gradient-to-t from-gray-950/90 via-gray-950/40 to-transparent"/>
             <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-end">
               <div className="flex items-center gap-2 text-amber-400 font-bold uppercase tracking-wider mb-3 text-sm"><MapPin className="w-4 h-4"/>{locations.budapest?.tag||'Főváros · Római Part'}</div>
-              <h3 className="text-3xl md:text-4xl font-black text-white mb-2">{locations.budapest?.title||'Budapesti Rendelő'}</h3>
+              <h3 className="text-3xl md:text-4xl font-black text-white mb-2">{t('budapestName')}</h3>
               <p className="text-gray-300 text-base md:text-lg font-medium mb-6">{locations.budapest?.address||'1039 Budapest, Királyok útja 55.'}</p>
               <div className="inline-flex items-center gap-3 text-white font-bold group-hover:text-amber-400 transition-colors">{t('details')}<div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-amber-500 transition-all"><ArrowRight className="w-5 h-5"/></div></div>
             </div>
@@ -305,7 +305,7 @@ function StatsSection() {
           <AnimatedNumber end={30}    suffix="+"    label={t('years.label')}    desc={t('years.desc')} />
           <AnimatedNumber end={15000} suffix="+"    label={t('patients.label')} desc={t('patients.desc')} />
           <AnimatedNumber end={40}    suffix="%"    label={t('savings.label')}  desc={t('savings.desc')} />
-          <AnimatedNumber end={3}     suffix=" nap" label={t('days.label')}     desc={t('days.desc')} />
+          <AnimatedNumber end={3}     suffix={t('daysSuffix')} label={t('days.label')}     desc={t('days.desc')} />
         </div>
       </div>
     </section>

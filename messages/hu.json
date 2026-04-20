@@ -105,7 +105,10 @@
       "subtitle": "Válassza ki az Önhöz legközelebb eső helyszínt.",
       "visitClinic": "Tovább a rendelőhöz",
       "details": "Részletek",
-      "comingSoon": "Hamarosan Nyitunk!"
+      "comingSoon": "Hamarosan Nyitunk!",
+      "esztergomName": "Esztergomi Rendelő",
+      "budapestName": "Budapesti Rendelő",
+      "daysSuffix": " nap"
     },
     "stats": {
       "label": "Tények és számok",

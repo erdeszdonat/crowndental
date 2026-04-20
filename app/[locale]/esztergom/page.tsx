@@ -243,7 +243,7 @@ function HeroSection() {
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
   return (
-    <section ref={ref} className="relative mt-24 h-[90svh] min-h-[700px] w-full overflow-hidden flex items-center justify-center bg-gray-950">
+    <section ref={ref} className="relative mt-16 sm:mt-24 h-[90svh] min-h-[600px] w-full overflow-hidden flex items-center justify-center bg-gray-950">
       <motion.div style={{ y: imgY }} className="absolute inset-0 z-0 will-change-transform bg-gray-900">
         {heroImage && <img src={heroImage} alt="Crown Dental Esztergom" fetchPriority="high" className="w-full h-[120%] object-cover opacity-80" />}
         <div className="absolute inset-0 bg-gradient-to-r from-gray-950/80 via-gray-950/50 to-transparent" />
@@ -255,18 +255,18 @@ function HeroSection() {
       <motion.div style={{ y: textY, opacity }} className="relative z-20 container mx-auto px-4 md:px-8">
         <div className="max-w-3xl">
           <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.2 }}>
-            <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/10 border border-white/20 backdrop-blur-xl rounded-full text-sky-300 text-sm font-bold tracking-wider uppercase mb-8">
-              <MapPin className="w-4 h-4" />
+            <div className="inline-flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 bg-white/10 border border-white/20 backdrop-blur-xl rounded-full text-sky-300 text-xs sm:text-sm font-bold tracking-wider uppercase mb-5 sm:mb-8">
+              <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               {t(locale, 'Esztergom Szívében', 'Heart of Esztergom', 'Centrum Ostrihoma')}
             </div>
-            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white mb-8 leading-[0.95] tracking-tight">
+            <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white mb-5 sm:mb-8 leading-[0.95] tracking-tight">
               {t(locale, 'Prémium Fogászat,', 'Premium Dentistry,', 'Prémiová stomatológia,')}
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-cyan-300">
                 {t(locale, 'helyben.', 'right here.', 'priamo tu.')}
               </span>
             </h1>
-            <p className="text-lg sm:text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed max-w-xl font-light">
+            <p className="text-base sm:text-xl md:text-2xl text-gray-300 mb-7 sm:mb-12 leading-relaxed max-w-xl font-light">
               {t(locale,
                 '1994 óta a város megbízható fogászata. Saját laborunkkal ',
                 'Esztergom\'s trusted dentist since 1994. With our own lab, ',
@@ -279,29 +279,29 @@ function HeroSection() {
             </p>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.5 }} className="flex flex-col sm:flex-row gap-4">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.5 }} className="flex flex-col sm:flex-row gap-3">
             <Link href={`${p}/idopont`}>
-              <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="group flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-5 bg-sky-500 hover:bg-sky-400 text-white text-lg font-bold rounded-2xl shadow-[0_0_60px_rgba(14,165,233,0.4)] transition-all">
-                <Calendar className="w-6 h-6" />
+              <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="group flex items-center justify-center gap-3 w-full sm:w-auto px-6 sm:px-8 py-4 sm:py-5 bg-sky-500 hover:bg-sky-400 text-white text-base sm:text-lg font-bold rounded-2xl shadow-[0_0_60px_rgba(14,165,233,0.4)] transition-all">
+                <Calendar className="w-5 h-5 sm:w-6 sm:h-6" />
                 {t(locale, 'Azonnali Időpontfoglalás', 'Book an Appointment', 'Rezervovať termín')}
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
               </motion.button>
             </Link>
             <a href="tel:+36705646837">
-              <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-5 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white text-lg font-bold rounded-2xl transition-all border border-white/20">
+              <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="flex items-center justify-center gap-3 w-full sm:w-auto px-6 sm:px-8 py-4 sm:py-5 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white text-base sm:text-lg font-bold rounded-2xl transition-all border border-white/20">
                 <Phone className="w-5 h-5" />
                 +36 70 564 6837
               </motion.button>
             </a>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9, duration: 0.6 }} className="flex flex-wrap gap-3 mt-10">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9, duration: 0.6 }} className="flex flex-wrap gap-2 sm:gap-3 mt-6 sm:mt-10">
             {[
               { icon: <Zap className="w-4 h-4" />, text: t(locale, 'Korona 3 nap alatt', 'Crown in 3 days', 'Korunka za 3 dni') },
               { icon: <Shield className="w-4 h-4" />, text: t(locale, '30 év tapasztalat', '30 years experience', '30 rokov skúseností') },
               { icon: <Clock className="w-4 h-4" />, text: t(locale, 'Hétvégén is 7:00-13:00', 'Weekends 7:00–13:00', 'Víkendy 7:00–13:00') },
             ].map((chip, i) => (
-              <div key={i} className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/20 border border-white/30 text-white font-bold text-sm backdrop-blur-md shadow-lg shadow-black/10">
+              <div key={i} className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full bg-white/20 border border-white/30 text-white font-bold text-xs sm:text-sm backdrop-blur-md shadow-lg shadow-black/10">
                 <span className="text-sky-200">{chip.icon}</span>
                 <span>{chip.text}</span>
               </div>

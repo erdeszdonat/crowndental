@@ -105,7 +105,10 @@
       "subtitle": "Choose the location closest to you.",
       "visitClinic": "Visit this clinic",
       "details": "Details",
-      "comingSoon": "Opening Soon!"
+      "comingSoon": "Opening Soon!",
+      "esztergomName": "Esztergom Clinic",
+      "budapestName": "Budapest Clinic",
+      "daysSuffix": " days"
     },
     "stats": {
       "label": "Facts & Figures",

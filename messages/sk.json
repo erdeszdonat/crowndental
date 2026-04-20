@@ -105,7 +105,10 @@
       "subtitle": "Vyberte si pobočku, ktorá je vám najbližšie.",
       "visitClinic": "Prejsť na ambulanciu",
       "details": "Podrobnosti",
-      "comingSoon": "Čoskoro otvárame!"
+      "comingSoon": "Čoskoro otvárame!",
+      "esztergomName": "Ordinácia Ostrihom",
+      "budapestName": "Ordinácia Budapešť",
+      "daysSuffix": " dni"
     },
     "stats": {
       "label": "Fakty a čísla",
