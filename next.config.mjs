@@ -4,6 +4,13 @@ const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      'react/compiler-runtime': false,
+    };
+    return config;
+  },
   images: {
     remotePatterns: [
       {
