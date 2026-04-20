@@ -62,6 +62,8 @@ const nextConfig = {
     return [
       { source: '/esztergom/:path*', destination: '/lokacio/esztergom/:path*' },
       { source: '/budapest/:path*', destination: '/lokacio/budapest/:path*' },
+      { source: '/studio', destination: 'https://crowndental-dun.vercel.app/studio' },
+      { source: '/studio/:path*', destination: 'https://crowndental-dun.vercel.app/studio/:path*' },
     ];
   },
 };
