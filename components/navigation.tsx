@@ -6,6 +6,34 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Phone, Calendar, Menu, X, Globe, ChevronDown } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
 
+// ─── Zászló ikonok ────────────────────────────────────────────────────────────
+function FlagIcon({ code }: { code: string }) {
+  if (code === 'hu') return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" className="w-5 h-3.5 rounded-sm overflow-hidden flex-shrink-0">
+      <rect width="3" height="2" fill="#CE2939"/>
+      <rect width="3" height="1.333" fill="#FFFFFF"/>
+      <rect width="3" height="0.667" fill="#477050" y="1.333"/>
+    </svg>
+  );
+  if (code === 'en') return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" className="w-5 h-3.5 rounded-sm overflow-hidden flex-shrink-0">
+      <rect width="60" height="30" fill="#012169"/>
+      <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" strokeWidth="6"/>
+      <path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" strokeWidth="4"/>
+      <path d="M30,0 V30 M0,15 H60" stroke="#fff" strokeWidth="10"/>
+      <path d="M30,0 V30 M0,15 H60" stroke="#C8102E" strokeWidth="6"/>
+    </svg>
+  );
+  if (code === 'sk') return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" className="w-5 h-3.5 rounded-sm overflow-hidden flex-shrink-0">
+      <rect width="3" height="2" fill="#FFFFFF"/>
+      <rect width="3" height="0.667" fill="#0B4EA2" y="0.667"/>
+      <rect width="3" height="0.667" fill="#EE1C25" y="1.333"/>
+    </svg>
+  );
+  return null;
+}
+
 // ─── Nyelvváltó dropdown ──────────────────────────────────────────────────────
 function LanguageSwitcher() {
   const t = useTranslations('langSwitch');
@@ -16,9 +44,9 @@ function LanguageSwitcher() {
   const ref = useRef<HTMLDivElement>(null);
 
   const languages = [
-    { code: 'hu', label: 'Magyar', flag: '🇭🇺' },
-    { code: 'en', label: 'English', flag: '🇬🇧' },
-    { code: 'sk', label: 'Slovenčina', flag: '🇸🇰' },
+    { code: 'hu', label: 'Magyar' },
+    { code: 'en', label: 'English' },
+    { code: 'sk', label: 'Slovenčina' },
   ];
 
   // Kattintás kezelése kívülről zárja be
@@ -62,9 +90,8 @@ function LanguageSwitcher() {
         aria-expanded={open}
         className="flex items-center gap-1.5 px-3 py-2 rounded-full text-gray-700 hover:text-sky-600 hover:bg-sky-50 transition-all text-sm font-bold"
       >
-        <Globe className="w-4 h-4" />
-        <span className="hidden sm:inline">{currentLang.flag} {currentLang.label}</span>
-        <span className="sm:hidden">{currentLang.flag}</span>
+        <FlagIcon code={currentLang.code} />
+        <span className="hidden sm:inline">{currentLang.label}</span>
         <ChevronDown className={`w-3.5 h-3.5 transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
 
@@ -85,7 +112,7 @@ function LanguageSwitcher() {
                   locale === lang.code ? 'bg-sky-50 text-sky-700 font-bold' : 'text-gray-700'
                 }`}
               >
-                <span className="text-lg">{lang.flag}</span>
+                <FlagIcon code={lang.code} />
                 <span>{lang.label}</span>
                 {locale === lang.code && (
                   <span className="ml-auto w-2 h-2 rounded-full bg-sky-500" />
@@ -210,9 +237,9 @@ export default function Navigation() {
               <p className="text-xs text-gray-400 uppercase tracking-wider mb-3 px-4">Nyelv / Language</p>
               <div className="flex gap-2 px-4">
                 {[
-                  { code: 'hu', label: 'Magyar', flag: '🇭🇺' },
-                  { code: 'en', label: 'English', flag: '🇬🇧' },
-                  { code: 'sk', label: 'Slovenčina', flag: '🇸🇰' },
+                  { code: 'hu', label: 'Magyar' },
+                  { code: 'en', label: 'English' },
+                  { code: 'sk', label: 'Slovenčina' },
                 ].map((lang) => (
                   <a
                     key={lang.code}
@@ -222,7 +249,7 @@ export default function Navigation() {
                       locale === lang.code ? 'bg-sky-100 text-sky-700' : 'bg-gray-100 text-gray-600 hover:bg-sky-50'
                     }`}
                   >
-                    {lang.flag} {lang.label}
+                    <FlagIcon code={lang.code} />{lang.label}
                   </a>
                 ))}
               </div>
