@@ -11,7 +11,7 @@ const nextConfig = {
     config.resolve.alias = {
       ...config.resolve.alias,
       'react/compiler-runtime': false,
-      'react': path.resolve(__dirname, './shims/react.js'),
+      'react$': path.resolve(__dirname, './shims/react.js'),
     };
     return config;
   },
