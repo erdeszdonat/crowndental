@@ -11,8 +11,11 @@ const nextConfig = {
     config.resolve.alias = {
       ...config.resolve.alias,
       'react/compiler-runtime': false,
-      'react$': path.resolve(__dirname, './shims/react.js'),
     };
+    config.module.rules.push({
+      test: /[\\/]node_modules[\\/]sanity[\\/].*\.js$/,
+      use: [{ loader: path.resolve(__dirname, './shims/sanity-patch-loader.cjs') }],
+    });
     return config;
   },
   images: {
