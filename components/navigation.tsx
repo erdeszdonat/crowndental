@@ -9,14 +9,14 @@ import { useTranslations, useLocale } from 'next-intl';
 // ─── Zászló ikonok ────────────────────────────────────────────────────────────
 function FlagIcon({ code }: { code: string }) {
   if (code === 'hu') return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" className="w-5 h-3.5 rounded-sm overflow-hidden flex-shrink-0">
-      <rect width="3" height="2" fill="#CE2939"/>
-      <rect width="3" height="1.333" fill="#FFFFFF"/>
-      <rect width="3" height="0.667" fill="#477050" y="1.333"/>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" className="w-5 h-[14px] rounded-sm flex-shrink-0">
+      <rect width="3" height="0.667" y="0" fill="#CE2939"/>
+      <rect width="3" height="0.667" y="0.667" fill="#FFFFFF"/>
+      <rect width="3" height="0.667" y="1.333" fill="#477050"/>
     </svg>
   );
   if (code === 'en') return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" className="w-5 h-3.5 rounded-sm overflow-hidden flex-shrink-0">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" className="w-5 h-[14px] rounded-sm flex-shrink-0">
       <rect width="60" height="30" fill="#012169"/>
       <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" strokeWidth="6"/>
       <path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" strokeWidth="4"/>
@@ -25,7 +25,7 @@ function FlagIcon({ code }: { code: string }) {
     </svg>
   );
   if (code === 'sk') return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" className="w-5 h-3.5 rounded-sm overflow-hidden flex-shrink-0">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" className="w-5 h-[14px] rounded-sm flex-shrink-0">
       <rect width="3" height="2" fill="#FFFFFF"/>
       <rect width="3" height="0.667" fill="#0B4EA2" y="0.667"/>
       <rect width="3" height="0.667" fill="#EE1C25" y="1.333"/>
