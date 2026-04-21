@@ -10,12 +10,8 @@ const nextConfig = {
   webpack: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,
-      'react/compiler-runtime': false,
+      'react/compiler-runtime': path.resolve(__dirname, './shims/compiler-runtime.js'),
     };
-    config.module.rules.push({
-      test: /[\\/]node_modules[\\/]sanity[\\/].*\.js$/,
-      use: [{ loader: path.resolve(__dirname, './shims/sanity-patch-loader.cjs') }],
-    });
     return config;
   },
   images: {
