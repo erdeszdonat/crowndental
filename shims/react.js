@@ -1,5 +1,4 @@
-// Webpack shim: adds missing useEffectEvent stub so Sanity v5 can build with React 18/19 stable
-const r = require('../node_modules/react');
-module.exports = Object.assign({}, r, {
-  useEffectEvent: r.useEffectEvent || function useEffectEvent(fn) { return fn; },
-});
+// ESM shim: re-exports all of React + adds useEffectEvent stub for Sanity v5
+export * from '../node_modules/react/index.js';
+export { default } from '../node_modules/react/index.js';
+export const useEffectEvent = function useEffectEvent(fn) { return fn; };
