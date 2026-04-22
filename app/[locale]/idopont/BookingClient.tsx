@@ -15,9 +15,12 @@ function BookingForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [formData, setFormData] = useState({ city:'Esztergom', name:'', nickname:'', email:'', phone:'', treatment:'' });
+  const [otherNote, setOtherNote] = useState('');
 
-  // @ts-ignore
   const treatments = t.raw('treatments') as string[];
+  const otherLabel = treatments[treatments.length - 1];
+  const isOther = formData.treatment === otherLabel;
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -33,7 +36,8 @@ function BookingForm() {
     if (!formData.treatment) return;
     setIsSubmitting(true);
     try {
-      const res = await fetch('/api/book-appointment', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(formData) });
+      const payload = isOther && otherNote ? { ...formData, treatment: `${formData.treatment}: ${otherNote}` } : formData;
+      const res = await fetch('/api/book-appointment', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
       const data = await res.json();
       if (data.success) { setIsSuccess(true); window.scrollTo({ top:0, behavior:'smooth' }); }
     } catch {}
@@ -94,15 +98,26 @@ function BookingForm() {
           {step===2&&(
             <motion.form key="step2" initial={{ opacity:0, x:20 }} animate={{ opacity:1, x:0 }} exit={{ opacity:0, x:-20 }} onSubmit={handleSubmit} className="space-y-6">
               <h2 className="text-2xl font-extrabold text-gray-900">{t('step2Title')}</h2>
-              <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2">
+              <div className="space-y-3 max-h-[420px] overflow-y-auto pr-2">
                 {treatments.map((treatment) => (
-                  <label key={treatment} className={`flex items-center justify-between p-4 rounded-xl border-2 cursor-pointer transition-all ${formData.treatment===treatment?'border-sky-600 bg-sky-50':'border-gray-100 hover:border-sky-200'}`}>
-                    <span className="font-bold text-gray-700">{treatment}</span>
-                    <input type="radio" name="treatment" value={treatment} onChange={handleChange} className="sr-only" required/>
-                    <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${formData.treatment===treatment?'border-sky-600 bg-sky-600':'border-gray-300'}`}>
-                      {formData.treatment===treatment&&<div className="w-2 h-2 bg-white rounded-full"/>}
-                    </div>
-                  </label>
+                  <React.Fragment key={treatment}>
+                    <label className={`flex items-center justify-between p-4 rounded-xl border-2 cursor-pointer transition-all ${formData.treatment===treatment?'border-sky-600 bg-sky-50':'border-gray-100 hover:border-sky-200'}`}>
+                      <span className="font-bold text-gray-700">{treatment}</span>
+                      <input type="radio" name="treatment" value={treatment} onChange={handleChange} className="sr-only" required/>
+                      <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${formData.treatment===treatment?'border-sky-600 bg-sky-600':'border-gray-300'}`}>
+                        {formData.treatment===treatment&&<div className="w-2 h-2 bg-white rounded-full"/>}
+                      </div>
+                    </label>
+                    {formData.treatment===treatment && treatment===otherLabel && (
+                      <textarea
+                        value={otherNote}
+                        onChange={e => setOtherNote(e.target.value)}
+                        placeholder="Írja le röviden, mi a panasza vagy mit szeretne..."
+                        rows={3}
+                        className="w-full p-4 bg-gray-50 border-2 border-sky-300 rounded-xl outline-none focus:ring-2 focus:ring-sky-500 resize-none text-sm text-gray-700"
+                      />
+                    )}
+                  </React.Fragment>
                 ))}
               </div>
               <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t">
