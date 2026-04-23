@@ -63,10 +63,15 @@ export function generateStaticParams() {
 const organizationJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
+  '@id': 'https://www.crowndental.hu/#organization',
   name: 'Crown Dental',
   url: 'https://www.crowndental.hu',
   telephone: '+36705646837',
   foundingDate: '1994',
+  sameAs: [
+    'https://www.wikidata.org/wiki/Q139545504',
+    'https://www.crowndental.hu',
+  ],
 };
 
 const esztergomJsonLd = {
