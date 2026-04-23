@@ -119,6 +119,9 @@ export default function AdminDashboard() {
     if (status === 'processed') {
       return <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-green-100 text-green-700 text-[10px] font-black uppercase tracking-wider"><CheckCircle2 className="w-3 h-3" /> Feldolgozva</span>;
     }
+    if (status === 'no_answer') {
+      return <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-red-100 text-red-700 text-[10px] font-black uppercase tracking-wider"><Phone className="w-3 h-3" /> Nem vette fel</span>;
+    }
     return <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-100 text-amber-700 text-[10px] font-black uppercase tracking-wider animate-pulse"><Clock className="w-3 h-3" /> Új Kérelem</span>;
   };
 
@@ -284,6 +287,7 @@ export default function AdminDashboard() {
                           <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Adminisztráció</p>
                           <select value={item.status || 'new'} onChange={(e) => handleAction('appointments', item.id, 'update_status', e.target.value)} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg font-bold text-sm text-gray-700 outline-none focus:ring-2 focus:ring-sky-500">
                             <option value="new">Új Kérelem</option>
+                            <option value="no_answer">Felhívtuk – Nem vette fel</option>
                             <option value="processed">Időpontot kapott / Feldolgozva</option>
                           </select>
                           <button onClick={() => handleAction('appointments', item.id, 'hide')} className="w-full py-2.5 text-red-500 hover:bg-red-50 font-bold text-sm rounded-lg flex items-center justify-center gap-2 border border-red-100">
