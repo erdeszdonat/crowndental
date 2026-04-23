@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
 import FogtechnikaClient from './FogtechnikaClient';
+import { buildFaqJsonLd, buildSpeakableJsonLd } from '@/lib/faqSchema';
+import { treatmentFaqs } from '@/lib/treatmentFaqs';
+
 
 // ═══════════════════════════════════════════════════════════════════════════
 // SEO ADATOK ÉS METADATA (Szerveroldali generálás)
@@ -33,13 +36,18 @@ const jsonLd = {
 // ═══════════════════════════════════════════════════════════════════════════
 // ALOLDAL EXPORT (Szerver Komponens)
 // ═══════════════════════════════════════════════════════════════════════════
-export default function FogtechnikaPage() {
+export default async function FogtechnikaPage() {
+  const faqJsonLd = buildFaqJsonLd(treatmentFaqs['fogtechnikai-megoldasok'] ?? []);
+  const speakableJsonLd = buildSpeakableJsonLd('https://www.crowndental.hu/kezelesek/fogtechnikai-megoldasok', ['h1', '.treatment-lead', '.faq-section']);
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableJsonLd) }} />
       <FogtechnikaClient />
     </>
   );

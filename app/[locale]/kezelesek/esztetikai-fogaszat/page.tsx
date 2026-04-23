@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
 import EsztetikaiFogaszatClient from './EsztetikaiFogaszatClient';
+import { buildFaqJsonLd, buildSpeakableJsonLd } from '@/lib/faqSchema';
+import { treatmentFaqs } from '@/lib/treatmentFaqs';
+
 
 // ═══════════════════════════════════════════════════════════════════════════
 // SEO ADATOK ÉS METADATA (Szerveroldali generálás)
@@ -31,13 +34,18 @@ const jsonLd = {
 // ═══════════════════════════════════════════════════════════════════════════
 // ALOLDAL EXPORT (Szerver Komponens)
 // ═══════════════════════════════════════════════════════════════════════════
-export default function EsztetikaiFogaszatPage() {
+export default async function EsztetikaiFogaszatPage() {
+  const faqJsonLd = buildFaqJsonLd(treatmentFaqs['esztetikai-fogaszat'] ?? []);
+  const speakableJsonLd = buildSpeakableJsonLd('https://www.crowndental.hu/kezelesek/esztetikai-fogaszat', ['h1', '.treatment-lead', '.faq-section']);
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableJsonLd) }} />
       <EsztetikaiFogaszatClient />
     </>
   );

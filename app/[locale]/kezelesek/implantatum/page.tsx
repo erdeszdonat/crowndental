@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
 import ImplantatumClient from './ImplantatumClient';
+import { buildFaqJsonLd, buildSpeakableJsonLd } from '@/lib/faqSchema';
+import { treatmentFaqs } from '@/lib/treatmentFaqs';
+
 
 const seoTitle = "Fogászati Implantátum Beültetés | Crown Dental Budapest - Esztergom";
 const seoDescription = "Végleges, esztétikus és tartós fogpótlás prémium titán implantátumokkal (Alpha Bio, DIO). Szakértő beültetés és saját labor a Crown Dentalnál Budapesten és Esztergomban.";
@@ -30,13 +33,18 @@ const jsonLd = {
   }
 };
 
-export default function ImplantatumPage() {
+export default async function ImplantatumPage() {
+  const faqJsonLd = buildFaqJsonLd(treatmentFaqs['implantatum'] ?? []);
+  const speakableJsonLd = buildSpeakableJsonLd('https://www.crowndental.hu/kezelesek/implantatum', ['h1', '.treatment-lead', '.faq-section']);
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableJsonLd) }} />
       <ImplantatumClient />
     </>
   );

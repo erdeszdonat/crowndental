@@ -1,5 +1,8 @@
 import { Metadata } from 'next';
 import GyokerkezelesClient from './GyokerkezelesClient';
+import { buildFaqJsonLd, buildSpeakableJsonLd } from '@/lib/faqSchema';
+import { treatmentFaqs } from '@/lib/treatmentFaqs';
+
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -19,10 +22,15 @@ export const metadata: Metadata = {
   description: 'Modern és kíméletes professzionális gyökérkezelés a fog megmentéséért. Személyre szabott kezelési terv és szakértő ellátás a Crown Dentalnál Budapesten és Esztergomban.',
 };
 
-export default function GyokerkezelesPage() {
+export default async function GyokerkezelesPage() {
+  const faqJsonLd = buildFaqJsonLd(treatmentFaqs['gyokerkezeles'] ?? []);
+  const speakableJsonLd = buildSpeakableJsonLd('https://www.crowndental.hu/kezelesek/gyokerkezeles', ['h1', '.treatment-lead', '.faq-section']);
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableJsonLd) }} />
       <GyokerkezelesClient />
     </>
   );

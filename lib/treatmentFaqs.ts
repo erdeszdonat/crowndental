@@ -1,0 +1,82 @@
+export const treatmentFaqs: Record<string, { q: string; a: string }[]> = {
+  allapotfelmeres: [
+    { q: 'Mennyibe kerül az állapotfelmérés?', a: 'A panorámaröntgen ára 5.000-15.000 Ft között mozog, emellett szakorvosi konzultációt biztosítunk.' },
+    { q: 'Kell-e előkészület a vizsgálatra?', a: 'Nem szükséges előkészület. Ha vannak korábbi röntgenfelvételei, hozza magával.' },
+    { q: 'Mennyi ideig tart az állapotfelmérés?', a: 'Az átfogó állapotfelmérés 30-45 percet vesz igénybe.' },
+    { q: 'Mit tegyek, ha félek a fogorvostól?', a: 'Csapatunk türelmes és empatikus, minden lépést előre elmagyarázunk.' },
+    { q: 'Kapok írásos dokumentációt?', a: 'Igen, részletes írásos diagnózist és kezelési tervet készítünk.' },
+  ],
+  implantatum: [
+    { q: 'Mennyibe kerül egy implantátum?', a: 'Az Alpha Bio és DIO implantátumok beültetése 190.000 Ft-tól indul. Pontos árat a 3D CT felvétel után tudunk adni.' },
+    { q: 'Fáj a beültetés?', a: 'Nem. Modern érzéstelenítéssel teljesen fájdalommentes, sok páciens szerint könnyebb, mint egy foghúzás.' },
+    { q: 'Meddig tart a gyógyulás?', a: 'A csontosodás általában 3-6 hónapot vesz igénybe.' },
+    { q: 'Miért olcsóbb a Crown Dental?', a: 'A saját, helyben lévő laborunk miatt nem kell közvetítői díjakat fizetnie, ez Önnek megtakarítás.' },
+  ],
+  fogsor: [
+    { q: 'Kieshet a kivehető fogsor beszéd vagy evés közben?', a: 'A prémium minőségű fogsorok pontosan illeszkednek a vákuumhatás révén. Ha a csontállomány kevés, az implantátumon rögzített fogsort javasoljuk.' },
+    { q: 'Mennyi idő alatt készül el a teljes fogsor?', a: 'Mivel saját fogtechnikai laborral rendelkezünk, általában 1-2 hét alatt teljesen elkészül a protézis a próbákkal együtt.' },
+    { q: 'Mit tegyek, ha a régi fogsorom már laza és mozog?', a: 'Saját laborunkban gyorsan elvégezzük a fogsor alábélelését, így újra pontosan és stabilan fog illeszkedni.' },
+    { q: 'Természetesen néz majd ki a műfogsor?', a: 'Igen! Laboratóriumunkban prémium, élethű fogakkal dolgozunk, amelyek színét és formáját az Ön arcvonásaihoz igazítjuk.' },
+  ],
+  'koronak-hidak': [
+    { q: 'Fémkerámia vagy Cirkónium koronát válasszak?', a: 'A cirkónium fémmentes és természetes hatású, frontfogakhoz ezt javasoljuk. A fémkerámia rendkívül erős, rágófogakhoz kiváló.' },
+    { q: 'Fájdalmas a fog csiszolása?', a: 'Nem. Helyi érzéstelenítésben végezzük, így semmit sem fog érezni a folyamat alatt.' },
+    { q: 'Lesz fogam a végleges pótlás elkészültéig?', a: 'Igen! Azonnal készítünk ideiglenes koronát, így nem távozik hiányzó foggal.' },
+    { q: 'Mennyi ideig bírja egy korona?', a: 'Jó szájhigiénia mellett 10-15 évig, de akár élethosszig is kitarthat.' },
+  ],
+  gyokerkezeles: [
+    { q: 'Fájni fog a gyökérkezelés?', a: 'A mai modern érzéstelenítőkkel a gyökérkezelés teljesen fájdalommentes. A kellemetlenséget általában az otthoni fogfájás okozza, amit ez a beavatkozás azonnal megszüntet.' },
+    { q: 'Hány alkalom szükséges a teljes kezeléshez?', a: 'Ez a gyulladás mértékétől függ. Könnyebb esetekben egy alkalommal elvégezhető a végleges tömés. Erősebb gyulladásnál 2-3 alkalom szükséges.' },
+    { q: 'Miért sötétedik el néha a gyökérkezelt fog?', a: 'Mivel a fog elveszíti az élő ideg- és vérellátását, az évek során hajlamos elszíneződésre. Ez esztétikai fogászattal orvosolható.' },
+    { q: 'Mikor kell koronát tenni a gyökérkezelt fogra?', a: 'A gyökérkezelt fog kiszárad és törékenyebbé válik. Főleg a rágófogak esetében szinte minden esetben javasoljuk egy fogvédő korona felhelyezését.' },
+  ],
+  fogfeherites: [
+    { q: 'Károsítja a fogfehérítés a fogzománcot?', a: 'Nem. A klinikailag tesztelt és engedélyezett professzionális anyagok kizárólag az elszíneződést okozó pigmenteket bontják le.' },
+    { q: 'Mi az a fehér diéta?', a: 'A kezelés után 48-72 óráig kerülni kell a színező ételeket és italokat (kávé, tea, kóla, vörösbor, dohányzás).' },
+    { q: 'A fogpótlások, tömések is kifehérednek?', a: 'Nem, a fogfehérítő anyagok csak a természetes fogszövetre hatnak.' },
+    { q: 'Meddig tart a hatás?', a: 'Életmódtól és szájhigiéniától függően az eredmény akár 1-3 évig is kitarthat.' },
+    { q: 'Fájdalmas a kezelés?', a: 'Maga az eljárás fájdalommentes. A kezelés után 1-2 napig előfordulhat átmeneti fogérzékenység, de ez magától elmúlik.' },
+  ],
+  'esztetikai-fogaszat': [
+    { q: 'Mennyi ideig tart a fogfehérítés hatása?', a: 'A professzionális fehérítés eredménye 1-3 évig tart, az életmódtól függően.' },
+    { q: 'Fájdalmas a fogfehérítés?', a: 'A modern technikák általában fájdalommentesek. Átmeneti érzékenység előfordulhat.' },
+    { q: 'Mennyibe kerül egy porcelán héj?', a: 'A porcelán héjak ára 120.000 Ft-tól indul foganként.' },
+    { q: 'Természetesen néz ki a végeredmény?', a: 'Célunk a természetes, harmonikus megjelenés az Ön arcvonásaihoz igazítva.' },
+    { q: 'Milyen gyakran kell fogkőt eltávolíttatni?', a: 'Általában évente 1-2 alkalommal javasolt a professzionális tisztítás.' },
+  ],
+  foghuzas: [
+    { q: 'Fájni fog a foghúzás?', a: 'A beavatkozás alatt garantáltan nem fog fájdalmat érezni a helyi érzéstelenítésnek köszönhetően. Csupán enyhe feszítő, nyomó érzést tapasztalhat.' },
+    { q: 'Mit ehetek és ihatok a foghúzás után?', a: 'A húzást követően javasolt kerülni a tejtermékeket, apró magvas, valamint forró és fűszeres ételeket.' },
+    { q: 'Mikor moshatok újra fogat?', a: 'Fogat mosni már aznap este lehet és kell is, de a foghúzás helyét el kell kerülni, hogy a kialakult vérdugó ne sérüljön meg.' },
+    { q: 'Mikor pótolható a kihúzott fog implantátummal?', a: 'Ha a gyulladás mértéke megengedi, az implantátum beültetése esetenként azonnal megtörténhet. Egyébként a csont regenerálódását kell megvárni, ami általában 3-4 hónap.' },
+  ],
+  fogszabalyozas: [
+    { q: 'Fájdalmas a fogszabályozás?', a: 'Maga a felhelyezés nem fájdalmas. Az aktiválásokat követő 2-3 napban enyhe feszítő érzés jelentkezhet.' },
+    { q: 'Felnőttként is belekezdhetek?', a: 'Természetesen! Manapság a pácienseink közel fele felnőtt. Nekik különösen ajánljuk az esztétikus kerámia vagy a szinte láthatatlan sínrendszerű megoldásainkat.' },
+    { q: 'Mennyi ideig tart a kezelés?', a: 'Általában 1.5 - 2 év. Kisebb esztétikai korrekciók akár 6-10 hónap alatt is elvégezhetőek.' },
+    { q: 'Hogyan kell tisztítani a készüléket?', a: 'A rögzített készülékhez speciális fogkefét és fogköztisztítót javasolunk, aminek használatát a felhelyezéskor alaposan megmutatjuk.' },
+  ],
+  'fogtechnikai-megoldasok': [
+    { q: 'Tényleg kész a fogsor javítás 1 nap alatt?', a: 'A legtöbb esetben igen! Egy egyszerű törés javítása reggeli leadás esetén általában már aznap délutánra vagy legkésőbb másnapra elkészül.' },
+    { q: 'Miért olcsóbb saját laborral dolgozni?', a: 'Mivel nincs külső laboratóriumi közvetítő, a technikus közvetlen kapcsolatban van az orvossal, ez gyorsabb és olcsóbb munkát jelent.' },
+    { q: 'Milyen anyagokból készülnek a pótlások?', a: 'Kizárólag prémium, biokompatibilis anyagokat használunk: cirkónium, fémkerámia, akril és kompozit alapú megoldások.' },
+  ],
+  gockutatas: [
+    { q: 'Mi az a fogászati gócbetegség?', a: 'Egy krónikus, nem megfelelően kezelt fogászati gyulladás (pl. gyulladt gyökércsúcs) áttételesen más szerveket is megbetegíthet, pl. ízületet, szívet, vesét.' },
+    { q: 'Milyen tünetek utalhatnak fogászati gócra?', a: 'Ismeretlen eredetű fáradtság, visszatérő ízületi fájdalom, hajhullás, szívdobogás-érzés, vagy krónikus fejfájás esetén érdemes góckutatást végezni.' },
+    { q: 'Fájdalmas a góckutatás?', a: 'Nem, ez egy diagnosztikai vizsgálat (röntgen, CT, klinikai vizsgálat), amely teljesen fájdalommentes.' },
+    { q: 'Mennyi ideig tart a vizsgálat?', a: 'A teljes góckutatás, beleértve a 3D CT felvételt és az értékelést, általában 30-60 percet vesz igénybe.' },
+  ],
+  gyerekfogaszat: [
+    { q: 'Hány éves kortól kell fogorvoshoz vinni a gyereket?', a: 'Az első fogorvosi látogatást az első tejfog megjelenésekor, de legkésőbb 1 éves korban javasoljuk.' },
+    { q: 'Mit tegyünk, ha a gyerek fél a fogorvosoktól?', a: 'Nálunk játékos, barátságos légkörben ismerkedhetnek a gyerekek a műszerekkel. Türelmesen dolgozunk, soha nem siettetjük a kicsiket.' },
+    { q: 'Szükséges-e a tejfogakat kezelni?', a: 'Igen! A tejfogak tartják helyen az állandó fogakat. Kezeletlen tejfogcaries fájdalmat, gócot és a maradófog fejlődési zavarát okozhatja.' },
+    { q: 'Mi az a barázdazárás?', a: 'A rágófogak mélyedéseit fogászati anyaggal zárjuk le, így a fogszú nem tud megtelepedni. Egyszerű, fájdalommentes és rendkívül hatékony megelőzés.' },
+  ],
+  szajsebeszet: [
+    { q: 'Fájdalmas a bölcsességfog-húzás?', a: 'Nem. Modern érzéstelenítéssel teljesen fájdalommentes. Utána 1-2 napig enyhe duzzanat és érzékenység előfordulhat, amit fájdalomcsillapítóval kezelünk.' },
+    { q: 'Mennyi ideig tart a gyógyulás foghúzás után?', a: 'A lágyszöveti gyógyulás 7-10 nap, a teljes csontregeneráció 3-4 hónap. A mindennapi tevékenységet már másnap folytathatja.' },
+    { q: 'Mikor szedhetők a varatok?', a: 'A varratszedés általában 7-10 nappal a beavatkozás után történik egy rövid kontrollvizsgálaton.' },
+    { q: 'Mikor pótolhatom a kihúzott fogat?', a: 'Az implantátum beültetésére általában 3-4 hónapot kell várni a csont gyógyulásáig, de esetenként azonnal is elvégezhető.' },
+  ],
+};

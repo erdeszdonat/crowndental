@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import { createClient } from 'next-sanity';
 import { dataset, projectId } from '@/sanity/env';
 import BlogPostClient from './BlogPostClient';
+import { buildBlogPostingJsonLd } from '@/lib/faqSchema';
 
 const client = createClient({
   projectId,
@@ -27,10 +28,11 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
   const query = `*[_type == "post" && slug.current == $slug][0]{
     title,
     publishedAt,
+    excerpt,
     "imageUrl": mainImage.asset->url,
     content
   }`;
-  
+
   const post = await client.fetch(query, { slug: params.slug });
 
   if (!post) {
@@ -41,6 +43,12 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
     );
   }
 
-  // Ez a megoldás 100%, hogy nem dob TypeScript hibát és nem omlik össze a Vercelen
-  return <BlogPostClient post={post} />;
+  const blogJsonLd = buildBlogPostingJsonLd({ ...post, slug: params.slug });
+
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogJsonLd) }} />
+      <BlogPostClient post={post} />
+    </>
+  );
 }

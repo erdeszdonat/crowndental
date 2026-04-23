@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
 import KoronakHidakClient from './KoronakHidakClient';
+import { buildFaqJsonLd, buildSpeakableJsonLd } from '@/lib/faqSchema';
+import { treatmentFaqs } from '@/lib/treatmentFaqs';
+
 
 const seoTitle = "Cirkon Koronák és Hidak | Esztétikus Fogpótlás | Crown Dental Budapest - Esztergom";
 const seoDescription = "Tartós és esztétikus cirkónium és kerámia koronák, hidak foghiány esetén. Kérjen egyedi kezelési tervet Budapesten vagy Esztergomban!";
@@ -30,13 +33,18 @@ const jsonLd = {
   }
 };
 
-export default function KoronakHidakPage() {
+export default async function KoronakHidakPage() {
+  const faqJsonLd = buildFaqJsonLd(treatmentFaqs['koronak-hidak'] ?? []);
+  const speakableJsonLd = buildSpeakableJsonLd('https://www.crowndental.hu/kezelesek/koronak-hidak', ['h1', '.treatment-lead', '.faq-section']);
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableJsonLd) }} />
       <KoronakHidakClient />
     </>
   );

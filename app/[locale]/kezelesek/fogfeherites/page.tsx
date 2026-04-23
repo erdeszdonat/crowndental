@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
 import FogfeheritesClient from './FogfeheritesClient';
+import { buildFaqJsonLd, buildSpeakableJsonLd } from '@/lib/faqSchema';
+import { treatmentFaqs } from '@/lib/treatmentFaqs';
+
 
 // ═══════════════════════════════════════════════════════════════════════════
 // SEO ADATOK ÉS METADATA (Szerveroldali generálás)
@@ -31,13 +34,18 @@ const jsonLd = {
 // ═══════════════════════════════════════════════════════════════════════════
 // ALOLDAL EXPORT (Szerver Komponens)
 // ═══════════════════════════════════════════════════════════════════════════
-export default function FogfeheritesPage() {
+export default async function FogfeheritesPage() {
+  const faqJsonLd = buildFaqJsonLd(treatmentFaqs['fogfeherites'] ?? []);
+  const speakableJsonLd = buildSpeakableJsonLd('https://www.crowndental.hu/kezelesek/fogfeherites', ['h1', '.treatment-lead', '.faq-section']);
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableJsonLd) }} />
       <FogfeheritesClient />
     </>
   );

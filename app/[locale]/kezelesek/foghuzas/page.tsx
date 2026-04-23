@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
 import FoghuzasClient from './FoghuzasClient';
+import { buildFaqJsonLd, buildSpeakableJsonLd } from '@/lib/faqSchema';
+import { treatmentFaqs } from '@/lib/treatmentFaqs';
+
 
 // ═══════════════════════════════════════════════════════════════════════════
 // SEO ADATOK ÉS METADATA (Szerveroldali generálás)
@@ -36,13 +39,18 @@ const jsonLd = {
 // ═══════════════════════════════════════════════════════════════════════════
 // ALOLDAL EXPORT (Szerver Komponens)
 // ═══════════════════════════════════════════════════════════════════════════
-export default function FoghuzasPage() {
+export default async function FoghuzasPage() {
+  const faqJsonLd = buildFaqJsonLd(treatmentFaqs['foghuzas'] ?? []);
+  const speakableJsonLd = buildSpeakableJsonLd('https://www.crowndental.hu/kezelesek/foghuzas', ['h1', '.treatment-lead', '.faq-section']);
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableJsonLd) }} />
       <FoghuzasClient />
     </>
   );

@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
 import GyerekfogaszatClient from './GyerekfogaszatClient';
+import { buildFaqJsonLd, buildSpeakableJsonLd } from '@/lib/faqSchema';
+import { treatmentFaqs } from '@/lib/treatmentFaqs';
+
 
 const seoTitle = "Játékos Gyermekfogászat Fájdalommentesen | Crown Dental Budapest - Esztergom";
 const seoDescription = "Barátságos gyermekfogászat, ahol a kicsik mosolyogva távoznak! Tejfog kezelések, barázdazárás és prevenció türelmes, játékos környezetben Budapesten és Esztergomban.";
@@ -30,13 +33,18 @@ const jsonLd = {
   }
 };
 
-export default function GyerekfogaszatPage() {
+export default async function GyerekfogaszatPage() {
+  const faqJsonLd = buildFaqJsonLd(treatmentFaqs['gyerekfogaszat'] ?? []);
+  const speakableJsonLd = buildSpeakableJsonLd('https://www.crowndental.hu/kezelesek/gyerekfogaszat', ['h1', '.treatment-lead', '.faq-section']);
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableJsonLd) }} />
       <GyerekfogaszatClient />
     </>
   );

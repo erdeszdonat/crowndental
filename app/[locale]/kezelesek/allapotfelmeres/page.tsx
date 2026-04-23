@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
 import AllapotfelmeresClient from './AllapotfelmeresClient';
+import { buildFaqJsonLd, buildSpeakableJsonLd } from '@/lib/faqSchema';
+import { treatmentFaqs } from '@/lib/treatmentFaqs';
+
 
 // ═══════════════════════════════════════════════════════════════════════════
 // SEO ADATOK ÉS METADATA (Szerveroldali generálás)
@@ -31,7 +34,10 @@ const jsonLd = {
 // ═══════════════════════════════════════════════════════════════════════════
 // ALOLDAL EXPORT (Szerver Komponens)
 // ═══════════════════════════════════════════════════════════════════════════
-export default function AllapotfelmeresPage() {
+export default async function AllapotfelmeresPage() {
+  const faqJsonLd = buildFaqJsonLd(treatmentFaqs['allapotfelmeres'] ?? []);
+  const speakableJsonLd = buildSpeakableJsonLd('https://www.crowndental.hu/kezelesek/allapotfelmeres', ['h1', '.treatment-lead', '.faq-section']);
+
   return (
     <>
       {/* JSON-LD Strukturált adat beillesztése a keresőmotoroknak */}
@@ -39,6 +45,8 @@ export default function AllapotfelmeresPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableJsonLd) }} />
       
       {/* Itt töltjük be a vizuális, interaktív UI komponenst */}
       <AllapotfelmeresClient />
