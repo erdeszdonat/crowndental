@@ -43,6 +43,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       siteName: 'Crown Dental',
       locale: localeMap[locale] ?? 'hu_HU',
       type: 'website',
+      images: [{ url: 'https://www.crowndental.hu/og-image.jpg', width: 1200, height: 630, alt: 'Crown Dental' }],
     },
     alternates: {
       canonical: locale === 'hu' ? 'https://www.crowndental.hu' : `https://www.crowndental.hu/${locale}`,
