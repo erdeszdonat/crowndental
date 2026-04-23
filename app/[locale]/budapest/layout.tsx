@@ -104,6 +104,7 @@ const jsonLd = {
   image: 'https://www.crowndental.hu/images/budapest-rendelo.jpg',
   logo: 'https://www.crowndental.hu/logo.webp',
   sameAs: [
+    'https://www.wikidata.org/wiki/Q139545504',
     'https://www.facebook.com/koronafogaszatesztergom',
     'https://www.instagram.com/crown_dental93',
   ],

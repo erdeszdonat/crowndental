@@ -84,8 +84,8 @@ const jsonLd = {
   },
   geo: {
     '@type': 'GeoCoordinates',
-    latitude: 47.7307507,
-    longitude: 18.8428075,
+    latitude: 47.79269,
+    longitude: 18.74323,
   },
   openingHoursSpecification: [
     {
@@ -104,8 +104,10 @@ const jsonLd = {
   image: 'https://www.crowndental.hu/images/esztergom-rendelo.jpg',
   logo: 'https://www.crowndental.hu/logo.webp',
   sameAs: [
+    'https://www.wikidata.org/wiki/Q139545504',
     'https://www.facebook.com/koronafogaszatesztergom',
     'https://www.instagram.com/crown_dental93',
+    'https://www.google.com/maps?cid=13855060144941940295',
   ],
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
