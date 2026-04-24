@@ -17,6 +17,7 @@ export const metadata: Metadata = {
     description: 'Transzparens árazás, rejtett költségek nélkül. Saját labor = akár 40% megtakarítás a budapesti árakhoz képest.',
     url: 'https://www.crowndental.hu/kezelesek',
     type: 'website',
+    images: [{ url: 'https://www.crowndental.hu/og-image.jpg', width: 1200, height: 630, alt: 'Crown Dental kezelések' }],
   },
   alternates: {
     canonical: 'https://www.crowndental.hu/kezelesek',
