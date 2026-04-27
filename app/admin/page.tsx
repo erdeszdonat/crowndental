@@ -254,6 +254,34 @@ export default function AdminDashboard() {
               /* DATA CARDS */
               <motion.div key="data" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-3">
 
+                {/* APPOINTMENTS STATS */}
+                {activeTab === 'appointments' && (() => {
+                  const total = appointments.length;
+                  const waiting = appointments.filter(a => !a.status || a.status === 'new').length;
+                  const noAnswer = appointments.filter(a => a.status === 'no_answer').length;
+                  const done = appointments.filter(a => a.status === 'processed').length;
+                  return (
+                    <div className="grid grid-cols-4 gap-2 mb-1">
+                      <div className="bg-white rounded-2xl border border-gray-200 p-3 text-center">
+                        <p className="text-2xl font-black text-gray-900">{total}</p>
+                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-wider mt-0.5">Összes</p>
+                      </div>
+                      <div className="bg-amber-50 rounded-2xl border border-amber-200 p-3 text-center">
+                        <p className="text-2xl font-black text-amber-600">{waiting}</p>
+                        <p className="text-[10px] font-black text-amber-500 uppercase tracking-wider mt-0.5">Vár</p>
+                      </div>
+                      <div className="bg-red-50 rounded-2xl border border-red-200 p-3 text-center">
+                        <p className="text-2xl font-black text-red-600">{noAnswer}</p>
+                        <p className="text-[10px] font-black text-red-400 uppercase tracking-wider mt-0.5">Nem vette fel</p>
+                      </div>
+                      <div className="bg-green-50 rounded-2xl border border-green-200 p-3 text-center">
+                        <p className="text-2xl font-black text-green-600">{done}</p>
+                        <p className="text-[10px] font-black text-green-500 uppercase tracking-wider mt-0.5">Időpontot kapott</p>
+                      </div>
+                    </div>
+                  );
+                })()}
+
                 {/* APPOINTMENTS */}
                 {activeTab === 'appointments' && appointments.map(item => (
                   <div key={item.id} className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
