@@ -255,9 +255,9 @@ export default function AdminDashboard() {
                     />
                     <div className="flex gap-3">
                       <select value={genLang} onChange={e => setGenLang(e.target.value)} className="px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white text-sm outline-none focus:border-sky-400">
-                        <option value="hu">🇭🇺 Magyar</option>
-                        <option value="en">🇬🇧 English</option>
-                        <option value="sk">🇸🇰 Slovenčina</option>
+                        <option value="hu">HU – Magyar</option>
+                        <option value="en">EN – English</option>
+                        <option value="sk">SK – Slovenčina</option>
                       </select>
                       <button
                         onClick={async () => {
@@ -286,7 +286,7 @@ export default function AdminDashboard() {
                       <div className="flex items-center justify-between px-4 py-3 bg-white/5">
                         <div className="flex-1 min-w-0 mr-3">
                           <p className="font-black text-white truncate">{genResult.title}</p>
-                          <p className="text-gray-400 text-xs mt-0.5">/{genResult.slug} · {genResult.content?.length ?? 0} blokk</p>
+                          <p className="text-gray-400 text-xs mt-0.5">/{genResult.slug} · {genResult.content?.length ?? 0} blokk · ~{genResult.wordCount ?? '?'} szó</p>
                         </div>
                         <button onClick={() => setShowPreview(v => !v)} className="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-all flex-shrink-0">
                           {showPreview ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
