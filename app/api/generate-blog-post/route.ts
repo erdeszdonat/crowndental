@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenerativeAI, SchemaType } from '@google/generative-ai';
 
 export const maxDuration = 120;
 
@@ -52,6 +52,29 @@ function toPortableText(sections: { type: string; text: string; items?: string[]
   return blocks;
 }
 
+const responseSchema = {
+  type: SchemaType.OBJECT,
+  properties: {
+    title: { type: SchemaType.STRING },
+    seoTitle: { type: SchemaType.STRING },
+    seoDescription: { type: SchemaType.STRING },
+    excerpt: { type: SchemaType.STRING },
+    sections: {
+      type: SchemaType.ARRAY,
+      items: {
+        type: SchemaType.OBJECT,
+        properties: {
+          type: { type: SchemaType.STRING },
+          text: { type: SchemaType.STRING },
+          items: { type: SchemaType.ARRAY, items: { type: SchemaType.STRING } },
+        },
+        required: ['type', 'text'],
+      },
+    },
+  },
+  required: ['title', 'seoTitle', 'seoDescription', 'excerpt', 'sections'],
+};
+
 export async function POST(req: Request) {
   try {
     const { topic, keywords, language = 'hu' } = await req.json();
@@ -65,9 +88,12 @@ export async function POST(req: Request) {
       model: 'gemini-2.5-flash',
       generationConfig: {
         temperature: 0.7,
-        maxOutputTokens: 8192,
+        maxOutputTokens: 16384,
         responseMimeType: 'application/json',
-      },
+        responseSchema,
+        // Disable thinking to avoid token contamination in JSON output
+        thinkingConfig: { thinkingBudget: 0 },
+      } as any,
     });
 
     const langMap: Record<string, string> = { hu: 'magyarul', en: 'angolul', sk: 'szlovákul' };
@@ -87,7 +113,6 @@ KÖTELEZŐ STRUKTÚRA (pontosan ebben a sorrendben):
 SEO SZABÁLYOK:
 - Minimális hossz: 2000 szó (törekedj 2200-2500 szóra)
 - A fő kulcsszó szerepeljen: a címben, az első bekezdésben, legalább két H2-ben, és a metaleírásban
-- Másodlagos kulcsszavakat természetesen szőj bele, ne tömörítve
 - seoTitle: pontosan 55-65 karakter, tartalmazza a fő kulcsszót és "| Crown Dental" végződést
 - seoDescription: pontosan 148-158 karakter, legyen cselekvésre ösztönző (pl. "Foglalj időpontot!")
 - Kerüld a keyword stuffinget – természetes, folyékony szöveg kell
@@ -96,46 +121,20 @@ HANG ÉS STÍLUS:
 - Barátságos, de szakmai; "te" megszólítás az olvasóhoz
 - Konkrét adatok, számok, ársávok ahol releváns
 - Nem túlzó, hiteles szöveg
-- Ha fogászati beavatkozásról van szó, írd le a folyamatot lépésről lépésre
-
-Válaszolj KIZÁRÓLAG az alábbi JSON formátumban, SEMMI más szöveg kívüle (ne kezdd \`\`\`json-nal):
-{
-  "title": "Cikk H1 cím (kulcsszóval, max 80 karakter)",
-  "seoTitle": "55-65 karakteres SEO cím | Crown Dental",
-  "seoDescription": "148-158 karakteres meta leírás, kulcsszóval és CTA-val.",
-  "excerpt": "2-3 mondatos összefoglaló a blog listához.",
-  "sections": [
-    { "type": "paragraph", "text": "Bevezető bekezdés szövege..." },
-    { "type": "paragraph", "text": "Második bevezető bekezdés..." },
-    { "type": "h2", "text": "Fejezet cím" },
-    { "type": "paragraph", "text": "Bekezdés szövege..." },
-    { "type": "list", "text": "", "items": ["felsorolás 1", "felsorolás 2", "felsorolás 3"] },
-    { "type": "h2", "text": "Másik fejezet" },
-    { "type": "paragraph", "text": "..." },
-    { "type": "numbered_list", "text": "", "items": ["1. lépés leírása", "2. lépés leírása"] },
-    { "type": "h2", "text": "Gyakori kérdések" },
-    { "type": "h3", "text": "Kérdés 1?" },
-    { "type": "paragraph", "text": "Részletes válasz 3-4 mondatban..." },
-    { "type": "h3", "text": "Kérdés 2?" },
-    { "type": "paragraph", "text": "Részletes válasz..." }
-  ]
-}`;
+- Ha fogászati beavatkozásról van szó, írd le a folyamatot lépésről lépésre`;
 
     const result = await model.generateContent(prompt);
-    let raw = result.response.text().trim();
-    // Strip possible markdown code fences
-    raw = raw.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/i, '').trim();
-    // Extract outermost JSON object in case of extra surrounding text
-    const jsonStart = raw.indexOf('{');
-    const jsonEnd = raw.lastIndexOf('}');
-    if (jsonStart !== -1 && jsonEnd > jsonStart) raw = raw.slice(jsonStart, jsonEnd + 1);
+    const raw = result.response.text().trim();
 
     let parsed: any;
     try {
       parsed = JSON.parse(raw);
     } catch {
-      console.error('JSON parse failed, response length:', raw.length, 'tail:', raw.slice(-300));
-      throw new Error('Az AI válasza érvénytelen JSON formátumú. Próbáld újra!');
+      console.error('JSON parse failed, length:', raw.length, 'tail:', raw.slice(-500));
+      return NextResponse.json(
+        { error: 'Az AI válasza érvénytelen JSON formátumú. Próbáld újra!' },
+        { status: 500 }
+      );
     }
 
     const content = toPortableText(parsed.sections ?? []);
