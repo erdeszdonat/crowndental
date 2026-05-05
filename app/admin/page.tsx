@@ -6,7 +6,8 @@ import {
   Calendar, Briefcase, Sparkles, BookOpen, ChevronDown, ChevronUp,
   RefreshCw, LogOut, ExternalLink, Phone, MapPin, ShieldAlert,
   User, Lock, Edit3, Search, UserCheck, DollarSign, MessageSquare,
-  AlertTriangle, Loader2, Trash2, CheckCircle2, Clock, ListOrdered
+  AlertTriangle, Loader2, Trash2, CheckCircle2, Clock, ListOrdered,
+  Wand2, Send, Eye, EyeOff
 } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
@@ -27,6 +28,17 @@ export default function AdminDashboard() {
   const [applications, setApplications] = useState<any[]>([]);
   const [quotes, setQuotes] = useState<any[]>([]);
   const [posts, setPosts] = useState<any[]>([]);
+
+  // Blog generator state
+  const [genTopic, setGenTopic] = useState('');
+  const [genKeywords, setGenKeywords] = useState('');
+  const [genLang, setGenLang] = useState('hu');
+  const [genLoading, setGenLoading] = useState(false);
+  const [genResult, setGenResult] = useState<any>(null);
+  const [genError, setGenError] = useState('');
+  const [publishLoading, setPublishLoading] = useState(false);
+  const [publishSuccess, setPublishSuccess] = useState('');
+  const [showPreview, setShowPreview] = useState(false);
 
   const fetchSecureData = async (pwd: string) => {
     setIsLoading(true);
@@ -226,16 +238,112 @@ export default function AdminDashboard() {
             {/* BLOG */}
             {activeTab === 'blog' ? (
               <motion.div key="blog" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-4">
-                <div className="bg-gray-900 rounded-2xl p-6 text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xl relative overflow-hidden border border-white/5">
-                  <div className="absolute top-0 right-0 w-60 h-60 bg-sky-500/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/3" />
-                  <div className="relative z-10">
-                    <h3 className="text-lg font-black italic flex items-center gap-2 text-sky-400"><Edit3 className="w-5 h-5" /> Sanity Studio CMS</h3>
-                    <p className="text-gray-400 mt-1 text-sm font-medium">Új cikkek írása és képek feltöltése.</p>
+
+                {/* AI BLOG GENERATOR */}
+                <div className="bg-gray-900 rounded-2xl p-6 text-white shadow-xl border border-white/5 space-y-4">
+                  <h3 className="text-lg font-black flex items-center gap-2 text-sky-400"><Wand2 className="w-5 h-5" /> AI Cikkgeneráló</h3>
+                  <div className="space-y-3">
+                    <input
+                      value={genTopic} onChange={e => { setGenTopic(e.target.value); setGenResult(null); setPublishSuccess(''); setGenError(''); }}
+                      placeholder="Téma (pl. Mennyibe kerül egy implantátum Magyarországon?)"
+                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 text-sm outline-none focus:border-sky-400"
+                    />
+                    <input
+                      value={genKeywords} onChange={e => setGenKeywords(e.target.value)}
+                      placeholder="Kulcsszavak vesszővel (pl. implantátum ár, fogászat esztergom)"
+                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 text-sm outline-none focus:border-sky-400"
+                    />
+                    <div className="flex gap-3">
+                      <select value={genLang} onChange={e => setGenLang(e.target.value)} className="px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white text-sm outline-none focus:border-sky-400">
+                        <option value="hu">🇭🇺 Magyar</option>
+                        <option value="en">🇬🇧 English</option>
+                        <option value="sk">🇸🇰 Slovenčina</option>
+                      </select>
+                      <button
+                        onClick={async () => {
+                          if (!genTopic.trim()) return;
+                          setGenLoading(true); setGenError(''); setGenResult(null); setPublishSuccess('');
+                          try {
+                            const res = await fetch('/api/generate-blog-post', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ topic: genTopic, keywords: genKeywords, language: genLang }) });
+                            const data = await res.json();
+                            if (!res.ok) throw new Error(data.error);
+                            setGenResult(data); setShowPreview(true);
+                          } catch(e: any) { setGenError(e.message); }
+                          finally { setGenLoading(false); }
+                        }}
+                        disabled={genLoading || !genTopic.trim()}
+                        className="flex-1 py-3 bg-sky-500 hover:bg-sky-400 disabled:bg-gray-600 text-white font-black rounded-xl flex items-center justify-center gap-2 transition-all text-sm"
+                      >
+                        {genLoading ? <><Loader2 className="w-4 h-4 animate-spin" /> Generálás...</> : <><Wand2 className="w-4 h-4" /> Generálás</>}
+                      </button>
+                    </div>
                   </div>
-                  <a href="/studio" target="_blank" className="relative z-10 bg-white text-gray-900 px-6 py-3 rounded-xl font-black flex items-center gap-2 hover:scale-105 transition-all shadow-lg uppercase tracking-widest text-xs whitespace-nowrap">
-                    STÚDIÓ <ExternalLink className="w-4 h-4" />
+
+                  {genError && <div className="bg-red-500/20 border border-red-500/40 rounded-xl p-3 text-red-300 text-sm font-bold">{genError}</div>}
+
+                  {genResult && (
+                    <div className="border border-white/10 rounded-xl overflow-hidden">
+                      <div className="flex items-center justify-between px-4 py-3 bg-white/5">
+                        <div className="flex-1 min-w-0 mr-3">
+                          <p className="font-black text-white truncate">{genResult.title}</p>
+                          <p className="text-gray-400 text-xs mt-0.5">/{genResult.slug} · {genResult.content?.length ?? 0} blokk</p>
+                        </div>
+                        <button onClick={() => setShowPreview(v => !v)} className="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-all flex-shrink-0">
+                          {showPreview ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        </button>
+                      </div>
+
+                      {showPreview && (
+                        <div className="p-4 bg-white/5 space-y-2 max-h-64 overflow-y-auto text-sm">
+                          <p className="text-gray-300 italic text-xs">{genResult.excerpt}</p>
+                          <hr className="border-white/10" />
+                          {genResult.content?.slice(0, 8).map((block: any, i: number) => (
+                            <p key={i} className={`${block.style === 'h2' ? 'font-black text-sky-300' : block.style === 'h3' ? 'font-bold text-sky-200' : 'text-gray-300'} text-xs leading-relaxed`}>
+                              {block.children?.[0]?.text}
+                            </p>
+                          ))}
+                          {(genResult.content?.length ?? 0) > 8 && <p className="text-gray-500 text-xs italic">... és még {genResult.content.length - 8} blokk</p>}
+                        </div>
+                      )}
+
+                      <div className="px-4 py-3 bg-white/5 flex gap-3">
+                        {publishSuccess ? (
+                          <div className="flex-1 flex items-center gap-2 text-green-400 font-black text-sm"><CheckCircle2 className="w-4 h-4" /> {publishSuccess}</div>
+                        ) : (
+                          <button
+                            onClick={async () => {
+                              setPublishLoading(true);
+                              try {
+                                const res = await fetch('/api/publish-blog-post', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(genResult) });
+                                const data = await res.json();
+                                if (!res.ok) throw new Error(data.error);
+                                setPublishSuccess(`Feltöltve! → /blog/${data.slug}`);
+                              } catch(e: any) { setGenError(e.message); }
+                              finally { setPublishLoading(false); }
+                            }}
+                            disabled={publishLoading}
+                            className="flex-1 py-2.5 bg-green-500 hover:bg-green-400 disabled:bg-gray-600 text-white font-black rounded-xl flex items-center justify-center gap-2 text-sm transition-all"
+                          >
+                            {publishLoading ? <><Loader2 className="w-4 h-4 animate-spin" /> Feltöltés...</> : <><Send className="w-4 h-4" /> Feltöltés Sanity-be</>}
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* STUDIO LINK */}
+                <div className="bg-gray-900 rounded-2xl p-5 text-white flex items-center justify-between gap-4 border border-white/5">
+                  <div>
+                    <h3 className="font-black text-sky-400 flex items-center gap-2 text-sm"><Edit3 className="w-4 h-4" /> Sanity Studio CMS</h3>
+                    <p className="text-gray-400 text-xs mt-0.5">Képek feltöltése, cikkek szerkesztése</p>
+                  </div>
+                  <a href="/studio" target="_blank" className="bg-white text-gray-900 px-5 py-2.5 rounded-xl font-black flex items-center gap-2 hover:scale-105 transition-all text-xs uppercase tracking-widest whitespace-nowrap">
+                    STÚDIÓ <ExternalLink className="w-3.5 h-3.5" />
                   </a>
                 </div>
+
+                {/* POST LIST */}
                 <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden divide-y divide-gray-100">
                   {posts.length === 0 && !isLoading && <div className="p-12 text-center text-gray-400 font-bold uppercase tracking-widest italic text-xs">Nincsenek publikált cikkek...</div>}
                   {posts.map(post => (
