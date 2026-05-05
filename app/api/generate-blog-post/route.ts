@@ -63,7 +63,11 @@ export async function POST(req: Request) {
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
       model: 'gemini-2.5-flash',
-      generationConfig: { temperature: 0.7, maxOutputTokens: 8192 },
+      generationConfig: {
+        temperature: 0.7,
+        maxOutputTokens: 8192,
+        responseMimeType: 'application/json',
+      },
     });
 
     const langMap: Record<string, string> = { hu: 'magyarul', en: 'angolul', sk: 'szlovákul' };
@@ -121,7 +125,18 @@ Válaszolj KIZÁRÓLAG az alábbi JSON formátumban, SEMMI más szöveg kívüle
     let raw = result.response.text().trim();
     // Strip possible markdown code fences
     raw = raw.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/i, '').trim();
-    const parsed = JSON.parse(raw);
+    // Extract outermost JSON object in case of extra surrounding text
+    const jsonStart = raw.indexOf('{');
+    const jsonEnd = raw.lastIndexOf('}');
+    if (jsonStart !== -1 && jsonEnd > jsonStart) raw = raw.slice(jsonStart, jsonEnd + 1);
+
+    let parsed: any;
+    try {
+      parsed = JSON.parse(raw);
+    } catch {
+      console.error('JSON parse failed, response length:', raw.length, 'tail:', raw.slice(-300));
+      throw new Error('Az AI válasza érvénytelen JSON formátumú. Próbáld újra!');
+    }
 
     const content = toPortableText(parsed.sections ?? []);
     const slug = toSlug(parsed.title ?? topic);
