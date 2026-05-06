@@ -286,7 +286,7 @@ export default function AdminDashboard() {
                       <div className="flex items-center justify-between px-4 py-3 bg-white/5">
                         <div className="flex-1 min-w-0 mr-3">
                           <p className="font-black text-white truncate">{genResult.title}</p>
-                          <p className="text-gray-400 text-xs mt-0.5">/{genResult.slug} · {genResult.content?.length ?? 0} blokk · ~{genResult.wordCount ?? '?'} szó</p>
+                          <p className="text-gray-400 text-xs mt-0.5">/{genResult.slug} · {genResult.content?.length ?? 0} blokk · ~{genResult.wordCount ?? '?'} szó{genResult.pexelsImage ? ' · 📷 kép kész' : ''}</p>
                         </div>
                         <button onClick={() => setShowPreview(v => !v)} className="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-all flex-shrink-0">
                           {showPreview ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -294,7 +294,15 @@ export default function AdminDashboard() {
                       </div>
 
                       {showPreview && (
-                        <div className="p-4 bg-white/5 space-y-2 max-h-64 overflow-y-auto text-sm">
+                        <div className="p-4 bg-white/5 space-y-2 max-h-80 overflow-y-auto text-sm">
+                          {genResult.pexelsImage && (
+                            <div className="relative rounded-xl overflow-hidden mb-3">
+                              <img src={genResult.pexelsImage.url} alt="Cikk borítókép" className="w-full h-36 object-cover" />
+                              <a href={genResult.pexelsImage.creditUrl} target="_blank" rel="noopener noreferrer" className="absolute bottom-1 right-2 text-white/70 text-[10px] hover:text-white">
+                                © {genResult.pexelsImage.credit} / Pexels
+                              </a>
+                            </div>
+                          )}
                           <p className="text-gray-300 italic text-xs">{genResult.excerpt}</p>
                           <hr className="border-white/10" />
                           {genResult.content?.slice(0, 8).map((block: any, i: number) => (

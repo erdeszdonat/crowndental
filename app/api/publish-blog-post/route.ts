@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@sanity/client';
 
-export const maxDuration = 30;
+export const maxDuration = 60;
 
 export async function POST(req: Request) {
   try {
-    const { title, slug, seoTitle, seoDescription, excerpt, content, language } = await req.json();
+    const { title, slug, seoTitle, seoDescription, excerpt, content, language, pexelsImage } = await req.json();
 
     if (!title || !slug || !content) {
       return NextResponse.json({ error: 'Hiányzó mezők: title, slug, content' }, { status: 400 });
@@ -22,7 +22,7 @@ export async function POST(req: Request) {
       useCdn: false,
     });
 
-    const doc = {
+    const doc: any = {
       _type: 'post',
       title,
       slug: { _type: 'slug', current: slug },
@@ -33,9 +33,30 @@ export async function POST(req: Request) {
       content,
     };
 
+    // Download Pexels image and upload to Sanity assets
+    if (pexelsImage?.url) {
+      try {
+        const imgRes = await fetch(pexelsImage.url);
+        if (imgRes.ok) {
+          const buffer = Buffer.from(await imgRes.arrayBuffer());
+          const contentType = imgRes.headers.get('content-type') || 'image/jpeg';
+          const asset = await client.assets.upload('image', buffer, {
+            filename: `${slug}.jpg`,
+            contentType,
+          });
+          doc.mainImage = {
+            _type: 'image',
+            asset: { _type: 'reference', _ref: asset._id },
+          };
+        }
+      } catch (imgErr) {
+        console.warn('Kép feltöltés sikertelen, cikk kép nélkül kerül fel:', imgErr);
+      }
+    }
+
     const created = await client.create(doc);
 
-    return NextResponse.json({ success: true, id: created._id, slug });
+    return NextResponse.json({ success: true, id: created._id, slug, hasImage: !!doc.mainImage });
   } catch (err: any) {
     console.error('Sanity feltöltési hiba:', err);
     return NextResponse.json({ error: err.message ?? 'Ismeretlen hiba' }, { status: 500 });

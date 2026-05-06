@@ -157,6 +157,26 @@ SEO SZABÁLYOK:
 
 HANG: barátságos, szakmai, "te" megszólítás, konkrét adatok, nem túlzó`;
 
+    // Fetch Pexels image in parallel with Gemini generation
+    const pexelsKey = process.env.PEXELS_API_KEY;
+    const pexelsPromise = pexelsKey ? (async () => {
+      try {
+        const q = encodeURIComponent(`dental teeth ${topic.slice(0, 40)}`);
+        const res = await fetch(`https://api.pexels.com/v1/search?query=${q}&per_page=5&orientation=landscape`, {
+          headers: { Authorization: pexelsKey },
+        });
+        if (!res.ok) return null;
+        const data = await res.json();
+        const photo = data.photos?.[0];
+        if (!photo) return null;
+        return {
+          url: photo.src.large2x || photo.src.large,
+          credit: photo.photographer,
+          creditUrl: photo.photographer_url,
+        };
+      } catch { return null; }
+    })() : Promise.resolve(null);
+
     let result: any;
     for (let attempt = 1; attempt <= 3; attempt++) {
       try {
@@ -168,6 +188,7 @@ HANG: barátságos, szakmai, "te" megszólítás, konkrét adatok, nem túlzó`;
       }
     }
     const raw = result.response.text().trim();
+    const pexelsImage = await pexelsPromise;
 
     let parsed: any;
     try {
@@ -196,6 +217,7 @@ HANG: barátságos, szakmai, "te" megszólítás, konkrét adatok, nem túlzó`;
       content,
       language,
       wordCount,
+      pexelsImage,
     });
   } catch (err: any) {
     console.error('Blog generálás hiba:', err);
