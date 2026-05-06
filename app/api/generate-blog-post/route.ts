@@ -157,7 +157,16 @@ SEO SZABÁLYOK:
 
 HANG: barátságos, szakmai, "te" megszólítás, konkrét adatok, nem túlzó`;
 
-    const result = await model.generateContent(prompt);
+    let result: any;
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        result = await model.generateContent(prompt);
+        break;
+      } catch (e: any) {
+        if (attempt === 3 || !e.message?.includes('503')) throw e;
+        await new Promise(r => setTimeout(r, attempt * 4000));
+      }
+    }
     const raw = result.response.text().trim();
 
     let parsed: any;
