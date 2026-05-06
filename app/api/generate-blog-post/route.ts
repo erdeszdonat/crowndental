@@ -177,14 +177,28 @@ HANG: barátságos, szakmai, "te" megszólítás, konkrét adatok, nem túlzó`;
       } catch { return null; }
     })() : Promise.resolve(null);
 
+    const modelConfig = {
+      generationConfig: {
+        temperature: 0.7,
+        maxOutputTokens: 16384,
+        responseMimeType: 'application/json',
+        responseSchema,
+        thinkingConfig: { thinkingBudget: 0 },
+      } as any,
+    };
+    const fallbackModel = genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite', ...modelConfig });
+
     let result: any;
-    for (let attempt = 1; attempt <= 3; attempt++) {
+    const delays = [5000, 10000, 20000, 30000];
+    for (let attempt = 0; attempt <= 4; attempt++) {
       try {
-        result = await model.generateContent(prompt);
+        const m = attempt >= 3 ? fallbackModel : model;
+        result = await m.generateContent(prompt);
         break;
       } catch (e: any) {
-        if (attempt === 3 || !e.message?.includes('503')) throw e;
-        await new Promise(r => setTimeout(r, attempt * 4000));
+        const is503 = e.message?.includes('503');
+        if (attempt === 4 || !is503) throw e;
+        await new Promise(r => setTimeout(r, delays[attempt]));
       }
     }
     const raw = result.response.text().trim();
