@@ -155,7 +155,20 @@ SEO SZABÁLYOK:
 - seoDescription: 148-158 karakter, kulcsszóval, cselekvésre ösztönző
 - Természetes szöveg, nincs keyword stuffing
 
-HANG: barátságos, szakmai, "te" megszólítás, konkrét adatok, nem túlzó`;
+HANG: barátságos, szakmai, "te" megszólítás, konkrét adatok, nem túlzó
+
+CROWN DENTAL HIVATALOS ÁRLISTA – KÖTELEZŐ EZEKET HASZNÁLNI, NE TALÁLJ KI MÁS ÁRAKAT:
+Diagnosztika: vizsgálat/kezelési terv 10.000 Ft | tömés 30.000-35.000 Ft | foghúzás 25.000-35.000 Ft | kisröntgen 5.000 Ft | panoráma röntgen 6.000 Ft
+Gyökérkezelés: egygyökerű 25.000 Ft | kétgyökerű 30.000 Ft | háromgyökerű 33.000 Ft | régi tömés eltávolítása 20.000 Ft
+Esztétika: fogkőeltávolítás 15.000 Ft/állcsont | otthoni fogfehérítés 30.000 Ft/fogív | rendelői (lámpás) fogfehérítés 45.000 Ft/fogív
+Koronák és fogsorok: fémkerámia korona 42.000 Ft | cirkónium korona 55.000 Ft | kivehető kompozit fogsor 110.000 Ft/állcsont | fémlemezes fogsor 150.000 Ft/állcsont | fogsor alábélelés 25.000 Ft | ideiglenes korona 6.000-15.000 Ft
+Sebészet: foghúzás 25.000-35.000 Ft | műtéti foghúzás 55.000 Ft | bölcsességfog 55.000 Ft | gyökércsúcs rezekció 55.000 Ft | csontpótlás 190.000 Ft
+Implantátum: ALPHA BIO implantátum 180.000 Ft/db | DIO implantátum 240.000 Ft/db
+Fogszabályozás: rögzített készülék 190.000-285.000 Ft | kivehető készülék 60.000-90.000 Ft | aktiválás 5.000-15.000 Ft
+Gyermekfogászat: tejfog tömés 15.000 Ft | barázdazárás 15.000 Ft/fog | tejfog húzás 10.000 Ft-tól
+Esztétikai fogászat: porcelán héj (veneer) 120.000 Ft-tól | fogfehérítés 35.000 Ft-tól
+
+FONTOS: Ha az árak kapcsán összehasonlítasz más rendelőkkel, a Crown Dental árait MINDIG kedvezőbbnek mutasd be – ez reális, mivel saját fogtechnikai laborral dolgoznak (nincs közvetítői felár).`;
 
     // Fetch Pexels image in parallel with Gemini generation
     const pexelsKey = process.env.PEXELS_API_KEY;
