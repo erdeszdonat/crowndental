@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Calendar, Briefcase, Sparkles, BookOpen, ChevronDown, ChevronUp,
   RefreshCw, LogOut, ExternalLink, Phone, MapPin, ShieldAlert,
   User, Lock, Edit3, Search, UserCheck, DollarSign, MessageSquare,
   AlertTriangle, Loader2, Trash2, CheckCircle2, Clock, ListOrdered,
-  Wand2, Send, Eye, EyeOff
+  Wand2, Send, Eye, EyeOff, FileText, ImageIcon, Zap, BrainCircuit
 } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
@@ -34,11 +34,32 @@ export default function AdminDashboard() {
   const [genKeywords, setGenKeywords] = useState('');
   const [genLang, setGenLang] = useState('hu');
   const [genLoading, setGenLoading] = useState(false);
+  const [genStep, setGenStep] = useState(0);
   const [genResult, setGenResult] = useState<any>(null);
   const [genError, setGenError] = useState('');
   const [publishLoading, setPublishLoading] = useState(false);
   const [publishSuccess, setPublishSuccess] = useState('');
   const [showPreview, setShowPreview] = useState(false);
+  const genStepRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const GEN_STEPS = [
+    { icon: BrainCircuit, label: 'AI elemzi a témát...', color: 'text-sky-400', bg: 'bg-sky-400/20' },
+    { icon: FileText,     label: 'Cikkstruktúra felépítése...', color: 'text-purple-400', bg: 'bg-purple-400/20' },
+    { icon: Zap,          label: 'SEO szöveg megírása...', color: 'text-yellow-400', bg: 'bg-yellow-400/20' },
+    { icon: ImageIcon,    label: 'Borítókép keresése...', color: 'text-pink-400', bg: 'bg-pink-400/20' },
+  ];
+
+  useEffect(() => {
+    if (genLoading) {
+      setGenStep(0);
+      genStepRef.current = setInterval(() => {
+        setGenStep(s => Math.min(s + 1, GEN_STEPS.length - 1));
+      }, 6000);
+    } else {
+      if (genStepRef.current) clearInterval(genStepRef.current);
+    }
+    return () => { if (genStepRef.current) clearInterval(genStepRef.current); };
+  }, [genLoading]);
 
   const fetchSecureData = async (pwd: string) => {
     setIsLoading(true);
@@ -240,9 +261,90 @@ export default function AdminDashboard() {
               <motion.div key="blog" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-4">
 
                 {/* AI BLOG GENERATOR */}
-                <div className="bg-gray-900 rounded-2xl p-6 text-white shadow-xl border border-white/5 space-y-4">
+                <div className="bg-gray-900 rounded-2xl p-6 text-white shadow-xl border border-white/5 space-y-4 relative overflow-hidden">
                   <h3 className="text-lg font-black flex items-center gap-2 text-sky-400"><Wand2 className="w-5 h-5" /> AI Cikkgeneráló</h3>
-                  <div className="space-y-3">
+
+                  <AnimatePresence mode="wait">
+                  {genLoading ? (
+                    <motion.div
+                      key="loading"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.3 }}
+                      className="flex flex-col items-center gap-6 py-6"
+                    >
+                      {/* Pulsing glow + spinning icon */}
+                      <div className="relative flex items-center justify-center">
+                        <motion.div
+                          animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.6, 0.3] }}
+                          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                          className="absolute w-24 h-24 rounded-full bg-sky-500/20 blur-xl"
+                        />
+                        <motion.div
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+                          className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-500 to-purple-600 flex items-center justify-center shadow-2xl shadow-sky-500/30"
+                        >
+                          <Wand2 className="w-8 h-8 text-white" />
+                        </motion.div>
+                      </div>
+
+                      {/* Topic */}
+                      <div className="text-center">
+                        <p className="text-white font-black text-base">Cikk generálása...</p>
+                        <p className="text-sky-400 text-sm mt-1 font-medium max-w-xs truncate">"{genTopic}"</p>
+                      </div>
+
+                      {/* Steps */}
+                      <div className="w-full space-y-2">
+                        {GEN_STEPS.map((step, i) => {
+                          const Icon = step.icon;
+                          const done = genStep > i;
+                          const active = genStep === i;
+                          return (
+                            <motion.div
+                              key={i}
+                              initial={{ opacity: 0, x: -12 }}
+                              animate={{ opacity: i <= genStep ? 1 : 0.25, x: 0 }}
+                              transition={{ delay: i * 0.08, duration: 0.3 }}
+                              className="flex items-center gap-3"
+                            >
+                              <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 transition-all ${done ? 'bg-green-500/20' : active ? step.bg : 'bg-white/5'}`}>
+                                {done
+                                  ? <CheckCircle2 className="w-4 h-4 text-green-400" />
+                                  : active
+                                    ? <motion.div animate={{ rotate: 360 }} transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}>
+                                        <Icon className={`w-4 h-4 ${step.color}`} />
+                                      </motion.div>
+                                    : <Icon className="w-4 h-4 text-gray-600" />}
+                              </div>
+                              <span className={`text-sm font-medium ${done ? 'text-green-400' : active ? 'text-white' : 'text-gray-600'}`}>
+                                {step.label}
+                              </span>
+                            </motion.div>
+                          );
+                        })}
+                      </div>
+
+                      {/* Progress bar */}
+                      <div className="w-full bg-white/10 rounded-full h-1.5 overflow-hidden">
+                        <motion.div
+                          className="h-full rounded-full bg-gradient-to-r from-sky-400 via-purple-400 to-pink-400"
+                          animate={{ width: `${10 + (genStep / (GEN_STEPS.length - 1)) * 80}%` }}
+                          transition={{ duration: 0.6, ease: 'easeOut' }}
+                        />
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="form"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="space-y-3"
+                    >
                     <input
                       value={genTopic} onChange={e => { setGenTopic(e.target.value); setGenResult(null); setPublishSuccess(''); setGenError(''); }}
                       placeholder="Téma (pl. Mennyibe kerül egy implantátum Magyarországon?)"
@@ -271,15 +373,17 @@ export default function AdminDashboard() {
                           } catch(e: any) { setGenError(e.message); }
                           finally { setGenLoading(false); }
                         }}
-                        disabled={genLoading || !genTopic.trim()}
-                        className="flex-1 py-3 bg-sky-500 hover:bg-sky-400 disabled:bg-gray-600 text-white font-black rounded-xl flex items-center justify-center gap-2 transition-all text-sm"
+                        disabled={!genTopic.trim()}
+                        className="flex-1 py-3 bg-sky-500 hover:bg-sky-400 text-white font-black rounded-xl flex items-center justify-center gap-2 transition-all text-sm"
                       >
-                        {genLoading ? <><Loader2 className="w-4 h-4 animate-spin" /> Generálás...</> : <><Wand2 className="w-4 h-4" /> Generálás</>}
+                        <Wand2 className="w-4 h-4" /> Generálás
                       </button>
                     </div>
-                  </div>
+                    </motion.div>
+                  )}
+                  </AnimatePresence>
 
-                  {genError && <div className="bg-red-500/20 border border-red-500/40 rounded-xl p-3 text-red-300 text-sm font-bold">{genError}</div>}
+                  {!genLoading && genError && <div className="bg-red-500/20 border border-red-500/40 rounded-xl p-3 text-red-300 text-sm font-bold">{genError}</div>}
 
                   {genResult && (
                     <div className="border border-white/10 rounded-xl overflow-hidden">
