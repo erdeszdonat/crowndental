@@ -155,16 +155,76 @@ export default function BlogPostClient({ post }: { post: any }) {
         </header>
 
         <div className="prose prose-lg prose-sky max-w-none text-gray-700 mb-20 font-medium leading-relaxed">
-          {post.content?.map((block: any, i: number) => {
-            if (block._type === 'block') {
-              const text = block.children?.map((c: any) => c.text).join('') || '';
-              if (block.style === 'h2') return <h2 key={i} className="text-3xl font-extrabold mt-16 mb-8 text-gray-900 border-b pb-4 border-gray-100">{text}</h2>;
-              if (block.style === 'h3') return <h3 key={i} className="text-2xl font-bold mt-12 mb-6 text-gray-800">{text}</h3>;
-              if (block.style === 'blockquote') return <blockquote key={i} className="border-l-4 border-sky-500 pl-6 italic text-gray-600 my-10 bg-gray-50 py-8 rounded-r-3xl text-xl">{text}</blockquote>;
-              return <p key={i} className="mb-6">{text}</p>;
+          {(() => {
+            const blocks: any[] = post.content ?? [];
+            const result: React.ReactNode[] = [];
+            let idx = 0;
+
+            const renderSpans = (children: any[]) =>
+              (children ?? []).map((c: any, j: number) => {
+                let el: React.ReactNode = c.text;
+                if (c.marks?.includes('strong')) el = <strong key={j} className="font-extrabold text-gray-900">{el}</strong>;
+                if (c.marks?.includes('em')) el = <em key={j}>{el}</em>;
+                return <React.Fragment key={j}>{el}</React.Fragment>;
+              });
+
+            while (idx < blocks.length) {
+              const block = blocks[idx];
+              if (block._type !== 'block') { idx++; continue; }
+
+              if (block.listItem === 'bullet') {
+                const items: any[] = [];
+                while (idx < blocks.length && blocks[idx].listItem === 'bullet') items.push(blocks[idx++]);
+                result.push(
+                  <ul key={`ul-${idx}`} className="my-6 space-y-2 not-prose">
+                    {items.map((item, j) => (
+                      <li key={j} className="flex items-start gap-3 text-gray-700 font-medium">
+                        <span className="w-2 h-2 rounded-full bg-sky-500 mt-[10px] flex-shrink-0" />
+                        <span>{renderSpans(item.children)}</span>
+                      </li>
+                    ))}
+                  </ul>
+                );
+                continue;
+              }
+
+              if (block.listItem === 'number') {
+                const items: any[] = [];
+                while (idx < blocks.length && blocks[idx].listItem === 'number') items.push(blocks[idx++]);
+                result.push(
+                  <ol key={`ol-${idx}`} className="my-6 space-y-3 not-prose">
+                    {items.map((item, j) => (
+                      <li key={j} className="flex items-start gap-3 text-gray-700 font-medium">
+                        <span className="w-7 h-7 rounded-full bg-sky-100 text-sky-700 font-extrabold text-sm flex items-center justify-center flex-shrink-0 mt-0.5">{j + 1}</span>
+                        <span className="mt-0.5">{renderSpans(item.children)}</span>
+                      </li>
+                    ))}
+                  </ol>
+                );
+                continue;
+              }
+
+              const children = renderSpans(block.children);
+
+              if (block.style === 'h2') result.push(
+                <h2 key={idx} className="text-3xl font-extrabold mt-16 mb-8 text-gray-900 border-b pb-4 border-gray-100">{children}</h2>
+              );
+              else if (block.style === 'h3') result.push(
+                <h3 key={idx} className="text-2xl font-bold mt-12 mb-4 text-gray-800">{children}</h3>
+              );
+              else if (block.style === 'blockquote') result.push(
+                <div key={idx} className="my-8 p-6 bg-sky-50 border-l-4 border-sky-500 rounded-r-2xl not-prose">
+                  <p className="text-sky-900 font-semibold text-lg leading-relaxed">{children}</p>
+                </div>
+              );
+              else result.push(
+                <p key={idx} className="mb-6">{children}</p>
+              );
+
+              idx++;
             }
-            return null;
-          })}
+            return result;
+          })()}
         </div>
 
         <div className="p-10 md:p-16 bg-gradient-to-br from-sky-600 to-sky-800 rounded-[3rem] shadow-2xl text-center relative overflow-hidden text-white mt-24 transform hover:scale-[1.01] transition-transform duration-500">

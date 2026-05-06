@@ -13,6 +13,21 @@ function toSlug(title: string) {
     .replace(/^-+|-+$/g, '');
 }
 
+function parseSpans(text: string, key: () => string) {
+  const spans: any[] = [];
+  const regex = /\*\*(.+?)\*\*|\*(.+?)\*/g;
+  let last = 0;
+  let m: RegExpExecArray | null;
+  while ((m = regex.exec(text)) !== null) {
+    if (m.index > last) spans.push({ _type: 'span', _key: key(), text: text.slice(last, m.index), marks: [] });
+    if (m[1] !== undefined) spans.push({ _type: 'span', _key: key(), text: m[1], marks: ['strong'] });
+    else spans.push({ _type: 'span', _key: key(), text: m[2], marks: ['em'] });
+    last = m.index + m[0].length;
+  }
+  if (last < text.length) spans.push({ _type: 'span', _key: key(), text: text.slice(last), marks: [] });
+  return spans.length ? spans : [{ _type: 'span', _key: key(), text, marks: [] }];
+}
+
 function toPortableText(sections: { type: string; text: string; items?: string[] }[]) {
   const blocks: any[] = [];
   let keyIdx = 0;
@@ -28,14 +43,20 @@ function toPortableText(sections: { type: string; text: string; items?: string[]
     } else if (s.type === 'paragraph') {
       blocks.push({
         _type: 'block', _key: key(), style: 'normal',
-        children: [{ _type: 'span', _key: key(), text: s.text, marks: [] }],
+        children: parseSpans(s.text, key),
+        markDefs: [],
+      });
+    } else if (s.type === 'blockquote' || s.type === 'callout') {
+      blocks.push({
+        _type: 'block', _key: key(), style: 'blockquote',
+        children: parseSpans(s.text, key),
         markDefs: [],
       });
     } else if (s.type === 'list' && s.items) {
       for (const item of s.items) {
         blocks.push({
           _type: 'block', _key: key(), style: 'normal', listItem: 'bullet', level: 1,
-          children: [{ _type: 'span', _key: key(), text: item, marks: [] }],
+          children: parseSpans(item, key),
           markDefs: [],
         });
       }
@@ -43,7 +64,7 @@ function toPortableText(sections: { type: string; text: string; items?: string[]
       for (const item of s.items) {
         blocks.push({
           _type: 'block', _key: key(), style: 'normal', listItem: 'number', level: 1,
-          children: [{ _type: 'span', _key: key(), text: item, marks: [] }],
+          children: parseSpans(item, key),
           markDefs: [],
         });
       }
@@ -103,25 +124,38 @@ export async function POST(req: Request) {
 ${keywords ? `Fő kulcsszavak: ${keywords}` : ''}
 
 KÖTELEZŐ STRUKTÚRA (pontosan ebben a sorrendben):
-1. Bevezető (2-3 bekezdés) – az első bekezdés közvetlenül, tömören válaszolja meg a fő kérdést; szerepeljen benne a fő kulcsszó
-2. 4-6 H2 fejezet, mindegyik alatt 2-4 bekezdés és/vagy felsorolás
-3. Egy "Mennyibe kerül?" vagy "Árak és finanszírozás" H2 fejezet (ha releváns), pontos ársávokkal
-4. Egy "A Crown Dental megoldása" vagy hasonló H2 fejezet – finoman, természetesen mutassa be a rendelőt; ne legyen reklámszöveg
-5. "Gyakori kérdések" H2 fejezet, alatta 5 H3 kérdés-válasz pár (min. 3-4 mondatos válaszok)
-6. Rövid összefoglaló bekezdés CTA-val (időpontfoglalás crowndental.hu)
+1. Bevezető callout (type: "callout") – 2-3 mondatos közvetlen válasz a fő kérdésre, ez lesz az AI-bokok és Google featured snippet forrása
+2. Bevezető bekezdés (2-3 paragraph) – kontextus, miért fontos a téma, fő kulcsszó az első mondatban
+3. 4-6 H2 fejezet, mindegyik alatt 2-4 paragraph és/vagy list/numbered_list
+4. Kötelező: "Mennyibe kerül?" H2 fejezet ársávokkal (ha releváns a témához)
+5. Kötelező: "Miért válasszon minket?" H2 fejezet (finoman, nem reklámszöveg) – Crown Dental előnyök
+6. "Gyakori kérdések" H2 fejezet – 5 db H3 kérdés, mindegyik után paragraph (min. 3-4 mondatos, közvetlen válasz)
+7. Záró callout – CTA időpontfoglalásra (crowndental.hu/idopont)
+
+AI-BOT ÉS GOOGLE OPTIMALIZÁLÁS (KRITIKUS):
+- Az első callout legyen featured snippet-ready: pontosan válaszolja meg a kérdést 40-60 szóban
+- Minden H2/H3 legyen kérdés vagy egyértelmű állítás formájában (pl. "Mennyibe kerül egy implantátum 2025-ben?")
+- Használj **félkövér** kiemelést a bekezdéseken belül a legfontosabb tényeknél, számoknál, fogalmaknál
+- FAQ kérdések legyenek pontosan olyanok, amit az emberek beírnak Google-ba vagy kérdeznek AI-tól
+- Adj meg konkrét számokat, ársávokat, időtartamokat – az AI-scraperck ezeket idézik
+- Minden fogászati fogalmat definiálj egyszerű szavakkal (pl. "Az implantátum – azaz a műgyökér – egy titanium csavar...")
+- Callout dobozokba kerüljön a leg-fontosabb elvihető üzenet minden nagy témaegység végén
+
+SZÖVEGFORMÁZÁS:
+- Bekezdéseken belül **félkövér** a kulcsadatokra, számokra (pl. **150.000-250.000 Ft**, **3-6 hónap**)
+- Ne használj # markdown heading jelölést – a type mező kezeli ezt
+- Lista elemek legyenek teljes mondatok vagy legalább értelmes tagmondatok
+- Numbered list: folyamatleírásnál, lépéseknél
+- Bullet list: előnyöknél, jellemzőknél, opciók listájánál
 
 SEO SZABÁLYOK:
 - Minimális hossz: 2000 szó (törekedj 2200-2500 szóra)
-- A fő kulcsszó szerepeljen: a címben, az első bekezdésben, legalább két H2-ben, és a metaleírásban
-- seoTitle: pontosan 55-65 karakter, tartalmazza a fő kulcsszót és "| Crown Dental" végződést
-- seoDescription: pontosan 148-158 karakter, legyen cselekvésre ösztönző (pl. "Foglalj időpontot!")
-- Kerüld a keyword stuffinget – természetes, folyékony szöveg kell
+- A fő kulcsszó szerepeljen: a title-ben, az első bekezdésben, legalább két H2-ben, és a seoDescription-ban
+- seoTitle: pontosan 55-65 karakter, fő kulcsszó + "| Crown Dental"
+- seoDescription: 148-158 karakter, kulcsszóval, cselekvésre ösztönző
+- Természetes szöveg, nincs keyword stuffing
 
-HANG ÉS STÍLUS:
-- Barátságos, de szakmai; "te" megszólítás az olvasóhoz
-- Konkrét adatok, számok, ársávok ahol releváns
-- Nem túlzó, hiteles szöveg
-- Ha fogászati beavatkozásról van szó, írd le a folyamatot lépésről lépésre`;
+HANG: barátságos, szakmai, "te" megszólítás, konkrét adatok, nem túlzó`;
 
     const result = await model.generateContent(prompt);
     const raw = result.response.text().trim();
