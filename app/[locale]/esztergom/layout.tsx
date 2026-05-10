@@ -71,7 +71,7 @@ const jsonLd = {
   name: 'Crown Dental Esztergom',
   description: 'Modern fogászat és fogtechnikai labor Esztergomban. 30+ év tapasztalat, saját labor, prémium anyagok.',
   url: 'https://www.crowndental.hu/esztergom',
-  telephone: '+36705646837',
+  telephone: '+36305892468',
   email: 'info@crowndental.hu',
   foundingDate: '1994',
   priceRange: '$$',

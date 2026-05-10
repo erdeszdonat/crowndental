@@ -5,7 +5,7 @@ export const maxDuration = 60;
 
 export async function POST(req: Request) {
   try {
-    const { title, slug, seoTitle, seoDescription, excerpt, content, language, pexelsImage } = await req.json();
+    const { title, slug, seoTitle, seoDescription, excerpt, content, language, pexelsImage, publishedAt } = await req.json();
 
     if (!title || !slug || !content) {
       return NextResponse.json({ error: 'Hiányzó mezők: title, slug, content' }, { status: 400 });
@@ -29,7 +29,7 @@ export async function POST(req: Request) {
       seoTitle: seoTitle ?? title,
       seoDescription: seoDescription ?? '',
       excerpt: excerpt ?? '',
-      publishedAt: new Date().toISOString().split('T')[0],
+      publishedAt: publishedAt ?? new Date().toISOString().split('T')[0],
       content,
     };
 

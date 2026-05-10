@@ -28,7 +28,7 @@ const jsonLd = {
   name: 'Crown Dental - Időpont Foglalás',
   description: 'Online időpontfoglalás fogászati kezelésekre',
   url: 'https://www.crowndental.hu/idopont',
-  telephone: '+36705646837',
+  telephone: '+36305892468',
   potentialAction: {
     '@type': 'ReserveAction',
     target: {

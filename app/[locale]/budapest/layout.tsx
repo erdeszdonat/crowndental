@@ -76,7 +76,7 @@ const jsonLd = {
   description:
     'Prémium fogászat és fogtechnikai labor Budapesten, a Római Parton. 30+ év tapasztalat, saját labor, csúcstechnológia.',
   url: 'https://www.crowndental.hu/budapest',
-  telephone: '+36705646837',
+  telephone: '+36305892468',
   email: 'info@crowndental.hu',
   foundingDate: '1994',
   priceRange: '$$',

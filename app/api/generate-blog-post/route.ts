@@ -175,12 +175,13 @@ FONTOS: Ha az árak kapcsán összehasonlítasz más rendelőkkel, a Crown Denta
     const pexelsPromise = pexelsKey ? (async () => {
       try {
         const q = encodeURIComponent(`dental teeth ${topic.slice(0, 40)}`);
-        const res = await fetch(`https://api.pexels.com/v1/search?query=${q}&per_page=5&orientation=landscape`, {
+        const res = await fetch(`https://api.pexels.com/v1/search?query=${q}&per_page=15&orientation=landscape`, {
           headers: { Authorization: pexelsKey },
         });
         if (!res.ok) return null;
         const data = await res.json();
-        const photo = data.photos?.[0];
+        const photos = data.photos ?? [];
+        const photo = photos[Math.floor(Math.random() * photos.length)];
         if (!photo) return null;
         return {
           url: photo.src.large2x || photo.src.large,
@@ -199,19 +200,23 @@ FONTOS: Ha az árak kapcsán összehasonlítasz más rendelőkkel, a Crown Denta
         thinkingConfig: { thinkingBudget: 0 },
       } as any,
     };
-    const fallbackModel = genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite', ...modelConfig });
+    // Fallback chain: 2.5-flash → 3.1-flash-lite (500 RPD) → 2.5-flash-lite
+    const fallbackModels = [
+      genAI.getGenerativeModel({ model: 'gemini-3.1-flash-lite', ...modelConfig }),
+      genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite', ...modelConfig }),
+    ];
 
     let result: any;
-    const delays = [5000, 10000, 20000, 30000];
+    const delays = [3000, 5000, 10000, 20000];
     for (let attempt = 0; attempt <= 4; attempt++) {
       try {
-        const m = attempt >= 3 ? fallbackModel : model;
+        const m = attempt === 0 ? model : fallbackModels[Math.min(attempt - 1, fallbackModels.length - 1)];
         result = await m.generateContent(prompt);
         break;
       } catch (e: any) {
-        const is503 = e.message?.includes('503');
-        if (attempt === 4 || !is503) throw e;
-        await new Promise(r => setTimeout(r, delays[attempt]));
+        const isRetryable = e.message?.includes('503') || e.message?.includes('429');
+        if (attempt === 4 || !isRetryable) throw e;
+        await new Promise(r => setTimeout(r, delays[Math.min(attempt, delays.length - 1)]));
       }
     }
     const raw = result.response.text().trim();
@@ -245,6 +250,7 @@ FONTOS: Ha az árak kapcsán összehasonlítasz más rendelőkkel, a Crown Denta
       language,
       wordCount,
       pexelsImage,
+      publishedAt: new Date().toISOString().split('T')[0],
     });
   } catch (err: any) {
     console.error('Blog generálás hiba:', err);

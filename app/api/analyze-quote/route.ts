@@ -238,8 +238,8 @@ const modelsToTry = [
                 </p>
 
                 <div style="text-align:center; margin:32px 0 16px 0;">
-                  <a href="tel:+36705646837" style="display:inline-block; background:#0284c7; color:#ffffff; text-decoration:none; padding:16px 36px; border-radius:8px; font-weight:700; font-size:16px;">
-                    Hívjon minket: +36 70 564 6837
+                  <a href="tel:+36305892468" style="display:inline-block; background:#0284c7; color:#ffffff; text-decoration:none; padding:16px 36px; border-radius:8px; font-weight:700; font-size:16px;">
+                    Hívjon minket: +36 30 589 2468
                   </a>
                 </div>
               </div>
@@ -256,7 +256,7 @@ const modelsToTry = [
                   <p style="margin:0; color:#9ca3af; font-size:11px; text-align:center; line-height:1.6;">
                     Kérjük, erre az e-mailre ne válaszoljon, mert a válaszok nem kerülnek feldolgozásra.<br/>
                     Ha kérdése van, írjon nekünk az <a href="mailto:info@crowndental.hu" style="color:#0284c7; text-decoration:underline;">info@crowndental.hu</a> címre,<br/>
-                    vagy hívjon minket a <a href="tel:+36705646837" style="color:#0284c7; text-decoration:underline;">+36 70 564 6837</a> telefonszámon.
+                    vagy hívjon minket a <a href="tel:+36305892468" style="color:#0284c7; text-decoration:underline;">+36 30 589 2468</a> telefonszámon.
                   </p>
                 </div>
               </div>
