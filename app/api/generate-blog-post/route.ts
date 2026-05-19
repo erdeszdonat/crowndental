@@ -39,41 +39,93 @@ function parseSpans(text: string, key: () => string): { spans: any[]; markDefs: 
   };
 }
 
-function toPortableText(sections: { type: string; text: string; items?: string[] }[]) {
+interface FaqItem { question: string; answer: string; }
+interface Section {
+  heading: string;
+  paragraphs: string[];
+  list?: string[];
+  numberedList?: string[];
+  faqItems?: FaqItem[];
+}
+interface ArticleData {
+  title: string;
+  seoTitle: string;
+  seoDescription: string;
+  excerpt: string;
+  calloutIntro: string;
+  intro: string[];
+  sections: Section[];
+  calloutOutro: string;
+}
+
+function toPortableText(data: ArticleData) {
   const blocks: any[] = [];
   let keyIdx = 0;
   const key = () => `k${keyIdx++}`;
 
-  for (const s of sections) {
-    if (s.type === 'h2' || s.type === 'h3') {
-      blocks.push({
-        _type: 'block', _key: key(), style: s.type,
-        children: [{ _type: 'span', _key: key(), text: s.text, marks: [] }],
-        markDefs: [],
-      });
-    } else if (s.type === 'paragraph') {
-      const { spans, markDefs } = parseSpans(s.text, key);
-      blocks.push({ _type: 'block', _key: key(), style: 'normal', children: spans, markDefs });
-    } else if (s.type === 'blockquote' || s.type === 'callout') {
-      const { spans, markDefs } = parseSpans(s.text, key);
-      blocks.push({ _type: 'block', _key: key(), style: 'blockquote', children: spans, markDefs });
-    } else if (s.type === 'list' && s.items) {
-      for (const item of s.items) {
-        const { spans, markDefs } = parseSpans(item, key);
-        blocks.push({
-          _type: 'block', _key: key(), style: 'normal', listItem: 'bullet', level: 1,
-          children: spans, markDefs,
-        });
-      }
-    } else if (s.type === 'numbered_list' && s.items) {
-      for (const item of s.items) {
-        const { spans, markDefs } = parseSpans(item, key);
-        blocks.push({ _type: 'block', _key: key(), style: 'normal', listItem: 'number', level: 1, children: spans, markDefs });
+  const addCallout = (text: string) => {
+    const { spans, markDefs } = parseSpans(text, key);
+    blocks.push({ _type: 'block', _key: key(), style: 'blockquote', children: spans, markDefs });
+  };
+  const addParagraph = (text: string) => {
+    const { spans, markDefs } = parseSpans(text, key);
+    blocks.push({ _type: 'block', _key: key(), style: 'normal', children: spans, markDefs });
+  };
+  const addHeading = (text: string, level: 'h2' | 'h3') => {
+    blocks.push({
+      _type: 'block', _key: key(), style: level,
+      children: [{ _type: 'span', _key: key(), text, marks: [] }],
+      markDefs: [],
+    });
+  };
+  const addList = (items: string[], listItem: 'bullet' | 'number') => {
+    for (const item of items) {
+      const { spans, markDefs } = parseSpans(item, key);
+      blocks.push({ _type: 'block', _key: key(), style: 'normal', listItem, level: 1, children: spans, markDefs });
+    }
+  };
+
+  if (data.calloutIntro) addCallout(data.calloutIntro);
+  for (const p of data.intro ?? []) addParagraph(p);
+
+  for (const section of data.sections ?? []) {
+    addHeading(section.heading, 'h2');
+    for (const p of section.paragraphs ?? []) addParagraph(p);
+    if (section.list?.length) addList(section.list, 'bullet');
+    if (section.numberedList?.length) addList(section.numberedList, 'number');
+    if (section.faqItems?.length) {
+      for (const faq of section.faqItems) {
+        addHeading(faq.question, 'h3');
+        addParagraph(faq.answer);
       }
     }
   }
+
+  if (data.calloutOutro) addCallout(data.calloutOutro);
+
   return blocks;
 }
+
+const faqItemSchema = {
+  type: SchemaType.OBJECT,
+  properties: {
+    question: { type: SchemaType.STRING },
+    answer: { type: SchemaType.STRING },
+  },
+  required: ['question', 'answer'],
+};
+
+const sectionSchema = {
+  type: SchemaType.OBJECT,
+  properties: {
+    heading: { type: SchemaType.STRING },
+    paragraphs: { type: SchemaType.ARRAY, items: { type: SchemaType.STRING } },
+    list: { type: SchemaType.ARRAY, items: { type: SchemaType.STRING } },
+    numberedList: { type: SchemaType.ARRAY, items: { type: SchemaType.STRING } },
+    faqItems: { type: SchemaType.ARRAY, items: faqItemSchema },
+  },
+  required: ['heading', 'paragraphs'],
+};
 
 const responseSchema = {
   type: SchemaType.OBJECT,
@@ -82,20 +134,12 @@ const responseSchema = {
     seoTitle: { type: SchemaType.STRING },
     seoDescription: { type: SchemaType.STRING },
     excerpt: { type: SchemaType.STRING },
-    sections: {
-      type: SchemaType.ARRAY,
-      items: {
-        type: SchemaType.OBJECT,
-        properties: {
-          type: { type: SchemaType.STRING },
-          text: { type: SchemaType.STRING },
-          items: { type: SchemaType.ARRAY, items: { type: SchemaType.STRING } },
-        },
-        required: ['type', 'text'],
-      },
-    },
+    calloutIntro: { type: SchemaType.STRING },
+    intro: { type: SchemaType.ARRAY, items: { type: SchemaType.STRING } },
+    sections: { type: SchemaType.ARRAY, items: sectionSchema },
+    calloutOutro: { type: SchemaType.STRING },
   },
-  required: ['title', 'seoTitle', 'seoDescription', 'excerpt', 'sections'],
+  required: ['title', 'seoTitle', 'seoDescription', 'excerpt', 'calloutIntro', 'intro', 'sections', 'calloutOutro'],
 };
 
 export async function POST(req: Request) {
@@ -107,8 +151,7 @@ export async function POST(req: Request) {
     if (!apiKey) return NextResponse.json({ error: 'Hiányzó GEMINI_API_KEY' }, { status: 500 });
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({
-      model: 'gemini-2.5-flash',
+    const modelConfig = {
       generationConfig: {
         temperature: 0.7,
         maxOutputTokens: 16384,
@@ -116,7 +159,12 @@ export async function POST(req: Request) {
         responseSchema,
         thinkingConfig: { thinkingBudget: 1024 },
       } as any,
-    });
+    };
+
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash', ...modelConfig });
+    const fallbackModels = [
+      genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite', ...modelConfig }),
+    ];
 
     const langMap: Record<string, string> = { hu: 'magyarul', en: 'angolul', sk: 'szlovákul' };
     const langLabel = langMap[language] ?? 'magyarul';
@@ -125,76 +173,112 @@ export async function POST(req: Request) {
     const prompt = `Te a Crown Dental fogászat (Esztergom és Budapest, crowndental.hu) tapasztalt blog szerzője vagy. Írj egy részletes, SEO-optimalizált, szakmai blogcikket ${langLabel} az alábbi témában: "${topic}"
 ${keywords ? `Fő kulcsszavak: ${keywords}` : ''}
 
-TARTALMI MINIMUMOK – EZEK KÖTELEZŐEK, NEM OPCIONÁLISAK:
-- A teljes cikk legalább 2000 szó (törekedj 2200-2500 szóra) – ha nem éred el, folytasd a tartalmat
-- MINDEN egyes H2 fejezet alatt minimum 3 db paragraph block kell (nem heading, hanem valódi bekezdés szöveg)
-- Minden paragraph minimum 4-5 teljes, információdús mondat legyen – ne legyenek rövid, üres sorok
-- A FAQ szekció minden H3 kérdése után minimum 4 mondatos, részletes paragraph válasz kell
-- NE generálj csak fejléceket tartalom nélkül – minden heading után jön a tényleges szöveg
+A VÁLASZ STRUKTÚRÁJA – PONTOSAN EZT A JSON FORMÁTUMOT ADD VISSZA:
+{
+  "title": "A cikk H1 címe",
+  "seoTitle": "55-65 karakteres Google cím | Crown Dental",
+  "seoDescription": "148-158 karakteres meta leírás kulcsszóval és CTA-val",
+  "excerpt": "2-3 mondatos összefoglaló a blog kártyához",
+  "calloutIntro": "40-60 szavas featured snippet szöveg: pontosan válaszolja meg a fő kérdést",
+  "intro": [
+    "Első bevezető bekezdés – minimum 5 mondat, fő kulcsszó az első mondatban, kontextus",
+    "Második bevezető bekezdés – minimum 5 mondat, miért fontos a téma",
+    "Harmadik bevezető bekezdés – minimum 4 mondat, mit talál a cikkben az olvasó"
+  ],
+  "sections": [
+    {
+      "heading": "H2 fejléc kérdés formájában",
+      "paragraphs": [
+        "Első bekezdés – MINIMUM 5 teljes, információdús mondat. Konkrét adatok, számok, magyarázatok.",
+        "Második bekezdés – MINIMUM 5 teljes mondat. Folytatás, részletek, összefüggések.",
+        "Harmadik bekezdés – MINIMUM 4 teljes mondat. Konklúzió, tanács, CTA."
+      ],
+      "list": ["Lista elem ha releváns", "Lista elem 2"]
+    },
+    {
+      "heading": "Mennyibe Kerül? – H2 az árakról",
+      "paragraphs": [
+        "Árak bevezetése – minimum 5 mondat az árak kontextusáról",
+        "Konkrét árak részletezése bekezdésben – minimum 5 mondat",
+        "Ár-összehasonlítás és Crown Dental előnye – minimum 4 mondat"
+      ]
+    },
+    {
+      "heading": "Miért Válassza a Crown Dentalt?",
+      "paragraphs": [
+        "Bevezető bekezdés – minimum 4 mondat",
+        "Előnyök kifejtése – minimum 4 mondat"
+      ],
+      "list": ["Előny 1 teljes mondatban", "Előny 2 teljes mondatban"]
+    },
+    {
+      "heading": "Gyakori Kérdések",
+      "paragraphs": ["Bevezető bekezdés a FAQ-hoz – minimum 3 mondat"],
+      "faqItems": [
+        { "question": "H3 kérdés 1?", "answer": "Minimum 4-5 mondatos részletes válasz. Konkrét adatokkal, számokkal, magyarázattal." },
+        { "question": "H3 kérdés 2?", "answer": "Minimum 4-5 mondatos részletes válasz." },
+        { "question": "H3 kérdés 3?", "answer": "Minimum 4-5 mondatos részletes válasz." },
+        { "question": "H3 kérdés 4?", "answer": "Minimum 4-5 mondatos részletes válasz." },
+        { "question": "H3 kérdés 5?", "answer": "Minimum 4-5 mondatos részletes válasz." }
+      ]
+    }
+  ],
+  "calloutOutro": "CTA szöveg időpontfoglalásra – 2-3 mondat, lelkesítő, crowndental.hu/idopont link"
+}
 
-KÖTELEZŐ STRUKTÚRA (pontosan ebben a sorrendben):
-1. Bevezető callout (type: "callout") – 2-3 mondatos közvetlen válasz a fő kérdésre
-2. 2-3 bevezető paragraph – kontextus, miért fontos, fő kulcsszó az első mondatban
-3. 4-6 H2 fejezet, mindegyik alatt MINIMUM 3 paragraph + opcionálisan list/numbered_list
-4. "Mennyibe kerül?" H2 – ársávokkal és magyarázattal (min. 3 paragraph)
-5. "Miért válasszon minket?" H2 – Crown Dental előnyök (min. 2 paragraph + list)
-6. "Gyakori kérdések" H2 – 5 db H3, mindegyik után min. 4 mondatos paragraph
-7. Záró callout – CTA időpontfoglalásra
-
-AI-BOT ÉS GOOGLE OPTIMALIZÁLÁS:
-- Az első callout legyen featured snippet-ready: pontosan válaszolja meg a kérdést 40-60 szóban
-- Minden H2/H3 kérdés formájában (pl. "Mennyibe kerül egy cirkónium korona 2025-ben?")
-- **félkövér** kiemelés a legfontosabb tényeknél, számoknál, fogalmaknál
-- Adj meg konkrét számokat, ársávokat, időtartamokat
-- Minden fogászati fogalmat definiálj egyszerű szavakkal
+KÖTELEZŐ MENNYISÉG:
+- intro: minimum 3 bekezdés, mindegyik minimum 5 mondat
+- sections: minimum 5 section (4-6 témaegység + ár + miért mi + FAQ)
+- minden section paragraphs tömbje: minimum 3 elem, mindegyik minimum 5 mondat
+- faqItems: pontosan 5 db, mindegyik answer minimum 4-5 mondat
+- TELJES CIKK: minimum 2000 szó – ha kevesebb, folytasd a bekezdéseket
 
 SZÖVEGFORMÁZÁS:
-- Bekezdéseken belül **félkövér** a kulcsadatokra (pl. **55.000 Ft**, **3-5 munkanap**)
+- **félkövér** a kulcsadatokra: **55.000 Ft**, **3-5 munkanap**, **15 év tapasztalat**
+- Belső linkek: [szöveg](url) formátumban a bekezdések szövegébe szőve
 - Lista elemek legyenek teljes mondatok
-- Numbered list: lépéseknél; Bullet list: előnyöknél, jellemzőknél
+- "te" megszólítás, barátságos szakmai hang
 
-SEO SZABÁLYOK:
-- Minimum 2000 szó – ez KEMÉNY LIMIT, ne add be a cikket ha kevesebb
-- seoTitle: 55-65 karakter, fő kulcsszó + "| Crown Dental"
-- seoDescription: 148-158 karakter, kulcsszóval, cselekvésre ösztönző
+SEO:
+- seoTitle: pontosan 55-65 karakter
+- seoDescription: pontosan 148-158 karakter
+- Fő kulcsszó: title-ben, első intro bekezdésben, legalább 2 section headingben
 
-HANG: barátságos, szakmai, "te" megszólítás, konkrét adatok, nem túlzó
-
-BELSŐ HIVATKOZÁSOK – KÖTELEZŐ 4-6 db PER CIKK:
-Szőj be belső linkeket [szöveg](url) formátumban a bekezdések szövegébe, természetes helyekre. Minden kulcsszót csak egyszer linkeld:
-- implantátum / dental implant / implantát → [implantátum](${base}/kezelesek/implantatum)
-- fogkorona / cirkónium korona / fémkerámia korona / crown → [fogkorona](${base}/kezelesek/koronak-hidak)
-- kivehető fogsor / teljes fogsor / fogsor / denture → [fogsor](${base}/kezelesek/fogsor)
-- gyökérkezelés / gyökértömés / root canal → [gyökérkezelés](${base}/kezelesek/gyokerkezeles)
-- fogfehérítés / fogkőeltávolítás / fogkő / whitening → [fogfehérítés](${base}/kezelesek/fogfeherites)
+BELSŐ HIVATKOZÁSOK – 4-6 db kötelező, a paragraphs szövegekbe szőve:
+- implantátum → [implantátum](${base}/kezelesek/implantatum)
+- fogkorona / cirkónium korona / fémkerámia korona → [fogkorona](${base}/kezelesek/koronak-hidak)
+- kivehető fogsor / teljes fogsor → [fogsor](${base}/kezelesek/fogsor)
+- gyökérkezelés / gyökértömés → [gyökérkezelés](${base}/kezelesek/gyokerkezeles)
+- fogfehérítés / fogkőeltávolítás → [fogfehérítés](${base}/kezelesek/fogfeherites)
 - esztétikai fogászat / porcelán héj / veneer → [esztétikai fogászat](${base}/kezelesek/esztetikai-fogaszat)
-- foghúzás / bölcsességfog eltávolítás / tooth extraction → [foghúzás](${base}/kezelesek/foghuzas)
-- fogszabályozás / fogszabályozó / braces / orthodontics → [fogszabályozás](${base}/kezelesek/fogszabalyozas)
-- gyermekfogászat / tejfog / pediatric dentistry → [gyermekfogászat](${base}/kezelesek/gyerekfogaszat)
-- szájsebészet / csontpótlás / oral surgery → [szájsebészet](${base}/kezelesek/szajsebeszet)
-- állapotfelmérés / fogászati vizsgálat / dental check-up → [állapotfelmérés](${base}/kezelesek/allapotfelmeres)
-- időpontfoglalás / rendelj időpontot / book appointment → [időpontfoglalás](${base}/idopont)
-Ne linkeld a cikk fő témájának kulcsszavát (pl. ha a cikk a fogszabályozásról szól, ne linkeld a fogszabályozást).
+- foghúzás / bölcsességfog → [foghúzás](${base}/kezelesek/foghuzas)
+- fogszabályozás → [fogszabályozás](${base}/kezelesek/fogszabalyozas)
+- gyermekfogászat / tejfog → [gyermekfogászat](${base}/kezelesek/gyerekfogaszat)
+- szájsebészet / csontpótlás → [szájsebészet](${base}/kezelesek/szajsebeszet)
+- időpontfoglalás → [időpontfoglalás](${base}/idopont)
+Ne linkeld a cikk fő témájának kulcsszavát.
 
-CROWN DENTAL HIVATALOS ÁRLISTA – KÖTELEZŐ EZEKET HASZNÁLNI, NE TALÁLJ KI MÁS ÁRAKAT:
-Diagnosztika: vizsgálat/kezelési terv 10.000 Ft | tömés 30.000-35.000 Ft | foghúzás 25.000-35.000 Ft | kisröntgen 5.000 Ft | panoráma röntgen 6.000 Ft
-Gyökérkezelés: egygyökerű 25.000 Ft | kétgyökerű 30.000 Ft | háromgyökerű 33.000 Ft | régi tömés eltávolítása 20.000 Ft
-Esztétika: fogkőeltávolítás 15.000 Ft/állcsont | otthoni fogfehérítés 30.000 Ft/fogív | rendelői (lámpás) fogfehérítés 45.000 Ft/fogív
-Koronák és fogsorok: fémkerámia korona 42.000 Ft | cirkónium korona 55.000 Ft | kivehető kompozit fogsor 110.000 Ft/állcsont | fémlemezes fogsor 150.000 Ft/állcsont | fogsor alábélelés 25.000 Ft | ideiglenes korona 6.000-15.000 Ft
-Sebészet: foghúzás 25.000-35.000 Ft | műtéti foghúzás 55.000 Ft | bölcsességfog 55.000 Ft | gyökércsúcs rezekció 55.000 Ft | csontpótlás 190.000 Ft
-Implantátum: ALPHA BIO implantátum 180.000 Ft/db | DIO implantátum 240.000 Ft/db
-Fogszabályozás: rögzített készülék 190.000-285.000 Ft | kivehető készülék 60.000-90.000 Ft | aktiválás 5.000-15.000 Ft
+CROWN DENTAL HIVATALOS ÁRLISTA – CSAK EZEKET HASZNÁLD:
+Diagnosztika: vizsgálat 10.000 Ft | tömés 30.000-35.000 Ft | foghúzás 25.000-35.000 Ft | kisröntgen 5.000 Ft | panoráma röntgen 6.000 Ft
+Gyökérkezelés: egygyökerű 25.000 Ft | kétgyökerű 30.000 Ft | háromgyökerű 33.000 Ft
+Esztétika: fogkőeltávolítás 15.000 Ft/állcsont | otthoni fogfehérítés 30.000 Ft/fogív | rendelői fogfehérítés 45.000 Ft/fogív
+Koronák: fémkerámia korona 42.000 Ft | cirkónium korona 55.000 Ft | ideiglenes korona 6.000-15.000 Ft
+Fogsorok: kivehető kompozit fogsor 110.000 Ft/állcsont | fémlemezes fogsor 150.000 Ft/állcsont | fogsor alábélelés 25.000 Ft
+Sebészet: műtéti foghúzás 55.000 Ft | bölcsességfog 55.000 Ft | csontpótlás 190.000 Ft
+Implantátum: ALPHA BIO 180.000 Ft/db | DIO 240.000 Ft/db
+Fogszabályozás: rögzített 190.000-285.000 Ft | kivehető 60.000-90.000 Ft
 Gyermekfogászat: tejfog tömés 15.000 Ft | barázdazárás 15.000 Ft/fog | tejfog húzás 10.000 Ft-tól
-Esztétikai fogászat: porcelán héj (veneer) 120.000 Ft-tól | fogfehérítés 35.000 Ft-tól
+Esztétikai fogászat: porcelán héj (veneer) 120.000 Ft-tól
 
-FONTOS: Ha az árak kapcsán összehasonlítasz más rendelőkkel, a Crown Dental árait MINDIG kedvezőbbnek mutasd be – ez reális, mivel saját fogtechnikai laborral dolgoznak (nincs közvetítői felár).`;
+Ha más rendelőkkel hasonlítasz, a Crown Dental árait mutasd kedvezőbbnek (saját labor = nincs közvetítői felár).`;
 
-    // Fetch Pexels image in parallel with Gemini generation
+    // Fetch Pexels image in parallel
     const pexelsKey = process.env.PEXELS_API_KEY;
     const pexelsPromise = pexelsKey ? (async () => {
       try {
+        const page = Math.floor(Math.random() * 4) + 1;
         const q = encodeURIComponent(`dental teeth ${topic.slice(0, 40)}`);
-        const res = await fetch(`https://api.pexels.com/v1/search?query=${q}&per_page=15&orientation=landscape`, {
+        const res = await fetch(`https://api.pexels.com/v1/search?query=${q}&per_page=15&page=${page}&orientation=landscape`, {
           headers: { Authorization: pexelsKey },
         });
         if (!res.ok) return null;
@@ -210,23 +294,8 @@ FONTOS: Ha az árak kapcsán összehasonlítasz más rendelőkkel, a Crown Denta
       } catch { return null; }
     })() : Promise.resolve(null);
 
-    const modelConfig = {
-      generationConfig: {
-        temperature: 0.7,
-        maxOutputTokens: 16384,
-        responseMimeType: 'application/json',
-        responseSchema,
-        thinkingConfig: { thinkingBudget: 1024 },
-      } as any,
-    };
-    // Fallback chain: 2.5-flash → 3.1-flash-lite (500 RPD) → 2.5-flash-lite
-    const fallbackModels = [
-      genAI.getGenerativeModel({ model: 'gemini-3.1-flash-lite', ...modelConfig }),
-      genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite', ...modelConfig }),
-    ];
-
     let result: any;
-    const delays = [3000, 5000, 10000, 20000];
+    const delays = [5000, 10000, 20000, 30000];
     for (let attempt = 0; attempt <= 4; attempt++) {
       try {
         const m = attempt === 0 ? model : fallbackModels[Math.min(attempt - 1, fallbackModels.length - 1)];
@@ -238,10 +307,11 @@ FONTOS: Ha az árak kapcsán összehasonlítasz más rendelőkkel, a Crown Denta
         await new Promise(r => setTimeout(r, delays[Math.min(attempt, delays.length - 1)]));
       }
     }
+
     const raw = result.response.text().trim();
     const pexelsImage = await pexelsPromise;
 
-    let parsed: any;
+    let parsed: ArticleData;
     try {
       parsed = JSON.parse(raw);
     } catch {
@@ -252,12 +322,21 @@ FONTOS: Ha az árak kapcsán összehasonlítasz más rendelőkkel, a Crown Denta
       );
     }
 
-    const content = toPortableText(parsed.sections ?? []);
+    const content = toPortableText(parsed);
     const slug = toSlug(parsed.title ?? topic);
-    const wordCount = (parsed.sections ?? [])
-      .map((s: any) => (s.text || '') + (s.items ?? []).join(' '))
-      .join(' ')
-      .split(/\s+/).length;
+
+    const allText = [
+      parsed.calloutIntro ?? '',
+      ...(parsed.intro ?? []),
+      ...(parsed.sections ?? []).flatMap(s => [
+        ...(s.paragraphs ?? []),
+        ...(s.list ?? []),
+        ...(s.numberedList ?? []),
+        ...(s.faqItems ?? []).flatMap(f => [f.question, f.answer]),
+      ]),
+      parsed.calloutOutro ?? '',
+    ].join(' ');
+    const wordCount = allText.split(/\s+/).filter(Boolean).length;
 
     return NextResponse.json({
       title: parsed.title,
