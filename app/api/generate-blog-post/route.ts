@@ -121,6 +121,7 @@ export async function POST(req: Request) {
 
     const langMap: Record<string, string> = { hu: 'magyarul', en: 'angolul', sk: 'szlovákul' };
     const langLabel = langMap[language] ?? 'magyarul';
+    const base = `https://www.crowndental.hu${language !== 'hu' ? `/${language}` : ''}`;
 
     const prompt = `Te a Crown Dental fogászat (Esztergom és Budapest, crowndental.hu) tapasztalt blog szerzője vagy. Írj egy részletes, SEO-optimalizált, szakmai blogcikket ${langLabel} az alábbi témában: "${topic}"
 ${keywords ? `Fő kulcsszavak: ${keywords}` : ''}
@@ -161,18 +162,18 @@ HANG: barátságos, szakmai, "te" megszólítás, konkrét adatok, nem túlzó
 
 BELSŐ HIVATKOZÁSOK – KÖTELEZŐ 4-6 db PER CIKK:
 Szőj be belső linkeket [szöveg](url) formátumban a bekezdések szövegébe, természetes helyekre. Minden kulcsszót csak egyszer linkeld:
-- implantátum / fogimplantátum → [implantátum](https://www.crowndental.hu/kezelesek/implantatum)
-- fogkorona / cirkónium korona / fémkerámia korona → [fogkorona](https://www.crowndental.hu/kezelesek/koronak-hidak)
-- kivehető fogsor / teljes fogsor / fogsor → [fogsor](https://www.crowndental.hu/kezelesek/fogsor)
-- gyökérkezelés / gyökértömés → [gyökérkezelés](https://www.crowndental.hu/kezelesek/gyokerkezeles)
-- fogfehérítés / fogkőeltávolítás / fogkő → [fogfehérítés](https://www.crowndental.hu/kezelesek/fogfeherites)
-- esztétikai fogászat / porcelán héj / veneer → [esztétikai fogászat](https://www.crowndental.hu/kezelesek/esztetikai-fogaszat)
-- foghúzás / bölcsességfog eltávolítás → [foghúzás](https://www.crowndental.hu/kezelesek/foghuzas)
-- fogszabályozás / fogszabályozó / rögzített fogszabályozó → [fogszabályozás](https://www.crowndental.hu/kezelesek/fogszabalyozas)
-- gyermekfogászat / tejfog kezelés → [gyermekfogászat](https://www.crowndental.hu/kezelesek/gyerekfogaszat)
-- szájsebészet / csontpótlás → [szájsebészet](https://www.crowndental.hu/kezelesek/szajsebeszet)
-- állapotfelmérés / fogászati vizsgálat → [állapotfelmérés](https://www.crowndental.hu/kezelesek/allapotfelmeres)
-- időpontfoglalás / rendelj időpontot → [időpontfoglalás](https://www.crowndental.hu/idopont)
+- implantátum / dental implant / implantát → [implantátum](${base}/kezelesek/implantatum)
+- fogkorona / cirkónium korona / fémkerámia korona / crown → [fogkorona](${base}/kezelesek/koronak-hidak)
+- kivehető fogsor / teljes fogsor / fogsor / denture → [fogsor](${base}/kezelesek/fogsor)
+- gyökérkezelés / gyökértömés / root canal → [gyökérkezelés](${base}/kezelesek/gyokerkezeles)
+- fogfehérítés / fogkőeltávolítás / fogkő / whitening → [fogfehérítés](${base}/kezelesek/fogfeherites)
+- esztétikai fogászat / porcelán héj / veneer → [esztétikai fogászat](${base}/kezelesek/esztetikai-fogaszat)
+- foghúzás / bölcsességfog eltávolítás / tooth extraction → [foghúzás](${base}/kezelesek/foghuzas)
+- fogszabályozás / fogszabályozó / braces / orthodontics → [fogszabályozás](${base}/kezelesek/fogszabalyozas)
+- gyermekfogászat / tejfog / pediatric dentistry → [gyermekfogászat](${base}/kezelesek/gyerekfogaszat)
+- szájsebészet / csontpótlás / oral surgery → [szájsebészet](${base}/kezelesek/szajsebeszet)
+- állapotfelmérés / fogászati vizsgálat / dental check-up → [állapotfelmérés](${base}/kezelesek/allapotfelmeres)
+- időpontfoglalás / rendelj időpontot / book appointment → [időpontfoglalás](${base}/idopont)
 Ne linkeld a cikk fő témájának kulcsszavát (pl. ha a cikk a fogszabályozásról szól, ne linkeld a fogszabályozást).
 
 CROWN DENTAL HIVATALOS ÁRLISTA – KÖTELEZŐ EZEKET HASZNÁLNI, NE TALÁLJ KI MÁS ÁRAKAT:
