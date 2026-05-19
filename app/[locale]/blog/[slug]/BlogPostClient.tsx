@@ -160,13 +160,22 @@ export default function BlogPostClient({ post }: { post: any }) {
             const result: React.ReactNode[] = [];
             let idx = 0;
 
-            const renderSpans = (children: any[]) =>
-              (children ?? []).map((c: any, j: number) => {
+            const renderSpans = (children: any[], markDefs?: any[]) => {
+              const linkMap: Record<string, string> = {};
+              for (const md of markDefs ?? []) {
+                if (md._type === 'link') linkMap[md._key] = md.href;
+              }
+              return (children ?? []).map((c: any, j: number) => {
                 let el: React.ReactNode = c.text;
-                if (c.marks?.includes('strong')) el = <strong key={j} className="font-extrabold text-gray-900">{el}</strong>;
-                if (c.marks?.includes('em')) el = <em key={j}>{el}</em>;
+                if (c.marks?.includes('strong')) el = <strong key={`s${j}`} className="font-extrabold text-gray-900">{el}</strong>;
+                if (c.marks?.includes('em')) el = <em key={`e${j}`}>{el}</em>;
+                const linkMark = c.marks?.find((mk: string) => linkMap[mk]);
+                if (linkMark) {
+                  el = <a key={`l${j}`} href={linkMap[linkMark]} className="text-sky-600 font-semibold underline underline-offset-2 hover:text-sky-500 transition-colors">{el}</a>;
+                }
                 return <React.Fragment key={j}>{el}</React.Fragment>;
               });
+            };
 
             while (idx < blocks.length) {
               const block = blocks[idx];
@@ -180,7 +189,7 @@ export default function BlogPostClient({ post }: { post: any }) {
                     {items.map((item, j) => (
                       <li key={j} className="flex items-start gap-3 text-gray-700 font-medium">
                         <span className="w-2 h-2 rounded-full bg-sky-500 mt-[10px] flex-shrink-0" />
-                        <span>{renderSpans(item.children)}</span>
+                        <span>{renderSpans(item.children, item.markDefs)}</span>
                       </li>
                     ))}
                   </ul>
@@ -196,7 +205,7 @@ export default function BlogPostClient({ post }: { post: any }) {
                     {items.map((item, j) => (
                       <li key={j} className="flex items-start gap-3 text-gray-700 font-medium">
                         <span className="w-7 h-7 rounded-full bg-sky-100 text-sky-700 font-extrabold text-sm flex items-center justify-center flex-shrink-0 mt-0.5">{j + 1}</span>
-                        <span className="mt-0.5">{renderSpans(item.children)}</span>
+                        <span className="mt-0.5">{renderSpans(item.children, item.markDefs)}</span>
                       </li>
                     ))}
                   </ol>
@@ -204,7 +213,7 @@ export default function BlogPostClient({ post }: { post: any }) {
                 continue;
               }
 
-              const children = renderSpans(block.children);
+              const children = renderSpans(block.children, block.markDefs);
 
               if (block.style === 'h2') result.push(
                 <h2 key={idx} className="text-3xl font-extrabold mt-16 mb-8 text-gray-900 border-b pb-4 border-gray-100">{children}</h2>

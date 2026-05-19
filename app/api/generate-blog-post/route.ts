@@ -13,19 +13,30 @@ function toSlug(title: string) {
     .replace(/^-+|-+$/g, '');
 }
 
-function parseSpans(text: string, key: () => string) {
+function parseSpans(text: string, key: () => string): { spans: any[]; markDefs: any[] } {
   const spans: any[] = [];
-  const regex = /\*\*(.+?)\*\*|\*(.+?)\*/g;
+  const markDefs: any[] = [];
+  const regex = /\*\*(.+?)\*\*|\*(.+?)\*|\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g;
   let last = 0;
   let m: RegExpExecArray | null;
   while ((m = regex.exec(text)) !== null) {
     if (m.index > last) spans.push({ _type: 'span', _key: key(), text: text.slice(last, m.index), marks: [] });
-    if (m[1] !== undefined) spans.push({ _type: 'span', _key: key(), text: m[1], marks: ['strong'] });
-    else spans.push({ _type: 'span', _key: key(), text: m[2], marks: ['em'] });
+    if (m[1] !== undefined) {
+      spans.push({ _type: 'span', _key: key(), text: m[1], marks: ['strong'] });
+    } else if (m[2] !== undefined) {
+      spans.push({ _type: 'span', _key: key(), text: m[2], marks: ['em'] });
+    } else {
+      const linkKey = key();
+      markDefs.push({ _key: linkKey, _type: 'link', href: m[4] });
+      spans.push({ _type: 'span', _key: key(), text: m[3], marks: [linkKey] });
+    }
     last = m.index + m[0].length;
   }
   if (last < text.length) spans.push({ _type: 'span', _key: key(), text: text.slice(last), marks: [] });
-  return spans.length ? spans : [{ _type: 'span', _key: key(), text, marks: [] }];
+  return {
+    spans: spans.length ? spans : [{ _type: 'span', _key: key(), text, marks: [] }],
+    markDefs,
+  };
 }
 
 function toPortableText(sections: { type: string; text: string; items?: string[] }[]) {
@@ -41,32 +52,23 @@ function toPortableText(sections: { type: string; text: string; items?: string[]
         markDefs: [],
       });
     } else if (s.type === 'paragraph') {
-      blocks.push({
-        _type: 'block', _key: key(), style: 'normal',
-        children: parseSpans(s.text, key),
-        markDefs: [],
-      });
+      const { spans, markDefs } = parseSpans(s.text, key);
+      blocks.push({ _type: 'block', _key: key(), style: 'normal', children: spans, markDefs });
     } else if (s.type === 'blockquote' || s.type === 'callout') {
-      blocks.push({
-        _type: 'block', _key: key(), style: 'blockquote',
-        children: parseSpans(s.text, key),
-        markDefs: [],
-      });
+      const { spans, markDefs } = parseSpans(s.text, key);
+      blocks.push({ _type: 'block', _key: key(), style: 'blockquote', children: spans, markDefs });
     } else if (s.type === 'list' && s.items) {
       for (const item of s.items) {
+        const { spans, markDefs } = parseSpans(item, key);
         blocks.push({
           _type: 'block', _key: key(), style: 'normal', listItem: 'bullet', level: 1,
-          children: parseSpans(item, key),
-          markDefs: [],
+          children: spans, markDefs,
         });
       }
     } else if (s.type === 'numbered_list' && s.items) {
       for (const item of s.items) {
-        blocks.push({
-          _type: 'block', _key: key(), style: 'normal', listItem: 'number', level: 1,
-          children: parseSpans(item, key),
-          markDefs: [],
-        });
+        const { spans, markDefs } = parseSpans(item, key);
+        blocks.push({ _type: 'block', _key: key(), style: 'normal', listItem: 'number', level: 1, children: spans, markDefs });
       }
     }
   }
@@ -156,6 +158,22 @@ SEO SZABÁLYOK:
 - Természetes szöveg, nincs keyword stuffing
 
 HANG: barátságos, szakmai, "te" megszólítás, konkrét adatok, nem túlzó
+
+BELSŐ HIVATKOZÁSOK – KÖTELEZŐ 4-6 db PER CIKK:
+Szőj be belső linkeket [szöveg](url) formátumban a bekezdések szövegébe, természetes helyekre. Minden kulcsszót csak egyszer linkeld:
+- implantátum / fogimplantátum → [implantátum](https://www.crowndental.hu/kezelesek/implantatum)
+- fogkorona / cirkónium korona / fémkerámia korona → [fogkorona](https://www.crowndental.hu/kezelesek/koronak-hidak)
+- kivehető fogsor / teljes fogsor / fogsor → [fogsor](https://www.crowndental.hu/kezelesek/fogsor)
+- gyökérkezelés / gyökértömés → [gyökérkezelés](https://www.crowndental.hu/kezelesek/gyokerkezeles)
+- fogfehérítés / fogkőeltávolítás / fogkő → [fogfehérítés](https://www.crowndental.hu/kezelesek/fogfeherites)
+- esztétikai fogászat / porcelán héj / veneer → [esztétikai fogászat](https://www.crowndental.hu/kezelesek/esztetikai-fogaszat)
+- foghúzás / bölcsességfog eltávolítás → [foghúzás](https://www.crowndental.hu/kezelesek/foghuzas)
+- fogszabályozás / fogszabályozó / rögzített fogszabályozó → [fogszabályozás](https://www.crowndental.hu/kezelesek/fogszabalyozas)
+- gyermekfogászat / tejfog kezelés → [gyermekfogászat](https://www.crowndental.hu/kezelesek/gyerekfogaszat)
+- szájsebészet / csontpótlás → [szájsebészet](https://www.crowndental.hu/kezelesek/szajsebeszet)
+- állapotfelmérés / fogászati vizsgálat → [állapotfelmérés](https://www.crowndental.hu/kezelesek/allapotfelmeres)
+- időpontfoglalás / rendelj időpontot → [időpontfoglalás](https://www.crowndental.hu/idopont)
+Ne linkeld a cikk fő témájának kulcsszavát (pl. ha a cikk a fogszabályozásról szól, ne linkeld a fogszabályozást).
 
 CROWN DENTAL HIVATALOS ÁRLISTA – KÖTELEZŐ EZEKET HASZNÁLNI, NE TALÁLJ KI MÁS ÁRAKAT:
 Diagnosztika: vizsgálat/kezelési terv 10.000 Ft | tömés 30.000-35.000 Ft | foghúzás 25.000-35.000 Ft | kisröntgen 5.000 Ft | panoráma röntgen 6.000 Ft
