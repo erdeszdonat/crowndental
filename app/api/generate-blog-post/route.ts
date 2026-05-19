@@ -114,8 +114,7 @@ export async function POST(req: Request) {
         maxOutputTokens: 16384,
         responseMimeType: 'application/json',
         responseSchema,
-        // Disable thinking to avoid token contamination in JSON output
-        thinkingConfig: { thinkingBudget: 0 },
+        thinkingConfig: { thinkingBudget: 1024 },
       } as any,
     });
 
@@ -126,37 +125,38 @@ export async function POST(req: Request) {
     const prompt = `Te a Crown Dental fogászat (Esztergom és Budapest, crowndental.hu) tapasztalt blog szerzője vagy. Írj egy részletes, SEO-optimalizált, szakmai blogcikket ${langLabel} az alábbi témában: "${topic}"
 ${keywords ? `Fő kulcsszavak: ${keywords}` : ''}
 
-KÖTELEZŐ STRUKTÚRA (pontosan ebben a sorrendben):
-1. Bevezető callout (type: "callout") – 2-3 mondatos közvetlen válasz a fő kérdésre, ez lesz az AI-bokok és Google featured snippet forrása
-2. Bevezető bekezdés (2-3 paragraph) – kontextus, miért fontos a téma, fő kulcsszó az első mondatban
-3. 4-6 H2 fejezet, mindegyik alatt 2-4 paragraph és/vagy list/numbered_list
-4. Kötelező: "Mennyibe kerül?" H2 fejezet ársávokkal (ha releváns a témához)
-5. Kötelező: "Miért válasszon minket?" H2 fejezet (finoman, nem reklámszöveg) – Crown Dental előnyök
-6. "Gyakori kérdések" H2 fejezet – 5 db H3 kérdés, mindegyik után paragraph (min. 3-4 mondatos, közvetlen válasz)
-7. Záró callout – CTA időpontfoglalásra (crowndental.hu/idopont)
+TARTALMI MINIMUMOK – EZEK KÖTELEZŐEK, NEM OPCIONÁLISAK:
+- A teljes cikk legalább 2000 szó (törekedj 2200-2500 szóra) – ha nem éred el, folytasd a tartalmat
+- MINDEN egyes H2 fejezet alatt minimum 3 db paragraph block kell (nem heading, hanem valódi bekezdés szöveg)
+- Minden paragraph minimum 4-5 teljes, információdús mondat legyen – ne legyenek rövid, üres sorok
+- A FAQ szekció minden H3 kérdése után minimum 4 mondatos, részletes paragraph válasz kell
+- NE generálj csak fejléceket tartalom nélkül – minden heading után jön a tényleges szöveg
 
-AI-BOT ÉS GOOGLE OPTIMALIZÁLÁS (KRITIKUS):
+KÖTELEZŐ STRUKTÚRA (pontosan ebben a sorrendben):
+1. Bevezető callout (type: "callout") – 2-3 mondatos közvetlen válasz a fő kérdésre
+2. 2-3 bevezető paragraph – kontextus, miért fontos, fő kulcsszó az első mondatban
+3. 4-6 H2 fejezet, mindegyik alatt MINIMUM 3 paragraph + opcionálisan list/numbered_list
+4. "Mennyibe kerül?" H2 – ársávokkal és magyarázattal (min. 3 paragraph)
+5. "Miért válasszon minket?" H2 – Crown Dental előnyök (min. 2 paragraph + list)
+6. "Gyakori kérdések" H2 – 5 db H3, mindegyik után min. 4 mondatos paragraph
+7. Záró callout – CTA időpontfoglalásra
+
+AI-BOT ÉS GOOGLE OPTIMALIZÁLÁS:
 - Az első callout legyen featured snippet-ready: pontosan válaszolja meg a kérdést 40-60 szóban
-- Minden H2/H3 legyen kérdés vagy egyértelmű állítás formájában (pl. "Mennyibe kerül egy implantátum 2025-ben?")
-- Használj **félkövér** kiemelést a bekezdéseken belül a legfontosabb tényeknél, számoknál, fogalmaknál
-- FAQ kérdések legyenek pontosan olyanok, amit az emberek beírnak Google-ba vagy kérdeznek AI-tól
-- Adj meg konkrét számokat, ársávokat, időtartamokat – az AI-scraperck ezeket idézik
-- Minden fogászati fogalmat definiálj egyszerű szavakkal (pl. "Az implantátum – azaz a műgyökér – egy titanium csavar...")
-- Callout dobozokba kerüljön a leg-fontosabb elvihető üzenet minden nagy témaegység végén
+- Minden H2/H3 kérdés formájában (pl. "Mennyibe kerül egy cirkónium korona 2025-ben?")
+- **félkövér** kiemelés a legfontosabb tényeknél, számoknál, fogalmaknál
+- Adj meg konkrét számokat, ársávokat, időtartamokat
+- Minden fogászati fogalmat definiálj egyszerű szavakkal
 
 SZÖVEGFORMÁZÁS:
-- Bekezdéseken belül **félkövér** a kulcsadatokra, számokra (pl. **150.000-250.000 Ft**, **3-6 hónap**)
-- Ne használj # markdown heading jelölést – a type mező kezeli ezt
-- Lista elemek legyenek teljes mondatok vagy legalább értelmes tagmondatok
-- Numbered list: folyamatleírásnál, lépéseknél
-- Bullet list: előnyöknél, jellemzőknél, opciók listájánál
+- Bekezdéseken belül **félkövér** a kulcsadatokra (pl. **55.000 Ft**, **3-5 munkanap**)
+- Lista elemek legyenek teljes mondatok
+- Numbered list: lépéseknél; Bullet list: előnyöknél, jellemzőknél
 
 SEO SZABÁLYOK:
-- Minimális hossz: 2000 szó (törekedj 2200-2500 szóra)
-- A fő kulcsszó szerepeljen: a title-ben, az első bekezdésben, legalább két H2-ben, és a seoDescription-ban
-- seoTitle: pontosan 55-65 karakter, fő kulcsszó + "| Crown Dental"
+- Minimum 2000 szó – ez KEMÉNY LIMIT, ne add be a cikket ha kevesebb
+- seoTitle: 55-65 karakter, fő kulcsszó + "| Crown Dental"
 - seoDescription: 148-158 karakter, kulcsszóval, cselekvésre ösztönző
-- Természetes szöveg, nincs keyword stuffing
 
 HANG: barátságos, szakmai, "te" megszólítás, konkrét adatok, nem túlzó
 
@@ -216,7 +216,7 @@ FONTOS: Ha az árak kapcsán összehasonlítasz más rendelőkkel, a Crown Denta
         maxOutputTokens: 16384,
         responseMimeType: 'application/json',
         responseSchema,
-        thinkingConfig: { thinkingBudget: 0 },
+        thinkingConfig: { thinkingBudget: 1024 },
       } as any,
     };
     // Fallback chain: 2.5-flash → 3.1-flash-lite (500 RPD) → 2.5-flash-lite
