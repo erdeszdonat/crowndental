@@ -7,8 +7,10 @@ import {
   RefreshCw, LogOut, ExternalLink, Phone, MapPin, ShieldAlert,
   User, Lock, Edit3, Search, UserCheck, DollarSign, MessageSquare,
   AlertTriangle, Loader2, Trash2, CheckCircle2, Clock, ListOrdered,
-  Wand2, Send, Eye, EyeOff, FileText, ImageIcon, Zap, BrainCircuit
+  Wand2, Send, Eye, EyeOff, FileText, ImageIcon, Zap, BrainCircuit,
+  BarChart3
 } from 'lucide-react';
+import StatsDashboard from './StatsDashboard';
 
 export const dynamic = 'force-dynamic';
 
@@ -18,7 +20,7 @@ export default function AdminDashboard() {
   const [passwordInput, setPasswordInput] = useState('');
   const [isLoginLoading, setIsLoginLoading] = useState(false);
 
-  const [activeTab, setActiveTab] = useState<'appointments' | 'career' | 'quotes' | 'blog'>('appointments');
+  const [activeTab, setActiveTab] = useState<'stats' | 'appointments' | 'career' | 'quotes' | 'blog'>('stats');
   const [expandedId, setExpandedId] = useState<string | number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
@@ -194,6 +196,7 @@ export default function AdminDashboard() {
 
   // ── TAB CONFIG ────────────────────────────────────────────────────────────
   const tabs = [
+    { id: 'stats' as const, label: 'Statisztika', icon: BarChart3, count: null },
     { id: 'appointments' as const, label: 'Időpontok', icon: Calendar, count: appointments.length },
     { id: 'career' as const, label: 'Karrier', icon: Briefcase, count: applications.length },
     { id: 'quotes' as const, label: 'AI Leads', icon: Sparkles, count: quotes.length },
@@ -256,8 +259,12 @@ export default function AdminDashboard() {
 
           <AnimatePresence mode="wait">
 
-            {/* BLOG */}
-            {activeTab === 'blog' ? (
+            {/* STATS */}
+            {activeTab === 'stats' ? (
+              <motion.div key="stats" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
+                <StatsDashboard appointments={appointments} quotes={quotes} />
+              </motion.div>
+            ) : activeTab === 'blog' ? (
               <motion.div key="blog" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-4">
 
                 {/* AI BLOG GENERATOR */}
