@@ -72,7 +72,7 @@ export async function POST(req: Request) {
               </div>
               <div style="background:#f8fafc; padding:20px 30px; border-top:1px solid #e2e8f0; text-align:center;">
                 <p style="font-size:14px; color:#64748b; margin:0; line-height:1.5;">Üdvözlettel,<br><strong style="color:#0f172a;">A Crown Dental csapata</strong></p>
-                <p style="font-size:12px; color:#94a3b8; margin-top:10px;">+36 30 589 2468 | info@crowndental.hu</p>
+                <p style="font-size:12px; color:#94a3b8; margin-top:10px;">+36 70 564 6837 | info@crowndental.hu</p>
               </div>
             </div>
           `

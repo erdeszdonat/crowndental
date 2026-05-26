@@ -187,8 +187,8 @@ export default function Navigation() {
 
         {/* Jobb oldali gombok */}
         <div className="flex items-center gap-2 z-50">
-          <a href="tel:+36305892468" className="hidden xl:flex items-center gap-2 font-bold text-sky-700 hover:text-sky-600 mr-1">
-            <Phone className="w-5 h-5" /> +36 30 589 2468
+          <a href="tel:+36705646837" className="hidden xl:flex items-center gap-2 font-bold text-sky-700 hover:text-sky-600 mr-1">
+            <Phone className="w-5 h-5" /> +36 70 564 6837
           </a>
 
           {/* Nyelvváltó */}
@@ -256,8 +256,8 @@ export default function Navigation() {
             </div>
 
             {/* Telefonszám mobilon */}
-            <a href="tel:+36305892468" className="flex items-center gap-2 px-4 py-3 bg-sky-50 text-sky-700 rounded-xl">
-              <Phone className="w-5 h-5" /> +36 30 589 2468
+            <a href="tel:+36705646837" className="flex items-center gap-2 px-4 py-3 bg-sky-50 text-sky-700 rounded-xl">
+              <Phone className="w-5 h-5" /> +36 70 564 6837
             </a>
 
             {/* Időpontfoglalás mobilon */}

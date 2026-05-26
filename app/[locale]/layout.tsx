@@ -66,7 +66,7 @@ const organizationJsonLd = {
   '@id': 'https://www.crowndental.hu/#organization',
   name: 'Crown Dental',
   url: 'https://www.crowndental.hu',
-  telephone: '+36305892468',
+  telephone: '+36705646837',
   foundingDate: '1994',
   sameAs: [
     'https://www.wikidata.org/wiki/Q139545504',
@@ -79,7 +79,7 @@ const esztergomJsonLd = {
   '@type': 'Dentist',
   name: 'Crown Dental – Esztergom',
   url: 'https://www.crowndental.hu/esztergom',
-  telephone: '+36305892468',
+  telephone: '+36705646837',
   foundingDate: '1994',
   image: 'https://www.crowndental.hu/og-image.jpg',
   address: {
@@ -101,7 +101,7 @@ const budapestJsonLd = {
   '@type': 'Dentist',
   name: 'Crown Dental – Budapest',
   url: 'https://www.crowndental.hu/budapest',
-  telephone: '+36305892468',
+  telephone: '+36705646837',
   image: 'https://www.crowndental.hu/og-image.jpg',
   address: {
     '@type': 'PostalAddress',

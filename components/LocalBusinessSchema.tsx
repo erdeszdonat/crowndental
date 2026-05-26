@@ -10,7 +10,7 @@ export default function LocalBusinessSchema() {
       "image": "https://www.crowndental.hu/logo.webp",
       "@id": "https://www.crowndental.hu/#esztergom",
       "url": "https://www.crowndental.hu/esztergom",
-      "telephone": "+36305892468",
+      "telephone": "+36705646837",
       "email": "info@crowndental.hu",
       "priceRange": "$$",
       "address": {
@@ -50,7 +50,7 @@ export default function LocalBusinessSchema() {
       "image": "https://www.crowndental.hu/logo.webp",
       "@id": "https://www.crowndental.hu/#budapest",
       "url": "https://www.crowndental.hu/budapest",
-      "telephone": "+36305892468",
+      "telephone": "+36705646837",
       "email": "info@crowndental.hu",
       "priceRange": "$$",
       "address": {
