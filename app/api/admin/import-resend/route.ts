@@ -6,7 +6,7 @@ export const maxDuration = 60;
 
 export async function POST(req: Request) {
   try {
-    const { password } = await req.json();
+    const { password, skipEvent } = await req.json();
 
     if (password !== process.env.ADMIN_PASSWORD) {
       return NextResponse.json({ error: 'Jogosulatlan' }, { status: 401 });
@@ -49,6 +49,7 @@ export async function POST(req: Request) {
           name: contact.name,
           nickname: contact.nickname,
           source: 'appointment',
+          skipEvent: !!skipEvent,
         });
         imported++;
       } catch (err: any) {

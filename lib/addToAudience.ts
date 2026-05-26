@@ -6,9 +6,10 @@ interface AddToAudienceParams {
   nickname?: string;
   source?: 'appointment' | 'career' | 'quote';
   payload?: Record<string, any>;
+  skipEvent?: boolean;
 }
 
-export async function addToResendAudience({ email, name, nickname, source, payload }: AddToAudienceParams): Promise<void> {
+export async function addToResendAudience({ email, name, nickname, source, payload, skipEvent }: AddToAudienceParams): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
   const audienceId = process.env.RESEND_AUDIENCE_ID;
   const eventName = process.env.RESEND_AUTOMATION_EVENT || 'Contact added to audience';
@@ -71,6 +72,8 @@ export async function addToResendAudience({ email, name, nickname, source, paylo
   }
 
   // 2. Fire the custom event so any matching Automation starts running
+  // (can be skipped when only refreshing existing contact data via bulk re-import)
+  if (skipEvent) return;
   try {
     const eventRes = await fetch('https://api.resend.com/events/send', {
       method: 'POST',

@@ -41,10 +41,11 @@ export default function StatsDashboard({ appointments, quotes, adminPassword }: 
   const [importResult, setImportResult] = useState<any>(null);
   const [importError, setImportError] = useState('');
 
-  const runResendImport = async () => {
-    const confirmed = window.confirm(
-      `Biztosan importálod az összes időpontfoglalót a Resend audience-be?\n\nMind a ${appointments.length} kontakt bekerül és elindul rajuk a 2 éves email sorozat (30 nap múlva Google review, 3 hó múlva emlékeztető, stb.).\n\nEz a művelet több percig tarthat.`
-    );
+  const runResendImport = async (skipEvent: boolean) => {
+    const msg = skipEvent
+      ? `Csak FRISSÍTI a meglévő ${appointments.length} kontakt adatait Resend-ben (név, email), DE nem indítja el az automation-t. Új email nem megy ki senkinek.\n\nFolytatod?`
+      : `Importálja mind a ${appointments.length} kontaktot Resend audience-be ÉS elindítja rájuk a 2 éves automation sorozatot.\n\n⚠️ Akinél már fut korábbi futás, az PÁRHUZAMOSAN újabbat is kap (duplikált emailek lehetnek).\n\nFolytatod?`;
+    const confirmed = window.confirm(msg);
     if (!confirmed) return;
     setImportLoading(true);
     setImportResult(null);
@@ -53,7 +54,7 @@ export default function StatsDashboard({ appointments, quotes, adminPassword }: 
       const res = await fetch('/api/admin/import-resend', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password: adminPassword }),
+        body: JSON.stringify({ password: adminPassword, skipEvent }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Ismeretlen hiba');
@@ -467,23 +468,30 @@ export default function StatsDashboard({ appointments, quotes, adminPassword }: 
         </div>
 
         {!importResult && !importError && (
-          <button
-            onClick={runResendImport}
-            disabled={importLoading || appointments.length === 0}
-            className="w-full md:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-sky-600 to-indigo-600 text-white font-black rounded-xl hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all text-sm"
-          >
-            {importLoading ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                Importálás folyamatban... ({appointments.length} kontakt)
-              </>
-            ) : (
-              <>
-                <Send className="w-4 h-4" />
-                {appointments.length} kontakt importálása Resend-be
-              </>
-            )}
-          </button>
+          <div className="flex flex-col md:flex-row gap-2">
+            <button
+              onClick={() => runResendImport(true)}
+              disabled={importLoading || appointments.length === 0}
+              className="flex-1 flex items-center justify-center gap-2 px-5 py-3 bg-white border-2 border-sky-300 text-sky-700 font-black rounded-xl hover:bg-sky-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-sm"
+            >
+              {importLoading ? (
+                <><Loader2 className="w-4 h-4 animate-spin" /> Folyamatban...</>
+              ) : (
+                <><Send className="w-4 h-4" /> Csak adat-frissítés (email nem megy ki)</>
+              )}
+            </button>
+            <button
+              onClick={() => runResendImport(false)}
+              disabled={importLoading || appointments.length === 0}
+              className="flex-1 flex items-center justify-center gap-2 px-5 py-3 bg-gradient-to-r from-sky-600 to-indigo-600 text-white font-black rounded-xl hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all text-sm"
+            >
+              {importLoading ? (
+                <><Loader2 className="w-4 h-4 animate-spin" /> Folyamatban...</>
+              ) : (
+                <><Send className="w-4 h-4" /> Import + Automation indítás</>
+              )}
+            </button>
+          </div>
         )}
 
         {importLoading && (
