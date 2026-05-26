@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
+import { addToResendAudience } from '@/lib/addToAudience';
 
 export async function POST(req: Request) {
   console.log("--- ÚJ IDŐPONTFOGLALÁSI KÉRÉS ÉRKEZETT ---");
@@ -80,6 +81,9 @@ export async function POST(req: Request) {
         console.error("Resend e-mail hiba:", mailErr);
       }
     }
+
+    // 3. RESEND AUDIENCE HOZZÁADÁS (későbbi marketing e-mailekhez)
+    await addToResendAudience({ email, name, source: 'appointment' });
 
     return NextResponse.json({ success: true });
 

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { addToResendAudience } from '@/lib/addToAudience';
 
 // 🔴 KULCSFONTOSSÁGÚ JAVÍTÁS: Engedélyezzük a Vercelnek, hogy 10 mp helyett 60 mp-ig fusson a folyamat!
 export const maxDuration = 60; 
@@ -265,6 +266,9 @@ const modelsToTry = [
         });
       } catch (mailErr) { console.error("Email küldési hiba:", mailErr); }
     }
+
+    // 4. RESEND AUDIENCE HOZZÁADÁS
+    await addToResendAudience({ email, name, source: 'quote' });
 
     return NextResponse.json({ success: true, result: aiResult });
 
