@@ -32,7 +32,7 @@ export async function addToResendAudience({ email, name, nickname, source, paylo
   const cleanNick = (nickname ?? '').trim();
   if (cleanNick) firstName = cleanNick;
 
-  // 1. Add contact to audience (idempotent — Resend silently handles duplicates)
+  // 1. Upsert contact in audience: try create first, fall back to PATCH on conflict
   if (audienceId) {
     try {
       const result = await resend.contacts.create({
@@ -42,11 +42,31 @@ export async function addToResendAudience({ email, name, nickname, source, paylo
         unsubscribed: false,
         audienceId,
       });
-      if (result.error && result.error.name !== 'validation_error') {
-        console.warn(`Resend audience add (${source}):`, result.error.message);
+
+      if (result.error) {
+        // Existing contact -> update it so name corrections propagate
+        const updateRes = await fetch(
+          `https://api.resend.com/audiences/${audienceId}/contacts/${encodeURIComponent(email)}`,
+          {
+            method: 'PATCH',
+            headers: {
+              'Authorization': `Bearer ${apiKey}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              first_name: firstName,
+              last_name: lastName,
+              unsubscribed: false,
+            }),
+          }
+        );
+        if (!updateRes.ok) {
+          const text = await updateRes.text();
+          console.warn(`Resend upsert (${source}):`, updateRes.status, text);
+        }
       }
     } catch (err: any) {
-      console.warn(`Resend audience add failed (${source}):`, err?.message ?? err);
+      console.warn(`Resend audience upsert failed (${source}):`, err?.message ?? err);
     }
   }
 
