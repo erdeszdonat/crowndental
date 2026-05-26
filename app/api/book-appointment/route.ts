@@ -83,7 +83,7 @@ export async function POST(req: Request) {
     }
 
     // 3. RESEND AUDIENCE HOZZÁADÁS (későbbi marketing e-mailekhez)
-    await addToResendAudience({ email, name, source: 'appointment' });
+    await addToResendAudience({ email, name, nickname, source: 'appointment' });
 
     return NextResponse.json({ success: true });
 

@@ -21,21 +21,21 @@ export async function POST(req: Request) {
     const supabase = createClient(supabaseUrl, supabaseKey);
     const { data, error } = await supabase
       .from('appointments')
-      .select('email, name, created_at')
+      .select('email, name, nickname, created_at')
       .order('created_at', { ascending: false });
 
     if (error) {
       return NextResponse.json({ error: `Adatbázis hiba: ${error.message}` }, { status: 500 });
     }
 
-    // Dedupe by email (lowercased)
+    // Dedupe by email (lowercased) - keep the FIRST entry which is the newest (DESC order)
     const seen = new Set<string>();
-    const uniqueContacts: { email: string; name: string }[] = [];
+    const uniqueContacts: { email: string; name: string; nickname: string }[] = [];
     for (const row of data ?? []) {
       const email = (row.email || '').trim().toLowerCase();
       if (!email || !email.includes('@') || seen.has(email)) continue;
       seen.add(email);
-      uniqueContacts.push({ email, name: row.name || '' });
+      uniqueContacts.push({ email, name: row.name || '', nickname: row.nickname || '' });
     }
 
     let imported = 0;
@@ -47,6 +47,7 @@ export async function POST(req: Request) {
         await addToResendAudience({
           email: contact.email,
           name: contact.name,
+          nickname: contact.nickname,
           source: 'appointment',
         });
         imported++;
