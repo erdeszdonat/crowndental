@@ -7,12 +7,13 @@ import {
 } from 'recharts';
 import {
   Calendar, TrendingUp, DollarSign, Sparkles, Phone, CheckCircle2, Clock,
-  Trophy, Activity, Users, PhoneOff, Target, Percent,
+  Trophy, Activity, Users, PhoneOff, Target, Percent, Send, Loader2, AlertCircle,
 } from 'lucide-react';
 
 interface StatsDashboardProps {
   appointments: any[];
   quotes: any[];
+  adminPassword: string;
 }
 
 const STATUS_COLORS = {
@@ -34,8 +35,35 @@ function formatFt(n: number) { return `${n.toLocaleString('hu-HU')} Ft`; }
 
 type TimeRange = '7d' | '30d' | '90d' | '365d';
 
-export default function StatsDashboard({ appointments, quotes }: StatsDashboardProps) {
+export default function StatsDashboard({ appointments, quotes, adminPassword }: StatsDashboardProps) {
   const [range, setRange] = useState<TimeRange>('30d');
+  const [importLoading, setImportLoading] = useState(false);
+  const [importResult, setImportResult] = useState<any>(null);
+  const [importError, setImportError] = useState('');
+
+  const runResendImport = async () => {
+    const confirmed = window.confirm(
+      `Biztosan importálod az összes időpontfoglalót a Resend audience-be?\n\nMind a ${appointments.length} kontakt bekerül és elindul rajuk a 2 éves email sorozat (30 nap múlva Google review, 3 hó múlva emlékeztető, stb.).\n\nEz a művelet több percig tarthat.`
+    );
+    if (!confirmed) return;
+    setImportLoading(true);
+    setImportResult(null);
+    setImportError('');
+    try {
+      const res = await fetch('/api/admin/import-resend', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: adminPassword }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Ismeretlen hiba');
+      setImportResult(data);
+    } catch (e: any) {
+      setImportError(e.message);
+    } finally {
+      setImportLoading(false);
+    }
+  };
 
   const stats = useMemo(() => {
     const today = startOfDay(new Date());
@@ -423,6 +451,106 @@ export default function StatsDashboard({ appointments, quotes }: StatsDashboardP
           </ResponsiveContainer>
         </ChartCard>
       )}
+
+      {/* ── RESEND IMPORT TOOL ── */}
+      <div className="bg-gradient-to-br from-sky-50 via-white to-indigo-50 rounded-2xl border border-sky-100 p-5">
+        <div className="flex items-start gap-3 mb-4">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-500 to-indigo-600 flex items-center justify-center shadow-md flex-shrink-0">
+            <Send className="w-5 h-5 text-white" />
+          </div>
+          <div className="flex-1">
+            <h3 className="font-black text-gray-900 text-sm uppercase tracking-wider">Resend Audience Import</h3>
+            <p className="text-xs text-gray-500 mt-0.5">
+              Importáld az összes meglévő időpontfoglalót a Resend marketing audience-be. Mindegyikre elindul a 2 éves követési sorozat (Google review, 3 hó / 6 hó / éves emlékeztetők).
+            </p>
+          </div>
+        </div>
+
+        {!importResult && !importError && (
+          <button
+            onClick={runResendImport}
+            disabled={importLoading || appointments.length === 0}
+            className="w-full md:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-sky-600 to-indigo-600 text-white font-black rounded-xl hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all text-sm"
+          >
+            {importLoading ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Importálás folyamatban... ({appointments.length} kontakt)
+              </>
+            ) : (
+              <>
+                <Send className="w-4 h-4" />
+                {appointments.length} kontakt importálása Resend-be
+              </>
+            )}
+          </button>
+        )}
+
+        {importLoading && (
+          <p className="text-xs text-gray-500 mt-3">
+            Ne zárd be a böngészőt. A művelet kb. 1-2 percig tart 100+ kontaktnál.
+          </p>
+        )}
+
+        {importError && (
+          <div className="mt-3 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <p className="font-black text-red-700 text-sm uppercase tracking-wider mb-1">Import hiba</p>
+              <p className="text-sm text-red-600">{importError}</p>
+              <button
+                onClick={() => { setImportError(''); setImportResult(null); }}
+                className="text-xs text-red-700 underline mt-2"
+              >
+                Próbáld újra
+              </button>
+            </div>
+          </div>
+        )}
+
+        {importResult && (
+          <div className="mt-3 p-4 bg-green-50 border border-green-200 rounded-xl">
+            <div className="flex items-start gap-3">
+              <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+              <div className="flex-1">
+                <p className="font-black text-green-700 text-sm uppercase tracking-wider mb-2">Sikeres import!</p>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+                  <div className="bg-white rounded-lg p-2 border border-green-100">
+                    <p className="text-gray-500 font-bold uppercase tracking-wider">DB-ben</p>
+                    <p className="font-black text-gray-900 text-base">{importResult.totalInDb}</p>
+                  </div>
+                  <div className="bg-white rounded-lg p-2 border border-green-100">
+                    <p className="text-gray-500 font-bold uppercase tracking-wider">Egyedi email</p>
+                    <p className="font-black text-gray-900 text-base">{importResult.uniqueEmails}</p>
+                  </div>
+                  <div className="bg-white rounded-lg p-2 border border-green-100">
+                    <p className="text-gray-500 font-bold uppercase tracking-wider">Importálva</p>
+                    <p className="font-black text-green-700 text-base">{importResult.imported}</p>
+                  </div>
+                  <div className="bg-white rounded-lg p-2 border border-green-100">
+                    <p className="text-gray-500 font-bold uppercase tracking-wider">Hiba</p>
+                    <p className={`font-black text-base ${importResult.failed > 0 ? 'text-red-600' : 'text-gray-900'}`}>{importResult.failed}</p>
+                  </div>
+                </div>
+                {importResult.errors?.length > 0 && (
+                  <details className="mt-3 text-xs">
+                    <summary className="cursor-pointer text-red-700 font-bold">Hibák ({importResult.errors.length})</summary>
+                    <ul className="mt-2 space-y-1 text-gray-600 font-mono">
+                      {importResult.errors.map((e: string, i: number) => <li key={i}>· {e}</li>)}
+                    </ul>
+                  </details>
+                )}
+                <button
+                  onClick={() => { setImportResult(null); setImportError(''); }}
+                  className="text-xs text-gray-600 underline mt-3"
+                >
+                  Bezárás
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
 
     </div>
   );

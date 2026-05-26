@@ -262,7 +262,7 @@ export default function AdminDashboard() {
             {/* STATS */}
             {activeTab === 'stats' ? (
               <motion.div key="stats" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
-                <StatsDashboard appointments={appointments} quotes={quotes} />
+                <StatsDashboard appointments={appointments} quotes={quotes} adminPassword={passwordInput} />
               </motion.div>
             ) : activeTab === 'blog' ? (
               <motion.div key="blog" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-4">
