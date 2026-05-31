@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
 import { addToResendAudience } from '@/lib/addToAudience';
+import { isBudapestBookingAvailable, isBudapestCity } from '@/lib/bookingAvailability';
 
 export async function POST(req: Request) {
   console.log("--- ÚJ IDŐPONTFOGLALÁSI KÉRÉS ÉRKEZETT ---");
@@ -12,6 +13,10 @@ export async function POST(req: Request) {
 
     if (!name || !email || !phone || !city || !treatment) {
       return NextResponse.json({ error: 'Minden kötelező mezőt ki kell tölteni!' }, { status: 400 });
+    }
+
+    if (isBudapestCity(city) && !isBudapestBookingAvailable()) {
+      return NextResponse.json({ error: 'A budapesti rendelőbe 2026. július 31-től lehet időpontot kérni.' }, { status: 400 });
     }
 
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;

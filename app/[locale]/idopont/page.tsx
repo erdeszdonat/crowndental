@@ -3,7 +3,7 @@ import BookingClient from './BookingClient';
 
 export const metadata: Metadata = {
   title: 'Azonnali Időpont Foglalás | Crown Dental – Online Foglalás 0-24',
-  description: 'Foglaljon időpontot online a Crown Dental fogászatra! Válasszon kezelést és időpontot Esztergomban vagy Budapesten. Azonnali visszaigazolás!',
+  description: 'Foglaljon időpontot online a Crown Dental fogászatra! Esztergomban azonnal, Budapesten 2026. július 31-től kérhet időpontot.',
   keywords: [
     'időpont foglalás fogászat',
     'online időpontfoglalás fogorvos',
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Időpont Foglalás | Crown Dental',
-    description: 'Foglaljon időpontot online! Első konzultáció ingyenes. Esztergom és Budapest.',
+    description: 'Foglaljon időpontot online! Esztergom most, Budapest 2026. július 31-től.',
     url: 'https://www.crowndental.hu/idopont',
     type: 'website',
   }

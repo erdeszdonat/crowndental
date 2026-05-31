@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ArrowLeft, CheckCircle2, Star } from 'lucide-react';
 import Link from 'next/link';
 import { useTranslations, useLocale } from 'next-intl';
+import { BUDAPEST_BOOKING_OPEN_LABELS, isBudapestBookingAvailable, isBudapestCity } from '@/lib/bookingAvailability';
 
 function BookingForm() {
   const t = useTranslations('booking');
@@ -16,6 +17,8 @@ function BookingForm() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [formData, setFormData] = useState({ city:'Esztergom', name:'', nickname:'', email:'', phone:'', treatment:'' });
   const [otherNote, setOtherNote] = useState('');
+  const isBudapestOpen = isBudapestBookingAvailable();
+  const budapestOpenLabel = BUDAPEST_BOOKING_OPEN_LABELS[locale as keyof typeof BUDAPEST_BOOKING_OPEN_LABELS] ?? BUDAPEST_BOOKING_OPEN_LABELS.hu;
 
   const treatments = t.raw('treatments') as string[];
   const otherLabel = treatments[treatments.length - 1];
@@ -28,6 +31,7 @@ function BookingForm() {
 
   const handleNext = (e: React.FormEvent) => {
     e.preventDefault();
+    if (isBudapestCity(formData.city) && !isBudapestOpen) return;
     if (formData.name && formData.phone && formData.email) { setStep(2); window.scrollTo({ top:0, behavior:'smooth' }); }
   };
 
@@ -74,15 +78,16 @@ function BookingForm() {
             <motion.form key="step1" initial={{ opacity:0, x:-20 }} animate={{ opacity:1, x:0 }} exit={{ opacity:0, x:20 }} onSubmit={handleNext} className="space-y-6">
               <h2 className="text-2xl font-extrabold text-gray-900 mb-6">{t('step1Title')}</h2>
               <div className="grid sm:grid-cols-2 gap-4 mb-8">
-                <label className="relative cursor-pointer rounded-2xl border-2 p-6 transition-all border-sky-600 bg-sky-50">
-                  <input type="radio" name="city" value="Esztergom" checked onChange={handleChange} className="sr-only"/>
-                  <div className="flex items-center justify-between font-bold text-lg text-gray-900">Esztergom<CheckCircle2 className="w-5 h-5 text-sky-600"/></div>
+                <label className={`relative cursor-pointer rounded-2xl border-2 p-6 transition-all ${formData.city==='Esztergom'?'border-sky-600 bg-sky-50':'border-gray-200 bg-white hover:border-sky-200'}`}>
+                  <input type="radio" name="city" value="Esztergom" checked={formData.city==='Esztergom'} onChange={handleChange} className="sr-only"/>
+                  <div className="flex items-center justify-between font-bold text-lg text-gray-900">Esztergom{formData.city==='Esztergom'&&<CheckCircle2 className="w-5 h-5 text-sky-600"/>}</div>
                   <p className="text-sm text-sky-600 font-medium mt-1">Petőfi Sándor utca 11.</p>
                 </label>
-                <div className="relative rounded-2xl border-2 p-6 border-gray-200 bg-gray-50 opacity-60 cursor-not-allowed select-none">
-                  <div className="flex items-center justify-between font-bold text-lg text-gray-400">Budapest<span className="text-xs font-semibold text-white bg-sky-400 px-2 py-1 rounded-full whitespace-nowrap">Jún. 1-től</span></div>
-                  <p className="text-sm text-gray-400 font-medium mt-1">Királyok útja 55.</p>
-                </div>
+                <label className={`relative rounded-2xl border-2 p-6 transition-all ${isBudapestOpen?'cursor-pointer select-auto':'cursor-not-allowed select-none opacity-60'} ${formData.city==='Budapest'?'border-sky-600 bg-sky-50':'border-gray-200 bg-gray-50 hover:border-sky-200'}`}>
+                  <input type="radio" name="city" value="Budapest" checked={formData.city==='Budapest'} disabled={!isBudapestOpen} onChange={handleChange} className="sr-only"/>
+                  <div className={`flex items-center justify-between font-bold text-lg ${isBudapestOpen?'text-gray-900':'text-gray-400'}`}>Budapest{formData.city==='Budapest'?<CheckCircle2 className="w-5 h-5 text-sky-600"/>:<span className="text-xs font-semibold text-white bg-sky-400 px-2 py-1 rounded-full whitespace-nowrap">{budapestOpenLabel}</span>}</div>
+                  <p className={`text-sm font-medium mt-1 ${isBudapestOpen?'text-sky-600':'text-gray-400'}`}>Királyok útja 55.</p>
+                </label>
               </div>
               <div className="space-y-4">
                 <input required name="name" value={formData.name} onChange={handleChange} placeholder={`${t('fullName')} *`} className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-600"/>

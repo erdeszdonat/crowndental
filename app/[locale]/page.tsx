@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useInView } from 'framer-motion';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import {
   MapPin, Phone, Award, Building2, Shield, Calendar,
   ArrowRight, CheckCircle2, Star, Heart, Upload, Search, Activity,
@@ -66,28 +68,29 @@ function buildPDF(result: any, name: string, phone: string, email: string, nickn
 function FloatingCTA() {
   const t = useTranslations('home.floatingCta');
   const locale = useLocale();
+  const router = useRouter();
   const p = locale === 'hu' ? '' : `/${locale}`;
-  const [visible, setVisible] = useState(false);
+  const bookingHref = `${p}/idopont`;
+
   useEffect(() => {
-    const h = () => setVisible(window.scrollY > 700);
-    window.addEventListener('scroll', h, { passive: true });
-    return () => window.removeEventListener('scroll', h);
-  }, []);
+    router.prefetch(bookingHref);
+  }, [bookingHref, router]);
+
   return (
-    <AnimatePresence>
-      {visible && (
-        <motion.div initial={{ opacity: 0, y: 40, scale: 0.8 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 40, scale: 0.8 }} transition={{ type:'spring', damping:20, stiffness:300 }} className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 items-end">
-          <a href="tel:+36705646837" className="flex items-center gap-2 bg-white text-sky-700 pl-4 pr-5 py-3 rounded-full shadow-2xl border border-sky-100 hover:bg-sky-50 transition-all">
-            <Phone className="w-5 h-5" /><span className="font-bold text-sm hidden sm:inline">{t('callNow')}</span>
-          </a>
-          <a href={`${p}/idopont`}>
-            <motion.div whileHover={{ scale:1.05 }} whileTap={{ scale:0.95 }} className="flex items-center gap-3 bg-gradient-to-r from-sky-600 to-sky-500 text-white px-6 py-4 rounded-full shadow-[0_8px_40px_rgba(2,132,199,0.4)] hover:shadow-[0_8px_50px_rgba(2,132,199,0.6)] transition-all cursor-pointer">
-              <Calendar className="w-5 h-5" /><span className="font-bold">{t('bookAppointment')}</span><ArrowRight className="w-4 h-4" />
-            </motion.div>
-          </a>
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <motion.div initial={{ opacity: 0, y: 24, scale: 0.94 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ type:'spring', damping:20, stiffness:300, delay:0.15 }} className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 items-end">
+      <a href="tel:+36705646837" className="flex items-center gap-2 bg-white text-sky-700 pl-4 pr-5 py-3 rounded-full shadow-2xl border border-sky-100 hover:bg-sky-50 transition-all">
+        <Phone className="w-5 h-5" /><span className="font-bold text-sm hidden sm:inline">{t('callNow')}</span>
+      </a>
+      <Link
+        href={bookingHref}
+        prefetch
+        onMouseEnter={() => router.prefetch(bookingHref)}
+        onTouchStart={() => router.prefetch(bookingHref)}
+        className="flex items-center gap-3 bg-gradient-to-r from-sky-600 to-sky-500 text-white px-6 py-4 rounded-full shadow-[0_8px_40px_rgba(2,132,199,0.4)] hover:scale-105 hover:shadow-[0_8px_50px_rgba(2,132,199,0.6)] active:scale-95 transition-all"
+      >
+        <Calendar className="w-5 h-5" /><span className="font-bold">{t('bookAppointment')}</span><ArrowRight className="w-4 h-4" />
+      </Link>
+    </motion.div>
   );
 }
 

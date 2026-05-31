@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useLocale } from 'next-intl';
 import { motion, AnimatePresence, useScroll, useTransform, useInView } from 'framer-motion';
 import { createClient } from 'next-sanity';
@@ -218,9 +219,9 @@ function OpeningSoonBanner() {
           </span>
           <span className="font-extrabold text-sm md:text-base">
             {t(locale,
-              'Budapesti rendelőnk 2026 júniusában nyit!',
-              'Our Budapest clinic opens in June 2026!',
-              'Naša budapeštianska ordinácia otvára v júni 2026!'
+              'Budapesti rendelőnk 2026. július 31-én nyit!',
+              'Our Budapest clinic opens on July 31, 2026!',
+              'Naša budapeštianska ordinácia otvára 31. júla 2026!'
             )}
           </span>
           <span className="text-amber-900/70 text-sm hidden sm:inline">
@@ -245,31 +246,32 @@ function OpeningSoonBanner() {
 
 function FloatingCTA() {
   const locale = useLocale();
+  const router = useRouter();
   const p = locale === 'hu' ? '' : `/${locale}`;
-  const [visible, setVisible] = useState(false);
+  const bookingHref = `${p}/idopont`;
+
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > 600);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+    router.prefetch(bookingHref);
+  }, [bookingHref, router]);
+
   return (
-    <AnimatePresence>
-      {visible && (
-        <motion.div initial={{ opacity: 0, y: 40, scale: 0.8 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 40, scale: 0.8 }} transition={{ type: 'spring', damping: 20, stiffness: 300 }} className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 items-end">
-          <a href="tel:+36705646837" className="group flex items-center gap-2 bg-white text-sky-700 pl-4 pr-5 py-3 rounded-full shadow-2xl border border-sky-100 hover:bg-sky-50 transition-all">
-            <Phone className="w-5 h-5" />
-            <span className="font-bold text-sm hidden sm:inline">{t(locale, 'Hívjon most', 'Call now', 'Zavolajte nám')}</span>
-          </a>
-          <Link href={`${p}/idopont`}>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex items-center gap-3 bg-gradient-to-r from-sky-600 to-sky-500 text-white px-6 py-4 rounded-full shadow-[0_8px_40px_rgba(2,132,199,0.4)] hover:shadow-[0_8px_50px_rgba(2,132,199,0.6)] transition-all cursor-pointer">
-              <Calendar className="w-5 h-5" />
-              <span className="font-bold">{t(locale, 'Időpontfoglalás', 'Book Appointment', 'Rezervácia termínu')}</span>
-              <ArrowRight className="w-4 h-4" />
-            </motion.div>
-          </Link>
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <motion.div initial={{ opacity: 0, y: 24, scale: 0.94 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ type: 'spring', damping: 20, stiffness: 300, delay: 0.15 }} className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 items-end">
+      <a href="tel:+36705646837" className="group flex items-center gap-2 bg-white text-sky-700 pl-4 pr-5 py-3 rounded-full shadow-2xl border border-sky-100 hover:bg-sky-50 transition-all">
+        <Phone className="w-5 h-5" />
+        <span className="font-bold text-sm hidden sm:inline">{t(locale, 'Hívjon most', 'Call now', 'Zavolajte nám')}</span>
+      </a>
+      <Link
+        href={bookingHref}
+        prefetch
+        onMouseEnter={() => router.prefetch(bookingHref)}
+        onTouchStart={() => router.prefetch(bookingHref)}
+        className="flex items-center gap-3 bg-gradient-to-r from-sky-600 to-sky-500 text-white px-6 py-4 rounded-full shadow-[0_8px_40px_rgba(2,132,199,0.4)] hover:scale-105 hover:shadow-[0_8px_50px_rgba(2,132,199,0.6)] active:scale-95 transition-all"
+      >
+        <Calendar className="w-5 h-5" />
+        <span className="font-bold">{t(locale, 'Időpontfoglalás', 'Book Appointment', 'Rezervácia termínu')}</span>
+        <ArrowRight className="w-4 h-4" />
+      </Link>
+    </motion.div>
   );
 }
 
@@ -315,9 +317,9 @@ function HeroSection() {
               )}{' '}
               <span className="text-amber-300 font-semibold">
                 {t(locale,
-                  '2026 júniusától Budapest szívében is.',
-                  'coming to the heart of Budapest in June 2026.',
-                  'v centre Budapešti od júna 2026.'
+                  '2026. július 31-től Budapest szívében is.',
+                  'coming to the heart of Budapest from July 31, 2026.',
+                  'v centre Budapešti od 31. júla 2026.'
                 )}
               </span>
             </p>
@@ -379,7 +381,7 @@ function ComingSoonNotice() {
                 <div className="flex-1">
                   <div className="inline-flex items-center gap-2 px-4 py-2 bg-amber-100 border border-amber-200 rounded-full text-amber-700 text-sm font-bold uppercase tracking-wider mb-5">
                     <Clock className="w-4 h-4" />
-                    {t(locale, '2026 Június', 'June 2026', 'Jún 2026')}
+                    {t(locale, '2026. július 31.', 'July 31, 2026', '31. júl 2026')}
                   </div>
                   <h3 className="text-2xl md:text-3xl font-black text-gray-900 mb-4 leading-tight">
                     {t(locale, 'Budapesti rendelőnk', 'Our Budapest clinic', 'Naša budapeštianska ordinácia')}<br />
@@ -387,9 +389,9 @@ function ComingSoonNotice() {
                   </h3>
                   <p className="text-gray-600 leading-relaxed mb-6">
                     {t(locale,
-                      'A Római Parton épülő új rendelőnk 2026 júniusában nyitja meg kapuit. Addig is teljes körű fogászati ellátással, saját laborral és 30 év tapasztalatával várjuk Önt ',
-                      'Our new clinic on the Danube waterfront opens its doors in June 2026. In the meantime, we welcome you with full dental care, an in-house lab, and 30 years of experience at our ',
-                      'Naša nová ordinácia na nábreží Dunaja otvorí svoje dvere v júni 2026. Medzitým vás vítame s kompletnou stomatologickou starostlivosťou, vlastným laboratóriom a 30-ročnými skúsenosťami v našej '
+                      'A Római Parton épülő új rendelőnk 2026. július 31-én nyitja meg kapuit. Addig is teljes körű fogászati ellátással, saját laborral és 30 év tapasztalatával várjuk Önt ',
+                      'Our new clinic on the Danube waterfront opens its doors on July 31, 2026. In the meantime, we welcome you with full dental care, an in-house lab, and 30 years of experience at our ',
+                      'Naša nová ordinácia na nábreží Dunaja otvorí svoje dvere 31. júla 2026. Medzitým vás vítame s kompletnou stomatologickou starostlivosťou, vlastným laboratóriom a 30-ročnými skúsenosťami v našej '
                     )}
                     <span className="font-bold">{t(locale, 'esztergomi rendelőnkben', 'Esztergom clinic', 'ordinácii v Ostrihome')}</span>
                     {t(locale, ' – mindössze 50 perc Budapestről!', ' — just 50 minutes from Budapest!', ' — len 50 minút od Budapešti!')}
