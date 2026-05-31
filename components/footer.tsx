@@ -15,7 +15,13 @@ export default function Footer() {
     return null;
   }
 
+  const isContactPage = pathname === '/kapcsolat' || pathname?.endsWith('/kapcsolat');
   const prefix = locale === 'hu' ? '' : `/${locale}`;
+  const contactPageDescription: Record<string, string> = {
+    hu: 'Kiváló minőségű fogászat saját fogtechnikai laborral Esztergomban, kompromisszumok nélkül.',
+    en: 'High-quality dentistry with an in-house dental laboratory in Esztergom, without compromise.',
+    sk: 'Kvalitná stomatológia s vlastným zubotechnickým laboratóriom v Ostrihome, bez kompromisov.',
+  };
 
   const openCookieBanner = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -49,7 +55,7 @@ export default function Footer() {
             </div>
 
             <p className="text-gray-400 mb-6 leading-relaxed text-sm max-w-sm md:max-w-none">
-              {t('description')}
+              {isContactPage ? contactPageDescription[locale] ?? contactPageDescription.hu : t('description')}
             </p>
 
             <div className="flex gap-3 justify-center md:justify-start">
@@ -130,17 +136,19 @@ export default function Footer() {
                   </a>
                 </div>
               </li>
-              <li className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center flex-shrink-0">
-                  <MapPin className="w-5 h-5 text-amber-500" />
-                </div>
-                <div>
-                  <span className="block text-white font-bold mb-1">{t('budapestClinic')}</span>
-                  <a href="https://maps.google.com/?q=1039+Budapest+Királyok+útja+55" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors leading-relaxed block">
-                    1039 Budapest,<br /> Királyok útja 55.
-                  </a>
-                </div>
-              </li>
+              {!isContactPage && (
+                <li className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center flex-shrink-0">
+                    <MapPin className="w-5 h-5 text-amber-500" />
+                  </div>
+                  <div>
+                    <span className="block text-white font-bold mb-1">{t('budapestClinic')}</span>
+                    <a href="https://maps.google.com/?q=1039+Budapest+Királyok+útja+55" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors leading-relaxed block">
+                      1039 Budapest,<br /> Királyok útja 55.
+                    </a>
+                  </div>
+                </li>
+              )}
               <li className="flex items-center gap-4">
                 <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center flex-shrink-0">
                   <Phone className="w-5 h-5 text-sky-500" />

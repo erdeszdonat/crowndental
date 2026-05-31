@@ -8,17 +8,17 @@ type Props = {
 const metadataByLocale: Record<string, { title: string; description: string; canonical: string }> = {
   hu: {
     title: 'Kapcsolat | Crown Dental',
-    description: 'Lépjen kapcsolatba a Crown Dental rendelőivel Esztergomban és Budapesten. Telefon, e-mail, címek, térkép és gyors online időpontfoglalás.',
+    description: 'Lépjen kapcsolatba a Crown Dental esztergomi rendelőjével. Telefon, e-mail, útvonalterv és gyors online időpontfoglalás.',
     canonical: 'https://www.crowndental.hu/kapcsolat',
   },
   en: {
     title: 'Contact | Crown Dental',
-    description: 'Contact Crown Dental clinics in Esztergom and Budapest. Phone, email, addresses, map links and fast online appointment booking.',
+    description: 'Contact the Crown Dental clinic in Esztergom. Phone, email, directions and fast online appointment booking.',
     canonical: 'https://www.crowndental.hu/en/kapcsolat',
   },
   sk: {
     title: 'Kontakt | Crown Dental',
-    description: 'Kontaktujte ambulancie Crown Dental v Ostrihome a Budapešti. Telefón, e-mail, adresy, mapa a rýchla online rezervácia termínu.',
+    description: 'Kontaktujte ambulanciu Crown Dental v Ostrihome. Telefón, e-mail, navigácia a rýchla online rezervácia termínu.',
     canonical: 'https://www.crowndental.hu/sk/kapcsolat',
   },
 };
@@ -59,13 +59,6 @@ const jsonLd = {
         streetAddress: 'Petőfi Sándor utca 11.',
         addressLocality: 'Esztergom',
         postalCode: '2500',
-        addressCountry: 'HU',
-      },
-      {
-        '@type': 'PostalAddress',
-        streetAddress: 'Királyok útja 55.',
-        addressLocality: 'Budapest',
-        postalCode: '1039',
         addressCountry: 'HU',
       },
     ],

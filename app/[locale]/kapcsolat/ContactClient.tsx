@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { useLocale } from 'next-intl';
 import {
   ArrowRight,
-  Building2,
   Calendar,
   CheckCircle2,
   Clock,
@@ -21,101 +20,130 @@ import {
 
 const copyByLocale = {
   hu: {
-    badge: 'Kapcsolat',
-    titleTop: 'Gyors válasz,',
-    titleBottom: 'biztos irány.',
-    subtitle: 'Hívjon minket, írjon e-mailt, vagy foglaljon online időpontot. Esztergomban már várjuk, Budapest pedig 2026. július 31-től fogad foglalásokat.',
-    book: 'Időpontot foglalok',
+    eyebrow: 'Kapcsolat',
+    title: 'Beszéljünk, és megtaláljuk a legjobb következő lépést.',
+    subtitle: 'Esztergomi rendelőnkben várjuk pácienseinket. Hívjon, írjon e-mailt, vagy foglaljon online időpontot pár kattintással.',
     call: 'Hívás most',
+    book: 'Időpontfoglalás',
     email: 'E-mail küldése',
-    route: 'Útvonalterv',
-    openMap: 'Megnyitás térképen',
-    clinicsTitle: 'Két rendelő, egy prémium ellátási szint',
-    clinicsSubtitle: 'Válassza ki az Önnek kényelmes helyszínt, a szakmai háttér és a saját labor ugyanaz a Crown Dental minőség.',
-    esztergomDesc: 'Aktív rendelőnk Esztergom szívében, személyes vizsgálatokhoz és kezelésekhez.',
-    budapestDesc: 'Új, Duna-parti rendelőnk 2026. július 31-től fogad időpontokat.',
-    esztergomStatus: 'Foglalható most',
-    budapestStatus: 'Foglalható július 31-től',
-    hours: 'Hétfő – Péntek · 08:00 – 18:00',
-    responseTitle: 'Mire számíthat?',
-    responseItems: [
-      'Telefonon a leggyorsabb: sürgős kérdésnél hívjon minket közvetlenül.',
-      'Online foglalásnál azonnali visszajelzést kap a kiválasztott adatokkal.',
-      'E-mailben küldhet röntgent, árajánlatot vagy rövid leírást a panaszról.',
+    map: 'Útvonalterv',
+    urgentTitle: 'Sürgős eset?',
+    urgentText: 'Hívjon hétvégén is, ha sürgős panaszról van szó.',
+    available: 'Hétfő – vasárnap',
+    availableNote: 'A hét minden napján fogadjuk a megkereséseket.',
+    clinicTitle: 'Crown Dental Esztergom',
+    clinicIntro: 'Aktív rendelőnk Esztergom központjában, saját laborháttérrel és átlátható kezelési tervvel.',
+    addressLabel: 'Cím',
+    phoneLabel: 'Telefon',
+    emailLabel: 'E-mail',
+    nextTitle: 'Miben segítünk gyorsan?',
+    nextItems: [
+      'Ha fájdalma vagy sürgős panasza van, telefonon tudunk a leggyorsabban segíteni.',
+      'Ha kezelési tervet vagy árajánlatot szeretne, foglaljon állapotfelmérést online.',
+      'Ha röntgent, fotót vagy korábbi árajánlatot küldene, írjon e-mailt rövid leírással.',
     ],
-    trustTitle: 'Nem kell mindent tudnia előre.',
-    trustText: 'Ha bizonytalan, melyik kezelésre van szüksége, elég egy állapotfelmérést foglalni. A rendelőben átlátható tervet és pontos következő lépést adunk.',
+    trustTitle: 'Nem kell pontosan tudnia, mire van szüksége.',
+    trustText: 'Elég, ha leírja vagy elmondja, mi zavarja. Mi segítünk eldönteni, hogy vizsgálat, konzultáció vagy sürgősebb ellátás a jó következő lépés.',
   },
   en: {
-    badge: 'Contact',
-    titleTop: 'Fast reply,',
-    titleBottom: 'clear next step.',
-    subtitle: 'Call us, send an email or book online. Esztergom is open now, while Budapest accepts bookings from 31 July 2026.',
-    book: 'Book appointment',
+    eyebrow: 'Contact',
+    title: 'Let’s talk and find the best next step.',
+    subtitle: 'Our Esztergom clinic is ready to welcome you. Call, email or book your appointment online in a few clicks.',
     call: 'Call now',
+    book: 'Book appointment',
     email: 'Send email',
-    route: 'Directions',
-    openMap: 'Open map',
-    clinicsTitle: 'Two clinics, one premium standard',
-    clinicsSubtitle: 'Choose the location that works for you. The clinical background and in-house lab quality remain Crown Dental.',
-    esztergomDesc: 'Our active clinic in the heart of Esztergom for consultations and treatments.',
-    budapestDesc: 'Our new riverside Budapest clinic accepts appointments from 31 July 2026.',
-    esztergomStatus: 'Bookable now',
-    budapestStatus: 'Bookable from 31 July',
-    hours: 'Monday – Friday · 08:00 – 18:00',
-    responseTitle: 'What happens next?',
-    responseItems: [
-      'Phone is fastest: for urgent questions, call us directly.',
-      'Online booking gives an immediate confirmation flow with your selected details.',
-      'By email, you can send X-rays, quotes or a short description of your concern.',
+    map: 'Directions',
+    urgentTitle: 'Urgent concern?',
+    urgentText: 'Call us on weekends as well if your concern is urgent.',
+    available: 'Monday – Sunday',
+    availableNote: 'We receive enquiries every day of the week.',
+    clinicTitle: 'Crown Dental Esztergom',
+    clinicIntro: 'Our active clinic in central Esztergom, with in-house lab support and transparent treatment planning.',
+    addressLabel: 'Address',
+    phoneLabel: 'Phone',
+    emailLabel: 'Email',
+    nextTitle: 'How can we help quickly?',
+    nextItems: [
+      'If you have pain or an urgent concern, phone is the fastest way to reach us.',
+      'If you need a treatment plan or quote, book an assessment online.',
+      'If you want to send an X-ray, photo or previous quote, email us with a short note.',
     ],
-    trustTitle: 'You do not need to know everything upfront.',
-    trustText: 'If you are unsure which treatment you need, book an assessment. We will give you a clear plan and the precise next step.',
+    trustTitle: 'You do not need to know exactly what you need.',
+    trustText: 'Just tell us what bothers you. We will help decide whether an assessment, consultation or more urgent care is the right next step.',
   },
   sk: {
-    badge: 'Kontakt',
-    titleTop: 'Rýchla odpoveď,',
-    titleBottom: 'jasný ďalší krok.',
-    subtitle: 'Zavolajte nám, pošlite e-mail alebo si rezervujte termín online. Ostrihom je otvorený, Budapešť prijíma rezervácie od 31. júla 2026.',
-    book: 'Rezervovať termín',
+    eyebrow: 'Kontakt',
+    title: 'Porozprávajme sa a nájdime najlepší ďalší krok.',
+    subtitle: 'Naša ambulancia v Ostrihome vás privíta. Zavolajte, napíšte e-mail alebo si rezervujte termín online.',
     call: 'Zavolať teraz',
+    book: 'Rezervovať termín',
     email: 'Poslať e-mail',
-    route: 'Navigácia',
-    openMap: 'Otvoriť mapu',
-    clinicsTitle: 'Dve ambulancie, jeden prémiový štandard',
-    clinicsSubtitle: 'Vyberte si pohodlnú lokalitu. Odborné zázemie a vlastné laboratórium zostávajú v kvalite Crown Dental.',
-    esztergomDesc: 'Naša aktívna ambulancia v srdci Ostrihomu pre konzultácie a ošetrenia.',
-    budapestDesc: 'Nová budapeštianska ambulancia pri Dunaji prijíma termíny od 31. júla 2026.',
-    esztergomStatus: 'Rezervácia možná teraz',
-    budapestStatus: 'Rezervácia od 31. júla',
-    hours: 'Pondelok – Piatok · 08:00 – 18:00',
-    responseTitle: 'Čo bude nasledovať?',
-    responseItems: [
-      'Telefón je najrýchlejší: pri urgentnej otázke nám zavolajte priamo.',
-      'Online rezervácia vás okamžite prevedie vybranými údajmi.',
-      'E-mailom môžete poslať RTG, cenovú ponuku alebo krátky opis problému.',
+    map: 'Navigácia',
+    urgentTitle: 'Súrny problém?',
+    urgentText: 'Ak ide o urgentný problém, zavolajte nám aj cez víkend.',
+    available: 'Pondelok – nedeľa',
+    availableNote: 'Dopyty prijímame každý deň v týždni.',
+    clinicTitle: 'Crown Dental Esztergom',
+    clinicIntro: 'Naša aktívna ambulancia v centre Ostrihomu, s vlastným laboratórnym zázemím a jasným liečebným plánom.',
+    addressLabel: 'Adresa',
+    phoneLabel: 'Telefón',
+    emailLabel: 'E-mail',
+    nextTitle: 'S čím pomôžeme rýchlo?',
+    nextItems: [
+      'Ak máte bolesť alebo urgentný problém, telefonát je najrýchlejší kontakt.',
+      'Ak potrebujete plán liečby alebo cenovú ponuku, rezervujte si vstupné vyšetrenie online.',
+      'Ak chcete poslať RTG, fotografiu alebo staršiu ponuku, pošlite nám e-mail s krátkym opisom.',
     ],
-    trustTitle: 'Nemusíte vedieť všetko vopred.',
-    trustText: 'Ak si nie ste istí, aké ošetrenie potrebujete, rezervujte si vstupné vyšetrenie. Dostanete jasný plán a presný ďalší krok.',
+    trustTitle: 'Nemusíte presne vedieť, čo potrebujete.',
+    trustText: 'Stačí povedať, čo vás trápi. Pomôžeme určiť, či je vhodné vyšetrenie, konzultácia alebo urgentnejšia starostlivosť.',
   },
 };
 
-const clinics = [
-  {
-    key: 'esztergom',
-    name: 'Crown Dental Esztergom',
-    address: '2500 Esztergom, Petőfi Sándor utca 11.',
-    mapHref: 'https://share.google/UV0bxLOGoyQdgH826',
-    accent: 'sky',
-  },
-  {
-    key: 'budapest',
-    name: 'Crown Dental Budapest',
-    address: '1039 Budapest, Királyok útja 55.',
-    mapHref: 'https://maps.google.com/?q=1039+Budapest+Királyok+útja+55',
-    accent: 'amber',
-  },
-] as const;
+const address = '2500 Esztergom, Petőfi Sándor utca 11.';
+const phone = '+36 70 564 6837';
+const email = 'info@crowndental.hu';
+const mapHref = 'https://share.google/UV0bxLOGoyQdgH826';
+
+function ContactAnimation() {
+  return (
+    <div className="relative mx-auto aspect-square w-full max-w-[360px]">
+      <motion.div
+        className="absolute inset-0 rounded-full border border-sky-200"
+        animate={{ scale: [0.86, 1.08, 0.86], opacity: [0.65, 0.15, 0.65] }}
+        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+      />
+      <motion.div
+        className="absolute inset-10 rounded-full border border-cyan-200"
+        animate={{ scale: [1, 0.84, 1], opacity: [0.2, 0.75, 0.2] }}
+        transition={{ duration: 3.4, repeat: Infinity, ease: 'easeInOut' }}
+      />
+      <motion.div
+        className="absolute left-1/2 top-1/2 h-36 w-36 -translate-x-1/2 -translate-y-1/2 rounded-[2rem] bg-gradient-to-br from-sky-500 to-cyan-400 shadow-[0_24px_80px_rgba(14,165,233,0.35)]"
+        animate={{ y: [-8, 8, -8], rotate: [-4, 4, -4] }}
+        transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+      >
+        <div className="absolute inset-0 rounded-[2rem] bg-white/10" />
+        <div className="flex h-full w-full items-center justify-center text-white">
+          <Phone className="h-14 w-14" />
+        </div>
+      </motion.div>
+      <motion.div
+        className="absolute right-8 top-14 rounded-2xl bg-white px-4 py-3 shadow-xl border border-sky-100"
+        animate={{ y: [0, -10, 0] }}
+        transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut' }}
+      >
+        <Mail className="h-5 w-5 text-sky-600" />
+      </motion.div>
+      <motion.div
+        className="absolute bottom-14 left-8 rounded-2xl bg-white px-4 py-3 shadow-xl border border-sky-100"
+        animate={{ y: [0, 10, 0] }}
+        transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut' }}
+      >
+        <Calendar className="h-5 w-5 text-sky-600" />
+      </motion.div>
+    </div>
+  );
+}
 
 export default function ContactClient() {
   const locale = useLocale();
@@ -123,145 +151,122 @@ export default function ContactClient() {
   const prefix = locale === 'hu' ? '' : `/${locale}`;
 
   return (
-    <div className="bg-white min-h-screen overflow-hidden selection:bg-sky-200 selection:text-sky-900">
+    <div className="min-h-screen bg-white selection:bg-sky-200 selection:text-sky-900">
       <main>
-        <section className="relative pt-32 pb-20 lg:pt-44 lg:pb-28 bg-gray-950 overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(14,165,233,0.28),transparent_36%),radial-gradient(circle_at_80%_20%,rgba(245,158,11,0.18),transparent_30%),linear-gradient(135deg,#020617,#0f172a_52%,#082f49)]" />
-          <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,1) 1px,transparent 1px)', backgroundSize: '72px 72px' }} />
-
+        <section className="relative overflow-hidden bg-gradient-to-b from-sky-50 via-white to-white pt-28 pb-16 lg:pt-36 lg:pb-20">
+          <div className="absolute inset-0 opacity-60 [background-image:radial-gradient(circle_at_20%_20%,rgba(14,165,233,0.12),transparent_32%),radial-gradient(circle_at_80%_0%,rgba(6,182,212,0.12),transparent_28%)]" />
           <div className="relative z-10 container mx-auto px-4">
-            <div className="grid lg:grid-cols-[1fr_420px] gap-10 lg:gap-16 items-center">
-              <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
-                <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/10 border border-white/15 backdrop-blur-xl rounded-full text-sky-300 text-xs sm:text-sm font-bold tracking-wider uppercase mb-8">
-                  <Sparkles className="w-4 h-4" /> {text.badge}
+            <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+              <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+                <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-sky-100 bg-white px-4 py-2 text-xs font-black uppercase tracking-[0.22em] text-sky-700 shadow-sm">
+                  <Sparkles className="h-4 w-4" /> {text.eyebrow}
                 </div>
-                <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white leading-[0.95] tracking-tight mb-8">
-                  {text.titleTop}<br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-300 via-cyan-200 to-amber-200">{text.titleBottom}</span>
+                <h1 className="max-w-4xl text-4xl font-black leading-tight tracking-tight text-gray-950 sm:text-5xl lg:text-6xl">
+                  {text.title}
                 </h1>
-                <p className="text-lg sm:text-xl md:text-2xl text-gray-300 leading-relaxed font-light max-w-3xl mb-10">
+                <p className="mt-6 max-w-2xl text-lg leading-relaxed text-gray-600 sm:text-xl">
                   {text.subtitle}
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Link href={`${prefix}/idopont`} className="group inline-flex items-center justify-center gap-3 px-8 py-5 bg-sky-500 hover:bg-sky-400 text-white text-lg font-bold rounded-2xl shadow-[0_0_60px_rgba(14,165,233,0.35)] transition-all">
-                    <Calendar className="w-5 h-5" /> {text.book} <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                  <a href="tel:+36705646837" className="inline-flex items-center justify-center gap-3 rounded-2xl bg-sky-600 px-7 py-4 text-base font-black text-white shadow-xl shadow-sky-600/20 transition-all hover:-translate-y-0.5 hover:bg-sky-700">
+                    <Phone className="h-5 w-5" /> {text.call}
+                  </a>
+                  <Link href={`${prefix}/idopont`} className="inline-flex items-center justify-center gap-3 rounded-2xl border border-gray-200 bg-white px-7 py-4 text-base font-black text-gray-900 shadow-sm transition-all hover:-translate-y-0.5 hover:border-sky-200 hover:bg-sky-50">
+                    <Calendar className="h-5 w-5 text-sky-600" /> {text.book}
                   </Link>
-                  <a href="tel:+36705646837" className="inline-flex items-center justify-center gap-3 px-8 py-5 bg-white/10 hover:bg-white/20 text-white text-lg font-bold rounded-2xl border border-white/15 backdrop-blur-md transition-all">
-                    <Phone className="w-5 h-5" /> {text.call}
+                </div>
+              </motion.div>
+
+              <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.7, delay: 0.1 }} className="relative">
+                <ContactAnimation />
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        <section className="pb-24 pt-4">
+          <div className="container mx-auto px-4">
+            <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] max-w-6xl mx-auto">
+              <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="rounded-[2rem] border border-gray-100 bg-white p-6 shadow-xl shadow-gray-200/60 md:p-8">
+                <div className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+                  <div>
+                    <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-emerald-50 px-4 py-2 text-sm font-black text-emerald-700">
+                      <CheckCircle2 className="h-4 w-4" /> {text.available}
+                    </div>
+                    <h2 className="text-3xl font-black text-gray-950 md:text-4xl">{text.clinicTitle}</h2>
+                    <p className="mt-3 max-w-2xl text-gray-600 leading-relaxed">{text.clinicIntro}</p>
+                  </div>
+                </div>
+
+                <div className="grid gap-4 md:grid-cols-3">
+                  <div className="rounded-2xl bg-gray-50 p-5">
+                    <MapPin className="mb-4 h-6 w-6 text-sky-600" />
+                    <div className="mb-1 text-xs font-black uppercase tracking-widest text-gray-400">{text.addressLabel}</div>
+                    <div className="font-bold text-gray-900">{address}</div>
+                  </div>
+                  <a href="tel:+36705646837" className="rounded-2xl bg-sky-50 p-5 transition-all hover:-translate-y-1 hover:bg-sky-100">
+                    <Phone className="mb-4 h-6 w-6 text-sky-600" />
+                    <div className="mb-1 text-xs font-black uppercase tracking-widest text-sky-500">{text.phoneLabel}</div>
+                    <div className="font-black text-gray-950">{phone}</div>
+                  </a>
+                  <a href="mailto:info@crowndental.hu" className="rounded-2xl bg-gray-50 p-5 transition-all hover:-translate-y-1 hover:bg-sky-50">
+                    <Mail className="mb-4 h-6 w-6 text-sky-600" />
+                    <div className="mb-1 text-xs font-black uppercase tracking-widest text-gray-400">{text.emailLabel}</div>
+                    <div className="font-bold text-gray-900">{email}</div>
+                  </a>
+                </div>
+
+                <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                  <a href={mapHref} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gray-950 px-6 py-4 font-black text-white transition-all hover:-translate-y-0.5 hover:bg-gray-800">
+                    <Navigation className="h-5 w-5" /> {text.map}
+                  </a>
+                  <a href="mailto:info@crowndental.hu" className="inline-flex items-center justify-center gap-2 rounded-2xl border border-gray-200 bg-white px-6 py-4 font-black text-gray-900 transition-all hover:border-sky-200 hover:bg-sky-50">
+                    <Mail className="h-5 w-5 text-sky-600" /> {text.email}
                   </a>
                 </div>
               </motion.div>
 
-              <motion.div initial={{ opacity: 0, scale: 0.94 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.7, delay: 0.1 }} className="relative">
-                <div className="absolute -inset-4 bg-sky-400/20 blur-3xl rounded-[2rem]" />
-                <div className="relative bg-white/10 border border-white/15 backdrop-blur-2xl rounded-[2rem] p-6 sm:p-8 shadow-2xl">
-                  <div className="space-y-4">
-                    <a href="tel:+36705646837" className="flex items-center gap-4 p-4 rounded-2xl bg-white text-gray-900 shadow-xl hover:-translate-y-1 transition-all">
-                      <div className="w-12 h-12 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center"><Phone className="w-5 h-5" /></div>
-                      <div>
-                        <div className="text-sm text-gray-500 font-semibold">{text.call}</div>
-                        <div className="font-black text-lg">+36 70 564 6837</div>
-                      </div>
-                    </a>
-                    <a href="mailto:info@crowndental.hu" className="flex items-center gap-4 p-4 rounded-2xl bg-white/95 text-gray-900 shadow-xl hover:-translate-y-1 transition-all">
-                      <div className="w-12 h-12 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center"><Mail className="w-5 h-5" /></div>
-                      <div>
-                        <div className="text-sm text-gray-500 font-semibold">{text.email}</div>
-                        <div className="font-black text-lg">info@crowndental.hu</div>
-                      </div>
-                    </a>
-                    <Link href={`${prefix}/idopont`} className="flex items-center gap-4 p-4 rounded-2xl bg-gradient-to-r from-sky-600 to-cyan-500 text-white shadow-xl hover:-translate-y-1 transition-all">
-                      <div className="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center"><Calendar className="w-5 h-5" /></div>
-                      <div>
-                        <div className="text-sm text-sky-100 font-semibold">{text.book}</div>
-                        <div className="font-black text-lg">crowndental.hu/idopont</div>
-                      </div>
-                    </Link>
-                  </div>
+              <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.08 }} className="rounded-[2rem] bg-gradient-to-br from-gray-950 to-sky-950 p-6 text-white shadow-2xl md:p-8">
+                <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 text-sky-300">
+                  <Clock className="h-7 w-7" />
                 </div>
+                <h2 className="text-3xl font-black">{text.urgentTitle}</h2>
+                <p className="mt-4 text-lg leading-relaxed text-gray-300">{text.urgentText}</p>
+                <div className="mt-6 rounded-2xl border border-white/10 bg-white/10 p-5">
+                  <div className="font-black text-sky-200">{text.available}</div>
+                  <div className="mt-1 text-sm text-gray-300">{text.availableNote}</div>
+                </div>
+                <a href="tel:+36705646837" className="mt-6 inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-white px-6 py-4 font-black text-sky-800 transition-all hover:bg-sky-50">
+                  <Phone className="h-5 w-5" /> {text.call}
+                </a>
               </motion.div>
             </div>
           </div>
-          <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white to-transparent" />
         </section>
 
-        <section className="py-24 bg-white">
+        <section className="bg-gray-50 py-24 border-t border-gray-100">
           <div className="container mx-auto px-4">
-            <div className="text-center max-w-3xl mx-auto mb-14">
-              <span className="text-sky-600 font-bold uppercase tracking-[0.2em] text-sm mb-4 block">{text.route}</span>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-6 leading-tight">{text.clinicsTitle}</h2>
-              <p className="text-xl text-gray-500 font-light">{text.clinicsSubtitle}</p>
-            </div>
-
-            <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-              {clinics.map((clinic, index) => {
-                const isBudapest = clinic.key === 'budapest';
-                const isAmber = clinic.accent === 'amber';
-                return (
-                  <motion.div key={clinic.key} initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.08 }} className="group relative rounded-[2rem] overflow-hidden border border-gray-100 bg-gray-50 shadow-xl">
-                    <div className={`h-2 ${isAmber ? 'bg-amber-500' : 'bg-sky-500'}`} />
-                    <div className="p-8 md:p-10">
-                      <div className="flex items-start justify-between gap-4 mb-8">
-                        <div className={`w-16 h-16 rounded-3xl flex items-center justify-center ${isAmber ? 'bg-amber-50 text-amber-600' : 'bg-sky-50 text-sky-600'}`}>
-                          <Building2 className="w-8 h-8" />
-                        </div>
-                        <span className={`px-4 py-2 rounded-full text-sm font-black ${isAmber ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'}`}>
-                          {isBudapest ? text.budapestStatus : text.esztergomStatus}
-                        </span>
-                      </div>
-                      <h3 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">{clinic.name}</h3>
-                      <p className="text-gray-500 text-lg leading-relaxed mb-8">{isBudapest ? text.budapestDesc : text.esztergomDesc}</p>
-                      <div className="space-y-4 mb-8">
-                        <div className="flex items-start gap-3 text-gray-700">
-                          <MapPin className={`w-5 h-5 mt-1 ${isAmber ? 'text-amber-500' : 'text-sky-500'}`} />
-                          <span className="font-semibold">{clinic.address}</span>
-                        </div>
-                        <div className="flex items-start gap-3 text-gray-700">
-                          <Clock className={`w-5 h-5 mt-1 ${isAmber ? 'text-amber-500' : 'text-sky-500'}`} />
-                          <span className="font-semibold">{text.hours}</span>
-                        </div>
-                      </div>
-                      <div className="flex flex-col sm:flex-row gap-3">
-                        <a href={clinic.mapHref} target="_blank" rel="noopener noreferrer" className={`inline-flex items-center justify-center gap-2 px-6 py-4 rounded-2xl text-white font-bold transition-all ${isAmber ? 'bg-amber-500 hover:bg-amber-600' : 'bg-sky-600 hover:bg-sky-700'}`}>
-                          <Navigation className="w-5 h-5" /> {text.openMap}
-                        </a>
-                        <Link href={`${prefix}/idopont`} className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-white border border-gray-200 text-gray-900 font-bold hover:bg-gray-50 transition-all">
-                          <Calendar className="w-5 h-5" /> {text.book}
-                        </Link>
-                      </div>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        <section className="py-24 bg-gray-50 border-t border-gray-100">
-          <div className="container mx-auto px-4">
-            <div className="grid lg:grid-cols-[1fr_420px] gap-10 max-w-6xl mx-auto items-start">
-              <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="bg-white rounded-[2rem] p-8 md:p-10 shadow-xl border border-gray-100">
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-sky-50 text-sky-700 rounded-full text-sm font-black mb-6">
-                  <MessageCircle className="w-4 h-4" /> {text.responseTitle}
+            <div className="grid gap-8 max-w-6xl mx-auto lg:grid-cols-[1fr_420px]">
+              <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="rounded-[2rem] bg-white p-8 shadow-xl shadow-gray-200/70 md:p-10">
+                <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-sky-50 px-4 py-2 text-sm font-black text-sky-700">
+                  <MessageCircle className="h-4 w-4" /> {text.nextTitle}
                 </div>
                 <div className="space-y-5">
-                  {text.responseItems.map((item) => (
+                  {text.nextItems.map((item) => (
                     <div key={item} className="flex items-start gap-4">
-                      <CheckCircle2 className="w-6 h-6 text-emerald-500 mt-0.5 flex-shrink-0" />
-                      <p className="text-gray-600 text-lg leading-relaxed">{item}</p>
+                      <CheckCircle2 className="mt-0.5 h-6 w-6 flex-shrink-0 text-emerald-500" />
+                      <p className="text-lg leading-relaxed text-gray-600">{item}</p>
                     </div>
                   ))}
                 </div>
               </motion.div>
 
-              <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.08 }} className="bg-gradient-to-br from-gray-950 to-sky-950 rounded-[2rem] p-8 md:p-10 shadow-2xl text-white">
-                <div className="w-14 h-14 rounded-2xl bg-white/10 text-sky-300 flex items-center justify-center mb-6">
-                  <ShieldCheck className="w-7 h-7" />
-                </div>
-                <h2 className="text-3xl font-black mb-4">{text.trustTitle}</h2>
-                <p className="text-gray-300 leading-relaxed text-lg mb-8">{text.trustText}</p>
-                <Link href={`${prefix}/idopont`} className="inline-flex items-center gap-3 px-6 py-4 bg-white text-sky-800 rounded-2xl font-black hover:bg-sky-50 transition-all">
-                  {text.book} <ArrowRight className="w-5 h-5" />
+              <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.08 }} className="rounded-[2rem] border border-sky-100 bg-sky-50 p-8 md:p-10">
+                <ShieldCheck className="mb-6 h-10 w-10 text-sky-600" />
+                <h2 className="text-3xl font-black text-gray-950">{text.trustTitle}</h2>
+                <p className="mt-4 text-lg leading-relaxed text-gray-600">{text.trustText}</p>
+                <Link href={`${prefix}/idopont`} className="mt-8 inline-flex items-center gap-3 rounded-2xl bg-sky-600 px-6 py-4 font-black text-white transition-all hover:bg-sky-700">
+                  {text.book} <ArrowRight className="h-5 w-5" />
                 </Link>
               </motion.div>
             </div>

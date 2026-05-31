@@ -96,24 +96,6 @@ const esztergomJsonLd = {
   priceRange: '$$',
 };
 
-const budapestJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Dentist',
-  name: 'Crown Dental – Budapest',
-  url: 'https://www.crowndental.hu/budapest',
-  telephone: '+36705646837',
-  image: 'https://www.crowndental.hu/og-image.jpg',
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: 'Királyok útja 55.',
-    addressLocality: 'Budapest',
-    postalCode: '1039',
-    addressCountry: 'HU',
-  },
-  geo: { '@type': 'GeoCoordinates', latitude: 47.5560, longitude: 19.0372 },
-  priceRange: '$$',
-};
-
 export default async function LocaleLayout({ children, params }: Props) {
   const { locale } = params;
 
@@ -131,10 +113,6 @@ export default async function LocaleLayout({ children, params }: Props) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(esztergomJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(budapestJsonLd) }}
       />
       <Script src="https://www.googletagmanager.com/gtag/js?id=G-9BS3P1DC4T" strategy="afterInteractive" />
       <Script id="google-analytics" strategy="afterInteractive">
