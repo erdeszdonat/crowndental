@@ -95,32 +95,34 @@ export default function CookieBanner() {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 150, opacity: 0 }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className="fixed bottom-0 left-0 right-0 z-[99999] p-4 md:p-6 flex justify-center pointer-events-none"
+          className={showDetails
+            ? 'fixed inset-x-4 bottom-4 z-[99999] md:inset-x-6 flex justify-center pointer-events-none'
+            : 'fixed left-4 right-4 bottom-28 z-40 md:left-6 md:right-auto md:bottom-6 md:max-w-[680px] pointer-events-none'}
         >
-          <div className="bg-white rounded-3xl shadow-[0_10px_60px_rgba(0,0,0,0.3)] border border-gray-100 w-full max-w-4xl pointer-events-auto overflow-hidden flex flex-col">
+          <div className={`bg-white rounded-3xl shadow-[0_10px_60px_rgba(0,0,0,0.22)] border border-gray-100 w-full pointer-events-auto overflow-hidden flex flex-col ${showDetails ? 'max-w-3xl' : 'md:w-[680px]'}`}>
 
             {!showDetails ? (
-              <div className="p-6 md:p-8 flex flex-col lg:flex-row gap-6 items-start lg:items-center justify-between">
-                <div className="flex gap-4 items-start">
-                  <div className="w-12 h-12 bg-sky-50 text-sky-600 rounded-2xl flex items-center justify-center flex-shrink-0 border border-sky-100">
-                    <Cookie className="w-6 h-6" />
+              <div className="p-3 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                <div className="flex gap-3 items-start min-w-0">
+                  <div className="w-9 h-9 bg-sky-50 text-sky-600 rounded-2xl flex items-center justify-center flex-shrink-0 border border-sky-100">
+                    <Cookie className="w-4 h-4" />
                   </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-1">{t('bannerTitle')}</h3>
-                    <p className="text-gray-500 text-sm leading-relaxed max-w-xl">
-                      {t('bannerDesc')}
+                  <div className="min-w-0">
+                    <p className="text-gray-600 text-xs leading-relaxed">
+                      <span className="font-bold text-gray-900">{t('bannerTitle')}</span>{' '}
+                      {t('message')}
                       <Link href={`${p}/cookie-tajekoztato`} className="text-sky-600 font-bold hover:underline ml-1">{t('bannerLink')}</Link>
                     </p>
                   </div>
                 </div>
-                <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto shrink-0">
-                  <button onClick={() => setShowDetails(true)} className="px-6 py-3 bg-gray-50 text-gray-700 font-bold rounded-xl hover:bg-gray-100 transition-colors text-sm border border-gray-200 flex items-center justify-center gap-2">
+                <div className="grid grid-cols-3 md:flex gap-2 w-full md:w-auto shrink-0">
+                  <button onClick={() => setShowDetails(true)} className="px-3 py-2 bg-gray-50 text-gray-700 font-bold rounded-xl hover:bg-gray-100 transition-colors text-xs border border-gray-200 flex items-center justify-center gap-1.5">
                     <Settings className="w-4 h-4" /> {t('settingsBtn')}
                   </button>
-                  <button onClick={handleRejectAll} className="px-6 py-3 bg-white text-sky-700 border border-sky-200 font-bold rounded-xl hover:bg-sky-50 transition-colors text-sm">
+                  <button onClick={handleRejectAll} className="px-3 py-2 bg-white text-sky-700 border border-sky-200 font-bold rounded-xl hover:bg-sky-50 transition-colors text-xs">
                     {t('necessaryOnly')}
                   </button>
-                  <button onClick={handleAcceptAll} className="px-6 py-3 bg-sky-600 text-white font-bold rounded-xl hover:bg-sky-700 transition-all shadow-lg shadow-sky-600/20 text-sm flex items-center justify-center gap-2">
+                  <button onClick={handleAcceptAll} className="px-3 py-2 bg-sky-600 text-white font-bold rounded-xl hover:bg-sky-700 transition-all shadow-lg shadow-sky-600/20 text-xs flex items-center justify-center gap-1.5">
                     <Check className="w-4 h-4" /> {t('acceptAll')}
                   </button>
                 </div>
