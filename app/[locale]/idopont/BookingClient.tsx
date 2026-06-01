@@ -3,18 +3,19 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ArrowLeft, CheckCircle2, Star } from 'lucide-react';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
 import { BUDAPEST_BOOKING_OPEN_LABELS, isBudapestBookingAvailable, isBudapestCity } from '@/lib/bookingAvailability';
 
+const BOOKING_SUCCESS_STORAGE_KEY = 'crown_booking_success';
+
 function BookingForm() {
   const t = useTranslations('booking');
-  const tNav = useTranslations('nav');
   const locale = useLocale();
+  const router = useRouter();
   const p = locale === 'hu' ? '' : `/${locale}`;
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
   const [formData, setFormData] = useState({ city:'Esztergom', name:'', nickname:'', email:'', phone:'', treatment:'' });
   const [otherNote, setOtherNote] = useState('');
   const isBudapestOpen = isBudapestBookingAvailable();
@@ -43,23 +44,13 @@ function BookingForm() {
       const payload = isOther && otherNote ? { ...formData, treatment: `${formData.treatment}: ${otherNote}` } : formData;
       const res = await fetch('/api/book-appointment', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
       const data = await res.json();
-      if (data.success) { setIsSuccess(true); window.scrollTo({ top:0, behavior:'smooth' }); }
+      if (data.success) {
+        sessionStorage.setItem(BOOKING_SUCCESS_STORAGE_KEY, '1');
+        router.push(`${p}/idopont/sikeres`);
+      }
     } catch {}
     finally { setIsSubmitting(false); }
   };
-
-  if (isSuccess) {
-    return (
-      <motion.div initial={{ opacity:0, scale:0.95 }} animate={{ opacity:1, scale:1 }} className="max-w-2xl mx-auto bg-white rounded-[2rem] shadow-2xl border border-gray-100 p-8 md:p-16 text-center">
-        <div className="w-24 h-24 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-8"><CheckCircle2 className="w-12 h-12"/></div>
-        <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">{t('successTitle')}</h2>
-        <p className="text-gray-600 text-lg mb-8 leading-relaxed">{t('successText')}</p>
-        <Link href={`${p}/`} className="inline-flex items-center gap-2 px-8 py-4 bg-gray-900 text-white font-bold rounded-full hover:bg-sky-600 transition-colors">
-          {tNav('home')} <ArrowRight className="w-5 h-5"/>
-        </Link>
-      </motion.div>
-    );
-  }
 
   return (
     <div className="max-w-3xl mx-auto text-left">
