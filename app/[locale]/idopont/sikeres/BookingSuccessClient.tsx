@@ -23,7 +23,6 @@ const copyByLocale = {
     call: 'Hívás most',
     email: 'E-mail küldése',
     home: 'Vissza a főoldalra',
-    trackingNote: 'Konverziós oldal: /idopont/sikeres',
   },
   en: {
     eyebrow: 'Booking received',
@@ -38,7 +37,6 @@ const copyByLocale = {
     call: 'Call now',
     email: 'Send email',
     home: 'Back to home',
-    trackingNote: 'Conversion page: /idopont/sikeres',
   },
   sk: {
     eyebrow: 'Rezervácia prijatá',
@@ -53,7 +51,6 @@ const copyByLocale = {
     call: 'Zavolať teraz',
     email: 'Poslať e-mail',
     home: 'Späť na hlavnú stránku',
-    trackingNote: 'Konverzná stránka: /idopont/sikeres',
   },
 };
 
@@ -112,9 +109,6 @@ export default function BookingSuccessClient() {
                 </h1>
                 <p className="mt-5 text-lg leading-relaxed text-gray-600">
                   {text.subtitle}
-                </p>
-                <p className="mt-5 text-xs font-bold uppercase tracking-widest text-gray-400">
-                  {text.trackingNote}
                 </p>
               </div>
 

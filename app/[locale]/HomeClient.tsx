@@ -104,11 +104,16 @@ function HeroSlider({ images }: { images: HomeSanityImages['hero'] }) {
   const locale = useLocale();
   const p = locale === 'hu' ? '' : `/${locale}`;
   const [current, setCurrent] = useState(0);
+  const [hasHeroHydrated, setHasHeroHydrated] = useState(false);
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset:['start start','end start'] });
   const imgY = useTransform(scrollYProgress, [0,1], ['0%','20%']);
   const textY = useTransform(scrollYProgress, [0,1], ['0%','40%']);
   const opacity = useTransform(scrollYProgress, [0,0.5], [1,0]);
+
+  useEffect(() => {
+    setHasHeroHydrated(true);
+  }, []);
 
   // @ts-ignore
   const slideData = tSlides.raw('slides') as Array<{ tag:string; titleTop:string; titleBottom:string; subtitle:string; primaryText:string }>;
@@ -128,7 +133,7 @@ function HeroSlider({ images }: { images: HomeSanityImages['hero'] }) {
     <section ref={ref} className="relative mt-24 h-[90svh] min-h-[700px] w-full overflow-hidden flex items-center justify-center bg-gray-950">
       <motion.div style={{ y:imgY }} className="absolute inset-0 z-0 will-change-transform">
         <AnimatePresence mode="wait">
-          <motion.div key={current} initial={{ opacity:0, scale:1.05 }} animate={{ opacity:1, scale:1 }} exit={{ opacity:0 }} transition={{ duration:1.2, ease:'easeInOut' }} className="absolute inset-0">
+          <motion.div key={current} initial={hasHeroHydrated ? { opacity:0, scale:1.03 } : false} animate={{ opacity:1, scale:1 }} exit={{ opacity:0 }} transition={{ duration:hasHeroHydrated ? 0.65 : 0, ease:'easeInOut' }} className="absolute inset-0">
             {staticSlides[current].image
               ? (
                 <div className="absolute inset-x-0 top-0 h-[120%]">
@@ -154,7 +159,7 @@ function HeroSlider({ images }: { images: HomeSanityImages['hero'] }) {
       <motion.div style={{ y:textY, opacity }} className="relative z-20 container mx-auto px-4 md:px-8">
         <div className="max-w-3xl">
           <AnimatePresence mode="wait">
-            <motion.div key={current} initial={{ opacity:0, y:40 }} animate={{ opacity:1, y:0 }} exit={{ opacity:0, y:-30 }} transition={{ duration:0.6, delay:0.15 }}>
+            <motion.div key={current} initial={hasHeroHydrated ? { opacity:0, y:24 } : false} animate={{ opacity:1, y:0 }} exit={{ opacity:0, y:-24 }} transition={{ duration:hasHeroHydrated ? 0.45 : 0 }}>
               <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/10 border border-white/20 backdrop-blur-xl rounded-full text-sky-300 text-xs sm:text-sm font-bold tracking-wider uppercase mb-8">
                 <Sparkles className="w-4 h-4" /> {slideData[current]?.tag}
               </div>
@@ -707,6 +712,43 @@ function FAQSection() {
 }
 
 // ─── Főoldal export ───────────────────────────────────────────────────────────
+type IdleSchedulerWindow = Window & {
+  requestIdleCallback?: (callback: () => void, options?: { timeout: number }) => number;
+  cancelIdleCallback?: (handle: number) => void;
+};
+
+function DeferredBelowFoldSections({ sanityImages }: { sanityImages: HomeSanityImages }) {
+  const [shouldRenderSections, setShouldRenderSections] = useState(false);
+
+  useEffect(() => {
+    const schedulerWindow = window as IdleSchedulerWindow;
+    const renderSections = () => setShouldRenderSections(true);
+
+    if (schedulerWindow.requestIdleCallback) {
+      const idleHandle = schedulerWindow.requestIdleCallback(renderSections, { timeout: 1400 });
+      return () => schedulerWindow.cancelIdleCallback?.(idleHandle);
+    }
+
+    const timeoutHandle = window.setTimeout(renderSections, 800);
+    return () => window.clearTimeout(timeoutHandle);
+  }, []);
+
+  if (!shouldRenderSections) {
+    return <div className="h-24 bg-white md:h-32" aria-hidden="true" />;
+  }
+
+  return (
+    <>
+      <QuoteAnalyzerSection />
+      <LabShowcase imageUrl={sanityImages.labImage} />
+      <FeaturedPricesSection sanityImages={sanityImages.services} />
+      <ReviewsSection />
+      <CTASection />
+      <FAQSection />
+    </>
+  );
+}
+
 export default function HomeClient({ sanityImages = emptyHomeSanityImages }: { sanityImages?: HomeSanityImages }) {
   return (
     <div className="bg-white min-h-screen selection:bg-sky-200 selection:text-sky-900">
@@ -716,12 +758,7 @@ export default function HomeClient({ sanityImages = emptyHomeSanityImages }: { s
         <TrustBadges />
         <LocationSelector locations={sanityImages.locations} />
         <StatsSection />
-        <QuoteAnalyzerSection />
-        <LabShowcase imageUrl={sanityImages.labImage} />
-        <FeaturedPricesSection sanityImages={sanityImages.services} />
-        <ReviewsSection />
-        <CTASection />
-        <FAQSection />
+        <DeferredBelowFoldSections sanityImages={sanityImages} />
       </main>
     </div>
   );
