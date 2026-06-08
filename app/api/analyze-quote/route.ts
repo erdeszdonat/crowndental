@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { getPreferredGreetingName } from '@/lib/names';
 
 // 🔴 KULCSFONTOSSÁGÚ JAVÍTÁS: Engedélyezzük a Vercelnek, hogy 10 mp helyett 60 mp-ig fusson a folyamat!
 export const maxDuration = 60; 
@@ -192,7 +193,7 @@ const modelsToTry = [
               <div style="background: linear-gradient(135deg, #0369a1, #0ea5e9); padding:40px 30px; text-align:center; border-radius:12px 12px 0 0;">
                 <div style="font-size:28px; font-weight:800; color:#ffffff; letter-spacing:-0.5px; margin-bottom:4px;">CROWN DENTAL</div>
                 <div style="font-size:11px; color:rgba(255,255,255,0.6); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:20px;">Praxis és Labor · Esztergom · Budapest</div>
-                <h1 style="margin:0; color:#ffffff; font-size:22px; font-weight:600;">Kedves ${nickname || name}!</h1>
+                <h1 style="margin:0; color:#ffffff; font-size:22px; font-weight:600;">Kedves ${getPreferredGreetingName(name, nickname)}!</h1>
                 <p style="margin:8px 0 0 0; color:rgba(255,255,255,0.85); font-size:15px;">Elkészítettük az Ön személyre szabott árajánlatát.</p>
               </div>
 

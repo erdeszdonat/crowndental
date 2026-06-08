@@ -1,4 +1,5 @@
 import { Resend } from 'resend';
+import { getContactNameParts } from './names';
 
 interface AddToAudienceParams {
   email: string;
@@ -18,20 +19,7 @@ export async function addToResendAudience({ email, name, nickname, source, paylo
 
   const resend = new Resend(apiKey);
 
-  // Hungarian naming convention: [Vezetéknév] [Keresztnév]
-  // e.g. "Erdész Donát" -> lastName="Erdész", firstName="Donát"
-  // The nickname (becenév) overrides the parsed first name when present.
-  const parts = (name ?? '').trim().split(/\s+/).filter(Boolean);
-  let firstName: string | undefined;
-  let lastName: string | undefined;
-  if (parts.length === 1) {
-    firstName = parts[0];
-  } else if (parts.length > 1) {
-    lastName = parts[0];
-    firstName = parts.slice(1).join(' ');
-  }
-  const cleanNick = (nickname ?? '').trim();
-  if (cleanNick) firstName = cleanNick;
+  const { firstName, lastName } = getContactNameParts(name, nickname);
 
   // 1. Upsert contact in audience: try create first, fall back to PATCH on conflict
   if (audienceId) {

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
+import { getPreferredGreetingName } from '@/lib/names';
 
 export async function POST(req: Request) {
   console.log("--- ÚJ KARRIER JELENTKEZÉS ÉRKEZETT ---");
@@ -44,7 +45,7 @@ export async function POST(req: Request) {
     if (resendKey) {
       try {
         const resend = new Resend(resendKey);
-        const firstName = name.split(' ')[0];
+        const firstName = getPreferredGreetingName(name);
 
         await resend.emails.send({
           from: 'Crown Dental HR <info@crowndental.hu>',

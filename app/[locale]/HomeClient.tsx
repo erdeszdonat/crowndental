@@ -11,6 +11,7 @@ import {
   Sparkles, User, FileText, Loader2, Download, ChevronDown, Wrench,
 } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
+import { getPreferredGreetingName } from '@/lib/names';
 
 export type HomeSanityImages = {
   hero: Record<'fokep' | 'fokep1' | 'fokep2', string>;
@@ -474,7 +475,7 @@ function QuoteAnalyzerSection() {
                     <div className="bg-gradient-to-br from-sky-500 to-sky-700 p-8 text-center text-white relative overflow-hidden">
                       <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-2xl"/>
                       <CheckCircle2 className="w-12 h-12 mx-auto mb-3 text-green-300 drop-shadow-md"/>
-                      <h3 className="text-2xl font-bold mb-1">{t('step4.doneTitle', { name: formData.nickname||formData.name.split(' ')[0] })}</h3>
+                      <h3 className="text-2xl font-bold mb-1">{t('step4.doneTitle', { name: getPreferredGreetingName(formData.name, formData.nickname) })}</h3>
                       <p className="text-sky-100 mb-3 text-sm">{t('step4.doneSubtitle')}</p>
                       <div className="text-5xl font-extrabold drop-shadow-md text-green-300">{result.savings.toLocaleString()} HUF</div>
                     </div>

@@ -3,6 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
 import { addToResendAudience } from '@/lib/addToAudience';
 import { isBudapestBookingAvailable, isBudapestCity } from '@/lib/bookingAvailability';
+import { getPreferredGreetingName } from '@/lib/names';
 
 export async function POST(req: Request) {
   console.log("--- ÚJ IDŐPONTFOGLALÁSI KÉRÉS ÉRKEZETT ---");
@@ -50,7 +51,7 @@ export async function POST(req: Request) {
     if (resendKey) {
       try {
         const resend = new Resend(resendKey);
-        const greeting = nickname || name.split(' ')[0];
+        const greeting = getPreferredGreetingName(name, nickname);
 
         await resend.emails.send({
           from: 'Crown Dental <info@crowndental.hu>',

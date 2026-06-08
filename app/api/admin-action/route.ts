@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
+import { getPreferredGreetingName } from '@/lib/names';
 
 const ALLOWED_TABLES = new Set(['appointments', 'career_applications', 'quote_leads']);
 const ALLOWED_STATUSES = new Set(['new', 'no_answer', 'processed']);
@@ -24,11 +25,6 @@ function escapeHtml(value: unknown) {
     .replace(/'/g, '&#39;');
 }
 
-function getGreetingName(appointment: AppointmentForNoAnswerEmail) {
-  const preferredName = appointment.nickname?.trim() || appointment.name?.trim() || 'Kedves Páciens';
-  return preferredName.split(' ')[0];
-}
-
 async function sendNoAnswerEmail(appointment: AppointmentForNoAnswerEmail) {
   const resendKey = process.env.RESEND_API_KEY;
   const email = appointment.email?.trim();
@@ -42,7 +38,7 @@ async function sendNoAnswerEmail(appointment: AppointmentForNoAnswerEmail) {
   }
 
   const resend = new Resend(resendKey);
-  const greetingName = escapeHtml(getGreetingName(appointment));
+  const greetingName = escapeHtml(getPreferredGreetingName(appointment.name, appointment.nickname));
   const customerPhone = escapeHtml(appointment.phone || '');
 
   try {
