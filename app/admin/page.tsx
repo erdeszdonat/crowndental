@@ -110,6 +110,11 @@ export default function AdminDashboard() {
         if (table === 'appointments') updateList(appointments, setAppointments);
         if (table === 'career_applications') updateList(applications, setApplications);
         if (table === 'quote_leads') updateList(quotes, setQuotes);
+        if (data.warning) {
+          alert(data.warning);
+        } else if (data.noAnswerEmailSent) {
+          alert('A visszahívást kérő e-mail elküldve.');
+        }
       } else {
         alert(data.error || 'Hiba történt a módosítás során.');
       }
