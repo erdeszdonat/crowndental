@@ -2,6 +2,10 @@ export default {
   name: 'post',
   title: 'Blog Cikkek',
   type: 'document',
+  initialValue: {
+    language: 'hu',
+    category: 'professional',
+  },
   fields: [
     {
       name: 'title',

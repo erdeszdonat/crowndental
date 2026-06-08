@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { normalizeBlogLanguage } from '@/lib/blogConfig';
 import BlogClient from './BlogClient';
 
-export const revalidate = 3600;
+export const revalidate = 60;
 
 const blogMetadata: Record<'hu' | 'en' | 'sk', Metadata> = {
   hu: {
@@ -61,7 +61,7 @@ async function getBlogPosts() {
       "category": coalesce(category, "professional")
     }`);
     const response = await fetch(`https://${sanityProjectId}.api.sanity.io/v2024-03-08/data/query/${dataSet}?query=${query}`, {
-      next: { revalidate: 3600 },
+      next: { revalidate: 60 },
     });
 
     if (!response.ok) return [];

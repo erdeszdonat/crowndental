@@ -28,6 +28,8 @@ type NormalizedPost = BlogPost & {
   category: BlogCategory;
 };
 
+type SelectedCategory = BlogCategory | 'all';
+
 const EMPTY_BLOG_POSTS: BlogPost[] = [];
 
 const copyByLocale = {
@@ -82,16 +84,16 @@ export default function BlogClient({ initialPosts = EMPTY_BLOG_POSTS }: { initia
   const localeCopy = copyByLocale[locale as keyof typeof copyByLocale] ?? copyByLocale.hu;
   const initialLanguage = normalizeBlogLanguage(locale);
   const [selectedLanguage, setSelectedLanguage] = useState<BlogLanguage>(initialLanguage);
-  const [selectedCategory, setSelectedCategory] = useState<BlogCategory>('professional');
+  const [selectedCategory, setSelectedCategory] = useState<SelectedCategory>('all');
   const [clientPosts, setClientPosts] = useState<BlogPost[]>(initialPosts);
   const [loading, setLoading] = useState(initialPosts.length === 0);
 
   useEffect(() => {
-    setClientPosts(initialPosts);
-
     if (initialPosts.length > 0) {
+      setClientPosts(initialPosts);
       setLoading(false);
-      return;
+    } else {
+      setLoading(true);
     }
 
     let cancelled = false;
@@ -102,7 +104,7 @@ export default function BlogClient({ initialPosts = EMPTY_BLOG_POSTS }: { initia
         const dataSet = 'production';
         const query = encodeURIComponent(`*[_type == "post"] | order(publishedAt desc) { _id, title, "slug": slug.current, publishedAt, excerpt, "imageUrl": mainImage.asset->url, "language": coalesce(language, "hu"), "category": coalesce(category, "professional") }`);
         const url = `https://${id}.api.sanity.io/v2024-03-08/data/query/${dataSet}?query=${query}`;
-        const response = await fetch(url);
+        const response = await fetch(url, { cache: 'no-store' });
         const data = await response.json();
 
         if (!cancelled && data.result) setClientPosts(data.result);
@@ -141,15 +143,25 @@ export default function BlogClient({ initialPosts = EMPTY_BLOG_POSTS }: { initia
 
   const categoryCounts = useMemo(
     () =>
-      BLOG_CATEGORIES.map((category) => ({
-        ...category,
-        count: posts.filter((post) => post.language === selectedLanguage && post.category === category.id).length,
-      })),
+      [
+        {
+          id: 'all' as const,
+          title: 'Összes cikk',
+          label: 'Összes cikk',
+          shortLabel: 'Összes',
+          description: 'Minden bejegyzés egyben, így a régi és az újonnan kategorizált cikkek sem tűnnek el.',
+          count: posts.filter((post) => post.language === selectedLanguage).length,
+        },
+        ...BLOG_CATEGORIES.map((category) => ({
+          ...category,
+          count: posts.filter((post) => post.language === selectedLanguage && post.category === category.id).length,
+        })),
+      ],
     [posts, selectedLanguage]
   );
 
   const filteredPosts = useMemo(
-    () => posts.filter((post) => post.language === selectedLanguage && post.category === selectedCategory),
+    () => posts.filter((post) => post.language === selectedLanguage && (selectedCategory === 'all' || post.category === selectedCategory)),
     [posts, selectedCategory, selectedLanguage]
   );
 
@@ -208,7 +220,7 @@ export default function BlogClient({ initialPosts = EMPTY_BLOG_POSTS }: { initia
               </div>
               <div className="grid md:grid-cols-2 gap-3">
                 {categoryCounts.map((category) => {
-                  const categoryText = categoryCopy[category.id];
+                  const categoryText = category.id === 'all' ? category : categoryCopy[category.id];
                   return (
                     <button
                       key={category.id}
