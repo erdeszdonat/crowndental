@@ -211,13 +211,13 @@ function PrivacyContent() {
               </div>
 
               <div id="hirlevel" className="scroll-mt-32">
-                <h2>5. Páciens Életút Rendszer (CRM) és Hírlevelek</h2>
+                <h2>5. Páciens Életút Rendszer (CRM), értékelési és kontroll emlékeztetők</h2>
                 <p>
-                  A Crown Dental célja, hogy a kezelések befejeztével se hagyja magára a pácienseket. Ezt egy magas szinten automatizált Életút Rendszerrel (elektronikus direkt marketing - eDM) valósítjuk meg.
+                  A Crown Dental célja, hogy az időpontot vagy kezelést követően is segítse a pácienseket a kontrollok betartásában, az elégedettség visszajelzésében és a hosszú távú szájegészség megőrzésében. Ezt automatizált páciens-életút rendszerrel valósítjuk meg.
                 </p>
                 <ul>
                   <li><strong>Jogalap:</strong> Az Ön, mint Páciens önkéntes hozzájárulása (amelyet a webes űrlapok kitöltésével vagy személyesen ad meg).</li>
-                  <li><strong>Cél:</strong> A páciens elégedettségének mérése, a kezelés utókövetése, egészségmegőrző edukáció, és személyre szabott ajánlatok küldése.</li>
+                  <li><strong>Cél:</strong> A páciens elégedettségének mérése, értékelés kérése, valamint féléves és éves kontrollidőpontokra vonatkozó emlékeztetők küldése.</li>
                 </ul>
 
                 <div className="overflow-x-auto my-8 not-prose">
@@ -231,25 +231,35 @@ function PrivacyContent() {
                     </thead>
                     <tbody className="divide-y divide-slate-200 bg-slate-50 text-sm">
                       <tr>
-                        <td className="p-4 font-bold text-slate-800">Utókövető "Hogy van?" E-mail</td>
-                        <td className="p-4">7 nappal a kezelés után</td>
-                        <td className="p-4">Közérzet ellenőrzése, panaszkezelés.</td>
+                        <td className="p-4 font-bold text-slate-800">Értékelési kérés</td>
+                        <td className="p-4">30 nappal az időpont vagy kezelés után</td>
+                        <td className="p-4">Visszajelzés és értékelés kérése a páciens tapasztalatáról.</td>
                       </tr>
                       <tr>
-                        <td className="p-4 font-bold text-slate-800">Edukációs és Ápolási E-mail</td>
-                        <td className="p-4">30-45-90 nappal a kezelés után</td>
-                        <td className="p-4">Személyre szabott tanácsok az elvégzett kezeléshez (pl. implantátum tisztítása).</td>
+                        <td className="p-4 font-bold text-slate-800">Féléves kontroll előértesítő</td>
+                        <td className="p-4">90 nappal az időpont vagy kezelés után</td>
+                        <td className="p-4">Értesítés arról, hogy a javasolt féléves kontrollig körülbelül 90 nap van hátra.</td>
                       </tr>
                       <tr>
-                        <td className="p-4 font-bold text-slate-800">Visszarendelő / Emlékeztető E-mail</td>
-                        <td className="p-4">180 és 360 nappal a kezelés után</td>
-                        <td className="p-4">Figyelmeztetés a kötelező éves kontrollra vagy fogkő-eltávolításra.</td>
+                        <td className="p-4 font-bold text-slate-800">Féléves kontroll emlékeztető</td>
+                        <td className="p-4">180 nappal az időpont vagy kezelés után</td>
+                        <td className="p-4">Emlékeztető a féléves kontroll vagy fogkő-eltávolítás esedékességére.</td>
+                      </tr>
+                      <tr>
+                        <td className="p-4 font-bold text-slate-800">Éves kontroll előértesítő</td>
+                        <td className="p-4">270 nappal az időpont vagy kezelés után</td>
+                        <td className="p-4">Értesítés arról, hogy az éves kontrollig körülbelül 90 nap van hátra.</td>
+                      </tr>
+                      <tr>
+                        <td className="p-4 font-bold text-slate-800">Éves kontroll emlékeztető</td>
+                        <td className="p-4">360 nappal az időpont vagy kezelés után, majd évente ismétlődve</td>
+                        <td className="p-4">Emlékeztető az éves kontroll és megelőző vizsgálat esedékességére.</td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
                 <p>
-                  <strong>Leiratkozás:</strong> Ön bármikor, indokolás nélkül, ingyenesen leiratkozhat a hírlevelekről az e-mailek alján található linkre kattintva.
+                  <strong>Leiratkozás:</strong> Ön bármikor, indokolás nélkül, ingyenesen leiratkozhat az automatizált emlékeztetőkről és hírlevelekről az e-mailek alján található linkre kattintva.
                 </p>
               </div>
 
