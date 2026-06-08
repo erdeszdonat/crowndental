@@ -39,6 +39,27 @@ const copyByLocale = {
     emptyTitle: 'Ebben a válogatásban még nincs cikk.',
     emptyText: 'Válasszon másik nyelvet vagy kategóriát, hamarosan ide is kerül friss tartalom.',
     future: 'később',
+    languages: {
+      hu: 'Magyar',
+      sk: 'Szlovák',
+      en: 'Angol',
+      de: 'Német',
+    },
+    allCategory: {
+      title: 'Összes cikk',
+      shortLabel: 'Összes',
+      description: 'Minden bejegyzés egyben, így a régi és az újonnan kategorizált cikkek sem tűnnek el.',
+    },
+    categories: {
+      professional: {
+        title: 'Orvosi szakmai cikkek',
+        description: 'A leggyakrabban keresett fogászati kérdésekre válaszoló, orvosi szakmai cikkjeink.',
+      },
+      magazine: {
+        title: 'Fejlődésünk és érdekességek',
+        description: 'Crown Dental hírek, rendelőfejlesztések, kulisszák mögötti történetek és könnyedebb érdekességek.',
+      },
+    },
   },
   en: {
     languageTitle: 'By language',
@@ -46,6 +67,27 @@ const copyByLocale = {
     emptyTitle: 'No articles in this selection yet.',
     emptyText: 'Choose another language or category — fresh content is coming here soon.',
     future: 'later',
+    languages: {
+      hu: 'Hungarian',
+      sk: 'Slovak',
+      en: 'English',
+      de: 'German',
+    },
+    allCategory: {
+      title: 'All articles',
+      shortLabel: 'All',
+      description: 'All posts in one place, so older and newly categorized articles stay easy to find.',
+    },
+    categories: {
+      professional: {
+        title: 'Medical dental articles',
+        description: 'Doctor-led articles answering the most frequently searched dental questions.',
+      },
+      magazine: {
+        title: 'Our progress and insights',
+        description: 'Crown Dental news, clinic updates, behind-the-scenes stories and lighter insights.',
+      },
+    },
   },
   sk: {
     languageTitle: 'Podľa jazyka',
@@ -53,19 +95,29 @@ const copyByLocale = {
     emptyTitle: 'V tomto výbere zatiaľ nie sú články.',
     emptyText: 'Vyberte iný jazyk alebo kategóriu, nový obsah sem čoskoro pribudne.',
     future: 'neskôr',
+    languages: {
+      hu: 'Maďarčina',
+      sk: 'Slovenčina',
+      en: 'Angličtina',
+      de: 'Nemčina',
+    },
+    allCategory: {
+      title: 'Všetky články',
+      shortLabel: 'Všetky',
+      description: 'Všetky príspevky na jednom mieste, aby staršie aj novo kategorizované články zostali ľahko dostupné.',
+    },
+    categories: {
+      professional: {
+        title: 'Odborné lekárske články',
+        description: 'Odborné články lekárov, ktoré odpovedajú na najčastejšie vyhľadávané otázky o zuboch.',
+      },
+      magazine: {
+        title: 'Náš rozvoj a zaujímavosti',
+        description: 'Novinky Crown Dental, zlepšenia ambulancie, príbehy zo zákulisia a ľahšie zaujímavosti.',
+      },
+    },
   },
 } as const;
-
-const categoryCopy: Record<BlogCategory, { title: string; description: string }> = {
-  professional: {
-    title: 'Fogászati szakmai cikkek',
-    description: 'Google keresésekre optimalizált, orvos-szakmai tudástár cikkek kezelésekről, árakról és döntési helyzetekről.',
-  },
-  magazine: {
-    title: 'Fejlődésünk és érdekességek',
-    description: 'Crown Dental hírek, rendelőfejlesztések, kulisszák mögötti történetek és könnyedebb érdekességek.',
-  },
-};
 
 function getPostPath(language: BlogLanguage, slug: string) {
   return `${language === 'hu' ? '' : `/${language}`}/blog/${slug}`;
@@ -146,10 +198,7 @@ export default function BlogClient({ initialPosts = EMPTY_BLOG_POSTS }: { initia
       [
         {
           id: 'all' as const,
-          title: 'Összes cikk',
-          label: 'Összes cikk',
-          shortLabel: 'Összes',
-          description: 'Minden bejegyzés egyben, így a régi és az újonnan kategorizált cikkek sem tűnnek el.',
+          ...localeCopy.allCategory,
           count: posts.filter((post) => post.language === selectedLanguage).length,
         },
         ...BLOG_CATEGORIES.map((category) => ({
@@ -203,7 +252,7 @@ export default function BlogClient({ initialPosts = EMPTY_BLOG_POSTS }: { initia
                           : 'bg-sky-50 text-sky-800 border-sky-100 hover:bg-sky-100'
                       }`}
                     >
-                      {language.label}
+                      {localeCopy.languages[language.id]}
                       <span className={`ml-2 text-xs ${selectedLanguage === language.id ? 'text-sky-100' : 'text-sky-500'}`}>
                         {isFutureLanguage ? localeCopy.future : language.count}
                       </span>
@@ -220,7 +269,7 @@ export default function BlogClient({ initialPosts = EMPTY_BLOG_POSTS }: { initia
               </div>
               <div className="grid md:grid-cols-2 gap-3">
                 {categoryCounts.map((category) => {
-                  const categoryText = category.id === 'all' ? category : categoryCopy[category.id];
+                  const categoryText = category.id === 'all' ? category : localeCopy.categories[category.id];
                   return (
                     <button
                       key={category.id}

@@ -175,7 +175,7 @@ export async function POST(req: Request) {
     const base = `https://www.crowndental.hu${normalizedLanguage !== 'hu' ? `/${normalizedLanguage}` : ''}`;
     const categoryInstruction = normalizedCategory === 'magazine'
       ? 'Kategória: fejlődésünk és érdekességek. Ne száraz szakmai SEO-cikket írj, hanem magazinos, emberközeli anyagot a Crown Dental fejlődéséről, újdonságokról, kulisszatitkokról vagy hasznos érdekességekről. Maradjon hiteles, konverziót segítő és keresőbarát, de ne erőltesd mindenhol az árlistát.'
-      : 'Kategória: fogászati szakmai cikk. A cikk célja organikus Google növekedés: keresési szándékra válaszoljon, legyen részletes, szakmai, E-E-A-T jellegű, konkrét fogászati magyarázatokkal, belső linkekkel és CTA-val.';
+      : 'Kategória: orvosi szakmai cikk. A cikk a leggyakrabban keresett fogászati kérdésekre adjon részletes, közérthető, orvosi szakmai választ, konkrét fogászati magyarázatokkal, belső linkekkel és CTA-val.';
 
     const prompt = `Te a Crown Dental fogászat (Esztergom és Budapest, crowndental.hu) tapasztalt blog szerzője vagy. Írj egy részletes, SEO-optimalizált, szakmai blogcikket ${langLabel} az alábbi témában: "${topic}"
 ${keywords ? `Fő kulcsszavak: ${keywords}` : ''}

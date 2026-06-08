@@ -8,9 +8,9 @@ export const BLOG_LANGUAGES = [
 export const BLOG_CATEGORIES = [
   {
     id: 'professional',
-    label: 'Fogászati szakmai cikkek',
+    label: 'Orvosi szakmai cikkek',
     shortLabel: 'Szakmai',
-    description: 'SEO-alapú, keresésekre optimalizált fogászati tudástár cikkek.',
+    description: 'A leggyakrabban keresett fogászati kérdésekre válaszoló, orvosi szakmai cikkek.',
   },
   {
     id: 'magazine',

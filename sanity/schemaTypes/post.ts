@@ -44,7 +44,7 @@ export default {
       initialValue: 'professional',
       options: {
         list: [
-          { title: 'Fogászati szakmai cikkek', value: 'professional' },
+          { title: 'Orvosi szakmai cikkek', value: 'professional' },
           { title: 'Fejlődésünk és érdekességek', value: 'magazine' },
         ],
         layout: 'radio',
