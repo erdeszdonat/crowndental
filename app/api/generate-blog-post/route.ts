@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI, SchemaType } from '@google/generative-ai';
+import { normalizeBlogCategory, normalizeBlogLanguage } from '@/lib/blogConfig';
 
 export const maxDuration = 120;
 
@@ -144,7 +145,7 @@ const responseSchema = {
 
 export async function POST(req: Request) {
   try {
-    const { topic, keywords, language = 'hu' } = await req.json();
+    const { topic, keywords, language = 'hu', category = 'professional' } = await req.json();
     if (!topic) return NextResponse.json({ error: 'Téma megadása kötelező' }, { status: 400 });
 
     const apiKey = process.env.GEMINI_API_KEY;
@@ -167,8 +168,14 @@ export async function POST(req: Request) {
     ];
 
     const langMap: Record<string, string> = { hu: 'magyarul', en: 'angolul', sk: 'szlovákul' };
-    const langLabel = langMap[language] ?? 'magyarul';
-    const base = `https://www.crowndental.hu${language !== 'hu' ? `/${language}` : ''}`;
+    const normalizedLanguage = normalizeBlogLanguage(language);
+    const normalizedCategory = normalizeBlogCategory(category);
+    const langMapWithGerman: Record<string, string> = { ...langMap, sk: 'szlovákul', de: 'németül' };
+    const langLabel = langMapWithGerman[normalizedLanguage] ?? 'magyarul';
+    const base = `https://www.crowndental.hu${normalizedLanguage !== 'hu' ? `/${normalizedLanguage}` : ''}`;
+    const categoryInstruction = normalizedCategory === 'magazine'
+      ? 'Kategória: fejlődésünk és érdekességek. Ne száraz szakmai SEO-cikket írj, hanem magazinos, emberközeli anyagot a Crown Dental fejlődéséről, újdonságokról, kulisszatitkokról vagy hasznos érdekességekről. Maradjon hiteles, konverziót segítő és keresőbarát, de ne erőltesd mindenhol az árlistát.'
+      : 'Kategória: fogászati szakmai cikk. A cikk célja organikus Google növekedés: keresési szándékra válaszoljon, legyen részletes, szakmai, E-E-A-T jellegű, konkrét fogászati magyarázatokkal, belső linkekkel és CTA-val.';
 
     const prompt = `Te a Crown Dental fogászat (Esztergom és Budapest, crowndental.hu) tapasztalt blog szerzője vagy. Írj egy részletes, SEO-optimalizált, szakmai blogcikket ${langLabel} az alábbi témában: "${topic}"
 ${keywords ? `Fő kulcsszavak: ${keywords}` : ''}
@@ -299,7 +306,10 @@ Ha más rendelőkkel hasonlítasz, a Crown Dental árait mutasd kedvezőbbnek (s
     for (let attempt = 0; attempt <= 4; attempt++) {
       try {
         const m = attempt === 0 ? model : fallbackModels[Math.min(attempt - 1, fallbackModels.length - 1)];
-        result = await m.generateContent(prompt);
+        result = await m.generateContent(`${prompt}
+
+BLOG KATEGÓRIA INSTRUKCIÓ:
+${categoryInstruction}`);
         break;
       } catch (e: any) {
         const isRetryable = e.message?.includes('503') || e.message?.includes('429');
@@ -345,7 +355,8 @@ Ha más rendelőkkel hasonlítasz, a Crown Dental árait mutasd kedvezőbbnek (s
       seoDescription: parsed.seoDescription,
       excerpt: parsed.excerpt,
       content,
-      language,
+      language: normalizedLanguage,
+      category: normalizedCategory,
       wordCount,
       pexelsImage,
       publishedAt: new Date().toISOString().split('T')[0],

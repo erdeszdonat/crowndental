@@ -18,6 +18,36 @@ export default {
       validation: (Rule: any) => Rule.required(),
     },
     {
+      name: 'language',
+      title: 'Cikk nyelve',
+      type: 'string',
+      initialValue: 'hu',
+      options: {
+        list: [
+          { title: 'Magyar', value: 'hu' },
+          { title: 'Szlovák', value: 'sk' },
+          { title: 'Angol', value: 'en' },
+          { title: 'Német', value: 'de' },
+        ],
+        layout: 'radio',
+      },
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
+      name: 'category',
+      title: 'Blog kategória',
+      type: 'string',
+      initialValue: 'professional',
+      options: {
+        list: [
+          { title: 'Fogászati szakmai cikkek', value: 'professional' },
+          { title: 'Fejlődésünk és érdekességek', value: 'magazine' },
+        ],
+        layout: 'radio',
+      },
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
       name: 'seoTitle',
       title: 'SEO Cím (A Google-nek)',
       description: 'Másold be ide az Excelből a 3. oszlopot (Title)',

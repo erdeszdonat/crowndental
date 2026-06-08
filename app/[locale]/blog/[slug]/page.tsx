@@ -4,6 +4,7 @@ import { createClient } from 'next-sanity';
 import { dataset, projectId } from '@/sanity/env';
 import BlogPostClient from './BlogPostClient';
 import { buildBlogPostingJsonLd } from '@/lib/faqSchema';
+import { normalizeBlogLanguage } from '@/lib/blogConfig';
 
 const client = createClient({
   projectId,
@@ -12,28 +13,35 @@ const client = createClient({
   useCdn: false,
 });
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const query = `*[_type == "post" && slug.current == $slug][0]{ title, seoTitle, seoDescription, excerpt }`;
-  const post = await client.fetch(query, { slug: params.slug });
+export async function generateMetadata({ params }: { params: { locale: string; slug: string } }): Promise<Metadata> {
+  const language = normalizeBlogLanguage(params.locale);
+  const query = `*[_type == "post" && slug.current == $slug && coalesce(language, "hu") == $language][0]{ title, seoTitle, seoDescription, excerpt }`;
+  const post = await client.fetch(query, { slug: params.slug, language });
   
   if (!post) return { title: 'Cikk nem található | Crown Dental' };
   
   return {
     title: post.seoTitle || `${post.title} | Crown Dental`,
     description: post.seoDescription || post.excerpt || 'Olvassa el legújabb fogászati cikkünket.',
+    alternates: {
+      canonical: `https://www.crowndental.hu${language === 'hu' ? '' : `/${language}`}/blog/${params.slug}`,
+    },
   };
 }
 
-export default async function BlogPostPage({ params }: { params: { slug: string } }) {
-  const query = `*[_type == "post" && slug.current == $slug][0]{
+export default async function BlogPostPage({ params }: { params: { locale: string; slug: string } }) {
+  const language = normalizeBlogLanguage(params.locale);
+  const query = `*[_type == "post" && slug.current == $slug && coalesce(language, "hu") == $language][0]{
     title,
     publishedAt,
     excerpt,
+    "language": coalesce(language, "hu"),
+    "category": coalesce(category, "professional"),
     "imageUrl": mainImage.asset->url,
     content
   }`;
 
-  const post = await client.fetch(query, { slug: params.slug });
+  const post = await client.fetch(query, { slug: params.slug, language });
 
   if (!post) {
     return (
@@ -43,7 +51,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
     );
   }
 
-  const blogJsonLd = buildBlogPostingJsonLd({ ...post, slug: params.slug });
+  const blogJsonLd = buildBlogPostingJsonLd({ ...post, slug: params.slug, language });
 
   return (
     <>

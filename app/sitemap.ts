@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next';
+import { normalizeBlogLanguage } from '@/lib/blogConfig';
 
 // ═══════════════════════════════════════════════════════════════════════════
 // SANITY NATIV FETCH A BLOG CIKKEKHEZ
@@ -6,7 +7,7 @@ import { MetadataRoute } from 'next';
 const fetchSanityPosts = async () => {
   const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'h68mmabs';
   const dataset = 'production';
-  const query = encodeURIComponent(`*[_type == "post"]{ "slug": slug.current, _updatedAt }`);
+  const query = encodeURIComponent(`*[_type == "post"]{ "slug": slug.current, _updatedAt, "language": coalesce(language, "hu") }`);
   const url = `https://${projectId}.api.sanity.io/v2024-03-08/data/query/${dataset}?query=${query}`;
   
   try {
@@ -66,12 +67,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   
   const dynamicBlogRoutes: MetadataRoute.Sitemap = sanityPosts
     .filter((post: any) => post.slug) // Csak azok kellenek, amiknek van URL-je
-    .map((post: any) => ({
-      url: `${baseUrl}/blog/${post.slug}`,
-      lastModified: post._updatedAt ? new Date(post._updatedAt) : new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.6, // A blog cikkek prioritása normál
-    }));
+    .filter((post: any) => ['hu', 'en', 'sk'].includes(normalizeBlogLanguage(post.language)))
+    .map((post: any) => {
+      const language = normalizeBlogLanguage(post.language);
+      const prefix = language === 'hu' ? '' : `/${language}`;
+
+      return {
+        url: `${baseUrl}${prefix}/blog/${post.slug}`,
+        lastModified: post._updatedAt ? new Date(post._updatedAt) : new Date(),
+        changeFrequency: 'monthly',
+        priority: 0.6, // A blog cikkek prioritása normál
+      };
+    });
 
   // Visszaadjuk a statikus és a dinamikus útvonalak egyesített listáját a Google-nek
   return [...staticRoutes, ...dynamicBlogRoutes];

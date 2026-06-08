@@ -29,7 +29,8 @@ export async function POST(req: Request) {
 
     // 4. Sanity cikkek lekérése
     const sanityProjectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'h68mmabs';
-    const sanityUrl = `https://${sanityProjectId}.api.sanity.io/v2024-03-08/data/query/production?query=*[_type == "post"] | order(publishedAt desc) { _id, title, "slug": slug.current, publishedAt, excerpt }`;
+    const sanityQuery = encodeURIComponent(`*[_type == "post"] | order(publishedAt desc) { _id, title, "slug": slug.current, publishedAt, excerpt, "language": coalesce(language, "hu"), "category": coalesce(category, "professional") }`);
+    const sanityUrl = `https://${sanityProjectId}.api.sanity.io/v2024-03-08/data/query/production?query=${sanityQuery}`;
     const sanityFetch = await fetch(sanityUrl);
     const sanityJson = await sanityFetch.json();
 

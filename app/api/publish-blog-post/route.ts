@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@sanity/client';
+import { normalizeBlogCategory, normalizeBlogLanguage } from '@/lib/blogConfig';
 
 export const maxDuration = 60;
 
 export async function POST(req: Request) {
   try {
-    const { title, slug, seoTitle, seoDescription, excerpt, content, language, pexelsImage, publishedAt } = await req.json();
+    const { title, slug, seoTitle, seoDescription, excerpt, content, language, category, pexelsImage, publishedAt } = await req.json();
 
     if (!title || !slug || !content) {
       return NextResponse.json({ error: 'Hiányzó mezők: title, slug, content' }, { status: 400 });
@@ -26,6 +27,8 @@ export async function POST(req: Request) {
       _type: 'post',
       title,
       slug: { _type: 'slug', current: slug },
+      language: normalizeBlogLanguage(language),
+      category: normalizeBlogCategory(category),
       seoTitle: seoTitle ?? title,
       seoDescription: seoDescription ?? '',
       excerpt: excerpt ?? '',
@@ -56,7 +59,14 @@ export async function POST(req: Request) {
 
     const created = await client.create(doc);
 
-    return NextResponse.json({ success: true, id: created._id, slug, hasImage: !!doc.mainImage });
+    return NextResponse.json({
+      success: true,
+      id: created._id,
+      slug,
+      language: doc.language,
+      category: doc.category,
+      hasImage: !!doc.mainImage,
+    });
   } catch (err: any) {
     console.error('Sanity feltöltési hiba:', err);
     return NextResponse.json({ error: err.message ?? 'Ismeretlen hiba' }, { status: 500 });

@@ -28,7 +28,10 @@ export function buildBlogPostingJsonLd(post: {
   imageUrl?: string;
   excerpt?: string;
   slug: string;
+  language?: string;
 }) {
+  const localePrefix = post.language && post.language !== 'hu' ? `/${post.language}` : '';
+
   return {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -46,7 +49,7 @@ export function buildBlogPostingJsonLd(post: {
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `https://www.crowndental.hu/blog/${post.slug}`,
+      '@id': `https://www.crowndental.hu${localePrefix}/blog/${post.slug}`,
     },
     speakable: {
       '@type': 'SpeakableSpecification',

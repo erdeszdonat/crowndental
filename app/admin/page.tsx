@@ -8,9 +8,10 @@ import {
   User, Lock, Edit3, Search, UserCheck, DollarSign, MessageSquare,
   AlertTriangle, Loader2, Trash2, CheckCircle2, Clock, ListOrdered,
   Wand2, Send, Eye, EyeOff, FileText, ImageIcon, Zap, BrainCircuit,
-  BarChart3
+  BarChart3, Globe2, Layers3
 } from 'lucide-react';
 import StatsDashboard from './StatsDashboard';
+import { BLOG_CATEGORIES, BLOG_LANGUAGES, normalizeBlogCategory, normalizeBlogLanguage } from '@/lib/blogConfig';
 
 export const dynamic = 'force-dynamic';
 
@@ -35,6 +36,7 @@ export default function AdminDashboard() {
   const [genTopic, setGenTopic] = useState('');
   const [genKeywords, setGenKeywords] = useState('');
   const [genLang, setGenLang] = useState('hu');
+  const [genCategory, setGenCategory] = useState('professional');
   const [genLoading, setGenLoading] = useState(false);
   const [genStep, setGenStep] = useState(0);
   const [genResult, setGenResult] = useState<any>(null);
@@ -209,6 +211,14 @@ export default function AdminDashboard() {
   ];
 
   const tabLabel = tabs.find(t => t.id === activeTab)?.label ?? '';
+  const getBlogPostPath = (language: string | undefined, slug: string) => {
+    const normalizedLanguage = normalizeBlogLanguage(language);
+    return `${normalizedLanguage === 'hu' ? '' : `/${normalizedLanguage}`}/blog/${slug}`;
+  };
+  const getBlogLanguageLabel = (language: string | undefined) =>
+    BLOG_LANGUAGES.find(item => item.id === normalizeBlogLanguage(language))?.label ?? 'Magyar';
+  const getBlogCategoryLabel = (category: string | undefined) =>
+    BLOG_CATEGORIES.find(item => item.id === normalizeBlogCategory(category))?.shortLabel ?? 'Szakmai';
 
   // ── MAIN DASHBOARD ────────────────────────────────────────────────────────
   return (
@@ -367,18 +377,29 @@ export default function AdminDashboard() {
                       placeholder="Kulcsszavak vesszővel (pl. implantátum ár, fogászat esztergom)"
                       className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 text-sm outline-none focus:border-sky-400"
                     />
-                    <div className="flex gap-3">
-                      <select value={genLang} onChange={e => setGenLang(e.target.value)} className="px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white text-sm outline-none focus:border-sky-400">
-                        <option value="hu">HU – Magyar</option>
-                        <option value="en">EN – English</option>
-                        <option value="sk">SK – Slovenčina</option>
-                      </select>
+                    <div className="grid md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)_auto] gap-3">
+                      <label className="relative">
+                        <Globe2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-sky-300" />
+                        <select value={genLang} onChange={e => setGenLang(e.target.value)} className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white text-sm outline-none focus:border-sky-400">
+                          {BLOG_LANGUAGES.filter(language => language.id !== 'de').map(language => (
+                            <option key={language.id} value={language.id} className="text-gray-900">{language.shortLabel} – {language.label}</option>
+                          ))}
+                        </select>
+                      </label>
+                      <label className="relative">
+                        <Layers3 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-sky-300" />
+                        <select value={genCategory} onChange={e => setGenCategory(e.target.value)} className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white text-sm outline-none focus:border-sky-400">
+                          {BLOG_CATEGORIES.map(category => (
+                            <option key={category.id} value={category.id} className="text-gray-900">{category.label}</option>
+                          ))}
+                        </select>
+                      </label>
                       <button
                         onClick={async () => {
                           if (!genTopic.trim()) return;
                           setGenLoading(true); setGenError(''); setGenResult(null); setPublishSuccess('');
                           try {
-                            const res = await fetch('/api/generate-blog-post', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ topic: genTopic, keywords: genKeywords, language: genLang }) });
+                            const res = await fetch('/api/generate-blog-post', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ topic: genTopic, keywords: genKeywords, language: genLang, category: genCategory }) });
                             const data = await res.json();
                             if (!res.ok) throw new Error(data.error);
                             setGenResult(data); setShowPreview(true);
@@ -402,7 +423,7 @@ export default function AdminDashboard() {
                       <div className="flex items-center justify-between px-4 py-3 bg-white/5">
                         <div className="flex-1 min-w-0 mr-3">
                           <p className="font-black text-white truncate">{genResult.title}</p>
-                          <p className="text-gray-400 text-xs mt-0.5">/{genResult.slug} · {genResult.content?.length ?? 0} blokk · ~{genResult.wordCount ?? '?'} szó{genResult.pexelsImage ? ' · 📷 kép kész' : ''}</p>
+                          <p className="text-gray-400 text-xs mt-0.5">/{genResult.slug} · {getBlogLanguageLabel(genResult.language)} · {getBlogCategoryLabel(genResult.category)} · {genResult.content?.length ?? 0} blokk · ~{genResult.wordCount ?? '?'} szó{genResult.pexelsImage ? ' · 📷 kép kész' : ''}</p>
                         </div>
                         <button onClick={() => setShowPreview(v => !v)} className="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-all flex-shrink-0">
                           {showPreview ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -441,7 +462,7 @@ export default function AdminDashboard() {
                                 const res = await fetch('/api/publish-blog-post', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(genResult) });
                                 const data = await res.json();
                                 if (!res.ok) throw new Error(data.error);
-                                setPublishSuccess(`Feltöltve! → /blog/${data.slug}`);
+                                setPublishSuccess(`Feltöltve! → ${getBlogPostPath(data.language, data.slug)}`);
                               } catch(e: any) { setGenError(e.message); }
                               finally { setPublishLoading(false); }
                             }}
@@ -474,9 +495,13 @@ export default function AdminDashboard() {
                     <div key={post._id} className="p-4 flex justify-between items-center hover:bg-gray-50 transition-all">
                       <div className="flex-1 mr-3 min-w-0">
                         <h5 className="font-black text-gray-900 truncate">{post.title}</h5>
-                        <p className="text-gray-400 text-xs font-bold uppercase mt-0.5">{post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('hu-HU') : 'Friss cikk'}</p>
+                        <div className="flex flex-wrap items-center gap-2 mt-1">
+                          <p className="text-gray-400 text-xs font-bold uppercase">{post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('hu-HU') : 'Friss cikk'}</p>
+                          <span className="bg-sky-50 text-sky-700 px-2 py-0.5 rounded-full text-[10px] font-black uppercase">{getBlogLanguageLabel(post.language)}</span>
+                          <span className="bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full text-[10px] font-black uppercase">{getBlogCategoryLabel(post.category)}</span>
+                        </div>
                       </div>
-                      <a href={`/blog/${post.slug}`} target="_blank" className="p-3 bg-sky-50 text-sky-600 rounded-xl hover:bg-sky-600 hover:text-white transition-all flex-shrink-0"><Search className="w-5 h-5" /></a>
+                      <a href={getBlogPostPath(post.language, post.slug)} target="_blank" className="p-3 bg-sky-50 text-sky-600 rounded-xl hover:bg-sky-600 hover:text-white transition-all flex-shrink-0"><Search className="w-5 h-5" /></a>
                     </div>
                   ))}
                 </div>
