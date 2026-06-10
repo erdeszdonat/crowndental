@@ -74,9 +74,9 @@ function BookingForm() {
                   <div className="flex items-center justify-between font-bold text-lg text-gray-900">Esztergom{formData.city==='Esztergom'&&<CheckCircle2 className="w-5 h-5 text-sky-600"/>}</div>
                   <p className="text-sm text-sky-600 font-medium mt-1">Petőfi Sándor utca 11.</p>
                 </label>
-                <label className={`relative rounded-2xl border-2 p-6 transition-all ${isBudapestOpen?'cursor-pointer select-auto':'cursor-not-allowed select-none opacity-60'} ${formData.city==='Budapest'?'border-sky-600 bg-sky-50':'border-gray-200 bg-gray-50 hover:border-sky-200'}`}>
+                <label className={`relative rounded-2xl border-2 p-6 transition-all ${isBudapestOpen ? 'cursor-pointer select-auto' : 'cursor-not-allowed select-none opacity-70 grayscale border-gray-200 bg-gray-100'} ${isBudapestOpen ? (formData.city==='Budapest'?'border-sky-600 bg-sky-50':'border-gray-200 bg-gray-50 hover:border-sky-200') : ''}`}>
                   <input type="radio" name="city" value="Budapest" checked={formData.city==='Budapest'} disabled={!isBudapestOpen} onChange={handleChange} className="sr-only"/>
-                  <div className={`flex items-center justify-between font-bold text-lg ${isBudapestOpen?'text-gray-900':'text-gray-400'}`}>Budapest{formData.city==='Budapest'?<CheckCircle2 className="w-5 h-5 text-sky-600"/>:<span className="text-xs font-semibold text-white bg-sky-400 px-2 py-1 rounded-full whitespace-nowrap">{budapestOpenLabel}</span>}</div>
+                  <div className={`flex items-center justify-between font-bold text-lg ${isBudapestOpen?'text-gray-900':'text-gray-400'}`}>Budapest{formData.city==='Budapest'?<CheckCircle2 className="w-5 h-5 text-sky-600"/>:<span className={`text-xs font-semibold text-white px-2 py-1 rounded-full whitespace-nowrap ${isBudapestOpen ? 'bg-sky-400' : 'bg-gray-400'}`}>{budapestOpenLabel}</span>}</div>
                   <p className={`text-sm font-medium mt-1 ${isBudapestOpen?'text-sky-600':'text-gray-400'}`}>Királyok útja 55.</p>
                 </label>
               </div>

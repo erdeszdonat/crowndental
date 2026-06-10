@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     }
 
     if (isBudapestCity(city) && !isBudapestBookingAvailable()) {
-      return NextResponse.json({ error: 'A budapesti rendelőbe 2026. július 31-től lehet időpontot kérni.' }, { status: 400 });
+      return NextResponse.json({ error: 'A budapesti rendelő jelenleg még nem foglalható. Coming soon...' }, { status: 400 });
     }
 
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;

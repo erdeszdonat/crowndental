@@ -213,15 +213,15 @@ function OpeningSoonBanner() {
     <div className="fixed top-0 left-0 right-0 z-[60] bg-gradient-to-r from-amber-500 via-amber-400 to-orange-400 text-gray-900 shadow-lg">
       <div className="container mx-auto px-4 py-3 flex items-center justify-center gap-3 relative">
         <div className="flex items-center gap-3 text-center flex-wrap justify-center">
-          <span className="inline-flex items-center gap-1.5 bg-amber-600/20 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider">
+          <span className="inline-flex items-center gap-1.5 bg-white/15 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider">
             <Sparkles className="w-3.5 h-3.5" />
             {t(locale, 'Hamarosan', 'Coming Soon', 'Čoskoro')}
           </span>
           <span className="font-extrabold text-sm md:text-base">
             {t(locale,
-              'Budapesti rendelőnk 2026. július 31-én nyit!',
-              'Our Budapest clinic opens on July 31, 2026!',
-              'Naša budapeštianska ordinácia otvára 31. júla 2026!'
+              'Budapesti rendelőnk hamarosan nyit. Coming soon...',
+              'Our Budapest clinic is coming soon...',
+              'Naša budapeštianska ordinácia sa čoskoro otvorí. Coming soon...'
             )}
           </span>
           <span className="text-amber-900/70 text-sm hidden sm:inline">
@@ -315,11 +315,11 @@ function HeroSection() {
                 'In-house dental lab. 30 years of experience. The latest technology —',
                 'Vlastné zubnotechnické laboratórium. 30 rokov skúseností. Najmodernejšie technológie —'
               )}{' '}
-              <span className="text-amber-300 font-semibold">
+              <span className="text-gray-200 font-semibold">
                 {t(locale,
-                  '2026. július 31-től Budapest szívében is.',
-                  'coming to the heart of Budapest from July 31, 2026.',
-                  'v centre Budapešti od 31. júla 2026.'
+                  'hamarosan Budapest szívében is. Coming soon...',
+                  'coming soon to the heart of Budapest.',
+                  'čoskoro aj v centre Budapešti. Coming soon...'
                 )}
               </span>
             </p>
@@ -373,25 +373,25 @@ function ComingSoonNotice() {
     <section className="py-16 bg-gradient-to-b from-white to-gray-50 border-b border-gray-100">
       <div className="container mx-auto px-4">
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-4xl mx-auto">
-          <div className="relative rounded-3xl border-2 border-amber-200 bg-gradient-to-br from-amber-50 via-white to-orange-50 p-8 md:p-12 overflow-hidden shadow-lg">
-            <div className="absolute top-0 right-0 w-[250px] h-[250px] bg-amber-200/20 rounded-full blur-[80px]" />
-            <div className="absolute -bottom-10 -left-10 w-[200px] h-[200px] bg-orange-200/20 rounded-full blur-[60px]" />
+          <div className="relative rounded-3xl border-2 border-gray-200 bg-gradient-to-br from-gray-50 via-white to-slate-100 p-8 md:p-12 overflow-hidden shadow-lg">
+            <div className="absolute top-0 right-0 w-[250px] h-[250px] bg-gray-300/20 rounded-full blur-[80px]" />
+            <div className="absolute -bottom-10 -left-10 w-[200px] h-[200px] bg-slate-300/20 rounded-full blur-[60px]" />
             <div className="relative z-10">
               <div className="flex flex-col md:flex-row md:items-center gap-8">
                 <div className="flex-1">
-                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-amber-100 border border-amber-200 rounded-full text-amber-700 text-sm font-bold uppercase tracking-wider mb-5">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 border border-gray-200 rounded-full text-gray-600 text-sm font-bold uppercase tracking-wider mb-5">
                     <Clock className="w-4 h-4" />
-                    {t(locale, '2026. július 31.', 'July 31, 2026', '31. júl 2026')}
+                    {t(locale, 'Coming soon...', 'Coming soon...', 'Coming soon...')}
                   </div>
                   <h3 className="text-2xl md:text-3xl font-black text-gray-900 mb-4 leading-tight">
                     {t(locale, 'Budapesti rendelőnk', 'Our Budapest clinic', 'Naša budapeštianska ordinácia')}<br />
-                    <span className="text-amber-600">{t(locale, 'hamarosan nyit!', 'is opening soon!', 'čoskoro otvára!')}</span>
+                    <span className="text-gray-600">{t(locale, 'Coming soon...', 'Coming soon...', 'Coming soon...')}</span>
                   </h3>
                   <p className="text-gray-600 leading-relaxed mb-6">
                     {t(locale,
-                      'A Római Parton épülő új rendelőnk 2026. július 31-én nyitja meg kapuit. Addig is teljes körű fogászati ellátással, saját laborral és 30 év tapasztalatával várjuk Önt ',
-                      'Our new clinic on the Danube waterfront opens its doors on July 31, 2026. In the meantime, we welcome you with full dental care, an in-house lab, and 30 years of experience at our ',
-                      'Naša nová ordinácia na nábreží Dunaja otvorí svoje dvere 31. júla 2026. Medzitým vás vítame s kompletnou stomatologickou starostlivosťou, vlastným laboratóriom a 30-ročnými skúsenosťami v našej '
+                      'A Római Parton épülő új rendelőnk előkészítés alatt áll, pontos nyitási dátumot még nem hirdetünk. Addig is teljes körű fogászati ellátással, saját laborral és 30 év tapasztalatával várjuk Önt ',
+                      'Our new clinic on the Danube waterfront is being prepared, and we are not announcing an exact opening date yet. In the meantime, we welcome you with full dental care, an in-house lab, and 30 years of experience at our ',
+                      'Naša nová ordinácia na nábreží Dunaja je v príprave a presný dátum otvorenia zatiaľ neoznamujeme. Medzitým vás vítame s kompletnou stomatologickou starostlivosťou, vlastným laboratóriom a 30-ročnými skúsenosťami v našej '
                     )}
                     <span className="font-bold">{t(locale, 'esztergomi rendelőnkben', 'Esztergom clinic', 'ordinácii v Ostrihome')}</span>
                     {t(locale, ' – mindössze 50 perc Budapestről!', ' — just 50 minutes from Budapest!', ' — len 50 minút od Budapešti!')}
