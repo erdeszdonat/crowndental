@@ -275,6 +275,8 @@
     "successTitle": "Ďakujeme za vašu správu!",
     "successText": "Čoskoro vás kontaktujeme pre potvrdenie termínu.",
     "submitting": "Odosielam...",
+    "marketingOptInTitle": "Chcem dostávať akčné ponuky a extra možnosti e-mailom",
+    "marketingOptInText": "Nie je povinné pre rezerváciu. Občas pošleme zľavy, možnosti bezplatného ošetrenia a užitočné tipy o zuboch. Kedykoľvek sa môžete odhlásiť.",
     "treatments": [
       "Vyšetrenie a konzultácia",
       "Zubný implantát",

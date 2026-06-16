@@ -275,6 +275,8 @@
     "successTitle": "Thank you for your enquiry!",
     "successText": "We will contact you shortly to confirm your appointment.",
     "submitting": "Sending...",
+    "marketingOptInTitle": "Send me special offers and extra opportunities by email",
+    "marketingOptInText": "Optional for booking. From time to time we send discounts, free treatment opportunities and useful dental tips. You can unsubscribe anytime.",
     "treatments": [
       "Assessment & Consultation",
       "Dental Implant",

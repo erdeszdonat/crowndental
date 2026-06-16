@@ -8,6 +8,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import { BUDAPEST_BOOKING_OPEN_LABELS, isBudapestBookingAvailable, isBudapestCity } from '@/lib/bookingAvailability';
 
 const BOOKING_SUCCESS_STORAGE_KEY = 'crown_booking_success';
+const BOOKING_SUCCESS_CONTACT_KEY = 'crown_booking_contact';
 
 function BookingForm() {
   const t = useTranslations('booking');
@@ -18,6 +19,7 @@ function BookingForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({ city:'Esztergom', name:'', nickname:'', email:'', phone:'', treatment:'' });
   const [otherNote, setOtherNote] = useState('');
+  const [marketingConsent, setMarketingConsent] = useState(false);
   const isBudapestOpen = isBudapestBookingAvailable();
   const budapestOpenLabel = BUDAPEST_BOOKING_OPEN_LABELS[locale as keyof typeof BUDAPEST_BOOKING_OPEN_LABELS] ?? BUDAPEST_BOOKING_OPEN_LABELS.hu;
 
@@ -42,10 +44,24 @@ function BookingForm() {
     setIsSubmitting(true);
     try {
       const payload = isOther && otherNote ? { ...formData, treatment: `${formData.treatment}: ${otherNote}` } : formData;
-      const res = await fetch('/api/book-appointment', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+      const bookingPayload = {
+        ...payload,
+        marketingConsent,
+        marketingConsentSource: 'booking_form',
+        marketingConsentLocale: locale,
+      };
+      const res = await fetch('/api/book-appointment', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(bookingPayload) });
       const data = await res.json();
       if (data.success) {
         sessionStorage.setItem(BOOKING_SUCCESS_STORAGE_KEY, '1');
+        sessionStorage.setItem(BOOKING_SUCCESS_CONTACT_KEY, JSON.stringify({
+          email: formData.email,
+          name: formData.name,
+          nickname: formData.nickname,
+          phone: formData.phone,
+          clinic: formData.city,
+          marketingConsent,
+        }));
         router.push(`${p}/idopont/sikeres`);
       }
     } catch {}
@@ -116,6 +132,18 @@ function BookingForm() {
                   </React.Fragment>
                 ))}
               </div>
+              <label className="flex cursor-pointer items-start gap-3 rounded-2xl border border-sky-100 bg-sky-50/70 p-4 text-left transition-colors hover:border-sky-200">
+                <input
+                  type="checkbox"
+                  checked={marketingConsent}
+                  onChange={(event) => setMarketingConsent(event.target.checked)}
+                  className="mt-1 h-5 w-5 flex-shrink-0 rounded border-sky-300 text-sky-600 focus:ring-sky-500"
+                />
+                <span>
+                  <span className="block text-sm font-black text-gray-900">{t('marketingOptInTitle')}</span>
+                  <span className="mt-1 block text-xs leading-relaxed text-gray-500">{t('marketingOptInText')}</span>
+                </span>
+              </label>
               <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t">
                 <button type="button" onClick={()=>setStep(1)} className="flex items-center justify-center gap-2 px-6 py-4 text-gray-500 font-bold hover:text-gray-900">
                   <ArrowLeft className="w-5 h-5"/> {t('prevStep')}

@@ -275,6 +275,8 @@
     "successTitle": "Köszönjük a megkeresést!",
     "successText": "Hamarosan felvesszük Önnel a kapcsolatot a visszaigazoláshoz.",
     "submitting": "Küldés...",
+    "marketingOptInTitle": "Kérek akciós ajánlatokat és extra lehetőségeket e-mailben",
+    "marketingOptInText": "Nem kötelező a foglaláshoz. Időnként kedvezményekről, ingyenes kezelési lehetőségekről és hasznos fogászati tippekről írunk. Bármikor leiratkozhat.",
     "treatments": [
       "Állapotfelmérés és Konzultáció",
       "Fogimplantátum",

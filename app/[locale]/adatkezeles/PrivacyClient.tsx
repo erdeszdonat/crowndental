@@ -258,6 +258,13 @@ function PrivacyContent() {
                     </tbody>
                   </table>
                 </div>
+                <h3>5.1. Opcionális marketing hírlevél és ajánlatok</h3>
+                <ul>
+                  <li><strong>Cél:</strong> Akciós ajánlatok, ingyenes kezelési lehetőségek, nyereményjátékok és hasznos fogászati információk küldése kizárólag külön hozzájárulás esetén.</li>
+                  <li><strong>Jogalap:</strong> Az érintett önkéntes, kifejezett hozzájárulása az időpontfoglalási űrlapon vagy a sikeres foglalás oldalon.</li>
+                  <li><strong>Kezelt adatok:</strong> Név, e-mail cím, telefonszám, választott rendelő, feliratkozás forrása és nyelve.</li>
+                  <li><strong>Időtartam:</strong> A hozzájárulás visszavonásáig vagy leiratkozásig.</li>
+                </ul>
                 <p>
                   <strong>Leiratkozás:</strong> Ön bármikor, indokolás nélkül, ingyenesen leiratkozhat az automatizált emlékeztetőkről és hírlevelekről az e-mailek alján található linkre kattintva.
                 </p>

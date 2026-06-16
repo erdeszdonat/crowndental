@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
-import { addToResendAudience } from '@/lib/addToAudience';
 import { isBudapestBookingAvailable, isBudapestCity } from '@/lib/bookingAvailability';
+import { upsertMarketingSubscriber } from '@/lib/marketingSubscribers';
 import { getPreferredGreetingName } from '@/lib/names';
 
 export async function POST(req: Request) {
@@ -10,7 +10,7 @@ export async function POST(req: Request) {
 
   try {
     const body = await req.json();
-    const { city, name, nickname, email, phone, treatment } = body;
+    const { city, name, nickname, email, phone, treatment, marketingConsent, marketingConsentSource, marketingConsentLocale } = body;
 
     if (!name || !email || !phone || !city || !treatment) {
       return NextResponse.json({ error: 'Minden kötelező mezőt ki kell tölteni!' }, { status: 400 });
@@ -88,8 +88,21 @@ export async function POST(req: Request) {
       }
     }
 
-    // 3. RESEND AUDIENCE HOZZÁADÁS (későbbi marketing e-mailekhez)
-    await addToResendAudience({ email, name, nickname, source: 'appointment' });
+    if (marketingConsent === true) {
+      const marketingResult = await upsertMarketingSubscriber({
+        email,
+        name,
+        nickname,
+        phone,
+        clinic: city,
+        source: marketingConsentSource || 'booking_form',
+        locale: marketingConsentLocale || 'hu',
+      });
+
+      if (!marketingResult.ok) {
+        console.warn('Marketing feliratkozás nem lett mentve:', marketingResult.error);
+      }
+    }
 
     return NextResponse.json({ success: true });
 

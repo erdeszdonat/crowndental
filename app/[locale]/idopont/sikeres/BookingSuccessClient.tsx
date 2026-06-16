@@ -1,13 +1,23 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useLocale } from 'next-intl';
 import { ArrowRight, CalendarCheck2, CheckCircle2, Home, Mail, Phone } from 'lucide-react';
 
 const BOOKING_SUCCESS_STORAGE_KEY = 'crown_booking_success';
+const BOOKING_SUCCESS_CONTACT_KEY = 'crown_booking_contact';
 const BOOKING_SUCCESS_EVENT = 'appointment_booking_success';
+
+type BookingContact = {
+  email: string;
+  name?: string;
+  nickname?: string;
+  phone?: string;
+  clinic?: string;
+  marketingConsent?: boolean;
+};
 
 const copyByLocale = {
   hu: {
@@ -23,6 +33,13 @@ const copyByLocale = {
     call: 'Hívás most',
     email: 'E-mail küldése',
     home: 'Vissza a főoldalra',
+    offerTitle: 'Szeretne időnként extra kedvezményeket kapni?',
+    offerText: 'Akciós ajánlatok, ingyenes kezelési lehetőségek, nyereményjátékok és hasznos fogászati tippek e-mailben. Ritkán küldünk, és bármikor leiratkozhat.',
+    offerCta: 'Kérem az ajánlatokat',
+    offerNoThanks: 'Most nem kérem',
+    offerDone: 'Köszönjük, feliratkozását rögzítettük.',
+    offerAlready: 'A feliratkozási szándékát már rögzítettük.',
+    offerError: 'Most nem sikerült rögzíteni, kérjük próbálja újra később.',
   },
   en: {
     eyebrow: 'Booking received',
@@ -37,6 +54,13 @@ const copyByLocale = {
     call: 'Call now',
     email: 'Send email',
     home: 'Back to home',
+    offerTitle: 'Would you like occasional exclusive offers?',
+    offerText: 'Special offers, free treatment opportunities, giveaways and useful dental tips by email. We send rarely, and you can unsubscribe anytime.',
+    offerCta: 'Send me the offers',
+    offerNoThanks: 'Not now',
+    offerDone: 'Thank you, your subscription has been recorded.',
+    offerAlready: 'Your subscription preference has already been recorded.',
+    offerError: 'We could not record it now, please try again later.',
   },
   sk: {
     eyebrow: 'Rezervácia prijatá',
@@ -51,6 +75,13 @@ const copyByLocale = {
     call: 'Zavolať teraz',
     email: 'Poslať e-mail',
     home: 'Späť na hlavnú stránku',
+    offerTitle: 'Chcete občas dostávať extra výhody?',
+    offerText: 'Akčné ponuky, možnosti bezplatného ošetrenia, súťaže a užitočné tipy o zuboch e-mailom. Posielame zriedkavo a kedykoľvek sa môžete odhlásiť.',
+    offerCta: 'Chcem dostávať ponuky',
+    offerNoThanks: 'Teraz nie',
+    offerDone: 'Ďakujeme, vašu registráciu sme uložili.',
+    offerAlready: 'Váš záujem o odber sme už zaznamenali.',
+    offerError: 'Teraz sa registráciu nepodarilo uložiť, skúste to prosím neskôr.',
   },
 };
 
@@ -58,11 +89,24 @@ export default function BookingSuccessClient() {
   const locale = useLocale();
   const text = copyByLocale[locale as keyof typeof copyByLocale] ?? copyByLocale.hu;
   const prefix = locale === 'hu' ? '' : `/${locale}`;
+  const [contact, setContact] = useState<BookingContact | null>(null);
+  const [offerStatus, setOfferStatus] = useState<'idle' | 'loading' | 'done' | 'already' | 'dismissed' | 'error'>('idle');
 
   useEffect(() => {
     const isRealBookingRedirect = sessionStorage.getItem(BOOKING_SUCCESS_STORAGE_KEY) === '1';
 
     if (!isRealBookingRedirect) return;
+
+    const storedContact = sessionStorage.getItem(BOOKING_SUCCESS_CONTACT_KEY);
+    if (storedContact) {
+      try {
+        const parsed = JSON.parse(storedContact) as BookingContact;
+        if (parsed?.email) {
+          setContact(parsed);
+          if (parsed.marketingConsent) setOfferStatus('already');
+        }
+      } catch {}
+    }
 
     sessionStorage.removeItem(BOOKING_SUCCESS_STORAGE_KEY);
 
@@ -84,6 +128,33 @@ export default function BookingSuccessClient() {
       event_label: 'appointment_success_page',
     });
   }, []);
+
+  const handleOfferSignup = async () => {
+    if (!contact?.email) return;
+    setOfferStatus('loading');
+    try {
+      const res = await fetch('/api/marketing-consent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: contact.email,
+          name: contact.name,
+          nickname: contact.nickname,
+          phone: contact.phone,
+          clinic: contact.clinic,
+          source: 'booking_success_page',
+          locale,
+        }),
+      });
+      if (!res.ok) throw new Error('Marketing consent failed');
+      const updatedContact = { ...contact, marketingConsent: true };
+      sessionStorage.setItem(BOOKING_SUCCESS_CONTACT_KEY, JSON.stringify(updatedContact));
+      setContact(updatedContact);
+      setOfferStatus('done');
+    } catch {
+      setOfferStatus('error');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-sky-50 via-white to-white pt-28 pb-20 selection:bg-sky-200 selection:text-sky-900">
@@ -122,6 +193,44 @@ export default function BookingSuccessClient() {
                     </div>
                   ))}
                 </div>
+
+                {contact && offerStatus !== 'dismissed' && (
+                  <div className="mt-8 rounded-3xl border border-sky-100 bg-white p-5 shadow-sm">
+                    <div className="mb-3 inline-flex rounded-full bg-sky-50 px-3 py-1 text-xs font-black uppercase tracking-[0.18em] text-sky-700">
+                      Crown Dental extra
+                    </div>
+                    <h3 className="text-xl font-black text-gray-950">{text.offerTitle}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-gray-600">{text.offerText}</p>
+                    {(offerStatus === 'done' || offerStatus === 'already') ? (
+                      <p className="mt-4 rounded-2xl bg-emerald-50 px-4 py-3 text-sm font-bold text-emerald-700">
+                        {offerStatus === 'done' ? text.offerDone : text.offerAlready}
+                      </p>
+                    ) : (
+                      <>
+                        {offerStatus === 'error' && (
+                          <p className="mt-4 rounded-2xl bg-red-50 px-4 py-3 text-sm font-bold text-red-600">{text.offerError}</p>
+                        )}
+                        <div className="mt-4 grid gap-3 sm:grid-cols-[1fr_auto]">
+                          <button
+                            type="button"
+                            onClick={handleOfferSignup}
+                            disabled={offerStatus === 'loading'}
+                            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-500 px-5 py-4 font-black text-white transition-all hover:bg-emerald-600 disabled:bg-gray-300"
+                          >
+                            {offerStatus === 'loading' ? '...' : text.offerCta}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setOfferStatus('dismissed')}
+                            className="rounded-2xl px-5 py-4 text-sm font-black text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900"
+                          >
+                            {text.offerNoThanks}
+                          </button>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                )}
 
                 <div className="mt-8 grid gap-3 sm:grid-cols-2">
                   <a href="tel:+36705646837" className="inline-flex items-center justify-center gap-2 rounded-2xl bg-sky-600 px-5 py-4 font-black text-white transition-all hover:bg-sky-700">
