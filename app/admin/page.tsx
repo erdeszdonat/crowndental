@@ -8,7 +8,7 @@ import {
   User, Lock, Edit3, Search, UserCheck, DollarSign, MessageSquare,
   AlertTriangle, Loader2, Trash2, CheckCircle2, Clock, ListOrdered,
   Wand2, Send, Eye, EyeOff, FileText, ImageIcon, Zap, BrainCircuit,
-  BarChart3, Globe2, Layers3
+  BarChart3, Globe2, Layers3, Mail, Download
 } from 'lucide-react';
 import StatsDashboard from './StatsDashboard';
 import { BLOG_CATEGORIES, BLOG_LANGUAGES, normalizeBlogCategory, normalizeBlogLanguage } from '@/lib/blogConfig';
@@ -21,7 +21,7 @@ export default function AdminDashboard() {
   const [passwordInput, setPasswordInput] = useState('');
   const [isLoginLoading, setIsLoginLoading] = useState(false);
 
-  const [activeTab, setActiveTab] = useState<'stats' | 'appointments' | 'career' | 'quotes' | 'blog'>('stats');
+  const [activeTab, setActiveTab] = useState<'stats' | 'appointments' | 'career' | 'quotes' | 'blog' | 'marketing'>('stats');
   const [expandedId, setExpandedId] = useState<string | number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
@@ -31,6 +31,7 @@ export default function AdminDashboard() {
   const [applications, setApplications] = useState<any[]>([]);
   const [quotes, setQuotes] = useState<any[]>([]);
   const [posts, setPosts] = useState<any[]>([]);
+  const [marketingSubscribers, setMarketingSubscribers] = useState<any[]>([]);
 
   // Blog generator state
   const [genTopic, setGenTopic] = useState('');
@@ -79,6 +80,7 @@ export default function AdminDashboard() {
         setAppointments(data.appointments);
         setApplications(data.applications);
         setQuotes(data.quotes);
+        setMarketingSubscribers(data.marketingSubscribers || []);
         setPosts(data.posts);
       } else {
         setDbError(data.error || 'Hiba az adatok betöltésekor.');
@@ -172,6 +174,62 @@ export default function AdminDashboard() {
     try { return JSON.parse(itemsStr); } catch { return []; }
   };
 
+  const getNamePartsForExport = (fullName: string) => {
+    const parts = (fullName || '').trim().split(/\s+/).filter(Boolean);
+    if (parts.length === 0) return { firstName: '', lastName: '' };
+    if (parts.length === 1) return { firstName: parts[0], lastName: '' };
+    return { firstName: parts.slice(1).join(' '), lastName: parts[0] };
+  };
+
+  const csvCell = (value: unknown) => `"${String(value ?? '').replace(/"/g, '""')}"`;
+
+  const exportMarketingSubscribers = () => {
+    const headers = [
+      'Email',
+      'Name',
+      'First name',
+      'Last name',
+      'Phone',
+      'Clinic',
+      'Source',
+      'Language',
+      'Consent status',
+      'Consent date',
+      'Created at',
+    ];
+
+    const rows = marketingSubscribers.map((subscriber) => {
+      const fullName = subscriber.name || '';
+      const { firstName, lastName } = getNamePartsForExport(fullName);
+      return [
+        subscriber.email || '',
+        fullName,
+        firstName,
+        lastName,
+        subscriber.phone || '',
+        subscriber.clinic || '',
+        subscriber.source || '',
+        subscriber.locale || '',
+        subscriber.consent_status || '',
+        subscriber.consented_at || '',
+        subscriber.created_at || '',
+      ];
+    });
+
+    const csv = [headers, ...rows]
+      .map((row) => row.map(csvCell).join(';'))
+      .join('\r\n');
+    const blob = new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `crown-dental-email-lista-${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   // ── LOGIN SCREEN ──────────────────────────────────────────────────────────
   if (!isAuthenticated) {
     return (
@@ -208,6 +266,7 @@ export default function AdminDashboard() {
     { id: 'career' as const, label: 'Karrier', icon: Briefcase, count: applications.length },
     { id: 'quotes' as const, label: 'AI Leads', icon: Sparkles, count: quotes.length },
     { id: 'blog' as const, label: 'Blog', icon: BookOpen, count: null },
+    { id: 'marketing' as const, label: 'Email lista', icon: Mail, count: marketingSubscribers.length },
   ];
 
   const tabLabel = tabs.find(t => t.id === activeTab)?.label ?? '';
@@ -219,6 +278,13 @@ export default function AdminDashboard() {
     BLOG_LANGUAGES.find(item => item.id === normalizeBlogLanguage(language))?.label ?? 'Magyar';
   const getBlogCategoryLabel = (category: string | undefined) =>
     BLOG_CATEGORIES.find(item => item.id === normalizeBlogCategory(category))?.shortLabel ?? 'Szakmai';
+  const marketingClinicStats = Object.entries(
+    marketingSubscribers.reduce<Record<string, number>>((totals, subscriber) => {
+      const clinic = subscriber.clinic || 'Nincs megadva';
+      totals[clinic] = (totals[clinic] || 0) + 1;
+      return totals;
+    }, {})
+  );
 
   // ── MAIN DASHBOARD ────────────────────────────────────────────────────────
   return (
@@ -242,7 +308,7 @@ export default function AdminDashboard() {
           ))}
         </nav>
         <div className="p-5 border-t border-white/5 bg-black/40">
-          <button onClick={() => { setIsAuthenticated(false); setPasswordInput(''); setUsernameInput(''); setAppointments([]); }} className="w-full flex items-center justify-center gap-2 px-4 py-3.5 text-red-400 hover:bg-red-500/10 rounded-2xl transition-all font-bold">
+          <button onClick={() => { setIsAuthenticated(false); setPasswordInput(''); setUsernameInput(''); setAppointments([]); setMarketingSubscribers([]); }} className="w-full flex items-center justify-center gap-2 px-4 py-3.5 text-red-400 hover:bg-red-500/10 rounded-2xl transition-all font-bold">
             <LogOut className="w-4 h-4" /> Kijelentkezés
           </button>
         </div>
@@ -506,6 +572,102 @@ export default function AdminDashboard() {
                   ))}
                 </div>
               </motion.div>
+            ) : activeTab === 'marketing' ? (
+              <motion.div key="marketing" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-4">
+                <div className="bg-white rounded-3xl border border-gray-200 p-5 md:p-6 shadow-sm">
+                  <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                    <div>
+                      <div className="inline-flex items-center gap-2 rounded-full bg-sky-50 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-sky-700">
+                        <Mail className="w-3.5 h-3.5" /> Marketing feliratkozók
+                      </div>
+                      <h3 className="mt-3 text-2xl font-black text-gray-950 tracking-tight">Email lista</h3>
+                      <p className="mt-1 text-sm text-gray-500">
+                        Csak azok jelennek meg itt, akik külön bepipálták vagy a sikeres foglalás oldalon kérték az ajánlatokat.
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={exportMarketingSubscribers}
+                      disabled={marketingSubscribers.length === 0}
+                      className="inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-500 px-5 py-3.5 text-sm font-black text-white shadow-lg shadow-emerald-500/20 transition-all hover:bg-emerald-600 disabled:bg-gray-300 disabled:shadow-none"
+                    >
+                      <Download className="w-4 h-4" /> Export MailerLite CSV
+                    </button>
+                  </div>
+                </div>
+
+                <div className="grid gap-3 md:grid-cols-4">
+                  <div className="rounded-2xl border border-sky-100 bg-sky-50 p-4">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-sky-600">Feliratkozók</p>
+                    <p className="mt-2 text-3xl font-black text-gray-950">{marketingSubscribers.length}</p>
+                    <p className="text-xs font-medium text-gray-500">összes marketing consent</p>
+                  </div>
+                  {marketingClinicStats.slice(0, 3).map(([clinic, count]) => (
+                    <div key={clinic} className="rounded-2xl border border-gray-200 bg-white p-4">
+                      <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">Rendelő</p>
+                      <p className="mt-2 text-2xl font-black text-gray-950">{count}</p>
+                      <p className="truncate text-xs font-bold text-gray-500">{clinic}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm">
+                  <div className="border-b border-gray-100 px-5 py-4">
+                    <h4 className="font-black text-gray-950">Feliratkozói lista</h4>
+                    <p className="text-xs text-gray-500">Az export külön oszlopokba teszi az emailt, nevet, keresztnevet, vezetéknevet, telefonszámot, rendelőt és consent adatokat.</p>
+                  </div>
+                  {marketingSubscribers.length === 0 ? (
+                    <div className="py-20 text-center">
+                      <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-50 text-gray-300">
+                        <Mail className="h-7 w-7" />
+                      </div>
+                      <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">Még nincs email lista feliratkozó.</p>
+                    </div>
+                  ) : (
+                    <div className="overflow-x-auto">
+                      <table className="w-full min-w-[980px] text-left text-sm">
+                        <thead className="bg-gray-50 text-[10px] font-black uppercase tracking-widest text-gray-400">
+                          <tr>
+                            <th className="px-5 py-3">Név</th>
+                            <th className="px-5 py-3">Email</th>
+                            <th className="px-5 py-3">Telefonszám</th>
+                            <th className="px-5 py-3">Rendelő</th>
+                            <th className="px-5 py-3">Forrás</th>
+                            <th className="px-5 py-3">Nyelv</th>
+                            <th className="px-5 py-3">Feliratkozás</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100">
+                          {marketingSubscribers.map((subscriber) => (
+                            <tr key={subscriber.id || subscriber.email} className="hover:bg-sky-50/40">
+                              <td className="px-5 py-4">
+                                <p className="font-black text-gray-950">{subscriber.name || '-'}</p>
+                                {subscriber.nickname && <p className="text-xs font-medium text-gray-400">{subscriber.nickname}</p>}
+                              </td>
+                              <td className="px-5 py-4">
+                                <a href={`mailto:${subscriber.email}`} className="font-bold text-sky-700 hover:underline">{subscriber.email}</a>
+                              </td>
+                              <td className="px-5 py-4">
+                                {subscriber.phone ? (
+                                  <a href={`tel:${subscriber.phone}`} className="font-bold text-gray-800 hover:text-sky-600">{subscriber.phone}</a>
+                                ) : '-'}
+                              </td>
+                              <td className="px-5 py-4">
+                                <span className="inline-flex rounded-full bg-gray-100 px-3 py-1 text-xs font-black text-gray-700">{subscriber.clinic || 'Nincs megadva'}</span>
+                              </td>
+                              <td className="px-5 py-4 text-xs font-bold text-gray-500">{subscriber.source || '-'}</td>
+                              <td className="px-5 py-4">
+                                <span className="rounded-full bg-sky-50 px-2.5 py-1 text-[10px] font-black uppercase text-sky-700">{subscriber.locale || 'hu'}</span>
+                              </td>
+                              <td className="px-5 py-4 text-xs font-medium text-gray-500">{formatDate(subscriber.consented_at || subscriber.created_at)}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
             ) : (
 
               /* DATA CARDS */
@@ -742,7 +904,7 @@ export default function AdminDashboard() {
             <span className="text-[10px] font-black uppercase tracking-wider leading-none">{label}</span>
           </button>
         ))}
-        <button onClick={() => { setIsAuthenticated(false); setPasswordInput(''); setUsernameInput(''); setAppointments([]); }} className="flex-shrink-0 flex flex-col items-center gap-0.5 py-3 px-3 text-red-500">
+        <button onClick={() => { setIsAuthenticated(false); setPasswordInput(''); setUsernameInput(''); setAppointments([]); setMarketingSubscribers([]); }} className="flex-shrink-0 flex flex-col items-center gap-0.5 py-3 px-3 text-red-500">
           <LogOut className="w-5 h-5" />
           <span className="text-[10px] font-black uppercase tracking-wider leading-none">Ki</span>
         </button>

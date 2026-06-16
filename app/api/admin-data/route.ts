@@ -21,10 +21,14 @@ export async function POST(req: Request) {
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     // 3. Adatok lekérése, DE csak azokat, amik nincsenek elrejtve (is_hidden = false vagy null)
-    const [appointmentsRes, careerRes, quotesRes] = await Promise.all([
+    const [appointmentsRes, careerRes, quotesRes, marketingSubscribersRes] = await Promise.all([
       supabase.from('appointments').select('*').is('is_hidden', false).order('created_at', { ascending: false }),
       supabase.from('career_applications').select('*').is('is_hidden', false).order('created_at', { ascending: false }),
-      supabase.from('quote_leads').select('*').is('is_hidden', false).order('created_at', { ascending: false })
+      supabase.from('quote_leads').select('*').is('is_hidden', false).order('created_at', { ascending: false }),
+      supabase
+        .from('marketing_subscribers')
+        .select('id, email, name, nickname, phone, clinic, source, locale, consent_status, consented_at, created_at, updated_at')
+        .order('created_at', { ascending: false })
     ]);
 
     // 4. Sanity cikkek lekérése
@@ -39,6 +43,7 @@ export async function POST(req: Request) {
       appointments: appointmentsRes.data || [],
       applications: careerRes.data || [],
       quotes: quotesRes.data || [],
+      marketingSubscribers: marketingSubscribersRes.data || [],
       posts: sanityJson.result || []
     });
 
