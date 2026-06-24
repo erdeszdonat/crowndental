@@ -41,6 +41,11 @@ export async function GET(req: Request) {
     `SUMMARY:${title}`,
     `LOCATION:${location}`,
     `DESCRIPTION:${details}`,
+    'BEGIN:VALARM',
+    'ACTION:DISPLAY',
+    'DESCRIPTION:Crown Dental időpont 2 óra múlva',
+    'TRIGGER:-PT2H',
+    'END:VALARM',
     'END:VEVENT',
     'END:VCALENDAR',
   ].join('\r\n');

@@ -792,6 +792,11 @@ export default function AdminDashboard() {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap mb-1">
                           {getStatusBadge(item.status)}
+                          {item.confirmed_appointment_local && (
+                            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-black uppercase text-emerald-700">
+                              <Clock className="w-3 h-3" /> {item.confirmed_appointment_local}
+                            </span>
+                          )}
                           <span className="text-gray-400 text-xs">{formatDate(item.created_at)}</span>
                         </div>
                         <p className="font-black text-gray-900 text-base uppercase truncate">{item.name}</p>
@@ -813,6 +818,15 @@ export default function AdminDashboard() {
                             <p className="text-[10px] font-black text-sky-400 uppercase tracking-widest mb-1 flex items-center gap-1"><MapPin className="w-3 h-3" /> Rendelő</p>
                             <p className="font-black text-gray-900 text-sm">{item.city}i klinika</p>
                           </div>
+                          {item.confirmed_appointment_local && (
+                            <div className="col-span-2 bg-emerald-50 rounded-xl p-3 border border-emerald-100">
+                              <p className="text-[10px] font-black text-emerald-500 uppercase tracking-widest mb-1 flex items-center gap-1"><Clock className="w-3 h-3" /> Kapott időpont</p>
+                              <p className="font-black text-emerald-950 text-lg">{item.confirmed_appointment_local}</p>
+                              {item.confirmation_email_sent_at && (
+                                <p className="text-emerald-700/70 text-xs mt-0.5">Visszaigazoló e-mail elküldve: {formatDate(item.confirmation_email_sent_at)}</p>
+                              )}
+                            </div>
+                          )}
                         </div>
                         <div className="bg-white rounded-xl p-3 border border-sky-100 space-y-2">
                           <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Adminisztráció</p>
