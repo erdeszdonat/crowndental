@@ -221,7 +221,7 @@ async function sendAppointmentConfirmationEmail(
             </div>
 
             <p style="font-size:16px; color:#334155; line-height:1.65; margin:0 0 18px 0;">
-              Kérjük, érkezzen pár perccel korábban. Ha bármi közbejön, hívjon minket a lehető leghamarabb.
+              Kérjük, lehetőség szerint érkezzen 5 perccel korábban az időpontjához képest, így kényelmesen, nyugodt környezetben töltheti a várakozási időt a prémium rendelői várónkban. Amennyiben az időpont mégsem alkalmas, kérjük, legkésőbb 24 órával a kezelés előtt jelezze nekünk telefonon, hogy más páciensnek is fel tudjuk ajánlani a felszabaduló időpontot.
             </p>
 
             <div style="display:block; margin:26px 0;">
