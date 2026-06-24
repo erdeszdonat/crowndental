@@ -15,6 +15,13 @@ import { BLOG_CATEGORIES, BLOG_LANGUAGES, normalizeBlogCategory, normalizeBlogLa
 
 export const dynamic = 'force-dynamic';
 
+type AppointmentConfirmationModalState = {
+  appointment: any;
+  dateTime: string;
+  step: 'input' | 'review';
+  error: string;
+};
+
 export default function AdminDashboard() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [usernameInput, setUsernameInput] = useState('');
@@ -32,6 +39,7 @@ export default function AdminDashboard() {
   const [quotes, setQuotes] = useState<any[]>([]);
   const [posts, setPosts] = useState<any[]>([]);
   const [marketingSubscribers, setMarketingSubscribers] = useState<any[]>([]);
+  const [appointmentConfirmModal, setAppointmentConfirmModal] = useState<AppointmentConfirmationModalState | null>(null);
 
   // Blog generator state
   const [genTopic, setGenTopic] = useState('');
@@ -93,40 +101,116 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleAction = async (table: string, id: string | number, action: 'hide' | 'update_status', value?: string) => {
+  const handleAction = async (
+    table: string,
+    id: string | number,
+    action: 'hide' | 'update_status',
+    value?: string,
+    extraPayload?: Record<string, unknown>
+  ) => {
     if (action === 'hide') {
       const confirmed = window.confirm('Biztosan törlöd a listából ezt a bejegyzést?');
-      if (!confirmed) return;
+      if (!confirmed) return false;
     }
     setActionLoading(`${action}-${id}`);
     try {
       const res = await fetch('/api/admin-action', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password: passwordInput, action, table, id, value })
+        body: JSON.stringify({ password: passwordInput, action, table, id, value, ...(extraPayload || {}) })
       });
       const data = await res.json();
       if (data.success) {
         const updateList = (list: any[], setList: any) => {
           if (action === 'hide') setList(list.filter((i: any) => i.id !== id));
-          if (action === 'update_status') setList(list.map((i: any) => i.id === id ? { ...i, status: value } : i));
+          if (action === 'update_status') {
+            setList(list.map((i: any) => i.id === id ? {
+              ...i,
+              status: value,
+              ...(data.appointmentConfirmationDateTime ? { confirmed_appointment_local: data.appointmentConfirmationDateTime } : {}),
+            } : i));
+          }
         };
         if (table === 'appointments') updateList(appointments, setAppointments);
         if (table === 'career_applications') updateList(applications, setApplications);
         if (table === 'quote_leads') updateList(quotes, setQuotes);
         if (data.warning) {
           alert(data.warning);
+        } else if (data.appointmentConfirmationEmailSent) {
+          alert(`Az időpont visszaigazoló e-mail elküldve: ${data.appointmentConfirmationDateTime}`);
         } else if (data.noAnswerEmailSent) {
           alert('A visszahívást kérő e-mail elküldve.');
         }
+        return true;
       } else {
         alert(data.error || 'Hiba történt a módosítás során.');
+        return false;
       }
     } catch {
       alert('Hálózati hiba a mentés során.');
+      return false;
     } finally {
       setActionLoading(null);
     }
+  };
+
+  const formatAppointmentDateTime = (value: string) => {
+    const match = value.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/);
+    if (!match) return '';
+    return `${match[1]}.${match[2]}.${match[3]}. ${match[4]}:${match[5]}`;
+  };
+
+  const getAppointmentClinicLabel = (appointment: any) => {
+    const city = String(appointment?.city || '').toLowerCase();
+    return city.includes('budapest')
+      ? 'Crown Dental Budapest, Királyok útja 55.'
+      : 'Crown Dental Esztergom, Petőfi Sándor utca 11.';
+  };
+
+  const handleAppointmentStatusChange = (appointment: any, value: string) => {
+    if (value === 'processed' && appointment.status !== 'processed') {
+      setAppointmentConfirmModal({
+        appointment,
+        dateTime: '',
+        step: 'input',
+        error: '',
+      });
+      return;
+    }
+
+    handleAction('appointments', appointment.id, 'update_status', value);
+  };
+
+  const advanceAppointmentConfirmationReview = () => {
+    if (!appointmentConfirmModal) return;
+
+    if (!formatAppointmentDateTime(appointmentConfirmModal.dateTime)) {
+      setAppointmentConfirmModal({
+        ...appointmentConfirmModal,
+        error: 'Adj meg egy pontos dátumot és időpontot.',
+      });
+      return;
+    }
+
+    setAppointmentConfirmModal({
+      ...appointmentConfirmModal,
+      step: 'review',
+      error: '',
+    });
+  };
+
+  const sendAppointmentConfirmation = async () => {
+    if (!appointmentConfirmModal) return;
+
+    const success = await handleAction(
+      'appointments',
+      appointmentConfirmModal.appointment.id,
+      'update_status',
+      'processed',
+      { appointmentDateTime: appointmentConfirmModal.dateTime }
+    );
+
+    if (success) setAppointmentConfirmModal(null);
   };
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -732,7 +816,7 @@ export default function AdminDashboard() {
                         </div>
                         <div className="bg-white rounded-xl p-3 border border-sky-100 space-y-2">
                           <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Adminisztráció</p>
-                          <select value={item.status || 'new'} onChange={(e) => handleAction('appointments', item.id, 'update_status', e.target.value)} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg font-bold text-sm text-gray-700 outline-none focus:ring-2 focus:ring-sky-500">
+                          <select value={item.status || 'new'} onChange={(e) => handleAppointmentStatusChange(item, e.target.value)} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg font-bold text-sm text-gray-700 outline-none focus:ring-2 focus:ring-sky-500">
                             <option value="new">Új Kérelem</option>
                             <option value="no_answer">Felhívtuk – Nem vette fel</option>
                             <option value="processed">Időpontot kapott / Feldolgozva</option>
@@ -892,6 +976,136 @@ export default function AdminDashboard() {
           </AnimatePresence>
         </main>
       </div>
+
+      <AnimatePresence>
+        {appointmentConfirmModal && (
+          <motion.div
+            key="appointment-confirmation-modal"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[80] bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4"
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 24, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 24, scale: 0.96 }}
+              className="w-full max-w-2xl bg-white rounded-[2rem] shadow-2xl border border-sky-100 overflow-hidden"
+            >
+              <div className="bg-gradient-to-br from-sky-500 to-slate-950 p-6 sm:p-8 text-white">
+                <div className="flex items-start gap-4">
+                  <div className="w-14 h-14 rounded-2xl bg-white/15 flex items-center justify-center flex-shrink-0">
+                    <Calendar className="w-7 h-7" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-black uppercase tracking-[0.22em] text-sky-100 mb-2">Időpont visszaigazolás</p>
+                    <h3 className="text-2xl sm:text-3xl font-black leading-tight">
+                      {appointmentConfirmModal.step === 'input' ? 'Pontos időpont megadása' : 'Biztosan ezt küldjük?'}
+                    </h3>
+                    <p className="text-sky-100 text-sm sm:text-base mt-2 leading-relaxed">
+                      A státusz csak akkor vált „Időpontot kapott” állapotra, ha a visszaigazoló e-mail sikeresen kiment.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-6 sm:p-8 space-y-5">
+                <div className="grid sm:grid-cols-2 gap-3">
+                  <div className="rounded-2xl bg-slate-50 border border-slate-100 p-4">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Páciens</p>
+                    <p className="font-black text-slate-950">{appointmentConfirmModal.appointment.name}</p>
+                    <p className="text-sm text-slate-500 truncate">{appointmentConfirmModal.appointment.email}</p>
+                    <p className="text-sm text-slate-500">{appointmentConfirmModal.appointment.phone}</p>
+                  </div>
+                  <div className="rounded-2xl bg-sky-50 border border-sky-100 p-4">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-sky-500 mb-1">Kezelés és rendelő</p>
+                    <p className="font-black text-slate-950">{appointmentConfirmModal.appointment.treatment || 'Fogászati időpont'}</p>
+                    <p className="text-sm text-slate-600">{getAppointmentClinicLabel(appointmentConfirmModal.appointment)}</p>
+                  </div>
+                </div>
+
+                {appointmentConfirmModal.step === 'input' ? (
+                  <div className="space-y-4">
+                    <label className="block">
+                      <span className="block text-xs font-black uppercase tracking-widest text-slate-500 mb-2">Pontos dátum és idő</span>
+                      <input
+                        type="datetime-local"
+                        value={appointmentConfirmModal.dateTime}
+                        onChange={(e) => setAppointmentConfirmModal({ ...appointmentConfirmModal, dateTime: e.target.value, error: '' })}
+                        className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-4 text-lg font-black text-slate-950 outline-none focus:ring-4 focus:ring-sky-100 focus:border-sky-400"
+                      />
+                    </label>
+                    <div className="rounded-2xl bg-amber-50 border border-amber-100 p-4 text-sm text-amber-900 leading-relaxed">
+                      Küldés előtt még egyszer megmutatjuk az adatokat. Az e-mailben Google Calendar és Apple / Outlook naptárgomb is lesz.
+                    </div>
+                  </div>
+                ) : (
+                  <div className="rounded-3xl bg-slate-950 p-6 text-white">
+                    <p className="text-xs font-black uppercase tracking-[0.22em] text-sky-300 mb-2">Ellenőrzés</p>
+                    <p className="text-3xl font-black">{formatAppointmentDateTime(appointmentConfirmModal.dateTime)}</p>
+                    <div className="mt-5 grid sm:grid-cols-2 gap-3 text-sm">
+                      <div className="rounded-2xl bg-white/10 p-4">
+                        <p className="text-slate-300 mb-1">Címzett</p>
+                        <p className="font-bold break-all">{appointmentConfirmModal.appointment.email}</p>
+                      </div>
+                      <div className="rounded-2xl bg-white/10 p-4">
+                        <p className="text-slate-300 mb-1">Naptár</p>
+                        <p className="font-bold">Google + Apple / Outlook gombbal</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {appointmentConfirmModal.error && (
+                  <div className="rounded-2xl bg-red-50 border border-red-100 p-4 text-sm font-bold text-red-600">
+                    {appointmentConfirmModal.error}
+                  </div>
+                )}
+
+                <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                  {appointmentConfirmModal.step === 'input' ? (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() => setAppointmentConfirmModal(null)}
+                        className="sm:w-40 rounded-2xl border border-slate-200 px-5 py-4 font-black text-slate-600 hover:bg-slate-50"
+                      >
+                        Mégsem
+                      </button>
+                      <button
+                        type="button"
+                        onClick={advanceAppointmentConfirmationReview}
+                        className="flex-1 rounded-2xl bg-sky-500 px-5 py-4 font-black text-white hover:bg-sky-600 shadow-lg shadow-sky-500/20"
+                      >
+                        Ellenőrzés
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() => setAppointmentConfirmModal({ ...appointmentConfirmModal, step: 'input', error: '' })}
+                        className="sm:w-44 rounded-2xl border border-slate-200 px-5 py-4 font-black text-slate-600 hover:bg-slate-50"
+                      >
+                        Vissza javítom
+                      </button>
+                      <button
+                        type="button"
+                        onClick={sendAppointmentConfirmation}
+                        disabled={actionLoading === `update_status-${appointmentConfirmModal.appointment.id}`}
+                        className="flex-1 rounded-2xl bg-slate-950 px-5 py-4 font-black text-white hover:bg-slate-800 disabled:opacity-60 flex items-center justify-center gap-2"
+                      >
+                        {actionLoading === `update_status-${appointmentConfirmModal.appointment.id}` ? <Loader2 className="w-5 h-5 animate-spin" /> : <Mail className="w-5 h-5" />}
+                        Igen, e-mail küldése
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ── MOBILE BOTTOM NAV ── */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-gray-950 border-t border-white/5 flex z-50">
