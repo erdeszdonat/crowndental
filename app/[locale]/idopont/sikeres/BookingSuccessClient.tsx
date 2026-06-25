@@ -233,7 +233,7 @@ export default function BookingSuccessClient() {
                 )}
 
                 <div className="mt-8 grid gap-3 sm:grid-cols-2">
-                  <a href="tel:+36705646837" className="inline-flex items-center justify-center gap-2 rounded-2xl bg-sky-600 px-5 py-4 font-black text-white transition-all hover:bg-sky-700">
+                  <a href="tel:+36305892468" className="inline-flex items-center justify-center gap-2 rounded-2xl bg-sky-600 px-5 py-4 font-black text-white transition-all hover:bg-sky-700">
                     <Phone className="h-5 w-5" /> {text.call}
                   </a>
                   <a href="mailto:info@crowndental.hu" className="inline-flex items-center justify-center gap-2 rounded-2xl border border-gray-200 bg-white px-5 py-4 font-black text-gray-900 transition-all hover:bg-sky-50">

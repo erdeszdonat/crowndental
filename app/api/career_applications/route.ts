@@ -86,7 +86,7 @@ export async function POST(req: Request) {
                 </p>
                 <p style="font-size:12px; color:#94a3b8; margin-top:10px;">
                   Crown Dental Praxis és Labor<br>
-                  +36 70 564 6837 | hr@crowndental.hu
+                  06 30 589 2468 | hr@crowndental.hu
                 </p>
               </div>
               

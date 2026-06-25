@@ -100,7 +100,7 @@ const copyByLocale = {
 };
 
 const address = '2500 Esztergom, Petőfi Sándor utca 11.';
-const phone = '+36 70 564 6837';
+const phone = '06 30 589 2468';
 const email = 'info@crowndental.hu';
 const mapHref = 'https://share.google/UV0bxLOGoyQdgH826';
 
@@ -168,7 +168,7 @@ export default function ContactClient() {
                   {text.subtitle}
                 </p>
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                  <a href="tel:+36705646837" className="inline-flex items-center justify-center gap-3 rounded-2xl bg-sky-600 px-7 py-4 text-base font-black text-white shadow-xl shadow-sky-600/20 transition-all hover:-translate-y-0.5 hover:bg-sky-700">
+                  <a href="tel:+36305892468" className="inline-flex items-center justify-center gap-3 rounded-2xl bg-sky-600 px-7 py-4 text-base font-black text-white shadow-xl shadow-sky-600/20 transition-all hover:-translate-y-0.5 hover:bg-sky-700">
                     <Phone className="h-5 w-5" /> {text.call}
                   </a>
                   <Link href={`${prefix}/idopont`} className="inline-flex items-center justify-center gap-3 rounded-2xl border border-gray-200 bg-white px-7 py-4 text-base font-black text-gray-900 shadow-sm transition-all hover:-translate-y-0.5 hover:border-sky-200 hover:bg-sky-50">
@@ -204,7 +204,7 @@ export default function ContactClient() {
                     <div className="mb-1 text-xs font-black uppercase tracking-widest text-gray-400">{text.addressLabel}</div>
                     <div className="font-bold text-gray-900">{address}</div>
                   </div>
-                  <a href="tel:+36705646837" className="rounded-2xl bg-sky-50 p-5 transition-all hover:-translate-y-1 hover:bg-sky-100">
+                  <a href="tel:+36305892468" className="rounded-2xl bg-sky-50 p-5 transition-all hover:-translate-y-1 hover:bg-sky-100">
                     <Phone className="mb-4 h-6 w-6 text-sky-600" />
                     <div className="mb-1 text-xs font-black uppercase tracking-widest text-sky-500">{text.phoneLabel}</div>
                     <div className="font-black text-gray-950">{phone}</div>
@@ -236,7 +236,7 @@ export default function ContactClient() {
                   <div className="font-black text-sky-200">{text.available}</div>
                   <div className="mt-1 text-sm text-gray-300">{text.availableNote}</div>
                 </div>
-                <a href="tel:+36705646837" className="mt-6 inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-white px-6 py-4 font-black text-sky-800 transition-all hover:bg-sky-50">
+                <a href="tel:+36305892468" className="mt-6 inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-white px-6 py-4 font-black text-sky-800 transition-all hover:bg-sky-50">
                   <Phone className="h-5 w-5" /> {text.call}
                 </a>
               </motion.div>

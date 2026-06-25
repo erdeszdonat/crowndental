@@ -256,7 +256,7 @@ function FloatingCTA() {
 
   return (
     <motion.div initial={{ opacity: 0, y: 24, scale: 0.94 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ type: 'spring', damping: 20, stiffness: 300, delay: 0.15 }} className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 items-end">
-      <a href="tel:+36705646837" className="group flex items-center gap-2 bg-white text-sky-700 pl-4 pr-5 py-3 rounded-full shadow-2xl border border-sky-100 hover:bg-sky-50 transition-all">
+      <a href="tel:+36305892468" className="group flex items-center gap-2 bg-white text-sky-700 pl-4 pr-5 py-3 rounded-full shadow-2xl border border-sky-100 hover:bg-sky-50 transition-all">
         <Phone className="w-5 h-5" />
         <span className="font-bold text-sm hidden sm:inline">{t(locale, 'Hívjon most', 'Call now', 'Zavolajte nám')}</span>
       </a>
@@ -333,10 +333,10 @@ function HeroSection() {
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </motion.button>
             </Link>
-            <a href="tel:+36705646837">
+            <a href="tel:+36305892468">
               <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-5 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white text-lg font-bold rounded-2xl transition-all border border-white/20">
                 <Phone className="w-5 h-5" />
-                +36 70 564 6837
+                06 30 589 2468
               </motion.button>
             </a>
           </motion.div>
@@ -404,10 +404,10 @@ function ComingSoonNotice() {
                         <ArrowRight className="w-4 h-4" />
                       </motion.button>
                     </Link>
-                    <a href="tel:+36705646837">
+                    <a href="tel:+36305892468">
                       <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="flex items-center gap-2 px-6 py-3.5 bg-white hover:bg-gray-50 text-gray-900 font-bold rounded-xl transition-all border border-gray-200 shadow-sm">
                         <Phone className="w-4 h-4" />
-                        +36 70 564 6837
+                        06 30 589 2468
                       </motion.button>
                     </a>
                   </div>
@@ -420,7 +420,7 @@ function ComingSoonNotice() {
                     <CountdownTimer locale={locale} />
                     <div className="mt-4 pt-4 border-t border-gray-100">
                       <p className="text-xs text-gray-500">{t(locale, 'Előjegyzés telefonon:', 'Pre-booking by phone:', 'Predbežná rezervácia:')}</p>
-                      <a href="tel:+36705646837" className="text-sm font-bold text-sky-600 hover:text-sky-500 transition-colors">+36 70 564 6837</a>
+                      <a href="tel:+36305892468" className="text-sm font-bold text-sky-600 hover:text-sky-500 transition-colors">06 30 589 2468</a>
                     </div>
                   </div>
                 </div>
@@ -833,10 +833,10 @@ function CTASection() {
                 {t(locale, 'Online időpontfoglalás', 'Book online', 'Online rezervácia')}
               </motion.button>
             </Link>
-            <a href="tel:+36705646837">
+            <a href="tel:+36305892468">
               <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="flex items-center justify-center gap-3 px-10 py-5 bg-sky-800 hover:bg-sky-900 text-white font-bold text-lg rounded-2xl transition-all border border-sky-500/30">
                 <Phone className="w-5 h-5" />
-                +36 70 564 6837
+                06 30 589 2468
               </motion.button>
             </a>
           </div>
@@ -920,7 +920,7 @@ function ContactAndMap() {
                 <div className="w-14 h-14 bg-sky-50 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:bg-sky-600 transition-colors duration-300"><Phone className="w-6 h-6 text-sky-600 group-hover:text-white transition-colors" /></div>
                 <div>
                   <h4 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-1">{t(locale, 'Telefon', 'Phone', 'Telefón')}</h4>
-                  <a href="tel:+36705646837" className="text-xl font-bold text-gray-900 hover:text-sky-600 transition-colors">+36 70 564 6837</a>
+                  <a href="tel:+36305892468" className="text-xl font-bold text-gray-900 hover:text-sky-600 transition-colors">06 30 589 2468</a>
                 </div>
               </div>
               <div className="flex items-start gap-5 group">

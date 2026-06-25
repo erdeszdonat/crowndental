@@ -5,8 +5,8 @@ import { getPreferredGreetingName } from '@/lib/names';
 
 const ALLOWED_TABLES = new Set(['appointments', 'career_applications', 'quote_leads']);
 const ALLOWED_STATUSES = new Set(['new', 'no_answer', 'processed']);
-const CLINIC_PHONE_DISPLAY = '+36 70 564 6837';
-const CLINIC_PHONE_TEL = '+36705646837';
+const CLINIC_PHONE_DISPLAY = '06 30 589 2468';
+const CLINIC_PHONE_TEL = '+36305892468';
 const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.crowndental.hu').replace(/\/$/, '');
 const APPOINTMENT_DURATION_MINUTES = 60;
 
