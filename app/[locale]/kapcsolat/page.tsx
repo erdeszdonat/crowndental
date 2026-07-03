@@ -51,7 +51,7 @@ const jsonLd = {
   mainEntity: {
     '@type': 'Dentist',
     name: 'Crown Dental',
-    telephone: '+36305892468',
+    telephone: '+36705646837',
     email: 'info@crowndental.hu',
     address: [
       {

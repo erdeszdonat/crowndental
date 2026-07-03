@@ -128,6 +128,7 @@ export default function AdminDashboard() {
               ...i,
               status: value,
               ...(data.appointmentConfirmationDateTime ? { confirmed_appointment_local: data.appointmentConfirmationDateTime } : {}),
+              ...(value === 'cancelled' ? { confirmed_appointment_local: null, confirmation_email_sent_at: null } : {}),
             } : i));
           }
         };
@@ -138,6 +139,8 @@ export default function AdminDashboard() {
           alert(data.warning);
         } else if (data.appointmentConfirmationEmailSent) {
           alert(`Az időpont visszaigazoló e-mail elküldve: ${data.appointmentConfirmationDateTime}`);
+        } else if (data.cancellationEmailSent) {
+          alert('Az időpontkérés törléséről szóló e-mail elküldve.');
         } else if (data.noAnswerEmailSent) {
           alert('A visszahívást kérő e-mail elküldve.');
         }
@@ -176,6 +179,11 @@ export default function AdminDashboard() {
         error: '',
       });
       return;
+    }
+
+    if (value === 'cancelled' && appointment.status !== 'cancelled') {
+      const confirmed = window.confirm('Biztosan sztornózod ezt az időpontkérést? A páciens e-mailt kap arról, hogy az időpontkérését töröltük.');
+      if (!confirmed) return;
     }
 
     handleAction('appointments', appointment.id, 'update_status', value);
@@ -249,6 +257,9 @@ export default function AdminDashboard() {
     }
     if (status === 'no_answer') {
       return <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-red-100 text-red-700 text-[10px] font-black uppercase tracking-wider"><Phone className="w-3 h-3" /> Nem vette fel</span>;
+    }
+    if (status === 'cancelled') {
+      return <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 text-[10px] font-black uppercase tracking-wider"><Trash2 className="w-3 h-3" /> Időpont sztornózva</span>;
     }
     return <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-100 text-amber-700 text-[10px] font-black uppercase tracking-wider animate-pulse"><Clock className="w-3 h-3" /> Új Kérelem</span>;
   };
@@ -763,8 +774,9 @@ export default function AdminDashboard() {
                   const waiting = appointments.filter(a => !a.status || a.status === 'new').length;
                   const noAnswer = appointments.filter(a => a.status === 'no_answer').length;
                   const done = appointments.filter(a => a.status === 'processed').length;
+                  const cancelled = appointments.filter(a => a.status === 'cancelled').length;
                   return (
-                    <div className="grid grid-cols-4 gap-2 mb-1">
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-2 mb-1">
                       <div className="bg-white rounded-2xl border border-gray-200 p-3 text-center">
                         <p className="text-2xl font-black text-gray-900">{total}</p>
                         <p className="text-[10px] font-black text-gray-400 uppercase tracking-wider mt-0.5">Összes</p>
@@ -780,6 +792,10 @@ export default function AdminDashboard() {
                       <div className="bg-green-50 rounded-2xl border border-green-200 p-3 text-center">
                         <p className="text-2xl font-black text-green-600">{done}</p>
                         <p className="text-[10px] font-black text-green-500 uppercase tracking-wider mt-0.5">Időpontot kapott</p>
+                      </div>
+                      <div className="bg-slate-50 rounded-2xl border border-slate-200 p-3 text-center">
+                        <p className="text-2xl font-black text-slate-600">{cancelled}</p>
+                        <p className="text-[10px] font-black text-slate-500 uppercase tracking-wider mt-0.5">Sztornózva</p>
                       </div>
                     </div>
                   );
@@ -834,6 +850,7 @@ export default function AdminDashboard() {
                             <option value="new">Új Kérelem</option>
                             <option value="no_answer">Felhívtuk – Nem vette fel</option>
                             <option value="processed">Időpontot kapott / Feldolgozva</option>
+                            <option value="cancelled">Időpont sztornózva</option>
                           </select>
                           <button onClick={() => handleAction('appointments', item.id, 'hide')} className="w-full py-2.5 text-red-500 hover:bg-red-50 font-bold text-sm rounded-lg flex items-center justify-center gap-2 border border-red-100">
                             {actionLoading === `hide-${item.id}` ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Trash2 className="w-4 h-4" /> Törlés</>}
