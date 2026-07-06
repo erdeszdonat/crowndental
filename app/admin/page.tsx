@@ -1015,15 +1015,15 @@ export default function AdminDashboard() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[80] bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4"
+            className="fixed inset-0 z-[80] bg-slate-950/75 backdrop-blur-sm flex items-start sm:items-center justify-center overflow-y-auto overscroll-contain p-3 py-4 sm:p-4 sm:py-6"
           >
             <motion.div
               initial={{ opacity: 0, y: 24, scale: 0.96 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 24, scale: 0.96 }}
-              className="w-full max-w-2xl bg-white rounded-[2rem] shadow-2xl border border-sky-100 overflow-hidden"
+              className="my-auto flex max-h-[calc(100dvh-2rem)] w-full max-w-2xl flex-col overflow-hidden rounded-3xl border border-sky-100 bg-white shadow-2xl sm:max-h-[calc(100dvh-3rem)] sm:rounded-[2rem]"
             >
-              <div className="bg-gradient-to-br from-sky-500 to-slate-950 p-6 sm:p-8 text-white">
+              <div className="flex-shrink-0 bg-gradient-to-br from-sky-500 to-slate-950 p-5 sm:p-8 text-white">
                 <div className="flex items-start gap-4">
                   <div className="w-14 h-14 rounded-2xl bg-white/15 flex items-center justify-center flex-shrink-0">
                     <Calendar className="w-7 h-7" />
@@ -1040,7 +1040,7 @@ export default function AdminDashboard() {
                 </div>
               </div>
 
-              <div className="p-6 sm:p-8 space-y-5">
+              <div className="min-h-0 flex-1 space-y-5 overflow-y-auto overscroll-contain p-5 pb-0 sm:p-8 sm:pb-0">
                 <div className="grid sm:grid-cols-2 gap-3">
                   <div className="rounded-2xl bg-slate-50 border border-slate-100 p-4">
                     <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Páciens</p>
@@ -1093,7 +1093,7 @@ export default function AdminDashboard() {
                   </div>
                 )}
 
-                <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                <div className="sticky bottom-0 -mx-5 flex flex-col gap-3 border-t border-slate-100 bg-white/95 px-5 py-4 pt-4 backdrop-blur sm:-mx-8 sm:flex-row sm:px-8">
                   {appointmentConfirmModal.step === 'input' ? (
                     <>
                       <button
