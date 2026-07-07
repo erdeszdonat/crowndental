@@ -4,7 +4,7 @@ import { Resend } from 'resend';
 import { getPreferredGreetingName } from '@/lib/names';
 
 const ALLOWED_TABLES = new Set(['appointments', 'career_applications', 'quote_leads']);
-const ALLOWED_STATUSES = new Set(['new', 'no_answer', 'processed', 'cancelled']);
+const ALLOWED_STATUSES = new Set(['new', 'no_answer', 'processed', 'cancelled', 'special']);
 const CLINIC_PHONE_DISPLAY = '+36 70 564 6837';
 const CLINIC_PHONE_TEL = '+36705646837';
 const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.crowndental.hu').replace(/\/$/, '');
@@ -329,7 +329,7 @@ async function sendAppointmentConfirmationEmail(
 
 export async function POST(req: Request) {
   try {
-    const { password, action, table, id, value, appointmentDateTime } = await req.json();
+    const { password, action, table, id, value, appointmentDateTime, statusNote } = await req.json();
 
     if (password !== process.env.ADMIN_PASSWORD) {
       return NextResponse.json({ error: 'Jogosulatlan hozzáférés!' }, { status: 401 });
@@ -358,6 +358,8 @@ export async function POST(req: Request) {
     let appointmentForCancellationEmail: AppointmentForNoAnswerEmail | null = null;
     let appointmentConfirmationEmailSent = false;
     let appointmentConfirmationDateTime: string | undefined;
+    let specialNoteUpdatedAt: string | undefined;
+    let normalizedStatusNote = '';
 
     if (action === 'hide') {
       const { error } = await supabase.from(safeTable).update({ is_hidden: true }).eq('id', id);
@@ -369,6 +371,16 @@ export async function POST(req: Request) {
 
       if (value === 'cancelled' && safeTable !== 'appointments') {
         return NextResponse.json({ error: 'A sztornózott státusz csak időpontkérésekhez használható.' }, { status: 400 });
+      }
+
+      if (value === 'special' && safeTable !== 'appointments') {
+        return NextResponse.json({ error: 'A különleges egyeztetés státusz csak időpontkérésekhez használható.' }, { status: 400 });
+      }
+
+      normalizedStatusNote = String(statusNote || '').trim().replace(/\s+/g, ' ').slice(0, 280);
+
+      if (safeTable === 'appointments' && value === 'special' && !normalizedStatusNote) {
+        return NextResponse.json({ error: 'Különleges egyeztetéshez kötelező rövid megjegyzést megadni.' }, { status: 400 });
       }
 
       if (safeTable === 'appointments' && value === 'no_answer') {
@@ -429,7 +441,15 @@ export async function POST(req: Request) {
         }
       }
 
-      const { error } = await supabase.from(safeTable).update({ status: value }).eq('id', id);
+      const updatePayload: Record<string, any> = { status: value };
+
+      if (safeTable === 'appointments' && value === 'special') {
+        specialNoteUpdatedAt = new Date().toISOString();
+        updatePayload.special_note = normalizedStatusNote;
+        updatePayload.special_note_updated_at = specialNoteUpdatedAt;
+      }
+
+      const { error } = await supabase.from(safeTable).update(updatePayload).eq('id', id);
       if (error) throw error;
 
       if (appointmentConfirmationEmailSent && appointmentConfirmationDateTime) {
@@ -475,6 +495,8 @@ export async function POST(req: Request) {
       success: true,
       noAnswerEmailSent: noAnswerEmailResult?.sent ?? false,
       cancellationEmailSent: cancellationEmailResult?.sent ?? false,
+      specialNote: value === 'special' ? normalizedStatusNote : undefined,
+      specialNoteUpdatedAt,
       appointmentConfirmationEmailSent,
       appointmentConfirmationDateTime,
       warning: noAnswerEmailResult?.warning || cancellationEmailResult?.warning,

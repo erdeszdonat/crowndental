@@ -21,6 +21,7 @@ const STATUS_COLORS = {
   no_answer: '#ef4444',
   processed: '#10b981',
   cancelled: '#64748b',
+  special: '#9333ea',
 };
 
 const TREATMENT_PALETTE = [
@@ -89,16 +90,17 @@ export default function StatsDashboard({ appointments, quotes, adminPassword }: 
       no_answer: appointments.filter(a => a.status === 'no_answer').length,
       processed: appointments.filter(a => a.status === 'processed').length,
       cancelled: appointments.filter(a => a.status === 'cancelled').length,
+      special: appointments.filter(a => a.status === 'special').length,
     };
     const conversionRate = apptAll > 0 ? Math.round((apptByStatus.processed / apptAll) * 100) : 0;
     const noAnswerRate = apptAll > 0 ? Math.round((apptByStatus.no_answer / apptAll) * 100) : 0;
 
     // ── TREATMENT BREAKDOWN ──
-    const treatmentMap = new Map<string, { name: string; total: number; new: number; no_answer: number; processed: number; cancelled: number }>();
+    const treatmentMap = new Map<string, { name: string; total: number; new: number; no_answer: number; processed: number; cancelled: number; special: number }>();
     for (const a of appointments) {
       const raw = (a.treatment ?? 'Egyéb');
       const t = String(raw).split(':')[0].trim();
-      if (!treatmentMap.has(t)) treatmentMap.set(t, { name: t, total: 0, new: 0, no_answer: 0, processed: 0, cancelled: 0 });
+      if (!treatmentMap.has(t)) treatmentMap.set(t, { name: t, total: 0, new: 0, no_answer: 0, processed: 0, cancelled: 0, special: 0 });
       const entry = treatmentMap.get(t)!;
       entry.total++;
       const status = a.status || 'new';
@@ -106,6 +108,7 @@ export default function StatsDashboard({ appointments, quotes, adminPassword }: 
       else if (status === 'no_answer') entry.no_answer++;
       else if (status === 'processed') entry.processed++;
       else if (status === 'cancelled') entry.cancelled++;
+      else if (status === 'special') entry.special++;
     }
     const byTreatment = Array.from(treatmentMap.values()).sort((a, b) => b.total - a.total);
     const topTreatment = byTreatment[0];
@@ -219,6 +222,7 @@ export default function StatsDashboard({ appointments, quotes, adminPassword }: 
     { name: 'Nem vette fel', value: stats.apptByStatus.no_answer, color: STATUS_COLORS.no_answer },
     { name: 'Időpontot kapott', value: stats.apptByStatus.processed, color: STATUS_COLORS.processed },
     { name: 'Sztornózva', value: stats.apptByStatus.cancelled, color: STATUS_COLORS.cancelled },
+    { name: 'Különleges egyeztetés', value: stats.apptByStatus.special, color: STATUS_COLORS.special },
   ].filter(p => p.value > 0);
 
   return (
@@ -325,11 +329,12 @@ export default function StatsDashboard({ appointments, quotes, adminPassword }: 
               </PieChart>
             </ResponsiveContainer>
           ) : <EmptyState text="Nincs adat" />}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-2 text-xs">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-2 mt-2 text-xs">
             <LegendDot color={STATUS_COLORS.new} label="Vár" value={stats.apptByStatus.new} />
             <LegendDot color={STATUS_COLORS.no_answer} label="Nem vette fel" value={stats.apptByStatus.no_answer} />
             <LegendDot color={STATUS_COLORS.processed} label="Időpontot kapott" value={stats.apptByStatus.processed} />
             <LegendDot color={STATUS_COLORS.cancelled} label="Sztornózva" value={stats.apptByStatus.cancelled} />
+            <LegendDot color={STATUS_COLORS.special} label="Különleges" value={stats.apptByStatus.special} />
           </div>
         </ChartCard>
 
@@ -352,7 +357,8 @@ export default function StatsDashboard({ appointments, quotes, adminPassword }: 
                 <Bar dataKey="new" stackId="s" fill={STATUS_COLORS.new} name="Vár" />
                 <Bar dataKey="no_answer" stackId="s" fill={STATUS_COLORS.no_answer} name="Nem vette fel" />
                 <Bar dataKey="processed" stackId="s" fill={STATUS_COLORS.processed} name="Időpontot kapott" />
-                <Bar dataKey="cancelled" stackId="s" fill={STATUS_COLORS.cancelled} name="Sztornózva" radius={[0, 6, 6, 0]} />
+                <Bar dataKey="cancelled" stackId="s" fill={STATUS_COLORS.cancelled} name="Sztornózva" />
+                <Bar dataKey="special" stackId="s" fill={STATUS_COLORS.special} name="Különleges egyeztetés" radius={[0, 6, 6, 0]} />
               </BarChart>
             </ResponsiveContainer>
           ) : <EmptyState text="Még nem érkeztek időpontkérések" />}
@@ -378,6 +384,7 @@ export default function StatsDashboard({ appointments, quotes, adminPassword }: 
                   <th className="px-4 py-3 text-right text-red-600">Nem vette fel</th>
                   <th className="px-4 py-3 text-right text-green-600">Időpontot kapott</th>
                   <th className="px-4 py-3 text-right text-slate-600">Sztornózva</th>
+                  <th className="px-4 py-3 text-right text-purple-600">Különleges</th>
                   <th className="px-4 py-3 text-right">Konverzió</th>
                 </tr>
               </thead>
@@ -397,6 +404,7 @@ export default function StatsDashboard({ appointments, quotes, adminPassword }: 
                       <td className="px-4 py-3 text-right font-bold text-red-600">{formatNum(t.no_answer)}</td>
                       <td className="px-4 py-3 text-right font-bold text-green-600">{formatNum(t.processed)}</td>
                       <td className="px-4 py-3 text-right font-bold text-slate-600">{formatNum(t.cancelled)}</td>
+                      <td className="px-4 py-3 text-right font-bold text-purple-600">{formatNum(t.special)}</td>
                       <td className="px-4 py-3 text-right">
                         <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-black ${conv >= 50 ? 'bg-green-100 text-green-700' : conv >= 25 ? 'bg-amber-100 text-amber-700' : 'bg-gray-100 text-gray-600'}`}>
                           {conv}%

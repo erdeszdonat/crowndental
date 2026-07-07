@@ -22,6 +22,12 @@ type AppointmentConfirmationModalState = {
   error: string;
 };
 
+type SpecialAppointmentModalState = {
+  appointment: any;
+  note: string;
+  error: string;
+};
+
 export default function AdminDashboard() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [usernameInput, setUsernameInput] = useState('');
@@ -40,6 +46,7 @@ export default function AdminDashboard() {
   const [posts, setPosts] = useState<any[]>([]);
   const [marketingSubscribers, setMarketingSubscribers] = useState<any[]>([]);
   const [appointmentConfirmModal, setAppointmentConfirmModal] = useState<AppointmentConfirmationModalState | null>(null);
+  const [specialAppointmentModal, setSpecialAppointmentModal] = useState<SpecialAppointmentModalState | null>(null);
 
   // Blog generator state
   const [genTopic, setGenTopic] = useState('');
@@ -129,6 +136,7 @@ export default function AdminDashboard() {
               status: value,
               ...(data.appointmentConfirmationDateTime ? { confirmed_appointment_local: data.appointmentConfirmationDateTime } : {}),
               ...(value === 'cancelled' ? { confirmed_appointment_local: null, confirmation_email_sent_at: null } : {}),
+              ...(data.specialNote ? { special_note: data.specialNote, special_note_updated_at: data.specialNoteUpdatedAt } : {}),
             } : i));
           }
         };
@@ -181,6 +189,15 @@ export default function AdminDashboard() {
       return;
     }
 
+    if (value === 'special' && appointment.status !== 'special') {
+      setSpecialAppointmentModal({
+        appointment,
+        note: appointment.special_note || '',
+        error: '',
+      });
+      return;
+    }
+
     if (value === 'cancelled' && appointment.status !== 'cancelled') {
       const confirmed = window.confirm('Biztosan sztornózod ezt az időpontkérést? A páciens e-mailt kap arról, hogy az időpontkérését töröltük.');
       if (!confirmed) return;
@@ -219,6 +236,30 @@ export default function AdminDashboard() {
     );
 
     if (success) setAppointmentConfirmModal(null);
+  };
+
+  const sendSpecialAppointmentStatus = async () => {
+    if (!specialAppointmentModal) return;
+
+    const note = specialAppointmentModal.note.trim().replace(/\s+/g, ' ');
+
+    if (!note) {
+      setSpecialAppointmentModal({
+        ...specialAppointmentModal,
+        error: 'Különleges egyeztetéshez kötelező rövid megjegyzést írni.',
+      });
+      return;
+    }
+
+    const success = await handleAction(
+      'appointments',
+      specialAppointmentModal.appointment.id,
+      'update_status',
+      'special',
+      { statusNote: note }
+    );
+
+    if (success) setSpecialAppointmentModal(null);
   };
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -260,6 +301,9 @@ export default function AdminDashboard() {
     }
     if (status === 'cancelled') {
       return <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 text-[10px] font-black uppercase tracking-wider"><Trash2 className="w-3 h-3" /> Időpont sztornózva</span>;
+    }
+    if (status === 'special') {
+      return <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-purple-100 text-purple-700 text-[10px] font-black uppercase tracking-wider"><Sparkles className="w-3 h-3" /> Különleges egyeztetés</span>;
     }
     return <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-100 text-amber-700 text-[10px] font-black uppercase tracking-wider animate-pulse"><Clock className="w-3 h-3" /> Új Kérelem</span>;
   };
@@ -775,8 +819,9 @@ export default function AdminDashboard() {
                   const noAnswer = appointments.filter(a => a.status === 'no_answer').length;
                   const done = appointments.filter(a => a.status === 'processed').length;
                   const cancelled = appointments.filter(a => a.status === 'cancelled').length;
+                  const special = appointments.filter(a => a.status === 'special').length;
                   return (
-                    <div className="grid grid-cols-2 md:grid-cols-5 gap-2 mb-1">
+                    <div className="grid grid-cols-2 md:grid-cols-6 gap-2 mb-1">
                       <div className="bg-white rounded-2xl border border-gray-200 p-3 text-center">
                         <p className="text-2xl font-black text-gray-900">{total}</p>
                         <p className="text-[10px] font-black text-gray-400 uppercase tracking-wider mt-0.5">Összes</p>
@@ -797,6 +842,10 @@ export default function AdminDashboard() {
                         <p className="text-2xl font-black text-slate-600">{cancelled}</p>
                         <p className="text-[10px] font-black text-slate-500 uppercase tracking-wider mt-0.5">Sztornózva</p>
                       </div>
+                      <div className="bg-purple-50 rounded-2xl border border-purple-200 p-3 text-center">
+                        <p className="text-2xl font-black text-purple-600">{special}</p>
+                        <p className="text-[10px] font-black text-purple-500 uppercase tracking-wider mt-0.5">Különleges</p>
+                      </div>
                     </div>
                   );
                 })()}
@@ -811,6 +860,11 @@ export default function AdminDashboard() {
                           {item.confirmed_appointment_local && (
                             <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-black uppercase text-emerald-700">
                               <Clock className="w-3 h-3" /> {item.confirmed_appointment_local}
+                            </span>
+                          )}
+                          {item.status === 'special' && item.special_note && (
+                            <span className="inline-flex items-center gap-1 rounded-full bg-purple-50 px-2 py-0.5 text-[10px] font-black uppercase text-purple-700">
+                              <Sparkles className="w-3 h-3" /> {item.special_note}
                             </span>
                           )}
                           <span className="text-gray-400 text-xs">{formatDate(item.created_at)}</span>
@@ -843,6 +897,15 @@ export default function AdminDashboard() {
                               )}
                             </div>
                           )}
+                          {item.status === 'special' && item.special_note && (
+                            <div className="col-span-2 bg-purple-50 rounded-xl p-3 border border-purple-100">
+                              <p className="text-[10px] font-black text-purple-500 uppercase tracking-widest mb-1 flex items-center gap-1"><Sparkles className="w-3 h-3" /> Különleges egyeztetés megjegyzés</p>
+                              <p className="font-black text-purple-950 text-sm">{item.special_note}</p>
+                              {item.special_note_updated_at && (
+                                <p className="text-purple-700/70 text-xs mt-0.5">Frissítve: {formatDate(item.special_note_updated_at)}</p>
+                              )}
+                            </div>
+                          )}
                         </div>
                         <div className="bg-white rounded-xl p-3 border border-sky-100 space-y-2">
                           <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Adminisztráció</p>
@@ -851,6 +914,7 @@ export default function AdminDashboard() {
                             <option value="no_answer">Felhívtuk – Nem vette fel</option>
                             <option value="processed">Időpontot kapott / Feldolgozva</option>
                             <option value="cancelled">Időpont sztornózva</option>
+                            <option value="special">Különleges Egyeztetés</option>
                           </select>
                           <button onClick={() => handleAction('appointments', item.id, 'hide')} className="w-full py-2.5 text-red-500 hover:bg-red-50 font-bold text-sm rounded-lg flex items-center justify-center gap-2 border border-red-100">
                             {actionLoading === `hide-${item.id}` ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Trash2 className="w-4 h-4" /> Törlés</>}
@@ -1131,6 +1195,96 @@ export default function AdminDashboard() {
                       </button>
                     </>
                   )}
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {specialAppointmentModal && (
+          <motion.div
+            key="special-appointment-modal"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[80] bg-slate-950/75 backdrop-blur-sm flex items-start sm:items-center justify-center overflow-y-auto overscroll-contain p-3 py-4 sm:p-4 sm:py-6"
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 24, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 24, scale: 0.96 }}
+              className="my-auto flex max-h-[calc(100dvh-2rem)] w-full max-w-xl flex-col overflow-hidden rounded-3xl border border-purple-100 bg-white shadow-2xl sm:max-h-[calc(100dvh-3rem)] sm:rounded-[2rem]"
+            >
+              <div className="flex-shrink-0 bg-gradient-to-br from-purple-600 to-slate-950 p-5 sm:p-8 text-white">
+                <div className="flex items-start gap-4">
+                  <div className="w-14 h-14 rounded-2xl bg-white/15 flex items-center justify-center flex-shrink-0">
+                    <Sparkles className="w-7 h-7" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-black uppercase tracking-[0.22em] text-purple-100 mb-2">Különleges egyeztetés</p>
+                    <h3 className="text-2xl sm:text-3xl font-black leading-tight">Rövid megjegyzés szükséges</h3>
+                    <p className="text-purple-100 text-sm sm:text-base mt-2 leading-relaxed">
+                      Ezt akkor használd, ha egyedi egyeztetés kell, például hétvégi fájdalom, későbbi jelentkezés vagy orvosi döntés miatt.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="min-h-0 flex-1 space-y-5 overflow-y-auto overscroll-contain p-5 pb-0 sm:p-8 sm:pb-0">
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div className="rounded-2xl bg-slate-50 border border-slate-100 p-4">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Páciens</p>
+                    <p className="font-black text-slate-950">{specialAppointmentModal.appointment.name}</p>
+                    <p className="text-sm text-slate-500 truncate">{specialAppointmentModal.appointment.email}</p>
+                    <p className="text-sm text-slate-500">{specialAppointmentModal.appointment.phone}</p>
+                  </div>
+                  <div className="rounded-2xl bg-purple-50 border border-purple-100 p-4">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-purple-500 mb-1">Kezelés</p>
+                    <p className="font-black text-slate-950">{specialAppointmentModal.appointment.treatment || 'Fogászati időpont'}</p>
+                    <p className="text-sm text-slate-600">{getAppointmentClinicLabel(specialAppointmentModal.appointment)}</p>
+                  </div>
+                </div>
+
+                <label className="block">
+                  <span className="block text-xs font-black uppercase tracking-widest text-slate-500 mb-2">Megjegyzés kötelező</span>
+                  <textarea
+                    value={specialAppointmentModal.note}
+                    onChange={(event) => setSpecialAppointmentModal({ ...specialAppointmentModal, note: event.target.value, error: '' })}
+                    maxLength={280}
+                    rows={4}
+                    placeholder="Pl.: Hétvégén jelentkezik, ha fáj. / Fájdalom esetén orvos dönti el. / Később egyeztetünk."
+                    className="w-full resize-none rounded-2xl border border-purple-100 bg-purple-50/50 px-4 py-4 text-base font-bold text-slate-950 outline-none focus:border-purple-400 focus:ring-4 focus:ring-purple-100"
+                  />
+                  <span className="mt-2 block text-right text-[10px] font-black uppercase tracking-widest text-slate-400">
+                    {specialAppointmentModal.note.trim().length}/280
+                  </span>
+                </label>
+
+                {specialAppointmentModal.error && (
+                  <div className="rounded-2xl bg-red-50 border border-red-100 p-4 text-sm font-bold text-red-600">
+                    {specialAppointmentModal.error}
+                  </div>
+                )}
+
+                <div className="sticky bottom-0 -mx-5 flex flex-col gap-3 border-t border-slate-100 bg-white/95 px-5 py-4 pt-4 backdrop-blur sm:-mx-8 sm:flex-row sm:px-8">
+                  <button
+                    type="button"
+                    onClick={() => setSpecialAppointmentModal(null)}
+                    className="sm:w-40 rounded-2xl border border-slate-200 px-5 py-4 font-black text-slate-600 hover:bg-slate-50"
+                  >
+                    Mégsem
+                  </button>
+                  <button
+                    type="button"
+                    onClick={sendSpecialAppointmentStatus}
+                    disabled={!specialAppointmentModal.note.trim() || actionLoading === `update_status-${specialAppointmentModal.appointment.id}`}
+                    className="flex-1 rounded-2xl bg-purple-600 px-5 py-4 font-black text-white shadow-lg shadow-purple-600/20 hover:bg-purple-700 disabled:bg-slate-300 disabled:shadow-none flex items-center justify-center gap-2"
+                  >
+                    {actionLoading === `update_status-${specialAppointmentModal.appointment.id}` ? <Loader2 className="w-5 h-5 animate-spin" /> : <Sparkles className="w-5 h-5" />}
+                    Különleges egyeztetés mentése
+                  </button>
                 </div>
               </div>
             </motion.div>
