@@ -1,49 +1,30 @@
 import type { Metadata } from 'next';
-import { normalizeBlogLanguage } from '@/lib/blogConfig';
+import { buildLocalizedMetadata, normalizeLocale } from '@/lib/seo';
 import BlogClient from './BlogClient';
 
 export const revalidate = 60;
 
-const blogMetadata: Record<'hu' | 'en' | 'sk', Metadata> = {
+const blogMetadata: Record<'hu' | 'en' | 'sk', { title: string; description: string; keywords: string[] }> = {
   hu: {
     title: "Fogászati Tudástár & Blog | Crown Dental",
     description: "Olvassa szakértő fogorvosaink tanácsait! Cikkeink segítenek a helyes szájápolásban, a fogászati problémák megelőzésében és a kezelések megértésében.",
     keywords: ['fogászati blog', 'szájápolási tanácsok', 'fogbeültetés információk', 'fogszabályozás tippek', 'Crown Dental tudástár'],
-    openGraph: {
-      title: "Crown Dental Fogászati Tudástár",
-      description: "Érthető és hiteles információk az egészséges mosolyért.",
-      url: 'https://www.crowndental.hu/blog',
-      type: 'website',
-    },
   },
   en: {
     title: "Dental Knowledge Base & Blog | Crown Dental",
     description: "Read expert dental articles from Crown Dental about oral care, treatment options, prices, prevention and confident treatment decisions.",
     keywords: ['dental blog', 'oral care tips', 'dental implants information', 'orthodontics tips', 'Crown Dental blog'],
-    openGraph: {
-      title: "Crown Dental Dental Knowledge Base",
-      description: "Clear, trustworthy dental information for a healthier smile.",
-      url: 'https://www.crowndental.hu/en/blog',
-      type: 'website',
-    },
   },
   sk: {
     title: "Dentálna poradňa a blog | Crown Dental",
     description: "Prečítajte si odborné články Crown Dental o starostlivosti o zuby, prevencii, možnostiach ošetrenia a cenách.",
     keywords: ['zubný blog', 'starostlivosť o zuby', 'zubné implantáty', 'ortodoncia', 'Crown Dental blog'],
-    openGraph: {
-      title: "Crown Dental Dentálna poradňa",
-      description: "Zrozumiteľné a dôveryhodné informácie pre zdravší úsmev.",
-      url: 'https://www.crowndental.hu/sk/blog',
-      type: 'website',
-    },
   },
 };
 
 export function generateMetadata({ params }: { params: { locale: string } }): Metadata {
-  const language = normalizeBlogLanguage(params.locale);
-  if (language === 'en' || language === 'sk') return blogMetadata[language];
-  return blogMetadata.hu;
+  const locale = normalizeLocale(params.locale);
+  return buildLocalizedMetadata({ locale, path: 'blog', ...blogMetadata[locale] });
 }
 
 async function getBlogPosts() {

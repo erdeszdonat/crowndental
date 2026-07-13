@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import ClientLayout from "./ClientLayout";
+import { SITE_URL, normalizeLocale } from '@/lib/seo';
 
 const locales = ['hu', 'en', 'sk'];
 
@@ -14,45 +15,33 @@ type Props = {
 
 // Dinamikus metadata localenként
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale } = params;
+  const locale = normalizeLocale(params.locale);
 
   const titles: Record<string, string> = {
-    hu: 'Crown Dental | Prémium Fogászat Saját Laborral – Esztergom & Budapest',
-    en: 'Crown Dental | Premium Dentistry with Own Lab – Esztergom & Budapest',
-    sk: 'Crown Dental | Prémiová Stomatológia s Vlastným Lab – Ostrihom & Budapešť',
+    hu: 'Crown Dental Esztergom | Fogászat saját laborral',
+    en: 'Crown Dental Esztergom | Dentistry with an in-house laboratory',
+    sk: 'Crown Dental Ostrihom | Zubná klinika s vlastným laboratóriom',
   };
   const descriptions: Record<string, string> = {
-    hu: 'Prémium fogászati ellátás Esztergomban és Budapesten. Fájdalommentes kezelések, saját labor, akár 40%-kal kedvezőbb árak.',
-    en: 'Premium dental care in Esztergom and Budapest. Pain-free treatments, in-house lab, up to 40% lower prices.',
-    sk: 'Prémiová stomatologická starostlivosť v Ostrihome a Budapešti. Bezbolestné ošetrenia, vlastné laboratórium, ceny až o 40 % nižšie.',
+    hu: 'Modern fogászati ellátás Esztergomban saját fogtechnikai laborral, hétvégi rendelés és online időpontkérés magyar és szlovák pácienseknek.',
+    en: 'Modern dental care in Esztergom with an in-house laboratory, weekend appointments and online booking.',
+    sk: 'Moderná zubná klinika v Ostrihome s vlastným laboratóriom, víkendovými termínmi a online rezerváciou.',
   };
 
   const localeMap: Record<string, string> = { hu: 'hu_HU', en: 'en_US', sk: 'sk_SK' };
 
   return {
-    title: {
-      default: titles[locale] ?? titles.hu,
-      template: '%s | Crown Dental',
-    },
+    metadataBase: new URL(SITE_URL),
+    title: titles[locale] ?? titles.hu,
     description: descriptions[locale] ?? descriptions.hu,
     robots: { index: true, follow: true },
-    openGraph: {
-      title: titles[locale] ?? titles.hu,
-      description: descriptions[locale] ?? descriptions.hu,
-      url: 'https://www.crowndental.hu',
-      siteName: 'Crown Dental',
-      locale: localeMap[locale] ?? 'hu_HU',
-      type: 'website',
-      images: [{ url: 'https://www.crowndental.hu/og-image.jpg', width: 1200, height: 630, alt: 'Crown Dental' }],
+    verification: {
+      google: process.env.GOOGLE_SITE_VERIFICATION || undefined,
+      other: process.env.BING_SITE_VERIFICATION
+        ? { 'msvalidate.01': process.env.BING_SITE_VERIFICATION }
+        : undefined,
     },
-    alternates: {
-      canonical: locale === 'hu' ? 'https://www.crowndental.hu' : `https://www.crowndental.hu/${locale}`,
-      languages: {
-        'hu': 'https://www.crowndental.hu',
-        'en': 'https://www.crowndental.hu/en',
-        'sk': 'https://www.crowndental.hu/sk',
-      },
-    },
+    openGraph: { siteName: 'Crown Dental', locale: localeMap[locale] ?? 'hu_HU', type: 'website' },
   };
 }
 
@@ -62,38 +51,50 @@ export function generateStaticParams() {
 
 const organizationJsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'Organization',
-  '@id': 'https://www.crowndental.hu/#organization',
-  name: 'Crown Dental',
-  url: 'https://www.crowndental.hu',
-  telephone: '+36705646837',
-  foundingDate: '1994',
-  sameAs: [
-    'https://www.wikidata.org/wiki/Q139545504',
-    'https://www.crowndental.hu',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${SITE_URL}/#organization`,
+      name: 'Crown Dental',
+      legalName: 'Crown Dental Praxis és Labor Fogászati Kft.',
+      alternateName: ['Crown Dental Esztergom', 'Crown Dental Ostrihom'],
+      url: SITE_URL,
+      logo: { '@type': 'ImageObject', url: `${SITE_URL}/logo.webp` },
+      image: `${SITE_URL}/og-image.jpg`,
+      telephone: '+36705646837',
+      email: 'info@crowndental.hu',
+      foundingDate: '1994',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'Petőfi Sándor utca 11.',
+        addressLocality: 'Esztergom',
+        addressRegion: 'Komárom-Esztergom',
+        postalCode: '2500',
+        addressCountry: 'HU',
+      },
+      contactPoint: {
+        '@type': 'ContactPoint',
+        telephone: '+36705646837',
+        contactType: 'appointments',
+        availableLanguage: ['hu', 'sk', 'en'],
+        areaServed: ['HU', 'SK'],
+      },
+      sameAs: [
+        'https://www.facebook.com/koronafogaszatesztergom/',
+        'https://www.instagram.com/crown_dental93/',
+        'https://www.tiktok.com/@crowndentalhungary',
+        'https://www.google.com/maps?cid=13855060144941940295',
+      ],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: 'Crown Dental',
+      publisher: { '@id': `${SITE_URL}/#organization` },
+      inLanguage: ['hu', 'sk', 'en'],
+    },
   ],
-};
-
-const esztergomJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Dentist',
-  name: 'Crown Dental – Esztergom',
-  url: 'https://www.crowndental.hu/esztergom',
-  telephone: '+36705646837',
-  foundingDate: '1994',
-  image: 'https://www.crowndental.hu/og-image.jpg',
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: 'Petőfi Sándor utca 11.',
-    addressLocality: 'Esztergom',
-    postalCode: '2500',
-    addressCountry: 'HU',
-  },
-  geo: { '@type': 'GeoCoordinates', latitude: 47.7951, longitude: 18.7408 },
-  openingHoursSpecification: [
-    { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday'], opens: '08:00', closes: '18:00' },
-  ],
-  priceRange: '$$',
 };
 
 export default async function LocaleLayout({ children, params }: Props) {
@@ -109,10 +110,6 @@ export default async function LocaleLayout({ children, params }: Props) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(esztergomJsonLd) }}
       />
       <Script src="https://www.googletagmanager.com/gtag/js?id=G-9BS3P1DC4T" strategy="afterInteractive" />
       <Script id="google-analytics" strategy="afterInteractive">

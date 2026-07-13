@@ -266,10 +266,10 @@ function HeroSection() {
               {t(locale, 'Esztergom Szívében', 'Heart of Esztergom', 'Centrum Ostrihoma')}
             </div>
             <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white mb-5 sm:mb-8 leading-[0.95] tracking-tight">
-              {t(locale, 'Prémium Fogászat,', 'Premium Dentistry,', 'Prémiová stomatológia,')}
+              {t(locale, 'Fogorvos Esztergomban,', 'Dentist in Esztergom,', 'Zubár v Ostrihome,')}
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-cyan-300">
-                {t(locale, 'helyben.', 'right here.', 'priamo tu.')}
+                {t(locale, 'saját laborral.', 'with an in-house lab.', 's vlastným laboratóriom.')}
               </span>
             </h1>
             <p className="text-base sm:text-xl md:text-2xl text-gray-300 mb-7 sm:mb-12 leading-relaxed max-w-xl font-light">
@@ -391,6 +391,82 @@ function ClinicEnvironmentSection() {
             </div>
           </div>
         </motion.div>
+      </div>
+    </section>
+  );
+}
+
+function RegionalAuthoritySection() {
+  const locale = useLocale();
+  const regions = [
+    {
+      title: t(locale, 'Esztergom és Komárom-Esztergom', 'Esztergom and Komárom-Esztergom', 'Ostrihom a Komárom-Esztergom'),
+      text: t(
+        locale,
+        'Belvárosi rendelőnkben teljes körű fogászati ellátást, helyben végzett diagnosztikát és saját fogtechnikai labort talál.',
+        'Our central clinic provides comprehensive dentistry, on-site diagnostics and an in-house dental laboratory.',
+        'V centre Ostrihomu poskytujeme komplexnú stomatológiu, diagnostiku priamo na mieste a vlastné zubnotechnické laboratórium.',
+      ),
+      icon: <MapPin className="h-6 w-6" />,
+    },
+    {
+      title: t(locale, 'Párkány és Dél-Szlovákia', 'Štúrovo and southern Slovakia', 'Štúrovo a južné Slovensko'),
+      text: t(
+        locale,
+        'A Mária Valéria hídon át könnyen elérhetőek vagyunk; szlovák nyelvű tájékoztatás és online időpontkérés is rendelkezésre áll.',
+        'We are easy to reach across the Mária Valéria Bridge, with Slovak information and online appointment requests available.',
+        'Cez Most Márie Valérie sa k nám dostanete jednoducho; informácie aj online žiadosť o termín sú dostupné v slovenčine.',
+      ),
+      icon: <Users className="h-6 w-6" />,
+    },
+    {
+      title: t(locale, 'Budapestről érkező páciensek', 'Patients travelling from Budapest', 'Pacienti prichádzajúci z Budapešti'),
+      text: t(
+        locale,
+        'A budapesti rendelő megnyitásáig az esztergomi klinikán fogadjuk a fővárosból érkezőket is, előre egyeztetett időpontban.',
+        'Until our Budapest clinic opens, we also welcome patients travelling from the capital at our Esztergom clinic by appointment.',
+        'Do otvorenia budapeštianskej kliniky radi privítame pacientov z hlavného mesta v našej ordinácii v Ostrihome po objednaní.',
+      ),
+      icon: <Clock className="h-6 w-6" />,
+    },
+  ];
+
+  return (
+    <section className="border-y border-sky-100 bg-sky-50/60 py-20" aria-labelledby="regional-dentist-title">
+      <div className="container mx-auto px-4">
+        <div className="mx-auto max-w-4xl text-center">
+          <span className="mb-4 block text-sm font-bold uppercase tracking-[0.2em] text-sky-700">
+            {t(locale, 'Helyi fogászati központ', 'Regional dental centre', 'Regionálne centrum stomatológie')}
+          </span>
+          <h2 id="regional-dentist-title" className="text-3xl font-black leading-tight text-gray-950 md:text-5xl">
+            {t(
+              locale,
+              'Fogorvos Esztergomban, a régió központjában',
+              'Your dentist in Esztergom, at the heart of the region',
+              'Zubár v Ostrihome pre Štúrovo a južné Slovensko',
+            )}
+          </h2>
+          <p className="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-gray-600">
+            {t(
+              locale,
+              'A Crown Dental 1994 óta működő esztergomi fogászata magyar és szlovák páciensek számára nyújt összehangolt fogorvosi és fogtechnikai ellátást.',
+              'Crown Dental has provided coordinated dental and laboratory care in Esztergom for Hungarian, Slovak and international patients since 1994.',
+              'Crown Dental je zubná klinika v Ostrihome, ktorá od roku 1994 poskytuje prepojenú stomatologickú a zubnotechnickú starostlivosť aj pacientom zo Slovenska.',
+            )}
+          </p>
+        </div>
+
+        <div className="mx-auto mt-12 grid max-w-6xl gap-5 md:grid-cols-3">
+          {regions.map((region) => (
+            <article key={region.title} className="rounded-3xl border border-sky-100 bg-white p-7 shadow-sm">
+              <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-sky-100 text-sky-700">
+                {region.icon}
+              </div>
+              <h3 className="text-xl font-black text-gray-950">{region.title}</h3>
+              <p className="mt-3 leading-relaxed text-gray-600">{region.text}</p>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -916,6 +992,7 @@ export default function EsztergomPage() {
       <FloatingCTA />
       <HeroSection />
       <ClinicEnvironmentSection />
+      <RegionalAuthoritySection />
       <AICalculatorBanner />
       <ServicesSection />
       <WhyUsSection />

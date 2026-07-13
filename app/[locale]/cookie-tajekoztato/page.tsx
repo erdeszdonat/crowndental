@@ -1,16 +1,19 @@
 import type { Metadata } from 'next';
-// ITT VOLT A HIBA: ImpresszumClient helyett CookieClient kell
-import CookieClient from './CookieClient'; 
+import CookieClient from './CookieClient';
+import { SITE_URL } from '@/lib/seo';
 
-const seoTitle = "Süti (Cookie) Tájékoztató | Crown Dental";
-const seoDescription = "Részletes tájékoztatás a Crown Dental weboldalán használt sütikről (cookie-król), azok céljáról, típusairól és kezelési lehetőségeiről.";
+const title = 'Süti (Cookie) Tájékoztató | Crown Dental';
+const description = 'Tájékoztatás a Crown Dental weboldalán használt sütikről, azok céljáról, típusairól és kezelési lehetőségeiről.';
 
-export const metadata: Metadata = {
-  title: seoTitle,
-  description: seoDescription,
-};
+export function generateMetadata({ params }: { params: { locale: string } }): Metadata {
+  return {
+    title,
+    description,
+    alternates: { canonical: `${SITE_URL}/cookie-tajekoztato` },
+    robots: { index: params.locale === 'hu', follow: true },
+  };
+}
 
 export default function CookiePage() {
-  // ITT IS ÁT KELL ÍRNI:
-  return <CookieClient />; 
+  return <CookieClient />;
 }

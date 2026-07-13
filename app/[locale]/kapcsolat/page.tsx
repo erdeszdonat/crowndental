@@ -1,77 +1,61 @@
 import type { Metadata } from 'next';
 import ContactClient from './ContactClient';
+import {
+  buildBreadcrumbJsonLd,
+  buildLocalizedMetadata,
+  localizedUrl,
+  normalizeLocale,
+  type SupportedLocale,
+} from '@/lib/seo';
 
-type Props = {
-  params: { locale: string };
-};
+type ContactPageProps = { params: { locale: string } };
 
-const metadataByLocale: Record<string, { title: string; description: string; canonical: string }> = {
+const metadataByLocale: Record<SupportedLocale, { title: string; description: string }> = {
   hu: {
-    title: 'Kapcsolat | Crown Dental',
-    description: 'Lépjen kapcsolatba a Crown Dental esztergomi rendelőjével. Telefon, e-mail, útvonalterv és gyors online időpontfoglalás.',
-    canonical: 'https://www.crowndental.hu/kapcsolat',
+    title: 'Kapcsolat és útvonal | Crown Dental fogorvos Esztergom',
+    description:
+      'Crown Dental Esztergom elérhetőségei: 2500 Esztergom, Petőfi Sándor utca 11. Telefon, e-mail, útvonalterv és online időpontkérés.',
   },
   en: {
-    title: 'Contact | Crown Dental',
-    description: 'Contact the Crown Dental clinic in Esztergom. Phone, email, directions and fast online appointment booking.',
-    canonical: 'https://www.crowndental.hu/en/kapcsolat',
+    title: 'Contact and directions | Crown Dental dentist Esztergom',
+    description:
+      'Contact Crown Dental Esztergom at 11 Petőfi Sándor Street, 2500 Esztergom. Phone, email, directions and online appointment requests.',
   },
   sk: {
-    title: 'Kontakt | Crown Dental',
-    description: 'Kontaktujte ambulanciu Crown Dental v Ostrihome. Telefón, e-mail, navigácia a rýchla online rezervácia termínu.',
-    canonical: 'https://www.crowndental.hu/sk/kapcsolat',
+    title: 'Kontakt a navigácia | Crown Dental zubár Ostrihom',
+    description:
+      'Kontaktujte Crown Dental Ostrihom na adrese Petőfi Sándor utca 11, 2500 Esztergom. Telefón, e-mail, navigácia a online rezervácia.',
   },
 };
 
-export function generateMetadata({ params }: Props): Metadata {
-  const metadata = metadataByLocale[params.locale] ?? metadataByLocale.hu;
-
-  return {
-    title: { absolute: metadata.title },
-    description: metadata.description,
-    alternates: {
-      canonical: metadata.canonical,
-    },
-    openGraph: {
-      title: metadata.title,
-      description: metadata.description,
-      url: metadata.canonical,
-      siteName: 'Crown Dental',
-      type: 'website',
-      images: [{ url: 'https://www.crowndental.hu/og-image.jpg', width: 1200, height: 630, alt: 'Crown Dental kapcsolat' }],
-    },
-  };
+export function generateMetadata({ params }: ContactPageProps): Metadata {
+  const locale = normalizeLocale(params.locale);
+  return buildLocalizedMetadata({ locale, path: 'kapcsolat', ...metadataByLocale[locale] });
 }
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'ContactPage',
-  name: 'Kapcsolat - Crown Dental',
-  url: 'https://www.crowndental.hu/kapcsolat',
-  mainEntity: {
-    '@type': 'Dentist',
-    name: 'Crown Dental',
-    telephone: '+36705646837',
-    email: 'info@crowndental.hu',
-    address: [
-      {
-        '@type': 'PostalAddress',
-        streetAddress: 'Petőfi Sándor utca 11.',
-        addressLocality: 'Esztergom',
-        postalCode: '2500',
-        addressCountry: 'HU',
-      },
-    ],
-  },
-};
+export default function ContactPage({ params }: ContactPageProps) {
+  const locale = normalizeLocale(params.locale);
+  const url = localizedUrl(locale, 'kapcsolat');
+  const contactPageJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ContactPage',
+    '@id': `${url}#webpage`,
+    name: metadataByLocale[locale].title,
+    description: metadataByLocale[locale].description,
+    url,
+    inLanguage: locale,
+    mainEntity: { '@id': 'https://www.crowndental.hu/esztergom#dentist' },
+  };
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd(
+    locale,
+    'kapcsolat',
+    locale === 'sk' ? 'Kontakt' : locale === 'en' ? 'Contact' : 'Kapcsolat',
+  );
 
-export default function ContactPage() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(contactPageJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <ContactClient />
     </>
   );

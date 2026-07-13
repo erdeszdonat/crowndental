@@ -1,6 +1,12 @@
 import HomeClient, { type HomeSanityImages } from './HomeClient';
+import type { Metadata } from 'next';
+import { buildHomeMetadata } from '@/lib/seo';
 
 export const revalidate = 3600;
+
+export function generateMetadata({ params }: { params: { locale: string } }): Metadata {
+  return buildHomeMetadata(params.locale);
+}
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'h68mmabs';
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';

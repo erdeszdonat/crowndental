@@ -130,7 +130,9 @@ export default function Footer() {
                   <MapPin className="w-5 h-5 text-sky-500" />
                 </div>
                 <div>
-                  <span className="block text-white font-bold mb-1">{t('esztergomClinic')}</span>
+                  <Link href={`${prefix}/esztergom`} className="block text-white font-bold mb-1 hover:text-sky-400 transition-colors">
+                    {t('esztergomClinic')}
+                  </Link>
                   <a href="https://share.google/UV0bxLOGoyQdgH826" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors leading-relaxed block">
                     2500 Esztergom,<br /> Petőfi Sándor utca 11.
                   </a>
@@ -142,7 +144,9 @@ export default function Footer() {
                     <MapPin className="w-5 h-5 text-amber-500" />
                   </div>
                   <div>
-                    <span className="block text-white font-bold mb-1">{t('budapestClinic')}</span>
+                    <Link href={`${prefix}/budapest`} className="block text-white font-bold mb-1 hover:text-amber-400 transition-colors">
+                      {t('budapestClinic')} · {locale === 'sk' ? 'čoskoro' : locale === 'en' ? 'coming soon' : 'hamarosan'}
+                    </Link>
                     <a href="https://maps.google.com/?q=1039+Budapest+Királyok+útja+55" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors leading-relaxed block">
                       1039 Budapest,<br /> Királyok útja 55.
                     </a>

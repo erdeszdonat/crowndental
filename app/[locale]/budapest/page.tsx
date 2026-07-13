@@ -976,11 +976,9 @@ export default function BudapestPage() {
       <ServicesSection />
       <WhyUsSection />
       <BeforeAfterBanner />
-      <ReviewsSection />
       <InlineCalculatorCTA />
       <CTASection />
       <FAQSection />
-      <ContactAndMap />
     </main>
   );
 }

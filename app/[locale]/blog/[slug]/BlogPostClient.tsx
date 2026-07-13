@@ -139,6 +139,24 @@ export default function BlogPostClient({ post }: { post: any }) {
             <Clock className="w-4 h-4 text-sky-600" />
             {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString(dateLocale) : t('freshContent')}
           </div>
+          {(post.authorName || post.medicalReviewerName) && (
+            <div className="mb-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-600">
+              {post.authorName && (
+                <span>
+                  {locale === 'sk' ? 'Autor' : locale === 'en' ? 'Author' : 'Szerző'}:{' '}
+                  <strong className="text-gray-900">{post.authorName}</strong>
+                  {post.authorRole ? ` · ${post.authorRole}` : ''}
+                </span>
+              )}
+              {post.medicalReviewerName && (
+                <span>
+                  {locale === 'sk' ? 'Odborne skontroloval' : locale === 'en' ? 'Medically reviewed by' : 'Orvos-szakmailag ellenőrizte'}:{' '}
+                  <strong className="text-gray-900">{post.medicalReviewerName}</strong>
+                  {post.medicalReviewerRole ? ` · ${post.medicalReviewerRole}` : ''}
+                </span>
+              )}
+            </div>
+          )}
           <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight mb-8 tracking-tight italic">
             {post.title}
           </h1>

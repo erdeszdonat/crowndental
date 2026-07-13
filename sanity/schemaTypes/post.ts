@@ -52,6 +52,34 @@ export default {
       validation: (Rule: any) => Rule.required(),
     },
     {
+      name: 'authorName',
+      title: 'Szerző neve',
+      description: 'Szakmai cikknél a valódi szerző neve jelenik meg a cikkben és a keresők strukturált adataiban.',
+      type: 'string',
+    },
+    {
+      name: 'authorRole',
+      title: 'Szerző titulusa / szakterülete',
+      description: 'Például: fogorvos, dentálhigiénikus vagy fogtechnikus.',
+      type: 'string',
+    },
+    {
+      name: 'authorProfileUrl',
+      title: 'Szerző bemutatkozó oldalának URL-je',
+      type: 'url',
+    },
+    {
+      name: 'medicalReviewerName',
+      title: 'Orvosi szakmai ellenőrző neve',
+      description: 'Csak akkor töltse ki, ha az illető valóban ellenőrizte a cikket.',
+      type: 'string',
+    },
+    {
+      name: 'medicalReviewerRole',
+      title: 'Orvosi ellenőrző titulusa / szakterülete',
+      type: 'string',
+    },
+    {
       name: 'seoTitle',
       title: 'SEO Cím (A Google-nek)',
       description: 'Másold be ide az Excelből a 3. oszlopot (Title)',

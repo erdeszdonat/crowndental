@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@sanity/client';
 import { normalizeBlogCategory, normalizeBlogLanguage } from '@/lib/blogConfig';
+import { submitToIndexNow } from '@/lib/indexNow';
+import { localizedUrl } from '@/lib/seo';
 
 export const maxDuration = 60;
 
@@ -58,6 +60,15 @@ export async function POST(req: Request) {
     }
 
     const created = await client.create(doc);
+
+    try {
+      await submitToIndexNow([
+        localizedUrl(doc.language, `blog/${slug}`),
+        localizedUrl(doc.language, 'blog'),
+      ]);
+    } catch (indexNowError) {
+      console.warn('IndexNow beküldés sikertelen:', indexNowError);
+    }
 
     return NextResponse.json({
       success: true,

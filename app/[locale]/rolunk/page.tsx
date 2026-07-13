@@ -1,36 +1,61 @@
 import type { Metadata } from 'next';
 import RolunkClient from './RolunkClient';
+import {
+  buildBreadcrumbJsonLd,
+  buildLocalizedMetadata,
+  localizedUrl,
+  normalizeLocale,
+  type SupportedLocale,
+} from '@/lib/seo';
 
-const seoTitle = "Rólunk | Crown Dental – 30 Év Tapasztalat a Mosolyodért";
-const seoDescription = "1994 óta dolgozunk a háttérben azért, hogy Ön bármikor, bármilyen helyzetben, gátlások nélkül mosolyoghass. Ismerje meg saját laborral rendelkező fogászatunkat.";
+type AboutPageProps = { params: { locale: string } };
 
-export const metadata: Metadata = {
-  title: seoTitle,
-  description: seoDescription,
+const metadataByLocale: Record<SupportedLocale, { title: string; description: string }> = {
+  hu: {
+    title: 'Rólunk | Crown Dental Esztergom – saját labor 1994 óta',
+    description:
+      'Ismerje meg a Crown Dental esztergomi fogászati rendelőt és saját fogtechnikai laborját, amely 1994 óta dolgozik a tartós, esztétikus mosolyokért.',
+  },
+  en: {
+    title: 'About Crown Dental Esztergom | In-house laboratory since 1994',
+    description:
+      'Discover Crown Dental Esztergom and its in-house dental laboratory, working together to create durable and natural-looking smiles since 1994.',
+  },
+  sk: {
+    title: 'O Crown Dental Ostrihom | Vlastné laboratórium od roku 1994',
+    description:
+      'Spoznajte kliniku Crown Dental v Ostrihome a jej vlastné zubnotechnické laboratórium, ktoré od roku 1994 spolupracujú na kvalitných náhradách.',
+  },
 };
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'AboutPage',
-  mainEntity: {
-    '@type': 'Dentist',
-    name: 'Crown Dental',
-    foundingDate: '1994',
-    description: seoDescription,
-    address: [
-      { '@type': 'PostalAddress', streetAddress: 'Királyok útja 55.', addressLocality: 'Budapest', postalCode: '1039', addressCountry: 'HU' },
-      { '@type': 'PostalAddress', streetAddress: 'Petőfi Sándor utca 11.', addressLocality: 'Esztergom', postalCode: '2500', addressCountry: 'HU' }
-    ]
-  }
-};
+export function generateMetadata({ params }: AboutPageProps): Metadata {
+  const locale = normalizeLocale(params.locale);
+  return buildLocalizedMetadata({ locale, path: 'rolunk', ...metadataByLocale[locale] });
+}
 
-export default function RolunkPage() {
+export default function RolunkPage({ params }: AboutPageProps) {
+  const locale = normalizeLocale(params.locale);
+  const url = localizedUrl(locale, 'rolunk');
+  const aboutPageJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'AboutPage',
+    '@id': `${url}#webpage`,
+    url,
+    name: metadataByLocale[locale].title,
+    description: metadataByLocale[locale].description,
+    inLanguage: locale,
+    mainEntity: { '@id': 'https://www.crowndental.hu/#organization' },
+  };
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd(
+    locale,
+    'rolunk',
+    locale === 'sk' ? 'O nás' : locale === 'en' ? 'About us' : 'Rólunk',
+  );
+
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutPageJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <RolunkClient />
     </>
   );

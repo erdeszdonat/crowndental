@@ -1,85 +1,83 @@
-import { MetadataRoute } from 'next';
+import type { MetadataRoute } from 'next';
 import { normalizeBlogLanguage } from '@/lib/blogConfig';
+import {
+  languageAlternates,
+  localizedUrl,
+  SUPPORTED_LOCALES,
+  TREATMENT_SLUGS,
+} from '@/lib/seo';
 
-// ═══════════════════════════════════════════════════════════════════════════
-// SANITY NATIV FETCH A BLOG CIKKEKHEZ
-// ═══════════════════════════════════════════════════════════════════════════
-const fetchSanityPosts = async () => {
+type SanityPost = {
+  slug?: string;
+  _updatedAt?: string;
+  language?: string;
+};
+
+const fetchSanityPosts = async (): Promise<SanityPost[]> => {
   const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'h68mmabs';
-  const dataset = 'production';
-  const query = encodeURIComponent(`*[_type == "post"]{ "slug": slug.current, _updatedAt, "language": coalesce(language, "hu") }`);
+  const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
+  const query = encodeURIComponent(
+    `*[_type == "post"]{ "slug": slug.current, _updatedAt, "language": coalesce(language, "hu") }`,
+  );
   const url = `https://${projectId}.api.sanity.io/v2024-03-08/data/query/${dataset}?query=${query}`;
-  
+
   try {
-    // Revalidate beállítás, hogy a Vercel óránként frissítse a cache-t
-    const res = await fetch(url, { next: { revalidate: 3600 } });
-    const json = await res.json();
-    return json.result || [];
+    const response = await fetch(url, { next: { revalidate: 3600 } });
+    if (!response.ok) return [];
+    const data = await response.json();
+    return data.result || [];
   } catch (error) {
-    console.error("Sitemap: Hiba a Sanity cikkek lekérésekor:", error);
+    console.error('Sitemap: a blogbejegyzések lekérése sikertelen:', error);
     return [];
   }
 };
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  // Végleges, éles domain
-  const baseUrl = 'https://www.crowndental.hu';
+const staticPaths = [
+  '',
+  'kezelesek',
+  ...TREATMENT_SLUGS.map((slug) => `kezelesek/${slug}`),
+  'esztergom',
+  'budapest',
+  'rolunk',
+  'kapcsolat',
+  'blog',
+  'karrier',
+  'idopont',
+];
 
-  // 1. STATIKUS ÚTVONALAK DEFINIÁLÁSA
-  const staticRoutes: MetadataRoute.Sitemap = [
-    '', // Főoldal
-    '/kezelesek',
-    '/kezelesek/implantatum',
-    '/kezelesek/fogszabalyozas',
-    '/kezelesek/koronak-hidak',
-    '/kezelesek/fogfeherites',
-    '/kezelesek/fogsor',
-    '/kezelesek/szajsebeszet',
-    '/kezelesek/gyokerkezeles',
-    '/kezelesek/esztetikai-fogaszat',
-    '/kezelesek/allapotfelmeres',
-    '/kezelesek/gockutatas',
-    '/kezelesek/fogtechnikai-megoldasok',
-    '/kezelesek/gyerekfogaszat',
-    '/kezelesek/foghuzas',
-    '/kezelesek/fogtechnika',
-    '/esztergom',
-    '/budapest',
-    '/rolunk',
-    '/kapcsolat',
-    '/blog',
-    '/karrier',
-    '/idopont',
-    '/aszf',
-    '/adatkezeles',
-    '/cookie-tajekoztato',
-    '/impresszum',
-  ].map((route) => ({
-    url: `${baseUrl}${route}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly',
-    // A főoldal kapja a legnagyobb prioritást (1.0), a többi picit kevesebbet
-    priority: route === '' ? 1.0 : 0.8,
+const hungarianOnlyPaths = ['aszf', 'adatkezeles', 'cookie-tajekoztato', 'impresszum'];
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const staticRoutes: MetadataRoute.Sitemap = staticPaths.flatMap((path) =>
+    SUPPORTED_LOCALES.map((locale) => ({
+      url: localizedUrl(locale, path),
+      changeFrequency: path === '' ? 'daily' : path === 'blog' ? 'daily' : 'weekly',
+      priority: path === '' ? 1 : path === 'esztergom' ? 0.95 : path.startsWith('kezelesek') ? 0.9 : 0.7,
+      alternates: { languages: languageAlternates(path) },
+    })),
+  );
+  const hungarianOnlyRoutes: MetadataRoute.Sitemap = hungarianOnlyPaths.map((path) => ({
+    url: localizedUrl('hu', path),
+    changeFrequency: 'yearly',
+    priority: 0.3,
   }));
 
-  // 2. DINAMIKUS BLOG CIKKEK LEKÉRÉSE A SANITY-BŐL
   const sanityPosts = await fetchSanityPosts();
-  
   const dynamicBlogRoutes: MetadataRoute.Sitemap = sanityPosts
-    .filter((post: any) => post.slug) // Csak azok kellenek, amiknek van URL-je
-    .filter((post: any) => ['hu', 'en', 'sk'].includes(normalizeBlogLanguage(post.language)))
-    .map((post: any) => {
-      const language = normalizeBlogLanguage(post.language);
-      const prefix = language === 'hu' ? '' : `/${language}`;
-
+    .filter((post) => post.slug)
+    .filter((post) => SUPPORTED_LOCALES.includes(normalizeBlogLanguage(post.language) as 'hu' | 'en' | 'sk'))
+    .map((post) => {
+      const language = normalizeBlogLanguage(post.language) as 'hu' | 'en' | 'sk';
       return {
-        url: `${baseUrl}${prefix}/blog/${post.slug}`,
-        lastModified: post._updatedAt ? new Date(post._updatedAt) : new Date(),
-        changeFrequency: 'monthly',
-        priority: 0.6, // A blog cikkek prioritása normál
+        url: localizedUrl(language, `blog/${post.slug}`),
+        lastModified: post._updatedAt ? new Date(post._updatedAt) : undefined,
+        changeFrequency: 'monthly' as const,
+        priority: 0.7,
       };
     });
 
-  // Visszaadjuk a statikus és a dinamikus útvonalak egyesített listáját a Google-nek
-  return [...staticRoutes, ...dynamicBlogRoutes];
+  return [...staticRoutes, ...hungarianOnlyRoutes, ...dynamicBlogRoutes];
 }
+
+export const dynamic = 'force-static';
+export const revalidate = 3600;
