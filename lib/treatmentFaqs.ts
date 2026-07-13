@@ -1,6 +1,6 @@
 export const treatmentFaqs: Record<string, { q: string; a: string }[]> = {
   allapotfelmeres: [
-    { q: 'Mennyibe kerül az állapotfelmérés?', a: 'A panorámaröntgen ára 5.000-15.000 Ft között mozog, emellett szakorvosi konzultációt biztosítunk.' },
+    { q: 'Mennyibe kerül az állapotfelmérés?', a: 'A panorámaröntgen ára 6.000 Ft, a teleröntgen ára 10.000 Ft, emellett szakorvosi konzultációt biztosítunk.' },
     { q: 'Kell-e előkészület a vizsgálatra?', a: 'Nem szükséges előkészület. Ha vannak korábbi röntgenfelvételei, hozza magával.' },
     { q: 'Mennyi ideig tart az állapotfelmérés?', a: 'Az átfogó állapotfelmérés 30-45 percet vesz igénybe.' },
     { q: 'Mit tegyek, ha félek a fogorvostól?', a: 'Csapatunk türelmes és empatikus, minden lépést előre elmagyarázunk.' },
@@ -53,6 +53,7 @@ export const treatmentFaqs: Record<string, { q: string; a: string }[]> = {
   fogszabalyozas: [
     { q: 'Fájdalmas a fogszabályozás?', a: 'Maga a felhelyezés nem fájdalmas. Az aktiválásokat követő 2-3 napban enyhe feszítő érzés jelentkezhet.' },
     { q: 'Felnőttként is belekezdhetek?', a: 'Természetesen! Manapság a pácienseink közel fele felnőtt. Nekik különösen ajánljuk az esztétikus kerámia vagy a szinte láthatatlan sínrendszerű megoldásainkat.' },
+    { q: 'Kell teleröntgen a fogszabályozáshoz?', a: 'Igen, a pontos fogszabályozási diagnózishoz gyakran szükséges teleröntgen. Ezt helyben elvégezzük, így nem kell külön képalkotó helyre mennie.' },
     { q: 'Mennyi ideig tart a kezelés?', a: 'Általában 1.5 - 2 év. Kisebb esztétikai korrekciók akár 6-10 hónap alatt is elvégezhetőek.' },
     { q: 'Hogyan kell tisztítani a készüléket?', a: 'A rögzített készülékhez speciális fogkefét és fogköztisztítót javasolunk, aminek használatát a felhelyezéskor alaposan megmutatjuk.' },
   ],

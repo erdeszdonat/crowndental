@@ -16,6 +16,7 @@ const CROWN_DENTAL_PRICES: Record<string, string> = {
   "Foghúzás": "25 000 - 35 000 Ft",
   "Röntgen felvétel (kisröntgen)": "5 000 Ft",
   "Panoráma röntgen": "6 000 Ft",
+  "Teleröntgen": "10 000 Ft",
   "Gyökértömés (egy gyökerű)": "25 000 Ft",
   "Gyökértömés (két gyökerű)": "30 000 Ft",
   "Gyökértömés (három gyökerű)": "33 000 Ft",

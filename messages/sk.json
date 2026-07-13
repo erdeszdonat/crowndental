@@ -465,7 +465,8 @@
           { "name": "Výplne", "price": "30 000 – 35 000 Ft" },
           { "name": "Extrakcia zuba", "price": "25 000 – 35 000 Ft" },
           { "name": "RTG snímka (malá / jeden zub)", "price": "5 000 Ft" },
-          { "name": "Panoramatický RTG", "price": "6 000 Ft" }
+          { "name": "Panoramatický RTG", "price": "6 000 Ft" },
+          { "name": "Teleröntgen / cefalometrický RTG", "price": "10 000 Ft", "highlight": true }
         ]
       },
       {
@@ -556,12 +557,13 @@
       "problemTitle": "Problém: Skryté zubné ťažkosti",
       "problemDesc": "Mnohé zubné problémy – kazivosť, zápal ďasien, úbytok kosti – sa rozvíjajú roky bez príznakov. Keď sa objaví bolesť, liečba je už zložitejšia a drahšia.",
       "solutionTitle": "Riešenie: Komplexné vstupné vyšetrenie",
-      "solutionDesc": "Moderným panoramatickým röntgenom a 3D CT odhalíme aj tie najmenšie zmeny. Dôkladné vyšetrenie umožňuje včasnú intervenciu.",
+      "solutionDesc": "Moderným panoramatickým röntgenom, teleröntgenom a 3D CT odhalíme aj tie najmenšie zmeny. Dôkladné vyšetrenie umožňuje včasnú intervenciu.",
       "includedBadge": "Čo je zahrnuté?",
       "includedTitle": "Úplný diagnostický balík",
       "items": [
         { "title": "Vizuálne vyšetrenie", "desc": "Zubný lekár dôkladne vyšetrí vaše zuby, ďasná a každú časť ústnej dutiny." },
         { "title": "Panoramatický röntgen", "desc": "Na jednom snímku vidíme všetky zuby, korienky a stav čeľustnej kosti." },
+        { "title": "Teleröntgen", "desc": "Bočný snímok lebky pre ortodontické plánovanie a presnú analýzu zhryzu." },
         { "title": "3D CT vyšetrenie", "desc": "Pred implantáciou plánujeme liečbu pomocou trojrozmerného zobrazovania." },
         { "title": "Intraorálna kamera", "desc": "Malou kamerou vám ukážeme presne, kde a aký problém sme našli." },
         { "title": "Písomná diagnóza", "desc": "Dostanete podrobnú dokumentáciu o vašom stave a odporúčaných liečbách." },
@@ -572,21 +574,21 @@
         { "title": "Prevencia je kľúčová", "desc": "Včasná detekcia je nákladovo a časovo efektívnejšia ako neskoršia komplexná liečba." },
         { "title": "Rýchle a bezbolestné", "desc": "Vyšetrenie trvá len 30–45 minút." },
         { "title": "Špecialistická konzultácia", "desc": "Podrobné špecialistické vyšetrenie, kde dostanete odpoveď na všetky otázky." },
-        { "title": "Moderná technológia", "desc": "Panoramatický röntgen, 3D CT a intraorálna kamera pre presnú diagnózu." },
+        { "title": "Moderná technológia", "desc": "Panoramatický röntgen, teleröntgen, 3D CT a intraorálna kamera pre presnú diagnózu." },
         { "title": "Transparentné ceny", "desc": "Všetky náklady sú vopred oznámené v liečebnom pláne – žiadne skryté poplatky." },
         { "title": "Písomná dokumentácia", "desc": "Dostanete podrobnú písomnú dokumentáciu, ktorú si môžete preštudovať doma." }
       ],
       "processTitle": "Ako prebieha vstupné vyšetrenie",
       "processSteps": [
         { "title": "Rezervácia termínu", "desc": "Rezervujte si termín online alebo telefonicky v našej ordinácii v Budapešti alebo Ostrihome.", "time": "2 min" },
-        { "title": "Vyšetrenie a röntgen", "desc": "Panoramatický röntgen a podrobné vizuálne vyšetrenie zubov, ďasien a čeľuste.", "time": "30–45 min" },
+        { "title": "Vyšetrenie a röntgen", "desc": "Panoramatický röntgen, podľa potreby teleröntgen a podrobné vizuálne vyšetrenie zubov, ďasien a čeľuste.", "time": "30–45 min" },
         { "title": "Preberanie diagnózy", "desc": "Lekár vysvetlí nálezy a prediskutuje s vami možnosti.", "time": "15 min" },
         { "title": "Liečebný plán", "desc": "Vypracujeme personalizovaný liečebný plán s podrobnými cenami a harmonogramom.", "time": "1–2 dni" }
       ],
       "ctaTitle": "Zistite, v akom stave sú vaše zuby!",
       "ctaDesc": "Rezervujte si termín na špecialistickú konzultáciu v Budapešti alebo Ostrihome!",
       "faqs": [
-        { "q": "Koľko stojí vstupné vyšetrenie?", "a": "Panoramatický röntgen stojí 5 000–15 000 Ft, pričom je zahrnutá aj špecialistická konzultácia." },
+        { "q": "Koľko stojí vstupné vyšetrenie?", "a": "Panoramatický röntgen stojí 6 000 Ft, teleröntgen 10 000 Ft a súčasťou je aj špecialistická konzultácia." },
         { "q": "Je potrebná nejaká príprava?", "a": "Žiadna príprava nie je potrebná. Ak máte predchádzajúce röntgenové snímky, prineste ich so sebou." },
         { "q": "Ako dlho trvá vyšetrenie?", "a": "Komplexné vstupné vyšetrenie trvá 30–45 minút." },
         { "q": "Čo ak sa bojím zubára?", "a": "Náš tím je trpezlivý a empatický – každý krok vopred vysvetlíme." },
@@ -885,13 +887,13 @@
     "fogszabalyozas": {
       "heroBadge": "Estetický a zdravý chrup",
       "heroTitle": "Ortodontia podľa Crown Dental",
-      "heroDesc": "Moderné ortodontické riešenia pre deti aj dospelých. Rovný chrup, sebavedomý úsmev.",
+      "heroDesc": "Moderné ortodontické riešenia pre deti aj dospelých s teleröntgenovou diagnostikou priamo u nás. Rovný chrup, sebavedomý úsmev.",
       "heroPriceLabel": "Aparáty",
       "heroPriceValue": "od 190 000 Ft",
       "problemTitle": "Problém: Stlačené zuby",
       "problemDesc": "Nepravidelné, stlačené zuby nielen spôsobujú nedostatok sebavedomia, ale predstavujú aj zdravotné riziko. Ťažko čistiteľné medzery umožňujú hromadenie plaku, čo vedie ku kazivosti a zápalogám ďasien.",
       "solutionTitle": "Riešenie: Ortodontická liečba",
-      "solutionDesc": "Ortodontia naviguje zuby do ideálnej polohy. Prináša nielen estetické zlepšenie, ale obnovuje aj žuvaciu funkciu a uľahčuje ústnu hygienu.",
+      "solutionDesc": "Ortodontia naviguje zuby do ideálnej polohy. Potrebný teleröntgen vykonáme priamo u nás, takže diagnostika aj liečebný plán vzniknú rýchlo a koordinovane.",
       "benefitsTitle": "Tajomstvo dokonalého úsmevu",
       "benefitItems": [
         { "title": "Široký výber", "desc": "Od tradičných kovových aparátov po estetické zafírové a neviditeľné dlahy – ponúkame každé riešenie." },
@@ -899,11 +901,11 @@
         { "title": "Flexibilné platby", "desc": "Vieme, že ortodontia je investícia. Flexibilné platobné plány pomáhajú rozložiť náklady." },
         { "title": "Vlastné laboratórium", "desc": "Snímateľné aparáty a dlahy sa vyrábajú vo vlastnom laboratóriu." },
         { "title": "Zameranie na estetiku tváre", "desc": "Nepresúvame len zuby – dbáme aj na harmonický vzhľad vašej tváre." },
-        { "title": "Moderná technológia", "desc": "Digitálne plánovanie a moderné materiály skracujú čas liečby." }
+        { "title": "Moderná technológia", "desc": "Digitálne plánovanie, teleröntgen priamo u nás a moderné materiály skracujú čas liečby." }
       ],
       "processTitle": "Cesta k rovnému úsmevu",
       "processSteps": [
-        { "title": "Konzultácia a diagnostika", "desc": "Komplexné vyšetrenie, panoramatický röntgen a digitálne odtlačky na posúdenie chrupu.", "time": "45 min" },
+        { "title": "Konzultácia a diagnostika", "desc": "Komplexné vyšetrenie, panoramatický röntgen, teleröntgen priamo u nás a digitálne odtlačky na posúdenie chrupu.", "time": "45 min" },
         { "title": "Liečebný plán", "desc": "Ukážeme vám očakávaný výsledok pomocou vizuálnej ukážky a prediskutujeme typ aparátu a trvanie.", "time": "1 týždeň" },
         { "title": "Nasadenie aparátu", "desc": "Presné a bezbolestné nasadenie s inštrukciami na nosenie a čistenie.", "time": "60–90 min" },
         { "title": "Aktivácia a kontroly", "desc": "Pravidelné (zvyčajne mesačné) kontroly na úpravu aparátu.", "time": "12–24 mesiacov" },
@@ -914,6 +916,7 @@
       "faqs": [
         { "q": "Je ortodontická liečba bolestivá?", "a": "Samotné nasadenie nie je bolestivé. Po aktiváciách sa môže 2–3 dni objaviť mierne napätie." },
         { "q": "Môžu dospelí začať liečbu?", "a": "Určite! Dnes takmer polovica našich pacientov sú dospelí. Osobitne im odporúčame naše estetické keramické alebo prakticky neviditeľné systémy dlah." },
+        { "q": "Je pri ortodoncii potrebný teleröntgen?", "a": "Áno, presná ortodontická diagnostika často vyžaduje teleröntgen. Vykonáme ho priamo u nás, takže nemusíte chodiť do samostatného zobrazovacieho centra." },
         { "q": "Ako dlho trvá liečba?", "a": "Zvyčajne 1,5–2 roky. Menšie estetické korekcie možno vykonať za 6–10 mesiacov." },
         { "q": "Ako čistiť aparát?", "a": "Pre fixné aparáty odporúčame špeciálnu kefku a medzizubnú kefku, ktorých použitie dôkladne ukážeme pri nasadení." }
       ]
@@ -963,18 +966,19 @@
     "gockutatas": {
       "heroBadge": "Presná diagnostika",
       "heroTitle": "Vyšetrenie dentálnych fokusov",
-      "heroDesc": "Odhaľte skryté zápaly modernou diagnostikou 3D CT a panoramatickým röntgenom, aby ste mohli byť opäť zdraví.",
+      "heroDesc": "Odhaľte skryté zápaly modernou diagnostikou 3D CT, panoramatickým röntgenom a teleröntgenom, aby ste mohli byť opäť zdraví.",
       "heroPriceLabel": "Vyšetrenie a plán",
       "heroPriceValue": "10 000 Ft",
       "problemTitle": "Problém: Neviditeľné choroby",
       "problemDesc": "Mnohí nevedia, že chronická únava, vypadávanie vlasov, bolesti kĺbov alebo kožné problémy majú často príčinu v skrytom, bezpríznakovom dentálnom fokuse. Keďže zriedka spôsobujú miestnu bolesť, je ťažké ich odhaliť.",
       "solutionTitle": "Riešenie: Moderné zobrazovanie",
-      "solutionDesc": "V našej ordinácii pracujeme s najmodernejšími panoramatickými röntgenovými a 3D CT zariadeniami. Mapujeme ústnu dutinu s presnosťou na desatinu milimetra.",
+      "solutionDesc": "V našej ordinácii pracujeme s moderným panoramatickým röntgenom, teleröntgenom a 3D CT zariadeniami. Mapujeme ústnu dutinu s presnosťou na desatinu milimetra.",
       "servicesBadge": "Diagnostika",
       "servicesTitle": "Naše vyšetrovacie metódy",
       "services": [
         { "title": "Komplexná konzultácia", "desc": "Fyzikálne vyšetrenie, prediskutovanie príznakov a mapovanie fokusov v ústnej dutine.", "price": "10 000 Ft" },
         { "title": "Panoramatický röntgen (OPG)", "desc": "Výborný prehľad všetkých zubov, čeľustných kostí a spodnej časti dutín.", "price": "6 000 Ft" },
+        { "title": "Teleröntgen", "desc": "Bočný snímok lebky pre ortodontickú diagnostiku a presné plánovanie liečby.", "price": "10 000 Ft" },
         { "title": "3D CBCT snímka", "desc": "Trojrozmerné, vysoko presné zobrazovanie, ktoré odhalí aj najskrytejšie cysty a zápaly.", "price": "V ordinácii" }
       ],
       "benefitsTitle": "Spoľahlivá diagnóza",
@@ -987,7 +991,7 @@
       "processTitle": "Ako prebieha vyšetrenie?",
       "processSteps": [
         { "title": "Konzultácia", "desc": "Prediskutujeme vaše existujúce ťažkosti, príznaky a anamnézu.", "time": "15 min" },
-        { "title": "Zobrazovanie", "desc": "Urobíme potrebné snímky (panoramatický röntgen alebo pri indikácii 3D CT).", "time": "5 min" },
+        { "title": "Zobrazovanie", "desc": "Urobíme potrebné snímky (panoramatický röntgen, teleröntgen alebo pri indikácii 3D CT).", "time": "5 min" },
         { "title": "Odborná analýza", "desc": "Lekár podrobne analyzuje snímky a fyzikálne vyšetrí podozrivé zuby.", "time": "15 min" },
         { "title": "Liečebný plán", "desc": "Ak nájdeme fokus, pripravíme podrobný písomný plán jeho odstránenia.", "time": "10 min" }
       ],

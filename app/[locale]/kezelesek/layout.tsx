@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Fogászati Kezelések és Árak | Crown Dental - Esztergom & Budapest',
-  description: 'Átlátható fogászati árak rejtett költségek nélkül. Fedezze fel kezeléseinket a diagnosztikától az implantátumokig és az esztétikai fogászatig!',
+  description: 'Átlátható fogászati árak rejtett költségek nélkül. Teleröntgen, panoráma röntgen, diagnosztika, implantátumok és esztétikai fogászat egy helyen.',
   keywords: [
     'fogászati árak',
     'implantátum ár',
@@ -11,10 +11,13 @@ export const metadata: Metadata = {
     'fogfehérítés ár',
     'fogorvos árlista',
     'fogászat esztergom árak',
+    'teleröntgen ár',
+    'fogászati teleröntgen',
+    'cephalometric x-ray esztergom',
   ],
   openGraph: {
     title: 'Fogászati Kezelések és Árak | Crown Dental',
-    description: 'Transzparens árazás, rejtett költségek nélkül. Saját labor = akár 40% megtakarítás a budapesti árakhoz képest.',
+    description: 'Transzparens árazás, rejtett költségek nélkül. Teleröntgen 10.000 Ft, panoráma röntgen 6.000 Ft, saját labor = kedvezőbb árak.',
     url: 'https://www.crowndental.hu/kezelesek',
     type: 'website',
     images: [{ url: 'https://www.crowndental.hu/og-image.jpg', width: 1200, height: 630, alt: 'Crown Dental kezelések' }],

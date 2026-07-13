@@ -465,7 +465,8 @@
           { "name": "Fillings", "price": "30,000 – 35,000 HUF" },
           { "name": "Tooth extraction", "price": "25,000 – 35,000 HUF" },
           { "name": "X-ray (small / single tooth)", "price": "5,000 HUF" },
-          { "name": "Panoramic X-ray", "price": "6,000 HUF" }
+          { "name": "Panoramic X-ray", "price": "6,000 HUF" },
+          { "name": "Cephalometric X-ray", "price": "10,000 HUF", "highlight": true }
         ]
       },
       {
@@ -556,12 +557,13 @@
       "problemTitle": "The Problem: Hidden Dental Issues",
       "problemDesc": "Many dental problems — cavities, gum disease, bone loss — develop for years without symptoms. By the time pain appears, the treatment is already more complex and costly.",
       "solutionTitle": "The Solution: Comprehensive Assessment",
-      "solutionDesc": "With modern panoramic X-ray and 3D CT we detect even the smallest changes. A thorough examination enables early intervention.",
+      "solutionDesc": "With modern panoramic X-ray, cephalometric X-ray and 3D CT we detect even the smallest changes. A thorough examination enables early intervention.",
       "includedBadge": "What's Included?",
       "includedTitle": "Full Diagnostic Package",
       "items": [
         { "title": "Visual Examination", "desc": "The dentist thoroughly examines your teeth, gums, and every part of the oral cavity." },
         { "title": "Panoramic X-ray", "desc": "A single image shows all teeth, roots, and the condition of the jawbone." },
+        { "title": "Cephalometric X-ray", "desc": "A lateral skull X-ray for orthodontic planning and precise bite analysis." },
         { "title": "3D CT Scan", "desc": "Before implant placement we plan treatment using three-dimensional imaging." },
         { "title": "Intraoral Camera", "desc": "A small camera lets you see exactly where and what problem we found." },
         { "title": "Written Diagnosis", "desc": "You receive detailed documentation of your condition and recommended treatments." },
@@ -572,21 +574,21 @@
         { "title": "Prevention is Key", "desc": "Early detection is more cost- and time-efficient than complex treatment later." },
         { "title": "Fast and Painless", "desc": "The assessment takes only 30–45 minutes." },
         { "title": "Specialist Consultation", "desc": "Detailed specialist assessment where all your questions are answered." },
-        { "title": "Modern Technology", "desc": "Panoramic X-ray, 3D CT, and intraoral camera for accurate diagnosis." },
+        { "title": "Modern Technology", "desc": "Panoramic X-ray, cephalometric X-ray, 3D CT, and intraoral camera for accurate diagnosis." },
         { "title": "Transparent Pricing", "desc": "All costs are communicated in advance in the treatment plan — no hidden fees." },
         { "title": "Written Documentation", "desc": "You receive detailed written documentation to review at home." }
       ],
       "processTitle": "How the Assessment Works",
       "processSteps": [
         { "title": "Book an Appointment", "desc": "Book online or by phone at our Budapest or Esztergom clinic.", "time": "2 min" },
-        { "title": "Examination & X-ray", "desc": "Panoramic X-ray and detailed visual examination of teeth, gums, and jawbone.", "time": "30–45 min" },
+        { "title": "Examination & X-ray", "desc": "Panoramic X-ray, cephalometric X-ray if needed, and detailed visual examination of teeth, gums, and jawbone.", "time": "30–45 min" },
         { "title": "Diagnosis Discussion", "desc": "The dentist explains the findings and discusses the options with you.", "time": "15 min" },
         { "title": "Treatment Plan", "desc": "We create a personalised treatment plan with detailed prices and scheduling.", "time": "1–2 days" }
       ],
       "ctaTitle": "Find Out the State of Your Teeth!",
       "ctaDesc": "Book an appointment for a specialist consultation in Budapest or Esztergom!",
       "faqs": [
-        { "q": "How much does the assessment cost?", "a": "Panoramic X-ray ranges from 5,000–15,000 HUF, and a specialist consultation is included." },
+        { "q": "How much does the assessment cost?", "a": "Panoramic X-ray is 6,000 HUF and cephalometric X-ray is 10,000 HUF; a specialist consultation is included." },
         { "q": "Is any preparation required?", "a": "No preparation is needed. If you have previous X-rays, please bring them along." },
         { "q": "How long does the assessment take?", "a": "The comprehensive assessment takes 30–45 minutes." },
         { "q": "What if I'm afraid of the dentist?", "a": "Our team is patient and empathetic — we explain every step in advance." },
@@ -885,13 +887,13 @@
     "fogszabalyozas": {
       "heroBadge": "Aesthetic and Healthy Dentition",
       "heroTitle": "Orthodontics the Crown Dental Way",
-      "heroDesc": "Modern orthodontic solutions for children and adults. Straight teeth, a confident smile.",
+      "heroDesc": "Modern orthodontic solutions for children and adults, with on-site cephalometric X-ray diagnostics. Straight teeth, a confident smile.",
       "heroPriceLabel": "Appliances",
       "heroPriceValue": "from 190,000 HUF",
       "problemTitle": "The Problem: Crowded Teeth",
       "problemDesc": "Crooked, crowded teeth not only cause a lack of self-confidence but also pose a health risk. Hard-to-clean gaps allow plaque to accumulate, leading to cavities and gum disease.",
       "solutionTitle": "The Solution: Orthodontic Treatment",
-      "solutionDesc": "Orthodontics guides teeth into their ideal position. It brings not only aesthetic improvement but also restores chewing function and makes oral hygiene easier.",
+      "solutionDesc": "Orthodontics guides teeth into their ideal position. The required cephalometric X-ray is performed on site, so diagnostics and treatment planning stay fast and coordinated.",
       "benefitsTitle": "The Secret to a Perfect Smile",
       "benefitItems": [
         { "title": "Wide Choice", "desc": "From traditional metal braces to aesthetic sapphire crystal and invisible aligners — we offer every solution." },
@@ -899,11 +901,11 @@
         { "title": "Flexible Payment", "desc": "We know orthodontics is an investment. Flexible payment plans help spread the cost." },
         { "title": "Own Lab Support", "desc": "Removable appliances and aligners are manufactured in our own dental laboratory." },
         { "title": "Facial Aesthetics Focus", "desc": "We don't just move teeth — we keep the harmonious appearance of your face in mind." },
-        { "title": "Modern Technology", "desc": "Digital planning and modern materials shorten treatment time." }
+        { "title": "Modern Technology", "desc": "Digital planning, on-site cephalometric X-ray and modern materials help shorten treatment time." }
       ],
       "processTitle": "The Path to a Straight Smile",
       "processSteps": [
-        { "title": "Consultation & Diagnostics", "desc": "Comprehensive examination, panoramic X-ray, and digital impression to assess the dentition.", "time": "45 min" },
+        { "title": "Consultation & Diagnostics", "desc": "Comprehensive examination, panoramic X-ray, on-site cephalometric X-ray and digital impression to assess the dentition.", "time": "45 min" },
         { "title": "Treatment Plan", "desc": "We show you the expected result with a visual preview and discuss appliance type and duration.", "time": "1 week" },
         { "title": "Appliance Fitting", "desc": "Precise and painless fitting, with instruction on wearing and cleaning.", "time": "60–90 min" },
         { "title": "Activation & Check-ups", "desc": "Regular (usually monthly) check-ups to adjust the appliance.", "time": "12–24 months" },
@@ -914,6 +916,7 @@
       "faqs": [
         { "q": "Is orthodontic treatment painful?", "a": "The fitting itself is not painful. Mild tension may be felt for 2–3 days after activations." },
         { "q": "Can adults start treatment?", "a": "Absolutely! Today nearly half our patients are adults. We especially recommend our aesthetic ceramic or virtually invisible aligner systems for them." },
+        { "q": "Is cephalometric X-ray needed for orthodontics?", "a": "Yes, precise orthodontic diagnostics often require a cephalometric X-ray. We perform it on site, so you do not need to visit a separate imaging centre." },
         { "q": "How long does treatment take?", "a": "Generally 1.5–2 years. Minor aesthetic corrections can be done in as little as 6–10 months." },
         { "q": "How do I clean the appliance?", "a": "For fixed braces we recommend a special brush and interdental cleaner, which we demonstrate thoroughly at the fitting." }
       ]
@@ -963,18 +966,19 @@
     "gockutatas": {
       "heroBadge": "Precision Diagnostics",
       "heroTitle": "Dental Focal Infection Testing",
-      "heroDesc": "Uncover hidden inflammations with modern 3D CT and panoramic X-ray diagnostics, so you can be healthy again.",
+      "heroDesc": "Uncover hidden inflammations with modern 3D CT, panoramic X-ray and cephalometric X-ray diagnostics, so you can be healthy again.",
       "heroPriceLabel": "Examination & Plan",
       "heroPriceValue": "10,000 HUF",
       "problemTitle": "The Problem: Invisible Diseases",
       "problemDesc": "Many people don't know that chronic fatigue, hair loss, joint pain, or skin problems often stem from a hidden, symptom-free dental focal infection. Because they rarely cause local pain, they are hard to detect.",
       "solutionTitle": "The Solution: Modern Imaging",
-      "solutionDesc": "Our clinic uses the most modern panoramic X-ray and 3D CT equipment. We map the oral cavity with tenth-millimetre accuracy.",
+      "solutionDesc": "Our clinic uses modern panoramic X-ray, cephalometric X-ray and 3D CT equipment. We map the oral cavity with tenth-millimetre accuracy.",
       "servicesBadge": "Diagnostics",
       "servicesTitle": "Our Examination Methods",
       "services": [
         { "title": "Comprehensive Consultation", "desc": "Physical examination, discussion of symptoms, and mapping of foci in the oral cavity.", "price": "10,000 HUF" },
         { "title": "Panoramic X-ray (OPG)", "desc": "Excellent overview of all teeth, jaw bones, and the floor of the sinuses.", "price": "6,000 HUF" },
+        { "title": "Cephalometric X-ray", "desc": "A lateral skull X-ray for orthodontic diagnostics and precise treatment planning.", "price": "10,000 HUF" },
         { "title": "3D CBCT Scan", "desc": "Three-dimensional, highly precise imaging that reveals even the most hidden cysts and inflammations.", "price": "At clinic" }
       ],
       "benefitsTitle": "Reliable Diagnosis",
@@ -987,7 +991,7 @@
       "processTitle": "How Does the Examination Work?",
       "processSteps": [
         { "title": "Consultation", "desc": "We discuss your existing complaints, symptoms, and medical history.", "time": "15 min" },
-        { "title": "Imaging", "desc": "We take the necessary images (panoramic X-ray or, if indicated, 3D CT).", "time": "5 min" },
+        { "title": "Imaging", "desc": "We take the necessary images (panoramic X-ray, cephalometric X-ray or, if indicated, 3D CT).", "time": "5 min" },
         { "title": "Specialist Analysis", "desc": "The doctor analyses the images in detail and physically examines the suspicious teeth.", "time": "15 min" },
         { "title": "Treatment Plan", "desc": "If a focus is found, we prepare a detailed written plan for its elimination.", "time": "10 min" }
       ],

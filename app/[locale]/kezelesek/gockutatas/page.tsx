@@ -7,8 +7,8 @@ import { treatmentFaqs } from '@/lib/treatmentFaqs';
 // ═══════════════════════════════════════════════════════════════════════════
 // SEO ADATOK ÉS METADATA (Szerveroldali generálás)
 // ═══════════════════════════════════════════════════════════════════════════
-const seoTitle = "Fogászati Góckutatás & Diagnosztika 3D CT-vel | Crown Dental Budapest - Esztergom";
-const seoDescription = "Hajhullás vagy ízületi fájdalom gyötri? Okai lehetnek a rejtett fogászati gócok. Modern 3D CT és panorámaröntgen diagnosztika Esztergomban és Budapesten.";
+const seoTitle = "Fogászati Góckutatás, Teleröntgen & 3D CT | Crown Dental";
+const seoDescription = "Rejtett fogászati gócok felderítése modern 3D CT, panorámaröntgen és teleröntgen diagnosztikával Esztergomban, kezelési tervvel.";
 
 export const metadata: Metadata = {
   title: seoTitle,
@@ -20,7 +20,7 @@ const jsonLd = {
   '@type': 'MedicalProcedure',
   name: 'Fogászati Góckutatás',
   description: seoDescription,
-  howPerformed: 'Panoráma röntgen és 3D CBCT felvételek készítése, kiegészítve szájüregi fizikális és vitalitásvizsgálattal.',
+  howPerformed: 'Panoráma röntgen, teleröntgen és 3D CBCT felvételek készítése, kiegészítve szájüregi fizikális és vitalitásvizsgálattal.',
   procedureType: 'Diagnostic',
   bodyLocation: 'Fogak, állkapocs, szájüreg',
   preparation: 'Nem igényel különleges előkészületet (nem kell éhgyomorra érkezni)',

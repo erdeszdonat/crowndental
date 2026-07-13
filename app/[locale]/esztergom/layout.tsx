@@ -6,7 +6,7 @@ import { Metadata } from 'next';
 // ═══════════════════════════════════════════════════════════════════════════
 export const metadata: Metadata = {
   title: 'Fogászat és Fogtechnikai Labor Esztergomban | Crown Dental',
-  description: 'Modern Fogászatot Keres Esztergomban? Fogpótlás, Panoráma röntgen, szájsebészeti, dentálhigiénia és általános fogászat. Várjuk esztergomi fogászati rendelőnkben!',
+  description: 'Modern fogászat Esztergomban: fogpótlás, panoráma röntgen, teleröntgen, szájsebészet, dentálhigiénia és általános fogászat.',
   keywords: [
     'fogászat esztergom',
     'fogorvos esztergom',
@@ -15,6 +15,9 @@ export const metadata: Metadata = {
     'implantátum esztergom',
     'fogszabályozás esztergom',
     'fogfehérítés esztergom',
+    'teleröntgen esztergom',
+    'fogászati röntgen esztergom',
+    'cephalometric x-ray esztergom',
     'crown dental esztergom',
   ],
   authors: [{ name: 'Crown Dental' }],
@@ -33,7 +36,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Fogászat és Fogtechnikai Labor Esztergomban | Crown Dental',
-    description: 'Modern Fogászatot Keres Esztergomban? Fogpótlás, Panoráma röntgen, szájsebészeti, dentálhigiénia és általános fogászat. 30+ év tapasztalat, saját labor.',
+    description: 'Modern fogászat Esztergomban: fogpótlás, panoráma röntgen, teleröntgen, szájsebészet és saját labor. 30+ év tapasztalat.',
     url: 'https://www.crowndental.hu/esztergom',
     siteName: 'Crown Dental',
     locale: 'hu_HU',
@@ -69,7 +72,7 @@ const jsonLd = {
   '@type': 'Dentist',
   '@id': 'https://www.crowndental.hu/esztergom',
   name: 'Crown Dental Esztergom',
-  description: 'Modern fogászat és fogtechnikai labor Esztergomban. 30+ év tapasztalat, saját labor, prémium anyagok.',
+  description: 'Modern fogászat, teleröntgen diagnosztika és fogtechnikai labor Esztergomban. 30+ év tapasztalat, saját labor, prémium anyagok.',
   url: 'https://www.crowndental.hu/esztergom',
   telephone: '+36705646837',
   email: 'info@crowndental.hu',
@@ -135,6 +138,18 @@ const jsonLd = {
           '@type': 'Service',
           name: 'Fogszabályozás',
           description: 'Rögzített és kivehető fogszabályozó készülékek',
+        },
+      },
+      {
+        '@type': 'Offer',
+        price: '10000',
+        priceCurrency: 'HUF',
+        itemOffered: {
+          '@type': 'MedicalProcedure',
+          name: 'Teleröntgen',
+          alternateName: 'Cephalometric X-ray',
+          procedureType: 'Diagnostic',
+          description: 'Oldalirányú koponyafelvétel fogszabályozási diagnosztikához és kezeléstervezéshez Esztergomban.',
         },
       },
     ],

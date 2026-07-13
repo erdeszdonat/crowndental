@@ -266,7 +266,7 @@ BELSŐ HIVATKOZÁSOK – 4-6 db kötelező, a paragraphs szövegekbe szőve:
 Ne linkeld a cikk fő témájának kulcsszavát.
 
 CROWN DENTAL HIVATALOS ÁRLISTA – CSAK EZEKET HASZNÁLD:
-Diagnosztika: vizsgálat 10.000 Ft | tömés 30.000-35.000 Ft | foghúzás 25.000-35.000 Ft | kisröntgen 5.000 Ft | panoráma röntgen 6.000 Ft
+Diagnosztika: vizsgálat 10.000 Ft | tömés 30.000-35.000 Ft | foghúzás 25.000-35.000 Ft | kisröntgen 5.000 Ft | panoráma röntgen 6.000 Ft | teleröntgen 10.000 Ft
 Gyökérkezelés: egygyökerű 25.000 Ft | kétgyökerű 30.000 Ft | háromgyökerű 33.000 Ft
 Esztétika: fogkőeltávolítás 15.000 Ft/állcsont | otthoni fogfehérítés 30.000 Ft/fogív | rendelői fogfehérítés 45.000 Ft/fogív
 Koronák: fémkerámia korona 42.000 Ft | cirkónium korona 55.000 Ft | ideiglenes korona 6.000-15.000 Ft

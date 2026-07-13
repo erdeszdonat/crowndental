@@ -7,8 +7,8 @@ import { treatmentFaqs } from '@/lib/treatmentFaqs';
 // ═══════════════════════════════════════════════════════════════════════════
 // SEO ADATOK ÉS METADATA (Szerveroldali generálás)
 // ═══════════════════════════════════════════════════════════════════════════
-const seoTitle = "Teljes Fogászati Állapotfelmérés & 3D CT | Crown Dental Budapest - Esztergom";
-const seoDescription = "Átfogó fogászati állapotfelmérés panorámaröntgennel, intraorális kamerával és 3D CT-vel a legpontosabb diagnózis és kezelési terv érdekében Budapesten és Esztergomban.";
+const seoTitle = "Teljes Fogászati Állapotfelmérés, Teleröntgen & 3D CT | Crown Dental";
+const seoDescription = "Átfogó fogászati állapotfelmérés panorámaröntgennel, teleröntgennel, intraorális kamerával és 3D CT-vel a pontos diagnózisért Esztergomban.";
 
 export const metadata: Metadata = {
   title: seoTitle,
@@ -18,9 +18,10 @@ export const metadata: Metadata = {
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'MedicalProcedure',
-  name: 'Fogászati Állapotfelmérés',
+  name: 'Fogászati Állapotfelmérés teleröntgen diagnosztikával',
   description: seoDescription,
   procedureType: 'Diagnostic',
+  preparation: 'Panorámaröntgen, teleröntgen, 3D CT vagy intraorális kamera a kezelési igény szerint',
   provider: {
     '@type': 'Dentist',
     name: 'Crown Dental',

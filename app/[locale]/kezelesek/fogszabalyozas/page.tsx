@@ -8,18 +8,18 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'MedicalProcedure',
   name: 'Fogszabályozás',
-  description: 'Esztétikus fogsor kialakítása rögzített és láthatatlan fogszabályozókkal.',
-  howPerformed: 'Személyre szabott készülékekkel, rendszeres aktiválással',
+  description: 'Esztétikus fogsor kialakítása rögzített és láthatatlan fogszabályozókkal, helyben elérhető teleröntgen diagnosztikával.',
+  howPerformed: 'Személyre szabott készülékekkel, helyben végzett teleröntgen diagnosztikával és rendszeres aktiválással',
   procedureType: 'Orthodontic',
   bodyLocation: 'Fogak, állkapocs',
-  preparation: 'Digitális lenyomatvétel, panoráma röntgen, fotódokumentáció',
+  preparation: 'Digitális lenyomatvétel, panoráma röntgen, helyben végzett teleröntgen, fotódokumentáció',
   followup: 'Havi kontroll, majd retenciós készülék viselése',
   status: 'EventScheduled',
 };
 
 export const metadata: Metadata = {
-  title: 'Fogszabályozás Felnőtteknek és Gyerekeknek | Crown Dental Budapest - Esztergom',
-  description: 'Esztétikus fogsor kialakítása rögzített és láthatatlan fogszabályozókkal. Modern fogszabályozás felnőtteknek és gyerekeknek a Crown Dentalnál Budapesten és Esztergomban.',
+  title: 'Fogszabályozás Teleröntgennel Felnőtteknek és Gyerekeknek | Crown Dental',
+  description: 'Modern fogszabályozás felnőtteknek és gyerekeknek, helyben végzett teleröntgen diagnosztikával és személyre szabott kezelési tervvel Esztergomban.',
 };
 
 export default async function FogszabalyozasPage() {
