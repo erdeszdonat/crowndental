@@ -4,6 +4,7 @@ export const BUDAPEST_BOOKING_OPEN_LABELS = {
   hu: 'Coming soon...',
   en: 'Coming soon...',
   sk: 'Coming soon...',
+  de: 'Demnächst verfügbar...',
 } as const;
 
 export function isBudapestCity(city: unknown) {

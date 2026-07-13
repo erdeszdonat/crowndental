@@ -25,6 +25,11 @@ const metadataByLocale: Record<SupportedLocale, { title: string; description: st
     description: 'Požiadajte online o termín v Crown Dental Ostrihom. Náš tím vás bude kontaktovať a potvrdí presný čas a podrobnosti.',
     keywords: ['zubár Ostrihom termín', 'rezervácia zubár Maďarsko', 'Crown Dental termín'],
   },
+  de: {
+    title: 'Zahnarzttermin in Esztergom anfragen | Crown Dental',
+    description: 'Fragen Sie online einen Termin bei Crown Dental Esztergom an. Unser Team meldet sich bei Ihnen, um die genaue Zeit und alle Einzelheiten zu bestätigen.',
+    keywords: ['Zahnarzttermin Esztergom', 'Zahnarzt Ungarn buchen', 'Crown Dental Termin'],
+  },
 };
 
 export function generateMetadata({ params }: BookingPageProps): Metadata {

@@ -167,11 +167,10 @@ export async function POST(req: Request) {
       genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite', ...modelConfig }),
     ];
 
-    const langMap: Record<string, string> = { hu: 'magyarul', en: 'angolul', sk: 'szlovákul' };
+    const langMap: Record<string, string> = { hu: 'magyarul', en: 'angolul', sk: 'szlovákul', de: 'németül' };
     const normalizedLanguage = normalizeBlogLanguage(language);
     const normalizedCategory = normalizeBlogCategory(category);
-    const langMapWithGerman: Record<string, string> = { ...langMap, sk: 'szlovákul', de: 'németül' };
-    const langLabel = langMapWithGerman[normalizedLanguage] ?? 'magyarul';
+    const langLabel = langMap[normalizedLanguage] ?? 'magyarul';
     const base = `https://www.crowndental.hu${normalizedLanguage !== 'hu' ? `/${normalizedLanguage}` : ''}`;
     const categoryInstruction = normalizedCategory === 'magazine'
       ? 'Kategória: fejlődésünk és érdekességek. Ne száraz szakmai SEO-cikket írj, hanem magazinos, emberközeli anyagot a Crown Dental fejlődéséről, újdonságokról, kulisszatitkokról vagy hasznos érdekességekről. Maradjon hiteles, konverziót segítő és keresőbarát, de ne erőltesd mindenhol az árlistát.'

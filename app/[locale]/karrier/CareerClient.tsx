@@ -139,6 +139,7 @@ function EmployeeReviews() {
 
 function CareerForm() {
   const t = useTranslations('career');
+  const locale = useLocale();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [formData, setFormData] = useState({ location: '', position: '', experience: '0', name: '', email: '', phone: '', message: '' });
@@ -150,7 +151,7 @@ function CareerForm() {
       const response = await fetch('/api/career_applications', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, locale }),
       });
       const data = await response.json();
       if (data.success) setIsSuccess(true);

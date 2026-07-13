@@ -21,6 +21,11 @@ const metadataByLocale: Record<string, { title: string; description: string; can
     description: 'Ďakujeme za vašu žiadosť o termín. Náš kolega vás čoskoro kontaktuje kvôli potvrdeniu.',
     canonical: 'https://www.crowndental.hu/sk/idopont/sikeres',
   },
+  de: {
+    title: 'Terminanfrage erhalten | Crown Dental',
+    description: 'Vielen Dank für Ihre Terminanfrage. Unser Team meldet sich in Kürze bei Ihnen, um die Einzelheiten zu bestätigen.',
+    canonical: 'https://www.crowndental.hu/de/idopont/sikeres',
+  },
 };
 
 export function generateMetadata({ params }: Props): Metadata {

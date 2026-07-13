@@ -1,0 +1,2088 @@
+{
+  "common": {
+    "bookAppointment": "Termin buchen",
+    "callNow": "Rufen Sie jetzt an",
+    "learnMore": "Erfahren Sie mehr",
+    "allTreatments": "Alle Behandlungen",
+    "from": "aus",
+    "cancel": "Stornieren",
+    "send": "Senden",
+    "next": "Weiter",
+    "back": "Zurück",
+    "close": "Schließen",
+    "loading": "Laden...",
+    "scrollDown": "Scrollen Sie nach unten",
+    "phoneNumber": "+36 70 564 6837",
+    "email": "info@crowndental.hu",
+    "openingHours": "Mo–Fr: 08:00–18:00 Uhr"
+  },
+  "nav": {
+    "home": "Startseite",
+    "services": "Behandlungen & Preise",
+    "about": "Über uns",
+    "blog": "Blog",
+    "career": "Karriere",
+    "bookAppointment": "Termin buchen"
+  },
+  "footer": {
+    "tagline": "Crown Dental gibt Ihrem Lächeln die Freiheit, die es verdient.",
+    "description": "Premium-Zahnmedizin mit eigenem Dentallabor – keine Kompromisse. Behandlungen in Esztergom und bald in Budapest.",
+    "treatments": "Behandlungen",
+    "usefulLinks": "Nützliche Links",
+    "legalInfo": "Rechtliche Informationen",
+    "contact": "Kontakt",
+    "fullPriceList": "Vollständige Preisliste",
+    "bookingLink": "Termin buchen",
+    "aboutLink": "Über uns",
+    "contactLink": "Kontakt",
+    "blogLink": "Blog & Magazin",
+    "careerLink": "Karriere",
+    "aszf": "Allgemeine Geschäftsbedingungen",
+    "privacy": "Datenschutzrichtlinie",
+    "cookie": "Cookie-Richtlinie",
+    "imprint": "Impressum",
+    "cookieSettings": "Cookie-Einstellungen",
+    "esztergomClinic": "Esztergom Klinik",
+    "budapestClinic": "Budapest Klinik",
+    "copyright": "© 2026 Crown Dental Praxis és Labor Fogászati ​​Kft. Alle Rechte vorbehalten.",
+    "treatmentLinks": {
+      "implant": "Zahnimplantate",
+      "crowns": "Kronen und Brücken",
+      "orthodontics": "Kieferorthopädie",
+      "whitening": "Zahnaufhellung",
+      "dentures": "Zahnersatz",
+      "surgery": "Oralchirurgie und Extraktion",
+      "rootCanal": "Wurzelkanal und Füllungen",
+      "aesthetic": "Ästhetische Zahnheilkunde",
+      "assessment": "Zahnärztliche Beurteilung",
+      "focal": "Zahnärztliche Herdsuche",
+      "labTech": "Dentallabor-Leistungen"
+    }
+  },
+  "home": {
+    "floatingCta": {
+      "callNow": "Rufen Sie jetzt an",
+      "bookAppointment": "Termin buchen"
+    },
+    "hero": {
+      "slides": [
+        {
+          "tag": "KI-Angebotsanalysator",
+          "titleTop": "Ist das Angebot, das Sie erhalten haben,",
+          "titleBottom": "zu teuer?",
+          "subtitle": "Probieren Sie unseren KI-gestützten Preisrechner aus und finden Sie sofort heraus, wie viel Sie mit unserem hauseigenen Labor sparen können!",
+          "primaryText": "Angebot analysieren"
+        },
+        {
+          "tag": "Eigenes Dentallabor",
+          "titleTop": "Maximale Qualität,",
+          "titleBottom": "keine Zwischenhändlergebühren.",
+          "subtitle": "Mit unserem eigenen Labor werden Zahnrestaurationen und Kronen schneller und unter strenger Qualitätskontrolle fertiggestellt.",
+          "primaryText": "Termin buchen"
+        },
+        {
+          "tag": "30 Jahre Erfahrung",
+          "titleTop": "Ein neues Lächeln,",
+          "titleBottom": "ein neues Selbstvertrauen.",
+          "subtitle": "Mehr als 15.000 erfolgreiche Behandlungen belegen unsere Kompetenz. Vertrauen Sie uns Ihr Lächeln!",
+          "primaryText": "Termin buchen"
+        }
+      ]
+    },
+    "trustBadges": {
+      "experience": {
+        "title": "Über 30 Jahre Erfahrung",
+        "desc": "Ein solider beruflicher Hintergrund"
+      },
+      "lab": {
+        "title": "Eigenes Labor",
+        "desc": "Perfekte Qualität aus eigener Herstellung"
+      },
+      "materials": {
+        "title": "Premium-Materialien",
+        "desc": "Höchste Qualität ohne Kompromisse"
+      },
+      "painless": {
+        "title": "Schmerzfreie Behandlung",
+        "desc": "Einfühlsame, sanfte Betreuung"
+      }
+    },
+    "locations": {
+      "label": "Unsere Kliniken",
+      "title": "Zwei Kliniken,",
+      "titleHighlight": "eine herausragende Qualität.",
+      "subtitle": "Wählen Sie den Standort, der Ihnen am nächsten liegt.",
+      "visitClinic": "Besuchen Sie diese Klinik",
+      "details": "Details",
+      "comingSoon": "Bald eröffnet!",
+      "esztergomName": "Esztergom Klinik",
+      "budapestName": "Budapest Klinik"
+    },
+    "stats": {
+      "label": "Fakten & Zahlen",
+      "title": "Zahlen, die",
+      "titleHighlight": "sprechen für sich.",
+      "daysSuffix": "Tage",
+      "years": {
+        "label": "Jahre Erfahrung",
+        "desc": "In der Praxis seit 1994."
+      },
+      "patients": {
+        "label": "zufriedene Patienten",
+        "desc": "Vertrauen über Generationen hinweg."
+      },
+      "savings": {
+        "label": "Ersparnisse",
+        "desc": "Dank unseres eigenen Labors."
+      },
+      "days": {
+        "label": "Kronenfertigung",
+        "desc": "Schnelle und präzise Restaurationen."
+      }
+    },
+    "quoteAnalyzer": {
+      "badge": "KI-Preisrechner",
+      "title": "Ist das Angebot, das Sie anderswo erhalten haben,",
+      "titleHighlight": "zu teuer?",
+      "desc": "Laden Sie Ihr bestehendes Angebot (Bild oder PDF) hoch. Unser System analysiert es sofort und zeigt Ihnen, wie viel Sie mit unserem hauseigenen Labor sparen können!",
+      "socialProof": "Mehr als <b>500+</b> Patienten haben bei uns Geld gespart.",
+      "step1": {
+        "dropzone": "Angebot hier ablegen",
+        "dropzoneHint": "oder klicken Sie, um eine Datei auszuwählen (Foto oder PDF)",
+        "compressionActive": "✓ Automatische Bildkomprimierung aktiv",
+        "selectFile": "Wählen Sie Datei aus",
+        "optimizing": "Bild optimieren..."
+      },
+      "step2": {
+        "uploadedFile": "Hochgeladene Datei:",
+        "formTitle": "Wohin sollen wir die detaillierten Ergebnisse schicken?",
+        "fullName": "Vollständiger Name *",
+        "salutation": "Anrede (optional)",
+        "salutationPlaceholder": "z. B. Herr oder Frau",
+        "email": "E-Mail-Adresse *",
+        "phone": "Telefonnummer *",
+        "phonePlaceholder": "+36...",
+        "terms": "Ich akzeptiere die <aszf>Allgemeinen Geschäftsbedingungen</aszf> und die Datenschutzerklärung und fordere das Angebot per E-Mail an.",
+        "analyzeButton": "Analyse starten"
+      },
+      "step3": {
+        "title": "KI-Analyse läuft...",
+        "subtitle": "Dieser Vorgang kann 15–40 Sekunden dauern."
+      },
+      "step4": {
+        "doneTitle": "Analyse bereit, {name}!",
+        "doneSubtitle": "Mit unserem hauseigenen Labor können Sie sparen:",
+        "treatment": "Behandlung",
+        "original": "Original",
+        "downloadPDF": "PDF herunterladen",
+        "bookConsultation": "Beratung buchen",
+        "newAnalysis": "Neue Analyse starten",
+        "emailSent": "Das detaillierte Angebot wurde auch an {email} gesendet!"
+      },
+      "errors": {
+        "tooLarge": "Leider ist das Bild nach der Komprimierung immer noch zu groß ({size} MB). Bitte versuchen Sie es mit einem Foto mit niedrigerer Auflösung.",
+        "pdfTooLarge": "Die PDF-Datei ist zu groß (max. 4,2 MB). Tipp: Machen Sie einen Screenshot des PDFs – unser System kann es automatisch komprimieren!",
+        "analysisFailed": "Bei der Analyse ist ein Fehler aufgetreten: {error}",
+        "networkError": "Es ist ein Kommunikationsfehler aufgetreten. Bitte versuchen Sie es später noch einmal."
+      }
+    },
+    "lab": {
+      "badge": "Unser eigenes Dentallabor",
+      "title": "Der Schlüssel zur Perfektion: alles aus einer Hand.",
+      "features": [
+        "CAD/CAM digitales Design und Fertigung",
+        "Kronen, Brücken, Zahnersatz in nur 3 Tagen",
+        "Sofortige Reparaturen und Anpassungen vor Ort",
+        "Kein Zwischenhändlerzuschlag – Sie sparen direkt",
+        "Premium-Materialien: Zirkonoxid, Porzellan, PEEK"
+      ],
+      "learnMore": "Entdecken Sie unser Labor"
+    },
+    "services": {
+      "label": "Empfohlene Behandlungen",
+      "title": "Premium-Behandlungen,",
+      "titleHighlight": "zu erschwinglichen Preisen.",
+      "subtitle": "Durch unser hauseigenes Labor können wir herausragende Qualität ohne Kompromisse liefern.",
+      "bookConsultation": "Beratung buchen",
+      "clickForAppointment": "Klicken Sie hier, um zu buchen",
+      "viewAllPrices": "Vollständige Preisliste anzeigen",
+      "cards": [
+        {
+          "title": "Diagnostik & Grundlagen",
+          "subtitle": "Kontrolluntersuchungen, Röntgenaufnahmen, Füllungen",
+          "price": "Ab 10.000 HUF"
+        },
+        {
+          "title": "Wurzelkanalbehandlung",
+          "subtitle": "Schmerzfreie Zahnerhaltung",
+          "price": "Ab 10.000 HUF"
+        },
+        {
+          "title": "Ästhetik & Prävention",
+          "subtitle": "Zahnsteinentfernung, Zahnaufhellung",
+          "price": "Ab 15.000 HUF"
+        },
+        {
+          "title": "Prothetik und Kronen",
+          "subtitle": "Zirkonoxid, Metallkeramik, Zahnersatz",
+          "price": "Ab 42.000 HUF"
+        },
+        {
+          "title": "Chirurgie und Implantate",
+          "subtitle": "Extraktionen, Premium-Implantate",
+          "price": "Ab 55.000 HUF"
+        },
+        {
+          "title": "Kinder & Kieferorthopädie",
+          "subtitle": "Feste und herausnehmbare Geräte",
+          "price": "Ab 15.000 HUF"
+        }
+      ]
+    },
+    "reviews": {
+      "label": "Rezensionen",
+      "title": "Was unsere Patienten sagen",
+      "ratingCount": "(Über 320 Bewertungen)",
+      "items": [
+        {
+          "name": "Kovács Mária",
+          "text": "Ich komme seit 10 Jahren hierher – beste Entscheidung überhaupt. Meine Kinder kommen auch, wir wurden noch nie enttäuscht.",
+          "date": "März 2026"
+        },
+        {
+          "name": "Nagy József",
+          "text": "Sehr professionell, mein Implantat ist perfekt geworden. Ich musste etwas auf den Termin warten, aber es hat sich absolut gelohnt.",
+          "date": "Februar 2026"
+        },
+        {
+          "name": "Szabó Anna",
+          "text": "Dank des hauseigenen Labors war die Krone innerhalb von 3 Tagen fertig. Ich war sehr nervös, aber es war völlig schmerzlos!",
+          "date": "Januar 2026"
+        },
+        {
+          "name": "Tóth Gábor",
+          "text": "Ich gehe seit 8 Jahren ausschließlich zu ihnen. Immer freundlich, schnell und mit modernstem Equipment gearbeitet.",
+          "date": "Dezember 2025"
+        },
+        {
+          "name": "Horváth Éva",
+          "text": "Mein herausnehmbarer Zahnersatz ist wunderschön geworden, der Zahntechniker konnte die Farbe sofort korrigieren. Tolle Profis.",
+          "date": "November 2025"
+        },
+        {
+          "name": "Varga Peter",
+          "text": "Ich bin seit 5 Jahren Patient. Zum ersten Mal in meinem Leben habe ich keine Bauchschmerzen, wenn ich zum Zahnarzt gehe – sie sind so einfühlsam.",
+          "date": "Oktober 2025"
+        },
+        {
+          "name": "Kiss László",
+          "text": "Hatte eine komplexe Wurzelbehandlung, aber sie haben meinen Zahn gerettet. Präzise, ​​schnelle und gründliche Arbeit.",
+          "date": "September 2025"
+        },
+        {
+          "name": "Farkas Zita",
+          "text": "Ich bin seit 10 Jahren ihr treuer Patient. Ich kann sie jedem, der einen Zahnarzt sucht, nur empfehlen!",
+          "date": "Juli 2025"
+        },
+        {
+          "name": "Molnár Katalin",
+          "text": "Ich habe eine Zahnaufhellung durchführen lassen, das Ergebnis ist erstaunlich. Das Parken ist etwas schwierig, aber die Klinik ist hervorragend.",
+          "date": "Mai 2025"
+        },
+        {
+          "name": "Balogh Tamás",
+          "text": "Sie haben meine gesamte obere Zahnreihe durch Zirkonkronen ersetzt. Sie fühlen sich an wie meine eigenen Zähne. Fantastische Arbeit!",
+          "date": "März 2025"
+        }
+      ]
+    },
+    "cta": {
+      "title": "Bereit für den ersten Schritt?",
+      "subtitle": "Vereinbaren Sie online einen Termin oder rufen Sie uns an – und erleben Sie den Crown Dental-Unterschied persönlich.",
+      "bookOnline": "Termin online buchen"
+    },
+    "faq": {
+      "label": "Wissensdatenbank",
+      "title": "Häufig gestellte Fragen",
+      "subtitle": "Alles, was Sie über unsere Behandlungen und Klinik wissen müssen.",
+      "items": [
+        {
+          "question": "Warum sind Zahnrestaurationen bei Crown Dental günstiger?",
+          "answer": "Unser größter Vorteil ist unser **eigenes hochmodernes Dentallabor**. Da wir kein externes Labor bezahlen, fallen keine Zwischenhändlergebühren an – wir geben erhebliche Einsparungen an die Patienten weiter, ohne Kompromisse bei hochwertigen Materialien wie Zirkonoxid einzugehen."
+        },
+        {
+          "question": "Wird die Behandlung weh tun?",
+          "answer": "Schmerzfreie Behandlung ist für uns nicht nur ein Slogan, sondern ein Grundprinzip. Wir verwenden modernste Anästhesietechniken und ultradünne Nadeln. Unsere Ärzte legen besonderen Wert darauf, dass Sie sich bei jedem Eingriff vollkommen entspannt und wohl fühlen."
+        },
+        {
+          "question": "Wie lange dauert die Herstellung einer Zahnkrone oder -brücke?",
+          "answer": "Während Sie in anderen Kliniken wochenlang auf eine Krone warten müssen, bedeutet unser hauseigenes Labor, dass eine Zirkonoxid- oder Metallkeramikkrone **in nur 3–5 Arbeitstagen** fertig sein kann – vom Abdruck bis zur endgültigen Anpassung gehören wir zu den Schnellsten."
+        },
+        {
+          "question": "Welche Implantate verwenden Sie?",
+          "answer": "Wir verwenden ausschließlich hochwertige Implantate von Weltmarken (z. B. Alpha Bio, DIO). Diese verfügen über eine lebenslange Garantie und eine hervorragende Osseointegrationsrate (über 98 %)."
+        },
+        {
+          "question": "Wann sollte ich einen Kieferorthopäden aufsuchen?",
+          "answer": "Für Kinder wird die erste Konsultation im Alter von 7 bis 8 Jahren empfohlen, aber **als Erwachsener ist es nie zu spät!** Heute gibt es hochästhetische (sogar unsichtbare Aligner-)Lösungen, die in jedem Alter ein perfektes, gesundes Lächeln erzielen können."
+        },
+        {
+          "question": "Akzeptieren Sie Krankenkassenkarten (EP-Karten)?",
+          "answer": "Natürlich! Bitte teilen Sie unseren Kollegen vor der Behandlung mit, ob Sie eine Rechnungsstellung auf Ihre Krankenkassenkarte wünschen."
+        },
+        {
+          "question": "Wie funktioniert der KI-Angebotsanalysator?",
+          "answer": "Wenn Sie bereits ein Angebot einer anderen Klinik haben (auf Papier oder als PDF), machen Sie einfach ein Foto und laden Sie es in den Kalkulator auf unserer Homepage hoch. Unser System vergleicht diese sofort mit unseren Preisen und zeigt, wie viel Sie für die gleichen Behandlungen sparen können."
+        },
+        {
+          "question": "Wie kann ich einen Termin buchen?",
+          "answer": "Am schnellsten senden Sie Ihre Terminanfrage über die Schaltfläche „Termin buchen“. Alternativ erreichen Sie uns telefonisch unter +36 70 564 6837."
+        }
+      ]
+    }
+  },
+  "booking": {
+    "title": "Termin anfragen",
+    "subtitle": "Geben Sie Ihre Daten ein und einer unserer Kollegen wird sich in Kürze mit Ihnen in Verbindung setzen.",
+    "step1Title": "Ihre Daten",
+    "step2Title": "Behandlung auswählen",
+    "fullName": "Vollständiger Name",
+    "salutation": "Vorname / Anrede",
+    "email": "E-Mail-Adresse",
+    "phone": "Telefonnummer",
+    "city": "Klinik auswählen",
+    "treatment": "Gewünschte Behandlung",
+    "selectTreatment": "Wählen Sie eine Behandlung...",
+    "nextStep": "Nächster Schritt",
+    "prevStep": "Zurück",
+    "submit": "Termin anfragen",
+    "successTitle": "Vielen Dank für Ihre Anfrage!",
+    "successText": "Wir werden uns in Kürze mit Ihnen in Verbindung setzen, um Ihren Termin zu bestätigen.",
+    "submitting": "Senden...",
+    "marketingOptInTitle": "Ich möchte Sonderangebote und zusätzliche Möglichkeiten per E-Mail erhalten",
+    "marketingOptInText": "Optional buchbar. Von Zeit zu Zeit senden wir Ihnen Rabatte, kostenlose Behandlungsmöglichkeiten und nützliche Zahntipps. Sie können sich jederzeit abmelden.",
+    "treatments": [
+      "Beurteilung und Beratung",
+      "Zahnimplantat",
+      "Zirkonoxid- oder Metallkeramikkrone",
+      "Kieferorthopädie",
+      "Kieferorthopädische Beratung",
+      "Zahnaufhellung",
+      "Professionelle Zahnsteinentfernung",
+      "Panoramaröntgen",
+      "DVT-Aufnahme (3D)",
+      "Herstellung/Reparatur von Zahnprothesen",
+      "Oralchirurgie / Extraktion",
+      "Wurzelkanalbehandlung",
+      "Zahnfüllung",
+      "Sonstiges / Nicht sicher"
+    ]
+  },
+  "about": {
+    "badge": "Mehr als Zahnmedizin",
+    "title": "Lernen Sie",
+    "titleHighlight": "Crown Dental kennen!",
+    "subtitle": "Seit 1994 arbeiten wir hinter den Kulissen, damit Sie jederzeit und in jeder Situation frei lächeln können.",
+    "centralTitle1": "Crown Dental gibt Ihrem Lächeln",
+    "centralTitle2": "die Freiheit,",
+    "centralTitle3": "die es verdient.",
+    "missionTitle": "Wir behandeln nicht nur Zähne,",
+    "missionHighlight": "wir schaffen Vertrauen.",
+    "mission1Bold": "Wir sind ehrlich:",
+    "mission1Rest": "Wir wissen, dass es den meisten Menschen nicht gefällt, auf dem Zahnarztstuhl zu sitzen. Wir verstehen – und mit uns gehört diese Angst der Vergangenheit an.",
+    "mission2Plain": "Bei Crown Dental sind wir das Gegenteil von allem, was Sie für Zahnmedizin gehalten haben.",
+    "mission2Bold": "Wir bieten echte Freiheit.",
+    "mission3": "Wir bieten eine lebenslange Partnerschaft: Wir begleiten Sie von den ersten Milchzähnen bis zu dem Moment, in dem Sie mit 80 Jahren stolz in den Spiegel schauen.",
+    "storyLabel": "Unsere Geschichte",
+    "storyTitle": "Das solide Fundament.",
+    "story1Part1": "Die Geschichte von Crown Dental",
+    "story1Bold": "begann 1994 in Esztergom",
+    "story2Part1": "Die Stärke unserer Klinik ist",
+    "story2Bold": "unser eigenes Dentallabor",
+    "story2Part2": ". Da wir alles intern abwickeln, sind wir schneller und kostengünstiger.",
+    "story3Part1": "Heute sind wir für das Lächeln von mehr als verantwortlich",
+    "story3Bold": "15.000 zufriedene Patienten",
+    "story3Part2": ".",
+    "storySince": "Für Ihr Lächeln, von Anfang an."
+  },
+  "career": {
+    "badge": "Treten Sie unserem Team bei",
+    "title": "Gestalten Sie mit uns",
+    "titleHighlight": "die Zukunft der Zahnmedizin!",
+    "subtitle": "Wir suchen engagierte Fachkräfte, die Teil eines dynamisch wachsenden Teams sein möchten.",
+    "heroBadge": "Treten Sie unserem Team bei",
+    "heroTitle": "Bauen Sie mit uns das",
+    "heroTitleHighlight": "Lächeln der Zukunft!",
+    "heroSubtitle": "Hervorragendes Gehalt, eine unterstützende Community und kontinuierliche Wachstumschancen in den Kliniken Esztergom und Budapest von Crown Dental.",
+    "heroBtn": "Bewerben Sie sich jetzt",
+    "benefitsTitle": "Warum Crown Dental?",
+    "benefitsSubtitle": "Eine professionelle Gemeinschaft.",
+    "benefits": [
+      {
+        "title": "Hervorragende Vorteile",
+        "desc": "Wir garantieren ein wettbewerbsfähiges Gehalt über dem Marktpreis und echte Anerkennung."
+      },
+      {
+        "title": "Synergie zwischen Arzt und Techniker",
+        "desc": "Da sich Praxis und Labor an einem Ort befinden, ist eine sofortige Beratung gewährleistet."
+      },
+      {
+        "title": "Kontinuierliches Wachstum",
+        "desc": "Mit uns können Sie mit den neuesten Technologien Tag für Tag ein besserer Fachmann werden."
+      },
+      {
+        "title": "Unterstützende Atmosphäre",
+        "desc": "Hier wird jeder gleich wertgeschätzt – ein wichtiges Bindeglied im Team."
+      }
+    ],
+    "reviewsLabel": "Unsere Kollegen sagten",
+    "employeeReviews": [
+      {
+        "role": "Zahnarzt",
+        "text": "Durch die Nähe zum Labor lerne ich viel über die Prothetik in der Praxis."
+      },
+      {
+        "role": "Zahntechniker",
+        "text": "Toll ist, dass wir direkt mit dem behandelnden Arzt kommunizieren können."
+      },
+      {
+        "role": "Assistent",
+        "text": "Ich kam als frischgebackener Absolvent, aber das Team unterstützte mich so sehr, dass ich es in kürzester Zeit gelernt habe."
+      },
+      {
+        "role": "Dentalhygienikerin",
+        "text": "Vorhersehbares, modernes Arbeitsumfeld und berufliche Anerkennung."
+      }
+    ],
+    "formName": "Vollständiger Name",
+    "formPhone": "Telefon",
+    "formEmail": "E-Mail",
+    "formLocationPlaceholder": "Klinik auswählen",
+    "formPositionPlaceholder": "Position auswählen",
+    "formPositionDoctor": "Zahnarzt",
+    "formPositionAssistant": "Zahnarzthelferin",
+    "formSubmit": "Bewerbung einreichen",
+    "formSubmitting": "Senden...",
+    "formSuccess": "Vielen Dank für Ihre Bewerbung!",
+    "formError": "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
+  },
+  "blog": {
+    "title": "Blog & Magazin",
+    "subtitle": "Zahntechnische Tipps, Neuigkeiten und Expertenartikel für unsere Patienten.",
+    "badge": "Crown Dental Magazin",
+    "mainTitle": "Zahnmedizinisches",
+    "mainTitleHighlight": "Wissenszentrum",
+    "description1": "Willkommen im Crown Dental-Blog! Unsere erfahrenen Ärzte beantworten hier verständlich und zuverlässig häufige Fragen zur täglichen Mundpflege und zu zahnmedizinischen Behandlungen.",
+    "description2": "Ob die richtige Putztechnik, moderne Implantate oder die Vorteile schmerzfreier Behandlungen – hier finden Sie die Antwort auf jede Frage.",
+    "freshPost": "Neuer Artikel",
+    "readMore": "Mehr lesen",
+    "backToBlog": "Zurück zum Blog",
+    "postNotFound": "Artikel nicht gefunden.",
+    "backToBlogLabel": "Zurück zum Blog",
+    "freshContent": "Neuer Inhalt",
+    "ctaTitle": "Machen wir den ersten Schritt zu Ihrem perfekten Lächeln!",
+    "ctaSubtitle": "Vereinbaren Sie einen Termin für eine Fachberatung, bei der wir alle Ihre Fragen beantworten und gemeinsam Ihr neues Lächeln planen.",
+    "ctaBtn": "Termin buchen",
+    "statsLabel": "Unsere Klinik in Zahlen",
+    "statsTitle": "Unsere Ergebnisse, zu Ihren Diensten",
+    "stats": [
+      {
+        "end": 30,
+        "suffix": "+",
+        "text": "Jahrelange Erfahrung",
+        "desc": "In der Praxis seit 1994"
+      },
+      {
+        "end": 15000,
+        "suffix": "+",
+        "text": "Zufriedene Patienten",
+        "desc": "Seit Generationen vertrauenswürdig"
+      },
+      {
+        "end": 40,
+        "suffix": "%",
+        "text": "Ersparnisse",
+        "desc": "Dank unseres hauseigenen Labors"
+      },
+      {
+        "end": 3,
+        "suffix": "Tage",
+        "text": "Kronenherstellung",
+        "desc": "Ultraschnelle Prothetik"
+      }
+    ],
+    "reviewsTitle": "Unsere Patienten sagten"
+  },
+  "contact": {
+    "title": "Kontakt",
+    "subtitle": "Nehmen Sie einfach Kontakt mit uns auf – wir antworten und helfen!",
+    "esztergom": "Esztergom Klinik",
+    "budapest": "Budapest Klinik",
+    "openingHours": "Öffnungszeiten",
+    "weekdays": "Montag – Freitag"
+  },
+  "cookie": {
+    "message": "Unsere Website verwendet Cookies, um Ihr Erlebnis zu verbessern.",
+    "accept": "Akzeptieren",
+    "decline": "Abfall",
+    "settings": "Einstellungen",
+    "bannerTitle": "Ihre Privatsphäre ist uns wichtig!",
+    "bannerDesc": "Die Crown Dental-Website verwendet Cookies für ein reibungsloses Surfen, eine Verkehrsanalyse und ein personalisiertes Erlebnis. Bitte wählen Sie gemäß den Richtlinien von Google eine der folgenden Optionen aus.",
+    "bannerLink": "Detaillierte Informationen.",
+    "settingsBtn": "Einstellungen",
+    "necessaryOnly": "Nur notwendig",
+    "acceptAll": "Akzeptiere alles",
+    "settingsTitle": "Cookie-Einstellungen verwalten",
+    "settingsSubtitle": "Hier können Sie individuell anpassen, welche Arten der Datenerfassung Sie uns erlauben.",
+    "necessaryTitle": "Wesentliche Funktionalität (erforderlich)",
+    "alwaysActive": "Immer aktiv",
+    "necessaryDesc": "Diese Cookies sind für die Grundfunktionalität der Website (z. B. Navigation, Sicherheit, Speicher des KI-Rechners) unerlässlich.",
+    "analyticsTitle": "Statistiken (Google Analytics)",
+    "analyticsDesc": "Wir sammeln anonyme Daten darüber, wie Besucher die Website nutzen, und helfen uns so, das Benutzererlebnis zu verbessern.",
+    "marketingTitle": "Marketing und gezielte Werbung",
+    "marketingDesc": "Ermöglicht Dritten, Ihnen relevante Werbung anzuzeigen.",
+    "acceptAllBtn": "Akzeptiere alles",
+    "saveSelectionBtn": "Einstellungen speichern"
+  },
+  "treatments": {
+    "pageTitle": "Behandlungen & Preise",
+    "pageSubtitle": "Erstklassige Zahnbehandlungen mit unserem eigenen Labor zu erschwinglichen Preisen.",
+    "bookConsultation": "Beratung buchen",
+    "from": "Ab:",
+    "allTreatments": "Alle Behandlungen",
+    "heroBadge": "Eigenes Labor = niedrigere Preise",
+      "heroTitle1": "Zahnmedizinische",
+    "heroTitle2": "Behandlungen",
+    "heroSubtitleStart": "Wählen Sie eine Behandlung aus den folgenden Karten oder scrollen Sie nach unten, um die vollständige Preisliste anzuzeigen. Dank unseres hauseigenen Dentallabors bieten wir Preise an",
+    "heroSavings": "bis zu 40 % niedriger",
+    "heroSubtitleEnd": "als der Marktdurchschnitt.",
+    "cardDetails": "Details",
+    "priceListTitle": "Unsere vollständige Preisliste",
+    "priceListSubtitle": "Transparente Preisgestaltung, ohne versteckte Kosten.",
+    "disclaimerTitle": "Wichtiger Hinweis",
+    "disclaimerText": "Die Preise sind Richtwerte. Da jedes Gebiss einzigartig ist, wird der endgültige Preis nach einer persönlichen Untersuchung und einem detaillierten Behandlungsplan festgelegt.",
+    "ctaTitle": "Haben Sie Fragen zu unseren Preisen?",
+    "ctaSubtitle": "Vereinbaren Sie einen Termin für eine persönliche Beurteilung, bei der wir Ihnen einen detaillierten Behandlungsplan erstellen.",
+    "ctaBtn": "Fachberatung buchen",
+    "cards": [
+      {
+        "id": "implantatum",
+        "title": "Zahnimplantate",
+        "description": "Lebensechter Zahnersatz mit Titanimplantaten in nur einem Tag."
+      },
+      {
+        "id": "Nebelzabalyozas",
+        "title": "Kieferorthopädie",
+        "description": "Feste und herausnehmbare Zahnspangen für Kinder und Erwachsene."
+      },
+      {
+        "id": "koronak-hidak",
+        "title": "Kronen und Brücken",
+        "description": "Metallkeramik- und Zirkonkronen in Premiumqualität aus unserem eigenen Labor."
+      },
+      {
+        "id": "Nebelfeheriten",
+        "title": "Zahnaufhellung",
+        "description": "Professionelles Bleaching mit Methoden zu Hause oder in der Klinik."
+      },
+      {
+        "id": "Nebel",
+        "title": "Zahnersatz",
+        "description": "Herausnehmbarer und festsitzender Zahnersatz, passgenau, Unterfütterung."
+      },
+      {
+        "id": "Gyokerkezeles",
+        "title": "Wurzelkanal",
+        "description": "Schmerzlose maschinelle Wurzelkanalfüllung mit modernster Technologie."
+      },
+      {
+        "id": "szajsebeszet",
+        "title": "Oralchirurgie",
+        "description": "Weisheitszahnextraktion und apikale Resektion mit Fachwissen durchgeführt."
+      },
+      {
+        "id": "allapotfelmeres",
+        "title": "Zahnärztliche Beurteilung",
+        "description": "Ausführliche Beratung, Panoramaröntgen und individueller Behandlungsplan."
+      },
+      {
+        "id": "esztetikai-fogaszat",
+        "title": "Ästhetische Zahnheilkunde",
+        "description": "Keramikveneers und unsichtbare Füllungen für ein perfektes Lächeln."
+      },
+      {
+        "id": "Nebelhuzas",
+        "title": "Zahnextraktion",
+        "description": "Sanfte Zahnentfernung mit schneller Genesung."
+      },
+      {
+        "id": "Gockutatas",
+        "title": "Suche nach fokalen Infektionen",
+        "description": "Erkennung versteckter Entzündungen und fokaler Infektionen mit moderner 3D-CT."
+      },
+      {
+        "id": "gyerekfogaszat",
+        "title": "Kinderzahnheilkunde",
+        "description": "Milchzahnbehandlungen und Fissurenversiegelung in freundlicher, geduldiger Atmosphäre."
+      }
+    ],
+    "priceCategories": [
+      {
+        "id": "Diagnose",
+        "title": "Diagnostik und Basisbehandlungen",
+        "items": [
+          {
+            "name": "Erstuntersuchung, schriftliche Beurteilung, Suche nach Infektionsherden, Behandlungsplan",
+            "price": "10.000 HUF"
+          },
+          {
+            "name": "Füllungen",
+            "price": "30.000 – 35.000 HUF"
+          },
+          {
+            "name": "Zahnextraktion",
+            "price": "25.000 – 35.000 HUF"
+          },
+          {
+            "name": "Röntgen (kleiner / einzelner Zahn)",
+            "price": "5.000 HUF"
+          },
+          {
+            "name": "Panoramaröntgen",
+            "price": "6.000 HUF"
+          },
+          {
+            "name": "Kephalometrisches Röntgen",
+            "price": "10.000 HUF",
+            "highlight": true
+          }
+        ]
+      },
+      {
+        "id": "Gyokerkezeles",
+        "title": "Wurzelkanalbehandlung",
+        "items": [
+          {
+            "name": "Wurzelfüllung (einwurzelig)",
+            "price": "25.000 HUF"
+          },
+          {
+            "name": "Wurzelfüllung (zweiwurzelig)",
+            "price": "30.000 HUF"
+          },
+          {
+            "name": "Wurzelfüllung (dreiwurzelig)",
+            "price": "33.000 HUF"
+          },
+          {
+            "name": "Entfernung der Wurzelfüllung",
+            "price": "20.000 HUF"
+          },
+          {
+            "name": "Wurzelkanalbehandlung pro Sitzung",
+            "price": "10.000 HUF"
+          }
+        ]
+      },
+      {
+        "id": "esztetika",
+        "title": "Konservierung & Ästhetik",
+        "items": [
+          {
+            "name": "Skalieren und Polieren (pro Kiefer)",
+            "price": "15.000 HUF"
+          },
+          {
+            "name": "Aufhellung mit Silikonschiene (zu Hause) / pro Zahnbogen",
+            "price": "30.000 HUF"
+          },
+          {
+            "name": "Aufhellung in der Klinik (Lampe) / pro Zahnbogen",
+            "price": "45.000 HUF",
+            "highlight": true
+          }
+        ]
+      },
+      {
+        "id": "Nebelpotlas",
+        "title": "Prothetik und Kronen",
+        "items": [
+          {
+            "name": "Provisorische Krone (kurzfristig, 1–2 Wochen)",
+            "price": "6.000 HUF"
+          },
+          {
+            "name": "Provisorische Krone (langfristig, bis zu 1 Jahr)",
+            "price": "15.000 HUF"
+          },
+          {
+            "name": "Metallkeramikkrone",
+            "price": "42.000 HUF"
+          },
+          {
+            "name": "Zirkonkrone (metallfrei)",
+            "price": "55.000 HUF",
+            "highlight": true
+          },
+          {
+            "name": "Individuelle Farbanpassung (pro Zahn)",
+            "price": "15.000 HUF"
+          },
+          {
+            "name": "Herausnehmbarer Zahnersatz für einen Kiefer (Komposit)",
+            "price": "110.000 HUF"
+          },
+          {
+            "name": "Metallrahmenprothese für einen Kiefer",
+            "price": "150.000 HUF"
+          },
+          {
+            "name": "Entfernung alter Brücken (pro Pfeilerzahn)",
+            "price": "12.000 HUF"
+          },
+          {
+            "name": "Unterfütterung von Prothesen",
+            "price": "25.000 HUF"
+          }
+        ]
+      },
+      {
+        "id": "szajsebeszet",
+        "title": "Oralchirurgie und Implantologie",
+        "items": [
+          {
+            "name": "Chirurgische Zahnextraktion",
+            "price": "55.000 HUF"
+          },
+          {
+            "name": "Weisheitszahnentfernung",
+            "price": "55.000 HUF"
+          },
+          {
+            "name": "Apikale Resektion",
+            "price": "55.000 HUF"
+          },
+          {
+            "name": "DIO Implantat",
+            "price": "240.000 HUF",
+            "highlight": true
+          },
+          {
+            "name": "ALPHA BIO Implantat",
+            "price": "180.000 HUF"
+          },
+          {
+            "name": "Knochentransplantation",
+            "price": "190.000 HUF"
+          }
+        ]
+      },
+      {
+        "id": "gyermek",
+        "title": "Kinderzahnheilkunde und Kieferorthopädie",
+        "items": [
+          {
+            "name": "Milchzahnfüllung",
+            "price": "15.000 HUF"
+          },
+          {
+            "name": "Fissurenversiegelung",
+            "price": "15.000 HUF"
+          },
+          {
+            "name": "Feste Zahnspange",
+            "price": "190.000 – 285.000 HUF",
+            "highlight": true
+          },
+          {
+            "name": "Abnehmbare Hosenträger",
+            "price": "60.000 – 90.000 HUF"
+          },
+          {
+            "name": "Aktivierung der Zahnspange behoben",
+            "price": "10.000 – 15.000 HUF"
+          },
+          {
+            "name": "Aktivierung der abnehmbaren Zahnspange",
+            "price": "5.000 – 8.000 HUF"
+          }
+        ]
+      }
+    ]
+  },
+  "langSwitch": {
+    "hu": "Magyar",
+    "en": "Englisch",
+    "sk": "Slowenien",
+    "ariaLabel": "Sprache wechseln"
+  },
+  "treatmentPages": {
+    "shared": {
+      "consultationBtn": "Medizinische Beratung",
+      "appointmentBtn": "Termin buchen",
+      "requestBtn": "Fordern Sie eine Beratung an",
+      "whyCrownBadge": "Warum Crown Dental?",
+      "processBadge": "Der Prozess",
+      "processTitle": "Schritt für Schritt",
+      "faqTitle": "Häufig gestellte Fragen"
+    },
+    "allapotfelmeres": {
+      "heroBadge": "Umfassende Diagnostik",
+      "heroTitle": "Umfassende zahnärztliche Untersuchung",
+      "heroDesc": "Mit modernen Diagnosegeräten erfassen wir den Zustand Ihrer Zähne und Ihrer Mundhöhle. Genaue Diagnose, personalisierter Behandlungsplan.",
+      "heroPriceLabel": "Beratung",
+      "heroPriceValue": "Spezialist",
+      "problemTitle": "Das Problem: Versteckte Zahnprobleme",
+      "problemDesc": "Viele Zahnprobleme – Karies, Zahnfleischerkrankungen, Knochenschwund – entwickeln sich jahrelang ohne Symptome. Wenn Schmerzen auftreten, ist die Behandlung bereits aufwändiger und kostspieliger.",
+      "solutionTitle": "Die Lösung: Umfassende Beurteilung",
+      "solutionDesc": "Mit modernem Panoramaröntgen, Fernröntgen und 3D-CT erkennen wir selbst kleinste Veränderungen. Eine gründliche Untersuchung ermöglicht ein frühzeitiges Eingreifen.",
+      "includedBadge": "Was ist enthalten?",
+      "includedTitle": "Vollständiges Diagnosepaket",
+      "items": [
+        {
+          "title": "Visuelle Untersuchung",
+          "desc": "Der Zahnarzt untersucht gründlich Ihre Zähne, Ihr Zahnfleisch und jeden Teil der Mundhöhle."
+        },
+        {
+          "title": "Panoramaröntgen",
+          "desc": "Ein einziges Bild zeigt alle Zähne, Wurzeln und den Zustand des Kieferknochens."
+        },
+        {
+          "title": "Kephalometrisches Röntgen",
+          "desc": "Eine seitliche Schädelröntgenaufnahme zur kieferorthopädischen Planung und präzisen Bissanalyse."
+        },
+        {
+          "title": "3D-CT-Scan",
+          "desc": "Vor der Implantatinsertion planen wir die Behandlung mittels dreidimensionaler Bildgebung."
+        },
+        {
+          "title": "Intraorale Kamera",
+          "desc": "Mit einer kleinen Kamera können Sie genau sehen, wo und welches Problem wir gefunden haben."
+        },
+        {
+          "title": "Schriftliche Diagnose",
+          "desc": "Sie erhalten eine detaillierte Dokumentation Ihres Zustands und empfohlene Behandlungen."
+        },
+        {
+          "title": "Behandlungsplan",
+          "desc": "Personalisierter Behandlungsplan mit transparenter Preis- und Terminplanung."
+        }
+      ],
+      "benefitsTitle": "Ihre Gesundheit steht an erster Stelle",
+      "benefitItems": [
+        {
+          "title": "Prävention ist der Schlüssel",
+          "desc": "Eine Früherkennung ist kosten- und zeiteffizienter als eine aufwendige spätere Behandlung."
+        },
+        {
+          "title": "Schnell und schmerzlos",
+          "desc": "Die Beurteilung dauert nur 30–45 Minuten."
+        },
+        {
+          "title": "Fachberatung",
+          "desc": "Ausführliche Fachbeurteilung, bei der alle Ihre Fragen beantwortet werden."
+        },
+        {
+          "title": "Moderne Technologie",
+          "desc": "Panorama-Röntgen, kephalometrisches Röntgen, 3D-CT und Intraoralkamera für eine genaue Diagnose."
+        },
+        {
+          "title": "Transparente Preisgestaltung",
+          "desc": "Alle Kosten werden vorab im Behandlungsplan mitgeteilt – keine versteckten Gebühren."
+        },
+        {
+          "title": "Schriftliche Dokumentation",
+          "desc": "Sie erhalten eine ausführliche schriftliche Dokumentation zur Durchsicht zu Hause."
+        }
+      ],
+      "processTitle": "So funktioniert die Bewertung",
+      "processSteps": [
+        {
+          "title": "Buchen Sie einen Termin",
+          "desc": "Buchen Sie online oder telefonisch in unserer Klinik Budapest oder Esztergom.",
+          "time": "2 Min"
+        },
+        {
+          "title": "Untersuchung und Röntgen",
+          "desc": "Panorama-Röntgen, ggf. kephalometrisches Röntgen und detaillierte visuelle Untersuchung von Zähnen, Zahnfleisch und Kieferknochen.",
+          "time": "30–45 Min"
+        },
+        {
+          "title": "Diagnosediskussion",
+          "desc": "Der Zahnarzt erläutert Ihnen den Befund und bespricht mit Ihnen die Möglichkeiten.",
+          "time": "15 Min"
+        },
+        {
+          "title": "Behandlungsplan",
+          "desc": "Wir erstellen einen individuellen Behandlungsplan mit detaillierten Preisen und Terminen.",
+          "time": "1–2 Tage"
+        }
+      ],
+      "ctaTitle": "Finden Sie den Zustand Ihrer Zähne heraus!",
+      "ctaDesc": "Vereinbaren Sie einen Termin für eine Fachberatung in Budapest oder Esztergom!",
+      "faqs": [
+        {
+          "q": "Wie viel kostet die Begutachtung?",
+          "a": "Panorama-Röntgen beträgt 6.000 HUF und kephalometrisches Röntgen beträgt 10.000 HUF; Eine Fachberatung ist im Preis inbegriffen."
+        },
+        {
+          "q": "Ist eine Vorbereitung erforderlich?",
+          "a": "Es ist keine Vorbereitung erforderlich. Wenn Sie bereits über Röntgenbilder verfügen, bringen Sie diese bitte mit."
+        },
+        {
+          "q": "Wie lange dauert die Begutachtung?",
+          "a": "Die umfassende Beurteilung dauert 30–45 Minuten."
+        },
+        {
+          "q": "Was ist, wenn ich Angst vor dem Zahnarzt habe?",
+          "a": "Unser Team ist geduldig und einfühlsam – wir erklären jeden Schritt im Voraus."
+        },
+        {
+          "q": "Erhalte ich eine schriftliche Dokumentation?",
+          "a": "Ja, wir erstellen einen detaillierten schriftlichen Diagnose- und Behandlungsplan."
+        }
+      ]
+    },
+    "implantatum": {
+      "heroBadge": "Premium-Service",
+      "heroTitle": "Zahnimplantate",
+      "heroDesc": "Eine dauerhafte Lösung für fehlende Zähne – Premium-Implantate aus unserem eigenen Labor, bis zu 40 % günstiger.",
+      "heroPriceLabel": "Preise ab",
+      "heroPriceValue": "190.000 HUF",
+      "quoteAnalyzerBadge": "KI-Preisrechner",
+      "quoteAnalyzerTitle": "Denken Sie, dass das Angebot zu teuer ist?",
+      "quoteAnalyzerDesc": "Laden Sie den Behandlungsplan hoch, den Sie woanders erhalten haben, und die KI zeigt Ihnen, wie viel Sie bei uns sparen können!",
+      "quoteAnalyzerDropTitle": "Legen Sie das PDF hier ab",
+      "quoteAnalyzerBtn": "Wählen Sie Datei aus",
+      "problemTitle": "Das Problem: Fehlende Zähne",
+      "problemDesc": "Eine Lücke im Lächeln ist nicht nur ein ästhetisches Problem – benachbarte Zähne verschieben sich, Knochen bilden sich zurück. Eine herkömmliche Brücke erfordert das Abschleifen gesunder Zähne.",
+      "solutionTitle": "Die Lösung: Zahnimplantate",
+      "solutionDesc": "Ein Implantat ersetzt die natürliche Zahnwurzel durch eine Titanschraube. Es ist nicht nötig, benachbarte Zähne zu berühren, und unser eigenes Labor macht es bis zu 40 % günstiger.",
+      "benefitsBadge": "Warum uns wählen?",
+      "benefitsTitle": "Vorteile der Implantation",
+      "benefitItems": [
+        {
+          "title": "Lebenslange Garantie",
+          "desc": "Wir bieten eine lebenslange Garantie auf das Implantat und eine 5-Jahres-Garantie auf die Krone."
+        },
+        {
+          "title": "Schnelle Abwicklung",
+          "desc": "Eigenes Labor = keine Wartezeiten. Die Krone kann in nur 3–5 Tagen fertig sein."
+        },
+        {
+          "title": "Transparente Preisgestaltung",
+          "desc": "Keine versteckten Kosten. Der bei der Beratung angegebene Preis ändert sich bis zum Ende der Behandlung nicht."
+        },
+        {
+          "title": "Schmerzlos",
+          "desc": "Mit der modernen Anästhesie ist der Eingriff schmerzlos und schnell."
+        },
+        {
+          "title": "Premium-Materialien",
+          "desc": "Wir arbeiten mit hochwertigen Alpha Bio- und DIO-Implantaten."
+        },
+        {
+          "title": "30 Jahre Erfahrung",
+          "desc": "Tausende erfolgreiche Vermittlungen liegen hinter uns. Ihre Sicherheit ist unsere Priorität."
+        }
+      ],
+      "processBadge": "Schritt für Schritt",
+      "processTitle": "Wie funktioniert die Vermittlung?",
+      "processSteps": [
+        {
+          "title": "Beratung",
+          "desc": "Röntgen, 3D-CT, ausführliche Untersuchung und präzise Angebotserstellung.",
+          "time": "30–45 Min"
+        },
+        {
+          "title": "Platzierung",
+          "desc": "Die Titanschraube setzen wir unter örtlicher Betäubung ein. Ein schmerzloser Eingriff.",
+          "time": "30–60 Min"
+        },
+        {
+          "title": "Heilung",
+          "desc": "Das Implantat verschmilzt mit dem Knochen und bildet so eine stabile Basis für die Prothese.",
+          "time": "3–6 Monate"
+        },
+        {
+          "title": "Kronenherstellung",
+          "desc": "Unser eigenes Labor fertigt die Krone mit digitaler Präzision.",
+          "time": "3–5 Tage"
+        },
+        {
+          "title": "Lieferung",
+          "desc": "Wir reparieren die endgültige Krone. Verwenden Sie es genau wie Ihren Originalzahn!",
+          "time": "30 Min"
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Wie viel kostet ein Implantat?",
+          "a": "Die Implantatinsertion Alpha Bio und DIO beginnt bei 190.000 HUF. Ein genauer Preis kann nach dem 3D-CT-Scan bekannt gegeben werden."
+        },
+        {
+          "q": "Tut die Platzierung weh?",
+          "a": "Nein. Mit der modernen Anästhesie ist es völlig schmerzlos – viele Patienten sagen, es sei einfacher als eine Zahnextraktion."
+        },
+        {
+          "q": "Wie lange dauert die Heilung?",
+          "a": "Die Osseointegration dauert in der Regel 3–6 Monate."
+        },
+        {
+          "q": "Warum ist Crown Dental günstiger?",
+          "a": "Da sich unser Labor vor Ort befindet, zahlen Sie keine Vermittlungsgebühren – diese Ersparnis wird an Sie weitergegeben."
+        }
+      ]
+    },
+    "fogsor": {
+      "heroBadge": "Eigenes Dentallabor",
+      "heroTitle": "Bequemer und ästhetischer Zahnersatz",
+      "heroDesc": "Dank unseres eigenen Labors fertigen wir viel schneller als erwartet passgenaue, lebensechte herausnehmbare und festsitzende Prothesen.",
+      "heroPriceLabel": "Premium-Qualität",
+      "heroPriceValue": "ab 110.000 HUF",
+      "problemTitle": "Das Problem: Teilweiser oder vollständiger Zahnverlust",
+      "problemDesc": "Ein erheblicher Zahnverlust ist nicht nur ein ästhetisches Problem. Es erschwert das Kauen, verzerrt die Gesichtszüge und verringert das Selbstvertrauen. Schlecht sitzender Zahnersatz reizt das Zahnfleisch und verursacht Beschwerden.",
+      "solutionTitle": "Die Lösung: Premium-Prothesen",
+      "solutionDesc": "Unser eigenes Labor nutzt modernste Technologie zur Herstellung von herausnehmbarem, metallbasiertem oder implantatgetragenem Zahnersatz. Wir stellen die Kaufreiheit und ein ästhetisches Lächeln wieder her.",
+      "servicesBadge": "Optionen",
+      "servicesTitle": "Unsere prothetischen Lösungen",
+      "services": [
+        {
+          "title": "Vollständige herausnehmbare Prothese",
+          "desc": "Komplettprothese aus ästhetisch hochwertigen Kompositzähnen.",
+          "price": "110.000 HUF / Backe"
+        },
+        {
+          "title": "Teilprothese auf Metallbasis",
+          "desc": "Äußerst stabile, verdeckte Klammerprothese, die von den verbleibenden Zähnen getragen wird.",
+          "price": "ab 150.000 HUF"
+        },
+        {
+          "title": "Implantatgetragener Zahnersatz",
+          "desc": "Maximale Stabilität! Schnappprothese auf 2 oder 4 Implantaten.",
+          "price": "Individuelles Angebot"
+        },
+        {
+          "title": "Prothesenunterfütterung",
+          "desc": "Sollte sich Ihre alte Prothese gelockert haben, passt unser Labor sie schnell an den neuen Zahnfleischrand an.",
+          "price": "25.000 HUF"
+        }
+      ],
+      "benefitsTitle": "Das Geheimnis einer komfortablen Prothese",
+      "benefitItems": [
+        {
+          "title": "Eigenes Labor, schnelle Reparaturen",
+          "desc": "Da das Labor vor Ort ist, können Störungen und Reparaturen oft sofort behoben werden."
+        },
+        {
+          "title": "Perfekte Passform",
+          "desc": "Durch die sofortige Beratung zwischen Zahnarzt und Zahntechniker wird sichergestellt, dass die Prothese das Zahnfleisch nicht reizt."
+        },
+        {
+          "title": "Natürliches Aussehen",
+          "desc": "Wir verwenden hochwertige, geschichtete künstliche Zähne, die von echten nicht zu unterscheiden sind."
+        },
+        {
+          "title": "Feste Lösungen",
+          "desc": "Keine Lust mehr auf herausnehmbaren Zahnersatz? Unsere Implantatlösungen sorgen für stabile, feste Zähne."
+        }
+      ],
+      "processSteps": [
+        {
+          "title": "Beratung",
+          "desc": "Fachliche Einschätzung und ausführliche Diskussion der Möglichkeiten und Erwartungen.",
+          "time": "30 Min"
+        },
+        {
+          "title": "Abdrucknahme",
+          "desc": "Wir nehmen einen anatomischen Abdruck mit Präzisionsmaterialien für eine perfekte Passform.",
+          "time": "20 Min"
+        },
+        {
+          "title": "Probeaufnahmen in der Klinik",
+          "desc": "Gerüst- und Zahnanprobe zur Überprüfung von Biss, Höhe und Farbe.",
+          "time": "Mehrere kurze Besuche"
+        },
+        {
+          "title": "Endgültige Lieferung",
+          "desc": "Anpassung und Lieferung der fertigen Prothese mit Beratung zur Reinigung und zum Tragen.",
+          "time": "30 Min"
+        },
+        {
+          "title": "Nachverfolgen",
+          "desc": "Ein paar Tage später eine Kontrolluntersuchung, um eventuell erforderliche Feineinstellungen vorzunehmen.",
+          "time": "15 Min"
+        }
+      ],
+      "ctaTitle": "Buchen Sie noch heute einen Termin!",
+      "ctaDesc": "Kommen Sie zu einer fachärztlichen Beratung vorbei und lassen Sie uns gemeinsam die passende prothetische Lösung finden!",
+      "faqs": [
+        {
+          "q": "Kann eine herausnehmbare Prothese beim Sprechen oder Essen herausfallen?",
+          "a": "Hochwertiger Zahnersatz sitzt dank Saugkraft präzise. Bei geringem Knochenvolumen empfehlen wir implantatgetragenen Zahnersatz."
+        },
+        {
+          "q": "Wie lange dauert eine Vollprothese?",
+          "a": "Da wir über ein eigenes Dentallabor verfügen, ist die Prothese inklusive Einprobe in der Regel innerhalb von 1–2 Wochen fertig."
+        },
+        {
+          "q": "Was soll ich tun, wenn meine alte Prothese locker ist?",
+          "a": "Unser Labor kann die Prothese schnell unterfüttern, sodass sie wieder fest und stabil sitzt."
+        },
+        {
+          "q": "Wird die Prothese natürlich aussehen?",
+          "a": "Ja! Unser Labor arbeitet mit hochwertigen, naturgetreuen Zähnen, die in Farbe und Form auf Ihre Gesichtszüge abgestimmt sind."
+        }
+      ]
+    },
+    "koronak-hidak": {
+      "heroBadge": "Eigenes Dentallabor",
+      "heroTitle": "Zirkonoxid- und Keramikkronen",
+      "heroDesc": "Langlebige und ästhetische Kronen und Brücken für fehlende Zähne. Dank unseres eigenen Labors – blitzschnell, ohne Kompromisse.",
+      "heroPriceLabel": "Premium-Kronen",
+      "heroPriceValue": "ab 42.000 HUF",
+      "problemTitle": "Das Problem: Beschädigte oder fehlende Zähne",
+      "problemDesc": "Stark kariöse oder abgebrochene Zähne verlieren ihre strukturelle Integrität. Fehlende Zähne erschweren das Kauen und können zum Abdriften benachbarter Zähne führen.",
+      "solutionTitle": "Die Lösung: Kronen und Brücken",
+      "solutionDesc": "Eine Krone stärkt den beschädigten Zahn; Eine Brücke ersetzt fehlende. Unser eigenes Labor nutzt die CAD/CAM-Technologie, um eine perfekt naturgetreue Restauration herzustellen.",
+      "benefitsTitle": "Das Geheimnis einer dauerhaften Wiederherstellung",
+      "benefitItems": [
+        {
+          "title": "Fertig in 3–5 Tagen",
+          "desc": "Unser Labor ist vor Ort, sodass Restaurationen in Tagen statt in Wochen abgeschlossen sind."
+        },
+        {
+          "title": "Zirkonoxid: 100 % metallfrei",
+          "desc": "Perfekt hypoallergen, mit einer Transluzenz, die der von natürlichen Zähnen entspricht."
+        },
+        {
+          "title": "5 Jahre Garantie",
+          "desc": "Auf festsitzenden Zahnersatz, der in unserer Klinik hergestellt wird, gewähren wir volle 5 Jahre Garantie."
+        },
+        {
+          "title": "Digitale Präzision",
+          "desc": "CAD/CAM-Systeme gewährleisten eine Passgenauigkeit im Mikrometerbereich."
+        },
+        {
+          "title": "Keine Schmerzen",
+          "desc": "Wir arbeiten unter tiefer örtlicher Betäubung, sodass Sie nichts spüren."
+        },
+        {
+          "title": "Sofortige provisorische Krone",
+          "desc": "Sie werden nie ohne Zahn sein – wir setzen Ihnen sofort eine provisorische Krone ein."
+        }
+      ],
+      "processSteps": [
+        {
+          "title": "Beratung",
+          "desc": "Röntgen, Beurteilung und genaue Erstellung des Behandlungsplans.",
+          "time": "30 Min"
+        },
+        {
+          "title": "Vorbereitung",
+          "desc": "Unter örtlicher Betäubung formen wir den Zahn passgenau.",
+          "time": "60–90 Min"
+        },
+        {
+          "title": "Eindruck",
+          "desc": "Wir nehmen einen präzisen Abdruck und setzen eine provisorische Krone ein.",
+          "time": "30 Min"
+        },
+        {
+          "title": "Herstellung",
+          "desc": "Unsere hauseigenen Techniker entwerfen und fräsen die endgültige Zirkonoxid-Restauration.",
+          "time": "3–5 Tage"
+        },
+        {
+          "title": "Lieferung",
+          "desc": "Wir probieren die fertige Krone ein und zementieren sie dauerhaft.",
+          "time": "30–45 Min"
+        }
+      ],
+      "ctaTitle": "Buchen Sie noch heute einen Termin!",
+      "ctaDesc": "Lassen Sie sich beraten und finden Sie heraus, welche Sanierung für Sie am besten geeignet ist.",
+      "faqs": [
+        {
+          "q": "Sollte ich mich für Metallkeramik oder Zirkonoxid entscheiden?",
+          "a": "Zirkonoxid ist metallfrei und sieht natürlich aus – wir empfehlen es für die Frontzähne. Metallkeramik ist extrem stark und eignet sich hervorragend für Backenzähne."
+        },
+        {
+          "q": "Ist die Zahnvorbereitung schmerzhaft?",
+          "a": "Nein. Wir führen den Eingriff unter örtlicher Betäubung durch, sodass Sie während des Eingriffs nichts spüren."
+        },
+        {
+          "q": "Werde ich einen Zahn haben, während ich auf die endgültige Restauration warte?",
+          "a": "Ja! Wir setzen sofort eine provisorische Krone ein, damit Sie keine Lücke hinterlassen."
+        },
+        {
+          "q": "Wie lange hält eine Krone?",
+          "a": "Bei guter Mundhygiene 10–15 Jahre, kann aber ein Leben lang anhalten."
+        }
+      ]
+    },
+    "gyokerkezeles": {
+      "heroBadge": "Zahnerhaltende Verfahren",
+      "heroTitle": "Schmerzfreie Wurzelkanalbehandlung",
+      "heroDesc": "Retten Sie Ihre eigenen Zähne mit sanften, modernen Techniken – vermeiden Sie eine Extraktion. Schnelle und sichere Lösung für Zahninfektionen.",
+      "heroPriceLabel": "Wurzelfüllung",
+      "heroPriceValue": "ab 25.000 HUF",
+      "problemTitle": "Das Problem: Starke Zahnschmerzen, Infektion",
+      "problemDesc": "Wenn der Zerfall die Nerven in der Pulpa erreicht, verursacht er scharfe, pochende Schmerzen. Wird die Infektion nicht rechtzeitig behandelt, kann sie sich auf den Knochen ausbreiten und zum Zahnverlust führen.",
+      "solutionTitle": "Die Lösung: Wurzelkanalbehandlung",
+      "solutionDesc": "Bei der Wurzelkanalbehandlung entfernen wir das entzündete Nervengewebe, desinfizieren die Kanäle gründlich und verschließen sie hermetisch. Der Schmerz verschwindet sofort und der Zahn ist gerettet.",
+      "servicesBadge": "Verfahren",
+      "servicesTitle": "Unsere Wurzelkanallösungen",
+      "services": [
+        {
+          "title": "Einwurzelige Zähne",
+          "desc": "Wurzelkanalbehandlung von Vorderzähnen, bei denen normalerweise nur ein Kanal gereinigt werden muss.",
+          "price": "25.000 HUF"
+        },
+        {
+          "title": "Mehrwurzelige Zähne",
+          "desc": "Komplexere Behandlung von Molaren mit 2, 3 oder sogar 4 Kanälen.",
+          "price": "30.000–33.000 HUF"
+        },
+        {
+          "title": "Austausch der alten Füllung",
+          "desc": "Entfernung einer früheren, fehlgeschlagenen oder gealterten Wurzelfüllung und ordnungsgemäße Wiederversiegelung des Zahns.",
+          "price": "20.000 HUF"
+        }
+      ],
+      "benefitsTitle": "Das Geheimnis einer erfolgreichen Behandlung",
+      "benefitItems": [
+        {
+          "title": "Schmerzfrei",
+          "desc": "Die Behandlung erfolgt unter Vollnarkose, wodurch der Eingriff völlig schmerzfrei ist."
+        },
+        {
+          "title": "Retten Sie Ihren eigenen Zahn",
+          "desc": "Nichts ist besser als Ihr natürlicher Zahn! Eine Wurzelkanalbehandlung ist die letzte und beste Möglichkeit, eine Extraktion zu vermeiden."
+        },
+        {
+          "title": "Mechanische Kanalvorbereitung",
+          "desc": "Zur schnellen und präzisen Kanalreinigung verwenden wir moderne rotierende Instrumente."
+        },
+        {
+          "title": "Dauerhaftes Ergebnis",
+          "desc": "Ein desinfizierter und hermetisch versiegelter Zahn kann jahrzehntelang, sogar ein Leben lang, problemlos dienen."
+        }
+      ],
+      "processSteps": [
+        {
+          "title": "Beratung & Röntgen",
+          "desc": "Um eine genaue Diagnose zu stellen, machen wir eine Röntgenaufnahme.",
+          "time": "15 Min"
+        },
+        {
+          "title": "Anästhesie und Zugang",
+          "desc": "Der Zahn wird vollständig betäubt, anschließend wird ein Zugang zur infizierten Pulpa geschaffen.",
+          "time": "10 Min"
+        },
+        {
+          "title": "Kanalreinigung",
+          "desc": "Entzündetes Gewebe wird mit modernen rotierenden Instrumenten präzise entfernt.",
+          "time": "30–45 Min"
+        },
+        {
+          "title": "Wurzelfüllung (Versiegelung)",
+          "desc": "Kanäle werden mit einem speziellen Material hermetisch verschlossen, um eine erneute Infektion zu verhindern.",
+          "time": "30 Min"
+        },
+        {
+          "title": "Endgültige Restaurierung",
+          "desc": "Der Zahn wird mit einer ästhetischen Füllung oder einer Krone aus unserem eigenen Labor wiederhergestellt.",
+          "time": "Separater Besuch"
+        }
+      ],
+      "ctaTitle": "Bewahren Sie Ihren Zahn vor der Extraktion!",
+      "ctaDesc": "Starke Zahnschmerzen sind ein Warnzeichen. Zögern Sie nicht – buchen Sie noch heute eine Fachberatung!",
+      "faqs": [
+        {
+          "q": "Wird eine Wurzelkanalbehandlung weh tun?",
+          "a": "Mit den heutigen modernen Anästhetika ist eine Wurzelkanalbehandlung völlig schmerzfrei. Die Beschwerden entstehen meist durch die Zahnschmerzen im Vorfeld, die durch diesen Eingriff sofort gelindert werden."
+        },
+        {
+          "q": "Wie viele Besuche sind erforderlich?",
+          "a": "Dies hängt von der Schwere der Infektion ab. In einfacheren Fällen kann die endgültige Füllung in einer Sitzung erfolgen. Bei schweren Infektionen können zwei bis drei Besuche erforderlich sein."
+        },
+        {
+          "q": "Warum verdunkelt sich ein wurzelbehandelter Zahn manchmal?",
+          "a": "Da der Zahn seine lebenden Nerven und die Blutversorgung verliert, kann es im Laufe der Jahre zu Verfärbungen kommen. Dies kann durch kosmetische Zahnheilkunde korrigiert werden."
+        },
+        {
+          "q": "Wann braucht ein wurzelbehandelter Zahn eine Krone?",
+          "a": "Ein wurzelbehandelter Zahn trocknet aus und wird brüchiger. Gerade bei Backenzähnen empfiehlt sich fast immer eine Schutzkrone."
+        }
+      ]
+    },
+    "fogfeherites": {
+      "heroBadge": "Schneeweiße, gesunde Zähne",
+      "heroTitle": "Professionelle Zahnaufhellung",
+      "heroDesc": "Erzielen Sie mit unseren sicheren, klinischen Bleaching-Verfahren bis zu 8 Nuancen hellere Zähne. Wir stellen die natürliche Ausstrahlung Ihres Lächelns wieder her!",
+      "heroPriceLabel": "Heimsystem",
+      "heroPriceValue": "ab 30.000 HUF",
+      "problemTitle": "Das Problem: Verfärbte Zähne",
+      "problemDesc": "Kaffee, Tee, Rotwein, Rauchen und Alterung tragen alle zur Gelbfärbung der Zähne bei. Unkontrollierte Bleichmittel für zu Hause können den Zahnschmelz schädigen.",
+      "solutionTitle": "Die Lösung: Klinisches Bleaching",
+      "solutionDesc": "Wir verwenden sichere, emaillierte Materialien. Wählen Sie die sofortige Aufhellung mit der Lampe in der Klinik oder unser praktisches System mit individuellen Tabletts für zu Hause.",
+      "servicesBadge": "Optionen",
+      "servicesTitle": "Wählen Sie, was zu Ihnen passt",
+      "services": [
+        {
+          "title": "Lampenaufhellung in der Klinik",
+          "desc": "Sofortige Ergebnisse in 1 Stunde! Eine spezielle UV/LED-Lampe aktiviert das Gel.",
+          "price": "45.000 HUF / Bogen"
+        },
+        {
+          "title": "Heimaufhellungssystem",
+          "desc": "In unserem Labor individuell angefertigtes Tablett, das perfekt zu Ihrem Gebiss passt.",
+          "price": "30.000 HUF / Bogen"
+        },
+        {
+          "title": "Professionelle Skala und Politur",
+          "desc": "Der wesentliche erste Schritt vor jeder Zahnaufhellung. Ultraschall-Entzunderung und Polieren.",
+          "price": "15.000 HUF / Backe"
+        }
+      ],
+      "benefitsBadge": "Warum wir?",
+      "benefitsTitle": "Die Garantie für sicheres Aufhellen",
+      "benefitItems": [
+        {
+          "title": "Emaillesichere Materialien",
+          "desc": "Wir verwenden ausschließlich streng geprüfte Materialien, die den Zahnschmelz nicht schädigen."
+        },
+        {
+          "title": "Schnelle Ergebnisse",
+          "desc": "Das Bleaching in der Klinik sorgt für einen sichtbaren, sofortigen Unterschied in nur 60 Minuten."
+        },
+        {
+          "title": "Langanhaltendes Weiß",
+          "desc": "Bei richtiger Mundhygiene kann das Ergebnis jahrelang anhalten."
+        },
+        {
+          "title": "Schmerzlos",
+          "desc": "Der Eingriff schadet nicht – es kann höchstens eine leichte vorübergehende Empfindlichkeit auftreten."
+        },
+        {
+          "title": "Natürliche Wirkung",
+          "desc": "Wir bringen den hellsten natürlichen Farbton Ihrer eigenen Zähne zur Geltung."
+        },
+        {
+          "title": "Benutzerdefinierte Tabletts",
+          "desc": "Unser Labor garantiert, dass die Home-Schale perfekt dichtet und angenehm zu tragen ist."
+        }
+      ],
+      "processTitle": "Wie funktioniert die Aufhellung in der Klinik?",
+      "processSteps": [
+        {
+          "title": "Beratung",
+          "desc": "Farbbestimmung und -bewertung. Wir besprechen Erwartungen und Optionen.",
+          "time": "15 Min"
+        },
+        {
+          "title": "Maßstab und Politur",
+          "desc": "Für ein perfektes, gleichmäßiges Ergebnis ist eine saubere Zahnoberfläche erforderlich.",
+          "time": "30 Min"
+        },
+        {
+          "title": "Zahnfleischschutz (in der Klinik)",
+          "desc": "Dabei wird ein spezielles Schutzgel aufgetragen, sodass der Aufheller nur mit den Zähnen in Berührung kommt.",
+          "time": "10 Min"
+        },
+        {
+          "title": "Aufhellung",
+          "desc": "Anwendung des Gels und Beleuchtung mit UV-Lampe.",
+          "time": "45–60 Min"
+        },
+        {
+          "title": "Nachbehandlung",
+          "desc": "Ergebniskontrolle und Anleitung zur weißen Diät.",
+          "time": "10 Min"
+        }
+      ],
+      "ctaTitle": "Bereit für ein schneeweißes Lächeln?",
+      "ctaDesc": "Lassen Sie sich von einem Spezialisten beraten und finden Sie heraus, mit welcher Bleaching-Methode Sie die besten Ergebnisse erzielen!",
+      "faqs": [
+        {
+          "q": "Schädigt das Aufhellen den Zahnschmelz?",
+          "a": "Nein. Klinisch getestete und zugelassene professionelle Materialien bauen nur Pigmente ab, die Flecken verursachen."
+        },
+        {
+          "q": "Was ist die weiße Diät?",
+          "a": "Vermeiden Sie 48–72 Stunden nach der Behandlung Flecken auf Nahrungsmitteln und Getränken (Kaffee, Tee, Cola, Rotwein, Rauchen)."
+        },
+        {
+          "q": "Werden auch Kronen und Füllungen weiß?",
+          "a": "Nein – Aufheller wirken nur auf natürliches Zahngewebe."
+        },
+        {
+          "q": "Wie lange hält die Wirkung an?",
+          "a": "Je nach Lebensstil und Mundhygiene können die Ergebnisse 1–3 Jahre anhalten."
+        },
+        {
+          "q": "Ist die Behandlung schmerzhaft?",
+          "a": "Der Eingriff selbst ist schmerzlos. Für 1–2 Tage kann es vorübergehend zu einer leichten Überempfindlichkeit kommen, die jedoch von selbst verschwindet."
+        }
+      ]
+    },
+    "esztetikai-fogaszat": {
+      "heroBadge": "Strahlendes Lächeln",
+      "heroTitle": "Ästhetische Zahnheilkunde bei Crown Dental",
+      "heroDesc": "Bleaching, Veneers, Zahnsteinentfernung und Politur – wir kreieren Ihr Traumlächeln mit moderner Technologie. Weil Sie das Beste verdienen.",
+      "heroPriceLabel": "Aufhellung",
+      "heroPriceValue": "ab 35.000 HUF",
+      "problemTitle": "Das Problem: Ästhetische Mängel",
+      "problemDesc": "Verfärbte, gelbe Zähne, sichtbarer Zahnstein, kleine Risse oder ein unregelmäßiges Gebiss – all das beeinträchtigt das Selbstvertrauen. Viele Menschen verbergen ihr Lächeln.",
+      "solutionTitle": "Die Lösung: Ästhetische Zahnheilkunde",
+      "solutionDesc": "Moderne ästhetische Verfahren – professionelles Bleaching, Porzellanveneers, Zahnsteinentfernung und Politur – können die natürliche Ausstrahlung Ihres Lächelns wiederherstellen.",
+      "servicesBadge": "Unsere Leistungen",
+      "servicesTitle": "Ästhetische Lösungen",
+      "services": [
+        {
+          "title": "Professionelle Zahnaufhellung",
+          "desc": "Bis zu 8 Nuancen hellere Zähne nach einer einzigen Behandlung.",
+          "price": "ab 35.000 HUF"
+        },
+        {
+          "title": "Porzellanfurniere",
+          "desc": "Ultradünne Porzellanveneers – perfekte Form und Farbe.",
+          "price": "ab 120.000 HUF"
+        },
+        {
+          "title": "Maßstab und Politur",
+          "desc": "Ultraschall-Entkalkung und Politur für gesundes Zahnfleisch.",
+          "price": "ab 15.000 HUF"
+        },
+        {
+          "title": "Zahnfarbene Füllungen",
+          "desc": "Zur Zahnfarbe passende Kompositfüllungen – nahezu unsichtbar.",
+          "price": "ab 25.000 HUF"
+        },
+        {
+          "title": "Lächeln-Makeover",
+          "desc": "Umfassende Transformation des Lächelns: Bleaching, Veneers, Zahnumformung.",
+          "price": "Individuelles Angebot"
+        },
+        {
+          "title": "Zahnfleischkonturierung",
+          "desc": "Ästhetische Korrektur des Zahnfleischrandes für ein harmonisches Lächeln.",
+          "price": "ab 45.000 HUF"
+        }
+      ],
+      "benefitsTitle": "Schönheit liegt im Detail",
+      "benefitItems": [
+        {
+          "title": "Sichere Materialien",
+          "desc": "Wir verwenden ausschließlich hochwertige, klinisch getestete Materialien."
+        },
+        {
+          "title": "Schnelle Ergebnisse",
+          "desc": "Die meisten Eingriffe können in 1–2 Sitzungen durchgeführt werden."
+        },
+        {
+          "title": "Flexible Zahlung",
+          "desc": "Für größere Behandlungen ist eine Ratenzahlung möglich."
+        },
+        {
+          "title": "Personalisiert",
+          "desc": "Jeder Behandlungsplan wird auf Ihre individuellen Bedürfnisse zugeschnitten."
+        },
+        {
+          "title": "Natürliche Wirkung",
+          "desc": "Unser Ziel ist ein natürliches, harmonisches Erscheinungsbild."
+        },
+        {
+          "title": "Eigenes Labor",
+          "desc": "Unser eigenes Dentallabor garantiert Schnelligkeit."
+        }
+      ],
+      "processTitle": "Der Weg zum perfekten Lächeln",
+      "processSteps": [
+        {
+          "title": "Beratung",
+          "desc": "Wir lernen Ihre Ziele kennen und beurteilen den Zustand Ihrer Zähne.",
+          "time": "30 Min"
+        },
+        {
+          "title": "Behandlungsplan",
+          "desc": "Wir erstellen einen detaillierten Plan mit Preisen und Terminen.",
+          "time": "1–2 Tage"
+        },
+        {
+          "title": "Vorbereitung",
+          "desc": "Kalk und Politur sowie professionelle Reinigung.",
+          "time": "45 Min"
+        },
+        {
+          "title": "Ästhetische Behandlung",
+          "desc": "Durchführung des gewählten Verfahrens.",
+          "time": "1–3 Stunden"
+        },
+        {
+          "title": "Nachbehandlung",
+          "desc": "Tipps zur Erhaltung des Ergebnisses.",
+          "time": "Laufend"
+        }
+      ],
+      "ctaTitle": "Bereit für ein strahlendes Lächeln?",
+      "ctaDesc": "Buchen Sie eine spezialisierte Kosmetikberatung in Budapest oder Esztergom!",
+      "faqs": [
+        {
+          "q": "Wie lange hält der aufhellende Effekt an?",
+          "a": "Professionelle Bleaching-Ergebnisse halten je nach Lebensstil 1–3 Jahre."
+        },
+        {
+          "q": "Ist das Aufhellen schmerzhaft?",
+          "a": "Moderne Techniken sind im Allgemeinen schmerzlos. Es kann zu vorübergehender Empfindlichkeit kommen."
+        },
+        {
+          "q": "Wie viel kostet ein Porzellanfurnier?",
+          "a": "Porzellanveneers gibt es ab 120.000 HUF pro Zahn."
+        },
+        {
+          "q": "Wird das Ergebnis natürlich aussehen?",
+          "a": "Unser Ziel ist ein natürliches, harmonisches Erscheinungsbild abgestimmt auf Ihre Gesichtszüge."
+        },
+        {
+          "q": "Wie oft sollte Zahnstein entfernt werden?",
+          "a": "Eine professionelle Reinigung wird 1–2 Mal pro Jahr empfohlen."
+        }
+      ]
+    },
+    "foghuzas": {
+      "heroBadge": "Sanfte Pflege",
+      "heroTitle": "Schmerzfreie Zahnextraktion",
+      "heroDesc": "Schnelle und sichere Zahnentfernung mit modernsten Anästhesietechniken in stressfreier Umgebung.",
+      "heroPriceLabel": "Verfahren",
+      "heroPriceValue": "ab 25.000 HUF",
+      "problemTitle": "Das Problem: Zähne sind nicht mehr zu retten",
+      "problemDesc": "Stark kariöse, abgebrochene oder bewegliche Zähne können zu ständigen Entzündungen und Schmerzen führen und die umliegenden gesunden Zähne gefährden.",
+      "solutionTitle": "Die Lösung: Schonende Entfernung",
+      "solutionDesc": "Unser Ziel ist immer zunächst die Erhaltung der Zähne, doch wenn das nicht mehr möglich ist, entfernen wir den Zahn schnell und schonend mit modernsten Anästhetika.",
+      "servicesBadge": "Verfahren",
+      "servicesTitle": "Unsere Extraktionslösungen",
+      "services": [
+        {
+          "title": "Einfache Extraktion",
+          "desc": "Schmerzfreie und schnelle Entfernung beweglicher oder einwurzeliger Zähne, die leicht zu extrahieren sind.",
+          "price": "25.000–35.000 HUF"
+        },
+        {
+          "title": "Chirurgische Extraktion",
+          "desc": "Entfernung mehrwurzeliger, retinierter oder stark geschädigter Zähne mit chirurgischem Zugang.",
+          "price": "55.000 HUF"
+        },
+        {
+          "title": "Weisheitszahnentfernung",
+          "desc": "Fachmännische chirurgische Entfernung teilweise oder vollständig retinierter Weisheitszähne.",
+          "price": "55.000 HUF"
+        }
+      ],
+      "benefitsTitle": "Sichere Zahnextraktion",
+      "benefitItems": [
+        {
+          "title": "Schmerzfrei",
+          "desc": "Eine tiefe örtliche Betäubung garantiert, dass Sie während des Eingriffs keine Schmerzen verspüren."
+        },
+        {
+          "title": "Kurze Behandlungszeit",
+          "desc": "Die Erfahrung unserer Zahnärzte ermöglicht eine schnelle Entfernung und minimiert die Beschwerden."
+        },
+        {
+          "title": "Sanfte Technik",
+          "desc": "Wir schützen Knochen und Weichgewebe sorgfältig, damit die zukünftige Implantation reibungslos verlaufen kann."
+        },
+        {
+          "title": "Präzise Diagnose",
+          "desc": "Vor der Extraktion wird immer eine digitale Röntgenaufnahme angefertigt, um die Wurzelpositionen abzubilden."
+        }
+      ],
+      "processTitle": "So funktioniert das Verfahren",
+      "processSteps": [
+        {
+          "title": "Beratung & Diagnostik",
+          "desc": "Röntgen und Beurteilung des Zahnzustandes zur Auswahl der am besten geeigneten Extraktionsmethode.",
+          "time": "10 Min"
+        },
+        {
+          "title": "Anästhesie",
+          "desc": "Gründliche örtliche Betäubung der Zahnumgebung für eine völlig schmerzfreie Behandlung.",
+          "time": "5 Min"
+        },
+        {
+          "title": "Zahnentfernung",
+          "desc": "Schonende Entfernung des präparierten Zahnes unter größtmöglicher Schonung des umliegenden Gewebes.",
+          "time": "10–30 Min"
+        },
+        {
+          "title": "Wundversorgung und Nachsorge",
+          "desc": "Reinigung der Wunde, ggf. Nähen und ausführliche Anleitung zur häuslichen Pflege.",
+          "time": "5 Min"
+        }
+      ],
+      "ctaTitle": "Machen Sie Schluss mit Zahnschmerzen!",
+      "ctaDesc": "Unsere erfahrenen Zahnärzte helfen schnell und schmerzlos. Buchen Sie noch heute einen Termin!",
+      "faqs": [
+        {
+          "q": "Wird die Extraktion weh tun?",
+          "a": "Dank der örtlichen Betäubung verspüren Sie während des Eingriffs garantiert keine Schmerzen. Möglicherweise verspüren Sie einen leichten Druck oder eine leichte Anspannung."
+        },
+        {
+          "q": "Was kann ich nach der Extraktion essen und trinken?",
+          "a": "Es wird empfohlen, Milchprodukte, Lebensmittel mit kleinen Kernen sowie scharfe oder scharf gewürzte Speisen zu meiden."
+        },
+        {
+          "q": "Wann kann ich meine Zähne wieder putzen?",
+          "a": "Sie können und sollten Ihre Zähne noch am selben Abend putzen, meiden Sie jedoch die Entnahmestelle, um das Blutgerinnsel zu schützen."
+        },
+        {
+          "q": "Wann kann ein Implantat den extrahierten Zahn ersetzen?",
+          "a": "Wenn der Infektionsgrad es zulässt, kann das Implantat manchmal sofort eingesetzt werden. Andernfalls muss die Knochenregeneration abgewartet werden, typischerweise 3–4 Monate."
+        }
+      ]
+    },
+    "fogszabalyozas": {
+      "heroBadge": "Ästhetisches und gesundes Gebiss",
+      "heroTitle": "Moderne Kieferorthopädie",
+      "heroDesc": "Moderne kieferorthopädische Lösungen für Kinder und Erwachsene mit kephalometrischer Röntgendiagnostik vor Ort. Gerade Zähne, ein selbstbewusstes Lächeln.",
+      "heroPriceLabel": "Zahnspangen",
+      "heroPriceValue": "ab 190.000 HUF",
+      "problemTitle": "Das Problem: Enge Zähne",
+      "problemDesc": "Schiefe, enge Zähne führen nicht nur zu einem Mangel an Selbstvertrauen, sondern stellen auch ein Gesundheitsrisiko dar. In schwer zu reinigenden Lücken kann sich Plaque ansammeln, was zu Karies und Zahnfleischerkrankungen führt.",
+      "solutionTitle": "Die Lösung: Kieferorthopädische Behandlung",
+      "solutionDesc": "Die Kieferorthopädie führt die Zähne in ihre ideale Position. Das erforderliche kephalometrische Röntgen wird vor Ort durchgeführt, sodass Diagnostik und Behandlungsplanung schnell und koordiniert erfolgen können.",
+      "benefitsTitle": "Das Geheimnis eines perfekten Lächelns",
+      "benefitItems": [
+        {
+          "title": "Große Auswahl",
+          "desc": "Von traditionellen Metallspangen bis hin zu ästhetischem Saphirglas und unsichtbaren Alignern – wir bieten jede Lösung."
+        },
+        {
+          "title": "Für alle Altersgruppen",
+          "desc": "In der Kindheit steuern wir die Entwicklung; Im Erwachsenenalter korrigieren wir etablierte Probleme. Es ist nie zu spät, anzufangen!"
+        },
+        {
+          "title": "Flexible Zahlung",
+          "desc": "Wir wissen, dass Kieferorthopädie eine Investition ist. Flexible Zahlungspläne tragen zur Kostenverteilung bei."
+        },
+        {
+          "title": "Eigene Laborunterstützung",
+          "desc": "Herausnehmbare Apparaturen und Aligner werden in unserem eigenen Dentallabor hergestellt."
+        },
+        {
+          "title": "Schwerpunkt Gesichtsästhetik",
+          "desc": "Wir bewegen nicht nur Zähne – wir achten auf das harmonische Erscheinungsbild Ihres Gesichts."
+        },
+        {
+          "title": "Moderne Technologie",
+          "desc": "Digitale Planung, kephalometrisches Röntgen vor Ort und moderne Materialien tragen dazu bei, die Behandlungszeit zu verkürzen."
+        }
+      ],
+      "processTitle": "Der Weg zu einem geraden Lächeln",
+      "processSteps": [
+        {
+          "title": "Beratung & Diagnostik",
+          "desc": "Umfassende Untersuchung, Panorama-Röntgenaufnahme, kephalometrische Röntgenaufnahme vor Ort und digitaler Abdruck zur Beurteilung des Gebisses.",
+          "time": "45 Min"
+        },
+        {
+          "title": "Behandlungsplan",
+          "desc": "Wir zeigen Ihnen das erwartete Ergebnis mit einer visuellen Vorschau und besprechen Geräteart und -dauer.",
+          "time": "1 Woche"
+        },
+        {
+          "title": "Gerätemontage",
+          "desc": "Präzise und schmerzfreie Anpassung, mit Anleitung zum Tragen und Reinigen.",
+          "time": "60–90 Min"
+        },
+        {
+          "title": "Aktivierung & Check-ups",
+          "desc": "Regelmäßige (in der Regel monatliche) Kontrollen zur Einstellung des Geräts.",
+          "time": "12–24 Monate"
+        },
+        {
+          "title": "Zurückbehaltung",
+          "desc": "Nach der Entfernung der festsitzenden Apparatur stabilisieren wir das Ergebnis mit einem dünnen Retainer.",
+          "time": "Laufend"
+        }
+      ],
+      "ctaTitle": "Bereit für das perfekte Lächeln?",
+      "ctaDesc": "Warten Sie nicht länger! Fordern Sie eine Fachberatung an, um alle Ihre Optionen im Detail zu besprechen.",
+      "faqs": [
+        {
+          "q": "Ist eine kieferorthopädische Behandlung schmerzhaft?",
+          "a": "Die Anpassung selbst ist nicht schmerzhaft. Nach der Aktivierung kann 2–3 Tage lang eine leichte Spannung zu spüren sein."
+        },
+        {
+          "q": "Können Erwachsene mit der Behandlung beginnen?",
+          "a": "Absolut! Heute sind fast die Hälfte unserer Patienten Erwachsene. Für sie empfehlen wir besonders unsere ästhetischen Keramik- oder nahezu unsichtbaren Aligner-Systeme."
+        },
+        {
+          "q": "Ist für die Kieferorthopädie ein kephalometrisches Röntgen erforderlich?",
+          "a": "Ja, für eine präzise kieferorthopädische Diagnostik ist häufig ein kephalometrisches Röntgen erforderlich. Wir führen es vor Ort durch, sodass Sie kein separates Bildgebungszentrum aufsuchen müssen."
+        },
+        {
+          "q": "Wie lange dauert die Behandlung?",
+          "a": "In der Regel 1,5–2 Jahre. Kleinere ästhetische Korrekturen können in nur 6–10 Monaten durchgeführt werden."
+        },
+        {
+          "q": "Wie reinige ich das Gerät?",
+          "a": "Für festsitzende Zahnspangen empfehlen wir eine spezielle Bürste und Interdentalreiniger, die wir Ihnen bei der Anprobe ausführlich vorführen."
+        }
+      ]
+    },
+    "fogtechnikai-megoldasok": {
+      "heroBadge": "Der Motor hinter dem Lächeln",
+      "heroTitle": "Unser eigenes Dentallabor",
+      "heroDesc": "Im selben Gebäude wie unsere Zahnärzte seit 1994. Premium-Restaurationen ohne Kompromisse – Express-Prothesenreparatur in nur 1 Tag!",
+      "heroPriceLabel": "Prothesenreparatur",
+      "heroPriceValue": "In 1 Tag",
+      "teamBadge": "30 Jahre Erfahrung",
+      "teamTitle": "Erleben Sie, dass Sie sich nicht beeilen können.",
+      "teamText1": "Das Dentallabor von Crown Dental hat gestern nicht geöffnet. Seit 1994 betreiben, entwickeln und integrieren wir kontinuierlich die neuesten Technologien.",
+      "teamText2": "Unser größter Stolz ist unser Team: Einige unserer Zahntechniker-Kollegen arbeiten fast vom ersten Tag an – fast drei Jahrzehnte – mit uns zusammen.",
+      "teamFoundingLabel": "Gründungsjahr",
+      "teamProsthesesLabel": "Prothesen hergestellt",
+      "teamWhyTitle": "Warum ist ein eigenes Labor ein großer Vorteil für Patienten?",
+      "teamBenefits": [
+        {
+          "title": "Blitzschnelle Abwicklung",
+          "desc": "Kein Porto, kein tagelanger Transport zwischen Labor und Klinik."
+        },
+        {
+          "title": "Direkte Kommunikation zwischen Zahnarzt und Techniker",
+          "desc": "Der Zahnarzt kann dem Techniker sofort die individuellen Anforderungen des Patienten zeigen."
+        },
+        {
+          "title": "Persönliche Farbauswahl",
+          "desc": "Bei komplexeren Fällen kommt der Techniker persönlich vorbei, um die perfekte Farbabstimmung zu erzielen."
+        }
+      ],
+      "problemTitle": "Das Problem: kaputte Prothese, lange Wartezeit",
+      "problemDesc": "Wenn eine herausnehmbare Prothese bricht, benötigt der Patient sofortige Hilfe. Die meisten Kliniken schicken Arbeiten an externe Labore, was Wochen dauern kann.",
+      "solutionTitle": "Die Lösung: 1-Tag-Express-Reparatur",
+      "solutionDesc": "Da unsere Techniker im selben Gebäude arbeiten, können Prothesenbrüche, Risse oder Unterfütterungen innerhalb von 24 Stunden behoben werden.",
+      "servicesBadge": "Wir machen alles",
+      "servicesTitle": "Unsere Labordienstleistungen",
+      "services": [
+        {
+          "title": "Express-Prothesenreparatur",
+          "desc": "Sofortige, präzise Reparatur und Verstärkung gebrochener oder rissiger herausnehmbarer Prothesen."
+        },
+        {
+          "title": "Kronen und Brücken aus Zirkonoxid",
+          "desc": "Metallfreie, extrem langlebige Premium-Restaurationen mit der CAD/CAM-Technologie."
+        },
+        {
+          "title": "Metallkeramische Restaurationen",
+          "desc": "Traditionelle, extrem stabile und belastbare Kronen und Brücken mit Keramikverblendung."
+        },
+        {
+          "title": "Implantat-Abutments",
+          "desc": "Maßgeschneiderte Titan- und Zirkonoxid-Abutments für implantierte Implantate mit Mikrometergenauigkeit."
+        },
+        {
+          "title": "Prothesenunterfütterung",
+          "desc": "Wenn sich Ihre alte Prothese durch Zahnfleischrückgang gelockert hat, passen wir sie schnell wieder an die aktuelle Anatomie an."
+        },
+        {
+          "title": "Temporäre Restaurierungen",
+          "desc": "Niemand geht ohne Zahn! Wir stellen sofort provisorische Kronen zur Verfügung, bis die endgültige Arbeit abgeschlossen ist."
+        }
+      ],
+      "ctaTitle": "Gebrochene Prothese? Warten Sie nicht wochenlang!",
+      "ctaDesc": "Bringen Sie es zu uns und unser hauseigenes Labor wird es in nur einem Arbeitstag reparieren oder neu ausrichten. Jetzt buchen!",
+      "faqTitle": "Häufig gestellte Fragen zum Labor",
+      "faqs": [
+        {
+          "q": "Ist die Prothesenreparatur wirklich in einem Tag erledigt?",
+          "a": "In den meisten Fällen ja! Eine einfache Pausenreparatur, die morgens abgegeben wird, ist in der Regel noch am selben Nachmittag oder spätestens am nächsten Tag fertig."
+        },
+        {
+          "q": "Kann ich den Zahntechniker während der Behandlung treffen?",
+          "a": "Ja – das ist einer der größten Vorteile von Crown Dental! Bei größeren, ästhetisch anspruchsvollen Arbeiten kommt der Techniker persönlich in die Klinik."
+        },
+        {
+          "q": "Stellen Sie CAD/CAM-Prothesen her?",
+          "a": "Natürlich. Unser Labor ist mit modernen computergestützten Design- und Fräseinheiten ausgestattet, die mikrometergenaue Zirkonoxid- und Titanarbeiten herstellen können."
+        },
+        {
+          "q": "Was bedeutet Prothesenunterfütterung?",
+          "a": "Im Laufe der Jahre bilden sich Zahnfleisch und Kieferknochen zurück, wodurch sich die Prothese lockert. Bei der Unterfütterung wird die Innenfläche des bestehenden Zahnersatzes mit einer neuen Schicht versehen, sodass dieser wieder stabil sitzt."
+        }
+      ]
+    },
+    "gockutatas": {
+      "heroBadge": "Präzisionsdiagnostik",
+      "heroTitle": "Test auf zahnärztliche fokale Infektionen",
+      "heroDesc": "Decken Sie versteckte Entzündungen mit moderner 3D-CT, Panorama-Röntgen- und kephalometrischer Röntgendiagnostik auf, damit Sie wieder gesund werden.",
+      "heroPriceLabel": "Untersuchung & Plan",
+      "heroPriceValue": "10.000 HUF",
+      "problemTitle": "Das Problem: Unsichtbare Krankheiten",
+      "problemDesc": "Viele Menschen wissen nicht, dass chronische Müdigkeit, Haarausfall, Gelenkschmerzen oder Hautprobleme oft auf eine versteckte, symptomlose Zahnherdinfektion zurückzuführen sind. Da sie selten lokale Schmerzen verursachen, sind sie schwer zu erkennen.",
+      "solutionTitle": "Die Lösung: Moderne Bildgebung",
+      "solutionDesc": "Unsere Klinik verfügt über moderne Panorama-Röntgen-, Fernröntgen- und 3D-CT-Geräte. Wir kartieren die Mundhöhle auf den Zehntelmillimeter genau.",
+      "servicesBadge": "Diagnose",
+      "servicesTitle": "Unsere Untersuchungsmethoden",
+      "services": [
+        {
+          "title": "Umfassende Beratung",
+          "desc": "Körperliche Untersuchung, Besprechung der Symptome und Kartierung von Herden in der Mundhöhle.",
+          "price": "10.000 HUF"
+        },
+        {
+          "title": "Panoramaröntgen (OPG)",
+          "desc": "Hervorragender Überblick über alle Zähne, Kieferknochen und den Boden der Nebenhöhlen.",
+          "price": "6.000 HUF"
+        },
+        {
+          "title": "Kephalometrisches Röntgen",
+          "desc": "Eine seitliche Schädelröntgenaufnahme zur kieferorthopädischen Diagnostik und präzisen Behandlungsplanung.",
+          "price": "10.000 HUF"
+        },
+        {
+          "title": "3D-DVT-Scan",
+          "desc": "Dreidimensionale, hochpräzise Bildgebung, die selbst verborgenste Zysten und Entzündungen sichtbar macht.",
+          "price": "In der Klinik"
+        }
+      ],
+      "benefitsTitle": "Zuverlässige Diagnose",
+      "benefitItems": [
+        {
+          "title": "Sofortige Ergebnisse",
+          "desc": "Röntgen- und CT-Bilder werden in Sekundenschnelle erstellt; Die Auswertung erfolgt direkt vor Ort."
+        },
+        {
+          "title": "Ganzheitlicher Ansatz",
+          "desc": "Wir konzentrieren uns nicht nur auf die Zähne, sondern untersuchen den gesamten Körper im Rahmen fokaler Infektionen."
+        },
+        {
+          "title": "Schmerzlos",
+          "desc": "Die Untersuchung und Bildgebung ist ein 100 % schmerz- und beschwerdefreier Prozess."
+        },
+        {
+          "title": "One-Stop-Lösung",
+          "desc": "Sobald wir den Herd gefunden haben, können wir ihn sofort in unserer Klinik behandeln."
+        }
+      ],
+      "processTitle": "Wie läuft die Prüfung ab?",
+      "processSteps": [
+        {
+          "title": "Beratung",
+          "desc": "Wir besprechen Ihre bestehenden Beschwerden, Symptome und Ihre Krankengeschichte.",
+          "time": "15 Min"
+        },
+        {
+          "title": "Bildgebung",
+          "desc": "Wir erstellen die notwendigen Aufnahmen (Panorama-Röntgen, Fernröntgen oder bei Indikation auch 3D-CT).",
+          "time": "5 Min"
+        },
+        {
+          "title": "Fachanalyse",
+          "desc": "Der Arzt analysiert die Bilder im Detail und untersucht die verdächtigen Zähne körperlich.",
+          "time": "15 Min"
+        },
+        {
+          "title": "Behandlungsplan",
+          "desc": "Wenn ein Herd gefunden wird, erstellen wir einen detaillierten schriftlichen Plan für dessen Beseitigung.",
+          "time": "10 Min"
+        }
+      ],
+      "ctaTitle": "Lassen Sie uns gemeinsam das Problem aufdecken!",
+      "ctaDesc": "Vereinbaren Sie einen Termin für eine schnelle und schmerzfreie Untersuchung einer Herdinfektion und lassen Sie uns die versteckten Ursachen finden!",
+      "faqs": [
+        {
+          "q": "Was genau ist eine Zahnherdinfektion?",
+          "a": "Bei einer fokalen Infektion handelt es sich um eine chronische, symptomlose Entzündungsstelle im Mundraum, von der aus Bakterien in die Blutbahn gelangen und an anderen Stellen im Körper (Gelenke, Herz, Haut) Erkrankungen verursachen."
+        },
+        {
+          "q": "Was sind die häufigsten Symptome einer fokalen Infektionskrankheit?",
+          "a": "Zu den häufigen Symptomen gehören fleckiger Haarausfall, Gelenkschmerzen, rheumatische Beschwerden, unerklärliche Müdigkeit, Hautausschläge und wiederkehrende Sinusitis."
+        },
+        {
+          "q": "Muss ich mit leerem Magen kommen?",
+          "a": "Nein – für die Untersuchung auf zahnärztliche Herdinfektionen oder für Röntgen-/CT-Bildgebung ist kein Fasten erforderlich."
+        },
+        {
+          "q": "Kann Röntgen eine fokale Infektion zuverlässig erkennen?",
+          "a": "2D-Panorama-Röntgenaufnahmen zeigen die meisten Probleme. In bestimmten komplexen Fällen kann ein 3D-DVT-Scan erforderlich sein."
+        }
+      ]
+    },
+    "gyerekfogaszat": {
+      "heroBadge": "Kinderzentrierte Betreuung",
+      "heroTitle": "Kinderzahnheilkunde ohne Angst",
+      "heroDesc": "Wo der Zahnarztstuhl ein magischer Thron und die Behandlung ein lächelndes Abenteuer ist. Lassen Sie uns gemeinsam das Selbstvertrauen Ihres Kindes stärken!",
+      "heroPriceLabel": "Kinderbehandlungen",
+      "heroPriceValue": "ab 15.000 HUF",
+      "parentsBadge": "Für Eltern",
+      "parentsTitle": "Ein Zahntrauma im Kindesalter ist vermeidbar",
+      "problemTitle": "Das Problem: Angst und Aufschub",
+      "problemDesc": "Viele Kinder haben aufgrund früherer schlechter Erfahrungen Angst vor dem Zahnarzt. Aus Angst verzögern Eltern die Kontrolluntersuchungen, sodass Milchkaries schnell schlimmer wird.",
+      "solutionTitle": "Die Lösung: Empathie und Prävention",
+      "solutionDesc": "In unserer Klinik führen wir Kinder mit großer Geduld und spielerischer Art an die Instrumente heran. Eine positive erste Erfahrung prägt das Leben.",
+      "kidsSectionBadge": "Zeigen Sie das dem Kleinen!",
+      "kidsSectionTitle": "Hallo! Wir können es kaum erwarten, Sie kennenzulernen!",
+      "kidsFunFacts": [
+        {
+          "title": "Der magische Thron",
+          "desc": "Stellen Sie sich vor – unser Behandlungsstuhl funktioniert wie ein Raumschiff! Es geht hoch, runter und ist wirklich bequem."
+        },
+        {
+          "title": "Der Zauberstab",
+          "desc": "Wir haben hier keine gruseligen Maschinen. Mit einem winzigen Zauberstab blasen wir die Zahngrummel weg, die sich auf Ihren Zähnen verstecken."
+        },
+        {
+          "title": "Superhelden-Geschenk",
+          "desc": "Am Ende jeder Untersuchung erhält jedes mutige Kind ein Superhelden-Geschenk!"
+        }
+      ],
+      "servicesBadge": "Behandlungen",
+      "servicesTitle": "Unsere pädiatrischen Dentallösungen",
+      "services": [
+        {
+          "title": "Fissurenversiegelung",
+          "desc": "Versiegelung der tiefen Backenzahnspalten, um die Ansiedlung von Bakterien zu verhindern.",
+          "price": "15.000 HUF / Zahn"
+        },
+        {
+          "title": "Milchzahnfüllung",
+          "desc": "Auch Milchzähne müssen behandelt werden! Schmerzfreie, ästhetische Füllungen für die Kleinsten.",
+          "price": "15.000 HUF"
+        },
+        {
+          "title": "Sanfte Milchzahnextraktion",
+          "desc": "Nach einem magischen Betäubungsgel ist der Problemzahn blitzschnell entfernt.",
+          "price": "ab 10.000 HUF"
+        },
+        {
+          "title": "Kieferorthopädische Beratung",
+          "desc": "Zur Früherkennung lohnt es sich, die Zahnentwicklung bereits im Alter von 7 bis 8 Jahren zu überprüfen.",
+          "price": "10.000 HUF"
+        }
+      ],
+      "ctaTitle": "Machen wir Zahnheilkunde zu einem großartigen Erlebnis!",
+      "ctaDesc": "Laden Sie Ihr Kind noch heute zu einem freundlichen Kennenlerngespräch ein!",
+      "faqs": [
+        {
+          "q": "Welches Alter eignet sich am besten für den ersten Zahnarztbesuch?",
+          "a": "Idealerweise sollte der erste Besuch im Alter von etwa 2–3 Jahren stattfinden, um eine freundliche Einführung zu ermöglichen."
+        },
+        {
+          "q": "Müssen auch Milchzähne gefüllt werden?",
+          "a": "Ja! Verfallene Milchzähne verursachen Schmerzen und können die Knospen bleibender Zähne schädigen."
+        },
+        {
+          "q": "Was ist, wenn das Kind Angst hat?",
+          "a": "Wir erzwingen nie etwas. Wir arbeiten mit Geduld, Spielzeug und Ablenkung."
+        },
+        {
+          "q": "Was ist eine Fissurenversiegelung?",
+          "a": "Schmerzlose Füllung der tiefen Fissuren bleibender Backenzähne zur Kariesprophylaxe."
+        }
+      ]
+    },
+    "szajsebeszet": {
+      "heroBadge": "Sicherheit und Fachwissen",
+      "heroTitle": "Oralchirurgie schmerzfrei",
+      "heroDesc": "Weisheitszahnentfernung, komplexe Extraktionen und apikale Resektion – völlig sicher, mit modernen Anästhesietechniken.",
+      "heroPriceLabel": "Extraktion",
+      "heroPriceValue": "ab 25.000 HUF",
+      "problemTitle": "Das Problem: Infektionen, schmerzhafte Zähne",
+      "problemDesc": "Teilweise durchgebrochene Weisheitszähne, die in die falsche Richtung wachsen, impaktierte Wurzeln oder chronische Entzündungen können starke Schmerzen und fokale Infektionen verursachen. Viele Menschen verschieben die Behandlung aus Angst vor Schmerzen.",
+      "solutionTitle": "Die Lösung: Fachgerechte Oralchirurgie",
+      "solutionDesc": "Moderne Anästhesietechniken garantieren einen schmerzfreien Eingriff. Unsere erfahrenen Fachärzte führen auch die komplexesten oralchirurgischen Eingriffe schonend durch.",
+      "servicesBadge": "Verfahren",
+      "servicesTitle": "Unsere Lösungen für die Oralchirurgie",
+      "services": [
+        {
+          "title": "Einfache Extraktion",
+          "desc": "Schonende Entfernung stark geschädigter, nicht mehr zu rettender Zähne unter Vollnarkose.",
+          "price": "ab 25.000 HUF"
+        },
+        {
+          "title": "Weisheitszahnentfernung",
+          "desc": "Fachmännische chirurgische Entfernung selbst vollständig retinierter Weisheitszähne.",
+          "price": "55.000 HUF"
+        },
+        {
+          "title": "Apikale Resektion",
+          "desc": "Chirurgische Entfernung der entzündeten Wurzelspitze, um den problematischen Zahn zu retten.",
+          "price": "55.000 HUF"
+        },
+        {
+          "title": "Knochentransplantation",
+          "desc": "Knochenaufbau vor der Implantation, wenn der Kieferknochen für ein Implantat nicht ausreicht.",
+          "price": "190.000 HUF"
+        }
+      ],
+      "benefitsTitle": "Sichere Oralchirurgie",
+      "benefitItems": [
+        {
+          "title": "Schmerzfrei",
+          "desc": "Wir verwenden moderne Lokalanästhetika, sodass selbst die komplexeste Operation schmerzfrei ist."
+        },
+        {
+          "title": "Erfahrene Chirurgen",
+          "desc": "Unser Kieferchirurg hat Tausende erfolgreicher Eingriffe durchgeführt und garantiert so maximale Sicherheit."
+        },
+        {
+          "title": "Moderne 3D-CT-Diagnostik",
+          "desc": "Die Eingriffe werden auf Basis der 3D-DVT-Bildgebung mit einer Genauigkeit von zehntel Millimetern geplant."
+        },
+        {
+          "title": "Sicherheit und Sterilität",
+          "desc": "Um Infektionen vorzubeugen, wenden wir in unseren Kliniken strengste Hygienestandards an."
+        }
+      ],
+      "processSteps": [
+        {
+          "title": "Diagnose",
+          "desc": "Panorama-Röntgen oder 3D-CT, um die genaue Position von Wurzeln und Nerven zu sehen.",
+          "time": "15 Min"
+        },
+        {
+          "title": "Anästhesie",
+          "desc": "Es wird eine Lokalanästhesie mit maximaler Wirksamkeit angewendet, die auf die volle Wirkung wartet.",
+          "time": "5–10 Min"
+        },
+        {
+          "title": "Das Verfahren",
+          "desc": "Sanfte Durchführung der geplanten oralen Operation unter Schonung des gesunden Gewebes.",
+          "time": "20–60 Min"
+        },
+        {
+          "title": "Wundverschluss (falls erforderlich)",
+          "desc": "Bei der chirurgischen Entfernung oder Resektion wird die Wunde genäht, um die Heilung zu beschleunigen.",
+          "time": "5 Min"
+        },
+        {
+          "title": "Nahtentfernung und Kontrolle",
+          "desc": "Wir laden Sie eine Woche später wieder zu einer schnellen, schmerzfreien Nahtentfernung und Kontrolluntersuchung ein.",
+          "time": "10 Min"
+        }
+      ],
+      "ctaTitle": "Bereit für eine schmerzfreie Lösung?",
+      "ctaDesc": "Leiden Sie nicht länger unter schmerzenden Zähnen! Buchen Sie eine Fachberatung und vertrauen Sie unseren erfahrenen Chirurgen.",
+      "faqs": [
+        {
+          "q": "Wie sehr tut eine Zahnextraktion oder eine orale Operation weh?",
+          "a": "Gar nicht! Wir verwenden modernste Lokalanästhetika, sodass Sie während des Eingriffs nur einen leichten Druck oder eine leichte Spannung spüren."
+        },
+        {
+          "q": "Wie lange dauert die Genesung nach einer Weisheitszahnoperation?",
+          "a": "Die Wunde heilt im Allgemeinen innerhalb weniger Tage; Die Nähte werden eine Woche nach der Operation entfernt."
+        },
+        {
+          "q": "Was kann ich nach einer Extraktion essen?",
+          "a": "Vermeiden Sie in den Tagen nach dem Eingriff scharfe, scharfe, kleinkörnige Lebensmittel und Milchprodukte."
+        },
+        {
+          "q": "Warum ist eine 3D-CT für die Oralchirurgie notwendig?",
+          "a": "Mit der 3D-CT können wir Zahnwurzeln, Nebenhöhlen und Hauptnervenbahnen millimetergenau erkennen."
+        }
+      ]
+    }
+  }
+}

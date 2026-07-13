@@ -2,9 +2,10 @@ import type { Metadata } from 'next';
 import huMessages from '@/messages/hu.json';
 import enMessages from '@/messages/en.json';
 import skMessages from '@/messages/sk.json';
+import deMessages from '@/messages/de.json';
 
 export const SITE_URL = 'https://www.crowndental.hu';
-export const SUPPORTED_LOCALES = ['hu', 'en', 'sk'] as const;
+export const SUPPORTED_LOCALES = ['hu', 'en', 'sk', 'de'] as const;
 
 export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
 
@@ -36,12 +37,14 @@ const messagesByLocale = {
   hu: huMessages,
   en: enMessages,
   sk: skMessages,
+  de: deMessages,
 };
 
 const openGraphLocales: Record<SupportedLocale, string> = {
   hu: 'hu_HU',
   en: 'en_US',
   sk: 'sk_SK',
+  de: 'de_DE',
 };
 
 export function normalizeLocale(locale: string): SupportedLocale {
@@ -64,6 +67,7 @@ export function languageAlternates(path = ''): Record<string, string> {
     hu: localizedUrl('hu', path),
     en: localizedUrl('en', path),
     sk: localizedUrl('sk', path),
+    de: localizedUrl('de', path),
     'x-default': localizedUrl('hu', path),
   };
 }
@@ -157,6 +161,11 @@ export function buildHomeMetadata(locale: string): Metadata {
       description: 'Moderná zubná klinika v centre Ostrihomu s vlastným laboratóriom, víkendovými termínmi a online rezerváciou pre pacientov zo Štúrova a južného Slovenska.',
       keywords: ['zubár Ostrihom', 'zubná klinika Ostrihom', 'zubár Maďarsko', 'zubár pri Štúrove'],
     },
+    de: {
+      title: 'Crown Dental Esztergom | Zahnarztpraxis mit eigenem Dentallabor',
+      description: 'Moderne Zahnmedizin im Zentrum von Esztergom mit eigenem Dentallabor, Wochenendterminen und Online-Terminbuchung für deutschsprachige Patienten.',
+      keywords: ['Zahnarzt Esztergom', 'Zahnarzt Ungarn', 'Zahnklinik Esztergom', 'Crown Dental Esztergom'],
+    },
   };
 
   return buildLocalizedMetadata({ locale: normalizedLocale, ...content[normalizedLocale] });
@@ -180,6 +189,11 @@ export function buildTreatmentListingMetadata(locale: string): Metadata {
       description: 'Prehľadné ceny ošetrení v Ostrihome: implantáty, korunky, ortodoncia, protézy, chirurgia a diagnostika s vlastným zubnotechnickým laboratóriom.',
       keywords: ['zubár Ostrihom cenník', 'zubné ošetrenie Maďarsko ceny', 'zubná klinika Ostrihom'],
     },
+    de: {
+      title: 'Zahnbehandlungen und Preise in Esztergom | Crown Dental',
+      description: 'Transparente Preise für Implantate, Kronen, Kieferorthopädie, Zahnersatz, Oralchirurgie und Diagnostik in Esztergom – mit eigenem Dentallabor.',
+      keywords: ['Zahnarzt Esztergom Preise', 'Zahnbehandlung Ungarn Preise', 'Zahnklinik Esztergom'],
+    },
   };
 
   return buildLocalizedMetadata({
@@ -202,16 +216,19 @@ export function buildTreatmentMetadata(locale: string, slug: TreatmentSlug): Met
     hu: `${treatment.heroTitle} Esztergomban | Crown Dental`,
     en: `${treatment.heroTitle} in Esztergom | Crown Dental`,
     sk: `${treatment.heroTitle} v Ostrihome | Crown Dental`,
+    de: `${treatment.heroTitle} in Esztergom | Crown Dental`,
   };
   const localLead: Record<SupportedLocale, string> = {
     hu: `${treatment.heroTitle} Esztergomban, a Crown Dental saját fogtechnikai laborral működő rendelőjében.`,
     en: `${treatment.heroTitle} at Crown Dental Esztergom, supported by our in-house dental laboratory.`,
     sk: `${treatment.heroTitle} v Crown Dental Ostrihom, s podporou vlastného zubnotechnického laboratória.`,
+    de: `${treatment.heroTitle} bei Crown Dental Esztergom, unterstützt durch unser eigenes Dentallabor.`,
   };
   const keywordBase: Record<SupportedLocale, string[]> = {
     hu: [`${treatment.heroTitle} Esztergom`, 'fogorvos Esztergom', 'fogászat Esztergom'],
     en: [`${treatment.heroTitle} Esztergom`, 'dentist Esztergom', 'dental clinic Hungary'],
     sk: [`${treatment.heroTitle} Ostrihom`, 'zubár Ostrihom', 'zubná klinika Ostrihom'],
+    de: [`${treatment.heroTitle} Esztergom`, 'Zahnarzt Esztergom', 'Zahnklinik Ungarn'],
   };
 
   return buildLocalizedMetadata({
@@ -247,6 +264,7 @@ export function buildBreadcrumbJsonLd(locale: string, path: string, currentName:
     hu: { home: 'Főoldal', treatments: 'Kezelések és árak', blog: 'Fogászati tudástár' },
     en: { home: 'Home', treatments: 'Treatments and prices', blog: 'Dental knowledge base' },
     sk: { home: 'Domov', treatments: 'Ošetrenia a ceny', blog: 'Dentálna poradňa' },
+    de: { home: 'Startseite', treatments: 'Behandlungen und Preise', blog: 'Zahnmedizinischer Ratgeber' },
   };
   const items = [
     { '@type': 'ListItem', position: 1, name: labels[normalizedLocale].home, item: localizedUrl(normalizedLocale) },

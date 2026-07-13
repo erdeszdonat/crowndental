@@ -6,7 +6,7 @@ import { notFound } from 'next/navigation';
 import ClientLayout from "./ClientLayout";
 import { SITE_URL, normalizeLocale } from '@/lib/seo';
 
-const locales = ['hu', 'en', 'sk'];
+const locales = ['hu', 'en', 'sk', 'de'];
 
 type Props = {
   children: React.ReactNode;
@@ -21,14 +21,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     hu: 'Crown Dental Esztergom | Fogászat saját laborral',
     en: 'Crown Dental Esztergom | Dentistry with an in-house laboratory',
     sk: 'Crown Dental Ostrihom | Zubná klinika s vlastným laboratóriom',
+    de: 'Crown Dental Esztergom | Zahnarztpraxis mit eigenem Dentallabor',
   };
   const descriptions: Record<string, string> = {
     hu: 'Modern fogászati ellátás Esztergomban saját fogtechnikai laborral, hétvégi rendelés és online időpontkérés magyar és szlovák pácienseknek.',
     en: 'Modern dental care in Esztergom with an in-house laboratory, weekend appointments and online booking.',
     sk: 'Moderná zubná klinika v Ostrihome s vlastným laboratóriom, víkendovými termínmi a online rezerváciou.',
+    de: 'Moderne Zahnmedizin in Esztergom mit eigenem Dentallabor, Wochenendterminen und Online-Terminbuchung.',
   };
 
-  const localeMap: Record<string, string> = { hu: 'hu_HU', en: 'en_US', sk: 'sk_SK' };
+  const localeMap: Record<string, string> = { hu: 'hu_HU', en: 'en_US', sk: 'sk_SK', de: 'de_DE' };
 
   return {
     metadataBase: new URL(SITE_URL),
@@ -57,7 +59,7 @@ const organizationJsonLd = {
       '@id': `${SITE_URL}/#organization`,
       name: 'Crown Dental',
       legalName: 'Crown Dental Praxis és Labor Fogászati Kft.',
-      alternateName: ['Crown Dental Esztergom', 'Crown Dental Ostrihom'],
+      alternateName: ['Crown Dental Esztergom', 'Crown Dental Ostrihom', 'Crown Dental Zahnarztpraxis Esztergom'],
       url: SITE_URL,
       logo: { '@type': 'ImageObject', url: `${SITE_URL}/logo.webp` },
       image: `${SITE_URL}/og-image.jpg`,
@@ -76,7 +78,7 @@ const organizationJsonLd = {
         '@type': 'ContactPoint',
         telephone: '+36705646837',
         contactType: 'appointments',
-        availableLanguage: ['hu', 'sk', 'en'],
+        availableLanguage: ['hu', 'sk', 'en', 'de'],
         areaServed: ['HU', 'SK'],
       },
       sameAs: [
@@ -92,7 +94,7 @@ const organizationJsonLd = {
       url: SITE_URL,
       name: 'Crown Dental',
       publisher: { '@id': `${SITE_URL}/#organization` },
-      inLanguage: ['hu', 'sk', 'en'],
+      inLanguage: ['hu', 'sk', 'en', 'de'],
     },
   ],
 };

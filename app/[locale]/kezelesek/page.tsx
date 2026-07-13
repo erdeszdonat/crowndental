@@ -188,7 +188,7 @@ function hufToEur(priceStr: string): string {
 function PriceListSection() {
   const t = useTranslations('treatments');
   const locale = useLocale();
-  const showEur = locale === 'en' || locale === 'sk';
+  const showEur = locale === 'en' || locale === 'sk' || locale === 'de';
   // @ts-ignore
   const priceCategories = t.raw('priceCategories') as Array<{ id: string; title: string; items: Array<{ name: string; price: string; highlight?: boolean }> }>;
   return (

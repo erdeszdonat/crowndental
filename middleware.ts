@@ -2,7 +2,7 @@ import createMiddleware from 'next-intl/middleware';
 
 export default createMiddleware({
   // A támogatott nyelvek listája
-  locales: ['hu', 'en', 'sk'],
+  locales: ['hu', 'en', 'sk', 'de'],
 
   // Alapértelmezett nyelv – az URL prefixe nem jelenik meg (pl. / = magyar)
   defaultLocale: 'hu',

@@ -116,7 +116,7 @@ export default function BlogPostClient({ post }: { post: any }) {
   const t = useTranslations('blog');
   const locale = useLocale();
   const p = locale === 'hu' ? '' : `/${locale}`;
-  const dateLocale = locale === 'sk' ? 'sk-SK' : locale === 'en' ? 'en-GB' : 'hu-HU';
+  const dateLocale = locale === 'sk' ? 'sk-SK' : locale === 'en' ? 'en-GB' : locale === 'de' ? 'de-DE' : 'hu-HU';
 
   if (!post) return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -143,14 +143,14 @@ export default function BlogPostClient({ post }: { post: any }) {
             <div className="mb-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-600">
               {post.authorName && (
                 <span>
-                  {locale === 'sk' ? 'Autor' : locale === 'en' ? 'Author' : 'Szerző'}:{' '}
+                  {locale === 'sk' ? 'Autor' : locale === 'en' ? 'Author' : locale === 'de' ? 'Autor' : 'Szerző'}:{' '}
                   <strong className="text-gray-900">{post.authorName}</strong>
                   {post.authorRole ? ` · ${post.authorRole}` : ''}
                 </span>
               )}
               {post.medicalReviewerName && (
                 <span>
-                  {locale === 'sk' ? 'Odborne skontroloval' : locale === 'en' ? 'Medically reviewed by' : 'Orvos-szakmailag ellenőrizte'}:{' '}
+                  {locale === 'sk' ? 'Odborne skontroloval' : locale === 'en' ? 'Medically reviewed by' : locale === 'de' ? 'Medizinisch geprüft von' : 'Orvos-szakmailag ellenőrizte'}:{' '}
                   <strong className="text-gray-900">{post.medicalReviewerName}</strong>
                   {post.medicalReviewerRole ? ` · ${post.medicalReviewerRole}` : ''}
                 </span>

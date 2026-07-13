@@ -23,6 +23,10 @@ const metadataByLocale: Record<SupportedLocale, { title: string; description: st
     title: 'Práca v zubnej klinike v Ostrihome | Crown Dental',
     description: 'Pridajte sa k tímu Crown Dental v Ostrihome. Moderná klinika, vlastné zubnotechnické laboratórium a možnosti odborného rastu.',
   },
+  de: {
+    title: 'Karriere in der Zahnmedizin in Esztergom | Crown Dental',
+    description: 'Werden Sie Teil des Teams von Crown Dental Esztergom: moderne Praxis, eigenes Dentallabor und Möglichkeiten zur fachlichen Weiterentwicklung.',
+  },
 };
 
 export function generateMetadata({ params }: CareerPageProps): Metadata {
@@ -46,7 +50,7 @@ export default function CareerPage({ params }: CareerPageProps) {
   const breadcrumbJsonLd = buildBreadcrumbJsonLd(
     locale,
     'karrier',
-    locale === 'sk' ? 'Kariéra' : locale === 'en' ? 'Careers' : 'Karrier',
+    locale === 'sk' ? 'Kariéra' : locale === 'en' ? 'Careers' : locale === 'de' ? 'Karriere' : 'Karrier',
   );
 
   return (

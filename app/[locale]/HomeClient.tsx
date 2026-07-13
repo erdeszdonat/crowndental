@@ -53,12 +53,13 @@ const compressImage = (file: File): Promise<File> =>
 
 // PDF builder
 function buildPDF(result: any, name: string, phone: string, email: string, nickname: string, locale: string) {
-  const date = new Date().toLocaleDateString(locale === 'sk' ? 'sk-SK' : locale === 'en' ? 'en-GB' : 'hu-HU', { year:'numeric', month:'long', day:'numeric' });
+  const date = new Date().toLocaleDateString(locale === 'sk' ? 'sk-SK' : locale === 'en' ? 'en-GB' : locale === 'de' ? 'de-DE' : 'hu-HU', { year:'numeric', month:'long', day:'numeric' });
   const fmt = (n: number) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' HUF';
   const L: Record<string, Record<string, string>> = {
     hu: { title:'Személyre szabott árajánlat', savings:'Az Ön megtakarítása', breakdown:'Kezelések részletezése', treatment:'Kezelés', other:'Másik árajánlat', crown:'Crown Dental', saving:'Megtakarítás', total:'Összesen', sig1:'Páciens aláírása', sig2:'Kezelőorvos aláírása és pecsétje', f1:'Ez egy automatikusan generált árajánlat.', f2:'Az árajánlat a kiállítás napjától számított 30 napig érvényes.', tag:'Saját labor, kiemelkedő minőség, elérhető árak.' },
     en: { title:'Personalised Quote', savings:'Your Savings', breakdown:'Treatment Breakdown', treatment:'Treatment', other:'Other Quote', crown:'Crown Dental', saving:'Saving', total:'Total', sig1:'Patient signature', sig2:"Dentist's signature & stamp", f1:'This is an automatically generated quote.', f2:'Valid for 30 days from the date of issue.', tag:'Own lab, outstanding quality, affordable prices.' },
     sk: { title:'Individuálna cenová ponuka', savings:'Vaša úspora', breakdown:'Prehľad ošetrení', treatment:'Ošetrenie', other:'Iná ponuka', crown:'Crown Dental', saving:'Úspora', total:'Celkom', sig1:'Podpis pacienta', sig2:'Podpis a pečiatka lekára', f1:'Toto je automaticky vygenerovaná cenová ponuka.', f2:'Platnosť 30 dní od vystavenia.', tag:'Vlastné laboratórium, vynikajúca kvalita, dostupné ceny.' },
+    de: { title:'Persönliches Angebot', savings:'Ihre Ersparnis', breakdown:'Behandlungsübersicht', treatment:'Behandlung', other:'Anderes Angebot', crown:'Crown Dental', saving:'Ersparnis', total:'Gesamt', sig1:'Unterschrift des Patienten', sig2:'Unterschrift und Stempel des Zahnarztes', f1:'Dieses Angebot wurde automatisch erstellt.', f2:'Gültig für 30 Tage ab Ausstellungsdatum.', tag:'Eigenes Labor, ausgezeichnete Qualität, faire Preise.' },
   };
   const l = L[locale] ?? L.hu;
   const rows = result.items.map((item: any, i: number) => {
@@ -165,7 +166,7 @@ function HeroSlider({ images }: { images: HomeSanityImages['hero'] }) {
                 <Sparkles className="w-4 h-4" /> {slideData[current]?.tag}
               </div>
               <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white mb-8 leading-[0.95] tracking-tight">
-                {slideData[current]?.titleTop}<br />
+                {slideData[current]?.titleTop}{' '}<br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-cyan-300">{slideData[current]?.titleBottom}</span>
               </h1>
               <p className="text-lg sm:text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed max-w-2xl font-light">{slideData[current]?.subtitle}</p>
@@ -234,7 +235,7 @@ function LocationSelector({ locations }: { locations: HomeSanityImages['location
           <motion.div initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}>
             <span className="text-sky-600 font-bold uppercase tracking-[0.2em] text-sm mb-4 block">{t('label')}</span>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-6 leading-tight">
-              {t('title')}<br />
+              {t('title')}{' '}<br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-cyan-500">{t('titleHighlight')}</span>
             </h2>
             <p className="text-xl text-gray-500 font-light max-w-2xl mx-auto">{t('subtitle')}</p>
@@ -299,7 +300,7 @@ function StatsSection() {
           <motion.div initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}>
             <span className="text-sky-600 font-bold uppercase tracking-[0.2em] text-sm mb-4 block">{t('label')}</span>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-6 leading-tight">
-              {t('title')}<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-cyan-500">{t('titleHighlight')}</span>
+              {t('title')}{' '}<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-cyan-500">{t('titleHighlight')}</span>
             </h2>
           </motion.div>
         </div>
@@ -369,7 +370,8 @@ function QuoteAnalyzerSection() {
 
   const downloadPDF = () => {
     if (!result) return;
-    const html = buildPDF(result, formData.name, formData.phone, formData.email, formData.nickname, locale);
+    const signaturesLabel = locale === 'de' ? 'Unterschriften' : locale === 'sk' ? 'Podpisy' : locale === 'hu' ? 'Aláírások' : 'Signatures';
+    const html = buildPDF(result, formData.name, formData.phone, formData.email, formData.nickname, locale).replace('Signatures', signaturesLabel);
     const isApple = /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1)||/^((?!chrome|android).)*safari/i.test(navigator.userAgent);
     if (isApple) {
       const w = window.open('','_blank');
@@ -553,7 +555,7 @@ function FeaturedPricesSection({ sanityImages }: { sanityImages: HomeSanityImage
           <motion.div initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}>
             <span className="text-sky-600 font-bold uppercase tracking-[0.2em] text-sm mb-4 block">{t('label')}</span>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-6 leading-tight">
-              {t('title')}<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-cyan-500">{t('titleHighlight')}</span>
+              {t('title')}{' '}<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-cyan-500">{t('titleHighlight')}</span>
             </h2>
             <p className="text-xl text-gray-500 max-w-2xl mx-auto font-light">{t('subtitle')}</p>
           </motion.div>

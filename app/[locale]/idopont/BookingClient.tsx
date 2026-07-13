@@ -22,6 +22,13 @@ function BookingForm() {
   const [marketingConsent, setMarketingConsent] = useState(false);
   const isBudapestOpen = isBudapestBookingAvailable();
   const budapestOpenLabel = BUDAPEST_BOOKING_OPEN_LABELS[locale as keyof typeof BUDAPEST_BOOKING_OPEN_LABELS] ?? BUDAPEST_BOOKING_OPEN_LABELS.hu;
+  const otherNotePlaceholders: Record<string, string> = {
+    hu: 'Írja le röviden, mi a panasza vagy mit szeretne...',
+    en: 'Briefly describe your concern or what you would like...',
+    sk: 'Stručne opíšte svoj problém alebo požiadavku...',
+    de: 'Beschreiben Sie kurz Ihre Beschwerden oder Ihren Wunsch...',
+  };
+  const otherNotePlaceholder = otherNotePlaceholders[locale] ?? otherNotePlaceholders.hu;
 
   const treatments = t.raw('treatments') as string[];
   const otherLabel = treatments[treatments.length - 1];
@@ -124,7 +131,7 @@ function BookingForm() {
                       <textarea
                         value={otherNote}
                         onChange={e => setOtherNote(e.target.value)}
-                        placeholder="Írja le röviden, mi a panasza vagy mit szeretne..."
+                        placeholder={otherNotePlaceholder}
                         rows={3}
                         className="w-full p-4 bg-gray-50 border-2 border-sky-300 rounded-xl outline-none focus:ring-2 focus:ring-sky-500 resize-none text-sm text-gray-700"
                       />

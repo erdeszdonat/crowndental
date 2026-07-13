@@ -31,6 +31,13 @@ function FlagIcon({ code }: { code: string }) {
       <rect width="3" height="0.667" fill="#EE1C25" y="1.333"/>
     </svg>
   );
+  if (code === 'de') return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 3" className="w-5 h-[14px] rounded-sm flex-shrink-0">
+      <rect width="5" height="1" y="0" fill="#000000"/>
+      <rect width="5" height="1" y="1" fill="#DD0000"/>
+      <rect width="5" height="1" y="2" fill="#FFCE00"/>
+    </svg>
+  );
   return null;
 }
 
@@ -47,6 +54,7 @@ function LanguageSwitcher() {
     { code: 'hu', label: 'Magyar' },
     { code: 'en', label: 'English' },
     { code: 'sk', label: 'Slovenčina' },
+    { code: 'de', label: 'Deutsch' },
   ];
 
   // Kattintás kezelése kívülről zárja be
@@ -240,10 +248,11 @@ export default function Navigation() {
                   { code: 'hu', label: 'Magyar' },
                   { code: 'en', label: 'English' },
                   { code: 'sk', label: 'Slovenčina' },
+                  { code: 'de', label: 'Deutsch' },
                 ].map((lang) => (
                   <a
                     key={lang.code}
-                    href={lang.code === 'hu' ? pathname.replace(/^\/(en|sk)/, '') || '/' : `/${lang.code}${pathname.replace(/^\/(en|sk)/, '') || ''}`}
+                    href={lang.code === 'hu' ? pathname.replace(/^\/(en|sk|de)/, '') || '/' : `/${lang.code}${pathname.replace(/^\/(en|sk|de)/, '') || ''}`}
                     onClick={() => setIsOpen(false)}
                     className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold transition-colors ${
                       locale === lang.code ? 'bg-sky-100 text-sky-700' : 'bg-gray-100 text-gray-600 hover:bg-sky-50'

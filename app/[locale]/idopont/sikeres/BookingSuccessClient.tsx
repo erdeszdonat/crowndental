@@ -83,6 +83,27 @@ const copyByLocale = {
     offerAlready: 'Váš záujem o odber sme už zaznamenali.',
     offerError: 'Teraz sa registráciu nepodarilo uložiť, skúste to prosím neskôr.',
   },
+  de: {
+    eyebrow: 'Anfrage erhalten',
+    title: 'Vielen Dank, wir haben Ihre Terminanfrage erhalten.',
+    subtitle: 'Unser Team meldet sich in Kürze bei Ihnen, um die Einzelheiten abzustimmen und den Termin endgültig zu bestätigen.',
+    nextTitle: 'Wie geht es weiter?',
+    nextItems: [
+      'Wir prüfen Ihre Angaben und die ausgewählte Behandlung.',
+      'Wir melden uns so schnell wie möglich telefonisch oder per E-Mail.',
+      'Bei akuten Beschwerden können Sie uns auch direkt anrufen.',
+    ],
+    call: 'Jetzt anrufen',
+    email: 'E-Mail senden',
+    home: 'Zurück zur Startseite',
+    offerTitle: 'Möchten Sie gelegentlich exklusive Vorteile erhalten?',
+    offerText: 'Sonderangebote, kostenlose Behandlungsmöglichkeiten, Gewinnspiele und nützliche Zahnpflegetipps per E-Mail. Wir versenden nur selten, und Sie können sich jederzeit abmelden.',
+    offerCta: 'Angebote erhalten',
+    offerNoThanks: 'Jetzt nicht',
+    offerDone: 'Vielen Dank, Ihre Anmeldung wurde gespeichert.',
+    offerAlready: 'Ihre Einwilligung wurde bereits gespeichert.',
+    offerError: 'Die Anmeldung konnte momentan nicht gespeichert werden. Bitte versuchen Sie es später erneut.',
+  },
 };
 
 export default function BookingSuccessClient() {

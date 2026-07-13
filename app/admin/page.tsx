@@ -586,7 +586,7 @@ export default function AdminDashboard() {
                       <label className="relative">
                         <Globe2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-sky-300" />
                         <select value={genLang} onChange={e => setGenLang(e.target.value)} className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white text-sm outline-none focus:border-sky-400">
-                          {BLOG_LANGUAGES.filter(language => language.id !== 'de').map(language => (
+                          {BLOG_LANGUAGES.map(language => (
                             <option key={language.id} value={language.id} className="text-gray-900">{language.shortLabel} – {language.label}</option>
                           ))}
                         </select>

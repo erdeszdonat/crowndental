@@ -56,18 +56,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       alternates: { languages: languageAlternates(path) },
     })),
   );
-  const hungarianOnlyRoutes: MetadataRoute.Sitemap = hungarianOnlyPaths.map((path) => ({
-    url: localizedUrl('hu', path),
-    changeFrequency: 'yearly',
-    priority: 0.3,
-  }));
+  const legalRoutes: MetadataRoute.Sitemap = hungarianOnlyPaths.flatMap((path) =>
+    (['hu', 'de'] as const).map((locale) => ({
+      url: localizedUrl(locale, path),
+      changeFrequency: 'yearly' as const,
+      priority: 0.3,
+      alternates: {
+        languages: {
+          hu: localizedUrl('hu', path),
+          de: localizedUrl('de', path),
+        },
+      },
+    })),
+  );
 
   const sanityPosts = await fetchSanityPosts();
   const dynamicBlogRoutes: MetadataRoute.Sitemap = sanityPosts
     .filter((post) => post.slug)
-    .filter((post) => SUPPORTED_LOCALES.includes(normalizeBlogLanguage(post.language) as 'hu' | 'en' | 'sk'))
+    .filter((post) => SUPPORTED_LOCALES.includes(normalizeBlogLanguage(post.language)))
     .map((post) => {
-      const language = normalizeBlogLanguage(post.language) as 'hu' | 'en' | 'sk';
+      const language = normalizeBlogLanguage(post.language);
       return {
         url: localizedUrl(language, `blog/${post.slug}`),
         lastModified: post._updatedAt ? new Date(post._updatedAt) : undefined,
@@ -76,7 +84,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       };
     });
 
-  return [...staticRoutes, ...hungarianOnlyRoutes, ...dynamicBlogRoutes];
+  return [...staticRoutes, ...legalRoutes, ...dynamicBlogRoutes];
 }
 
 export const dynamic = 'force-static';

@@ -117,6 +117,34 @@ const copyByLocale = {
       },
     },
   },
+  de: {
+    languageTitle: 'Nach Sprache',
+    categoryTitle: 'Inhaltstyp',
+    emptyTitle: 'In dieser Auswahl sind noch keine Artikel verfügbar.',
+    emptyText: 'Wählen Sie eine andere Sprache oder Kategorie. Neue Inhalte folgen in Kürze.',
+    future: 'später',
+    languages: {
+      hu: 'Ungarisch',
+      sk: 'Slowakisch',
+      en: 'Englisch',
+      de: 'Deutsch',
+    },
+    allCategory: {
+      title: 'Alle Artikel',
+      shortLabel: 'Alle',
+      description: 'Alle Beiträge an einem Ort – ältere und neu kategorisierte Artikel bleiben leicht auffindbar.',
+    },
+    categories: {
+      professional: {
+        title: 'Zahnmedizinische Fachartikel',
+        description: 'Medizinisch fundierte Artikel zu den am häufigsten gestellten Fragen rund um Zähne und Behandlungen.',
+      },
+      magazine: {
+        title: 'Neuigkeiten und Einblicke',
+        description: 'Neuigkeiten von Crown Dental, Praxisentwicklungen, Geschichten hinter den Kulissen und Wissenswertes.',
+      },
+    },
+  },
 } as const;
 
 function getPostPath(language: BlogLanguage, slug: string) {

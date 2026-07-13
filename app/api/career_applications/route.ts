@@ -3,12 +3,16 @@ import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
 import { getPreferredGreetingName } from '@/lib/names';
 
+function escapeHtml(value: unknown) {
+  return String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
+}
+
 export async function POST(req: Request) {
   console.log("--- ÚJ KARRIER JELENTKEZÉS ÉRKEZETT ---");
 
   try {
     const body = await req.json();
-    const { location, position, experience, name, email, phone, message } = body;
+    const { location, position, experience, name, email, phone, message, locale } = body;
 
     // Kötelező adatok ellenőrzése
     if (!name || !email || !phone || !location || !position) {
@@ -45,44 +49,62 @@ export async function POST(req: Request) {
     if (resendKey) {
       try {
         const resend = new Resend(resendKey);
-        const firstName = getPreferredGreetingName(name);
+        const firstName = escapeHtml(getPreferredGreetingName(name));
+        const isGerman = locale === 'de';
+        const copy = isGerman
+          ? {
+              subject: 'Ihre Bewerbung ist bei uns eingegangen – Crown Dental',
+              greeting: `Guten Tag ${firstName}!`,
+              intro: 'Vielen Dank für Ihre Bewerbung bei Crown Dental. Ihre Unterlagen wurden erfolgreich in unserem System erfasst.',
+              details: 'Ihre Bewerbung', position: 'Position', location: 'Praxis', experience: 'Berufserfahrung', years: 'Jahre',
+              next: `Unser HR-Team prüft Ihre Angaben. Wenn Ihr Profil zu der Position passt, melden wir uns unter ${escapeHtml(phone)}, um die nächsten Schritte zu besprechen.`,
+              closing: 'Wir wünschen Ihnen viel Erfolg!', signoff: 'Mit freundlichen Grüßen', team: 'Ihr Crown Dental HR-Team',
+            }
+          : {
+              subject: 'Jelentkezését sikeresen fogadtuk! - Crown Dental',
+              greeting: `Kedves ${firstName}!`,
+              intro: 'Köszönjük, hogy jelentkezett a Crown Dental csapatába! Örömmel értesítjük, hogy pályázati anyagát rendszerünk sikeresen rögzítette.',
+              details: 'Jelentkezésének részletei:', position: 'Megpályázott pozíció', location: 'Választott rendelő', experience: 'Megadott tapasztalat', years: 'év',
+              next: `HR vezetőnk hamarosan áttanulmányozza a megadott adatait. Amennyiben profilja illeszkedik az elvárásainkhoz, a megadott telefonszámon (${escapeHtml(phone)}) keresni fogjuk a további lépésekkel kapcsolatban.`,
+              closing: 'Sikeres pályázást kívánunk!', signoff: 'Üdvözlettel', team: 'A Crown Dental HR csapata',
+            };
 
         await resend.emails.send({
           from: 'Crown Dental HR <info@crowndental.hu>',
           to: email,
-          subject: 'Jelentkezését sikeresen fogadtuk! - Crown Dental',
+          subject: copy.subject,
           html: `
             <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width:600px; margin:0 auto; background:#ffffff; border:1px solid #e2e8f0; border-radius:16px; overflow:hidden;">
               
               <div style="background: linear-gradient(135deg, #0284c7, #0ea5e9); padding:35px 30px; text-align:center;">
-                <h1 style="margin:0; color:#ffffff; font-size:24px; font-weight:bold;">Kedves ${firstName}!</h1>
+                <h1 style="margin:0; color:#ffffff; font-size:24px; font-weight:bold;">${copy.greeting}</h1>
               </div>
               
               <div style="padding:35px 30px;">
                 <p style="font-size:16px; color:#374151; line-height:1.6; margin-top:0;">
-                  Köszönjük, hogy jelentkezett a Crown Dental csapatába! Örömmel értesítjük, hogy pályázati anyagát rendszerünk sikeresen rögzítette.
+                  ${copy.intro}
                 </p>
                 
                 <div style="background:#f0f9ff; padding:20px 25px; border-radius:12px; margin:25px 0; border:1px solid #bae6fd;">
-                  <h3 style="margin:0 0 15px 0; color:#0369a1; font-size:13px; text-transform:uppercase; letter-spacing:1px;">Jelentkezésének részletei:</h3>
-                  <p style="margin:8px 0; color:#1e293b; font-size:15px;"><strong>Megpályázott pozíció:</strong> ${position}</p>
-                  <p style="margin:8px 0; color:#1e293b; font-size:15px;"><strong>Választott rendelő:</strong> ${location}</p>
-                  <p style="margin:8px 0; color:#1e293b; font-size:15px;"><strong>Megadott tapasztalat:</strong> ${experience === '5' ? '5+ év' : experience + ' év'}</p>
+                  <h3 style="margin:0 0 15px 0; color:#0369a1; font-size:13px; text-transform:uppercase; letter-spacing:1px;">${copy.details}</h3>
+                  <p style="margin:8px 0; color:#1e293b; font-size:15px;"><strong>${copy.position}:</strong> ${escapeHtml(position)}</p>
+                  <p style="margin:8px 0; color:#1e293b; font-size:15px;"><strong>${copy.location}:</strong> ${escapeHtml(location)}</p>
+                  <p style="margin:8px 0; color:#1e293b; font-size:15px;"><strong>${copy.experience}:</strong> ${experience === '5' ? '5+' : escapeHtml(experience)} ${copy.years}</p>
                 </div>
                 
                 <p style="font-size:16px; color:#374151; line-height:1.6;">
-                  HR vezetőnk hamarosan áttanulmányozza a megadott adatait. Amennyiben profilja illeszkedik az elvárásainkhoz, a megadott telefonszámon (${phone}) keresni fogjuk a további lépésekkel kapcsolatban.
+                  ${copy.next}
                 </p>
                 
                 <p style="font-size:16px; color:#374151; line-height:1.6;">
-                  Sikeres pályázást kívánunk!
+                  ${copy.closing}
                 </p>
               </div>
               
               <div style="background:#f8fafc; padding:20px 30px; border-top:1px solid #e2e8f0; text-align:center;">
                 <p style="font-size:14px; color:#64748b; margin:0; line-height:1.5;">
-                  Üdvözlettel,<br>
-                  <strong style="color:#0f172a;">A Crown Dental HR csapata</strong>
+                  ${copy.signoff},<br>
+                  <strong style="color:#0f172a;">${copy.team}</strong>
                 </p>
                 <p style="font-size:12px; color:#94a3b8; margin-top:10px;">
                   Crown Dental Praxis és Labor<br>

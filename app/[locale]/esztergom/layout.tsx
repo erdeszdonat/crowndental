@@ -30,12 +30,18 @@ const seoContent: Record<SupportedLocale, { title: string; description: string; 
     description: 'Zubná klinika v centre Ostrihomu od roku 1994, ľahko dostupná zo Štúrova. Vlastné laboratórium, víkendové termíny a online rezervácia.',
     keywords: ['zubár Ostrihom', 'zubná klinika Ostrihom', 'zubár Štúrovo', 'zubár Maďarsko', 'zubár pri Štúrove'],
   },
+  de: {
+    title: 'Zahnarzt in Esztergom | Crown Dental mit eigenem Dentallabor',
+    description: 'Zahnarztpraxis im Zentrum von Esztergom seit 1994: umfassende Zahnmedizin, eigenes Dentallabor, Wochenendtermine und Online-Terminbuchung.',
+    keywords: ['Zahnarzt Esztergom', 'Zahnklinik Esztergom', 'Zahnarzt Ungarn', 'Crown Dental Esztergom'],
+  },
 };
 
 const clinicDescriptions: Record<SupportedLocale, string> = {
   hu: 'Teljes körű fogászati rendelő és saját fogtechnikai labor Esztergom belvárosában, hétvégi ellátással magyar és szlovák pácienseknek.',
   en: 'Comprehensive dental clinic with an in-house dental laboratory in central Esztergom, offering weekend care for Hungarian and international patients.',
   sk: 'Komplexná zubná klinika s vlastným zubnotechnickým laboratóriom v centre Ostrihomu, dostupná aj cez víkend pre pacientov zo Slovenska.',
+  de: 'Umfassende Zahnklinik mit eigenem Dentallabor im Zentrum von Esztergom, mit Wochenendterminen für Patienten aus Ungarn und dem Ausland.',
 };
 
 const clinicFaqs: Record<SupportedLocale, Array<{ q: string; a: string }>> = {
@@ -56,6 +62,12 @@ const clinicFaqs: Record<SupportedLocale, Array<{ q: string; a: string }>> = {
     { q: 'Je klinika v Ostrihome otvorená aj cez víkend?', a: 'Áno. Pacientov prijímame aj v sobotu a v nedeľu od 7:00 do 13:00.' },
     { q: 'Prijímate pacientov zo Slovenska?', a: 'Áno. Klinika je ľahko dostupná zo Štúrova aj z južného Slovenska a termín si môžete vyžiadať online v slovenčine.' },
     { q: 'Vyrábajú sa zubné náhrady priamo na mieste?', a: 'Áno. Vlastné zubnotechnické laboratórium je v rovnakej budove, takže zubár a zubný technik spolupracujú priamo.' },
+  ],
+  de: [
+    { q: 'Wo befindet sich Crown Dental Esztergom?', a: 'Unsere Praxis liegt im Zentrum von Esztergom, Petőfi Sándor utca 11, 2500 Esztergom, Ungarn.' },
+    { q: 'Ist die Praxis in Esztergom auch am Wochenende geöffnet?', a: 'Ja. Wir behandeln Patienten auch samstags und sonntags von 7:00 bis 13:00 Uhr.' },
+    { q: 'Behandeln Sie auch deutschsprachige Patienten?', a: 'Ja. Termine können über unsere deutschsprachige Website angefragt werden.' },
+    { q: 'Wird Zahnersatz direkt vor Ort hergestellt?', a: 'Ja. Unser eigenes Dentallabor befindet sich im selben Gebäude, sodass Zahnärzte und Zahntechniker unmittelbar zusammenarbeiten.' },
   ],
 };
 
@@ -78,7 +90,7 @@ function buildClinicJsonLd(locale: SupportedLocale) {
     '@type': 'Dentist',
     '@id': `${SITE_URL}/esztergom#dentist`,
     name: 'Crown Dental Esztergom',
-    alternateName: ['Crown Dental Ostrihom', 'Crown Dental Esztergomi Rendelő'],
+    alternateName: ['Crown Dental Ostrihom', 'Crown Dental Esztergomi Rendelő', 'Crown Dental Zahnarztpraxis Esztergom'],
     description: clinicDescriptions[locale],
     url: pageUrl,
     mainEntityOfPage: { '@id': pageUrl },
@@ -147,12 +159,12 @@ function buildClinicJsonLd(locale: SupportedLocale) {
     },
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
-      name: locale === 'sk' ? 'Zubné ošetrenia' : locale === 'en' ? 'Dental treatments' : 'Fogászati kezelések',
+      name: locale === 'sk' ? 'Zubné ošetrenia' : locale === 'en' ? 'Dental treatments' : locale === 'de' ? 'Zahnbehandlungen' : 'Fogászati kezelések',
       itemListElement: [
-        ['implantatum', locale === 'sk' ? 'Zubné implantáty' : locale === 'en' ? 'Dental implants' : 'Fogászati implantátum'],
-        ['koronak-hidak', locale === 'sk' ? 'Korunky a mostíky' : locale === 'en' ? 'Crowns and bridges' : 'Koronák és hidak'],
-        ['fogszabalyozas', locale === 'sk' ? 'Ortodoncia' : locale === 'en' ? 'Orthodontics' : 'Fogszabályozás'],
-        ['fogsor', locale === 'sk' ? 'Zubné náhrady' : locale === 'en' ? 'Dentures' : 'Fogsor készítés'],
+        ['implantatum', locale === 'sk' ? 'Zubné implantáty' : locale === 'en' ? 'Dental implants' : locale === 'de' ? 'Zahnimplantate' : 'Fogászati implantátum'],
+        ['koronak-hidak', locale === 'sk' ? 'Korunky a mostíky' : locale === 'en' ? 'Crowns and bridges' : locale === 'de' ? 'Kronen und Brücken' : 'Koronák és hidak'],
+        ['fogszabalyozas', locale === 'sk' ? 'Ortodoncia' : locale === 'en' ? 'Orthodontics' : locale === 'de' ? 'Kieferorthopädie' : 'Fogszabályozás'],
+        ['fogsor', locale === 'sk' ? 'Zubné náhrady' : locale === 'en' ? 'Dentures' : locale === 'de' ? 'Zahnersatz' : 'Fogsor készítés'],
       ].map(([slug, name]) => ({
         '@type': 'Offer',
         itemOffered: {

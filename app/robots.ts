@@ -8,6 +8,7 @@ const privatePaths = [
   '/idopont/sikeres',
   '/en/idopont/sikeres',
   '/sk/idopont/sikeres',
+  '/de/idopont/sikeres',
 ];
 
 export default function robots(): MetadataRoute.Robots {

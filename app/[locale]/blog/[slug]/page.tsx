@@ -69,7 +69,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 
   if (!post) {
     return {
-      title: locale === 'sk' ? 'Článok sa nenašiel | Crown Dental' : locale === 'en' ? 'Article not found | Crown Dental' : 'Cikk nem található | Crown Dental',
+      title: locale === 'sk' ? 'Článok sa nenašiel | Crown Dental' : locale === 'en' ? 'Article not found | Crown Dental' : locale === 'de' ? 'Artikel nicht gefunden | Crown Dental' : 'Cikk nem található | Crown Dental',
       robots: { index: false, follow: false },
     };
   }
@@ -83,6 +83,8 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       ? 'Prečítajte si odborný článok Crown Dental.'
       : locale === 'en'
         ? 'Read this expert article from Crown Dental.'
+        : locale === 'de'
+          ? 'Lesen Sie diesen Fachartikel von Crown Dental.'
         : 'Olvassa el a Crown Dental szakmai cikkét.');
   const image = post.imageUrl || `${SITE_URL}/og-image.jpg`;
 

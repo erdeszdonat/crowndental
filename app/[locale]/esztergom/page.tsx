@@ -7,6 +7,7 @@ import { useLocale } from 'next-intl';
 import { motion, AnimatePresence, useScroll, useTransform, useInView } from 'framer-motion';
 import { createClient } from 'next-sanity';
 import { dataset, projectId } from '@/sanity/env';
+import locationGerman from '@/messages/location-de.json';
 import {
   MapPin,
   Phone,
@@ -65,7 +66,14 @@ function useTreatmentImage(slug: string) {
   return url;
 }
 
+const germanText = locationGerman.esztergom as Record<string, string>;
+
+function de(value: string) {
+  return germanText[value] ?? value;
+}
+
 function t(locale: string, hu: string, en: string, sk: string) {
+  if (locale === 'de') return de(en);
   if (locale === 'en') return en;
   if (locale === 'sk') return sk;
   return hu;
@@ -137,7 +145,14 @@ const servicesSk = [
 ];
 
 function getServices(locale: string) {
-  const text = locale === 'en' ? servicesEn : locale === 'sk' ? servicesSk : servicesHu;
+  const text = locale === 'de'
+    ? servicesEn.map((service) => ({
+        ...service,
+        title: de(service.title),
+        description: de(service.description),
+        price: de(service.price),
+      }))
+    : locale === 'en' ? servicesEn : locale === 'sk' ? servicesSk : servicesHu;
   return text.map((s, i) => ({ ...s, ...servicesBase[i] }));
 }
 
@@ -176,13 +191,15 @@ const reviewsSk = [
 ];
 
 function getReviews(locale: string) {
+  if (locale === 'de') return reviewsEn.map((review) => ({ ...review, text: de(review.text), date: de(review.date) }));
   if (locale === 'en') return reviewsEn;
   if (locale === 'sk') return reviewsSk;
   return reviewsHu;
 }
 
 // ─── FAQs ─────────────────────────────────────────────────────────────────
-function getFaqs(locale: string) {
+function getFaqs(locale: string): Array<{ question: string; answer: string }> {
+  if (locale === 'de') return getFaqs('en').map((faq) => ({ question: de(faq.question), answer: de(faq.answer) }));
   if (locale === 'en') return [
     { question: 'Where can I park near the Esztergom clinic?', answer: 'Paid street parking is available on Petőfi Sándor Street and surrounding streets. As a convenient alternative, the nearby Bástya shopping centre car park or parking spaces around Hősök tere are just a one-to-two-minute walk away.' },
     { question: 'Is the clinic accessible for people with mobility impairments?', answer: 'Yes, the entire clinic is fully accessible. Our ground-floor entrance is easily reachable by wheelchair and pushchair, with no steps or thresholds. There is also a spacious, compliant accessible bathroom available for patients.' },
@@ -266,7 +283,7 @@ function HeroSection() {
               {t(locale, 'Esztergom Szívében', 'Heart of Esztergom', 'Centrum Ostrihoma')}
             </div>
             <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white mb-5 sm:mb-8 leading-[0.95] tracking-tight">
-              {t(locale, 'Fogorvos Esztergomban,', 'Dentist in Esztergom,', 'Zubár v Ostrihome,')}
+              {t(locale, 'Fogorvos Esztergomban,', 'Dentist in Esztergom,', 'Zubár v Ostrihome,')}{' '}
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-cyan-300">
                 {t(locale, 'saját laborral.', 'with an in-house lab.', 's vlastným laboratóriom.')}
@@ -491,7 +508,7 @@ function AICalculatorBanner() {
               {t(locale, 'AI-alapú eszköz', 'AI-powered tool', 'AI nástroj')}
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
-              {t(locale, 'Sokallja a máshol kapott', 'Think you\'ve been quoted', 'Zdá sa vám ponuka inej')}
+              {t(locale, 'Sokallja a máshol kapott', 'Think you\'ve been quoted', 'Zdá sa vám ponuka inej')}{' '}
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-sky-200">
                 {t(locale, 'árajánlatot?', 'too much?', 'kliniky príliš vysoká?')}
@@ -562,7 +579,7 @@ function ServicesSection() {
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <span className="text-sky-600 font-bold uppercase tracking-[0.2em] text-sm mb-4 block">{t(locale, 'Szolgáltatásaink', 'Our Services', 'Naše služby')}</span>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-6 leading-tight">
-              {t(locale, 'Minden kezelés,', 'Every treatment,', 'Všetky ošetrenia,')}
+              {t(locale, 'Minden kezelés,', 'Every treatment,', 'Všetky ošetrenia,')}{' '}
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-cyan-500">{t(locale, 'egy helyen.', 'one place.', 'na jednom mieste.')}</span>
             </h2>
@@ -688,7 +705,7 @@ function BeforeAfterBanner() {
           <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
             <span className="text-sky-600 font-bold uppercase tracking-[0.2em] text-sm mb-4 block">{t(locale, 'Esztétikai fogászat', 'Aesthetic Dentistry', 'Estetická stomatológia')}</span>
             <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6 leading-tight">
-              {t(locale, 'Mosolyának', 'Your smile\'s', 'Najlepšia verzia')}<br />
+              {t(locale, 'Mosolyának', 'Your smile\'s', 'Najlepšia verzia')}{' '}<br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-cyan-500">
                 {t(locale, 'legjobb verziója.', 'best version.', 'vášho úsmevu.')}
               </span>

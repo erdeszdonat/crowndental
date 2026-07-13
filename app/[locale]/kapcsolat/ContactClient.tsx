@@ -97,6 +97,32 @@ const copyByLocale = {
     trustTitle: 'Nemusíte presne vedieť, čo potrebujete.',
     trustText: 'Stačí povedať, čo vás trápi. Pomôžeme určiť, či je vhodné vyšetrenie, konzultácia alebo urgentnejšia starostlivosť.',
   },
+  de: {
+    eyebrow: 'Kontakt',
+    title: 'Sprechen wir darüber und finden wir den besten nächsten Schritt.',
+    subtitle: 'Unsere Praxis in Esztergom heißt Sie willkommen. Rufen Sie uns an, schreiben Sie eine E-Mail oder fragen Sie mit wenigen Klicks online einen Termin an.',
+    call: 'Jetzt anrufen',
+    book: 'Termin anfragen',
+    email: 'E-Mail senden',
+    map: 'Route planen',
+    urgentTitle: 'Akute Beschwerden?',
+    urgentText: 'Rufen Sie uns bei akuten Beschwerden auch am Wochenende an.',
+    available: 'Montag – Sonntag',
+    availableNote: 'Wir nehmen Ihre Anfragen an jedem Tag der Woche entgegen.',
+    clinicTitle: 'Crown Dental Esztergom',
+    clinicIntro: 'Unsere geöffnete Praxis im Zentrum von Esztergom bietet ein eigenes Dentallabor und eine transparente Behandlungsplanung.',
+    addressLabel: 'Adresse',
+    phoneLabel: 'Telefon',
+    emailLabel: 'E-Mail',
+    nextTitle: 'Wie können wir Ihnen schnell helfen?',
+    nextItems: [
+      'Bei Schmerzen oder akuten Beschwerden erreichen Sie uns telefonisch am schnellsten.',
+      'Wenn Sie einen Behandlungsplan oder Kostenvoranschlag wünschen, fragen Sie online eine Erstuntersuchung an.',
+      'Röntgenbilder, Fotos oder frühere Angebote können Sie uns mit einer kurzen Beschreibung per E-Mail senden.',
+    ],
+    trustTitle: 'Sie müssen nicht genau wissen, welche Behandlung Sie benötigen.',
+    trustText: 'Beschreiben Sie einfach, was Sie stört. Wir helfen Ihnen zu entscheiden, ob eine Untersuchung, Beratung oder kurzfristige Behandlung der richtige nächste Schritt ist.',
+  },
 };
 
 const address = '2500 Esztergom, Petőfi Sándor utca 11.';

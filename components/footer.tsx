@@ -21,6 +21,7 @@ export default function Footer() {
     hu: 'Kiváló minőségű fogászat saját fogtechnikai laborral Esztergomban, kompromisszumok nélkül.',
     en: 'High-quality dentistry with an in-house dental laboratory in Esztergom, without compromise.',
     sk: 'Kvalitná stomatológia s vlastným zubotechnickým laboratóriom v Ostrihome, bez kompromisov.',
+    de: 'Hochwertige Zahnmedizin mit eigenem Dentallabor in Esztergom – ohne Kompromisse.',
   };
 
   const openCookieBanner = (e: React.MouseEvent) => {
@@ -145,7 +146,7 @@ export default function Footer() {
                   </div>
                   <div>
                     <Link href={`${prefix}/budapest`} className="block text-white font-bold mb-1 hover:text-amber-400 transition-colors">
-                      {t('budapestClinic')} · {locale === 'sk' ? 'čoskoro' : locale === 'en' ? 'coming soon' : 'hamarosan'}
+                      {t('budapestClinic')} · {locale === 'sk' ? 'čoskoro' : locale === 'en' ? 'coming soon' : locale === 'de' ? 'demnächst' : 'hamarosan'}
                     </Link>
                     <a href="https://maps.google.com/?q=1039+Budapest+Királyok+útja+55" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors leading-relaxed block">
                       1039 Budapest,<br /> Királyok útja 55.

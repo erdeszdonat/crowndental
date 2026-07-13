@@ -16,6 +16,7 @@ type AppointmentForNoAnswerEmail = {
   email?: string | null;
   phone?: string | null;
   status?: string | null;
+  treatment?: string | null;
 };
 
 type AppointmentForConfirmationEmail = AppointmentForNoAnswerEmail & {
@@ -70,7 +71,13 @@ function parseAppointmentDateTime(value: unknown) {
 }
 
 function isConsultationTreatment(treatment?: string | null) {
-  return String(treatment || '').toLowerCase().includes('konzult');
+  return /(konzult|consult|beratung)/i.test(String(treatment || ''));
+}
+
+function isGermanAppointment(appointment: AppointmentForNoAnswerEmail) {
+  return /(zahn|kiefer|beratung|oralchirurgie|wurzelkanal|sonstiges|röntgen|dvt|beurteilung)/i.test(
+    String(appointment.treatment || ''),
+  );
 }
 
 function getAppointmentLocation(city?: string | null) {
@@ -91,11 +98,12 @@ function buildAppointmentDateTimeMeta(
   if (!parsed) return null;
 
   const location = getAppointmentLocation(appointment.city);
-  const title = 'Crown Dental fogászati időpont';
+  const isGerman = isGermanAppointment(appointment);
+  const title = isGerman ? 'Crown Dental Zahnarzttermin' : 'Crown Dental fogászati időpont';
   const details = [
-    `Időpont: ${parsed.displayDateTime}`,
-    appointment.treatment ? `Kezelés: ${appointment.treatment}` : '',
-    `Telefon: ${CLINIC_PHONE_DISPLAY}`,
+    `${isGerman ? 'Termin' : 'Időpont'}: ${parsed.displayDateTime}`,
+    appointment.treatment ? `${isGerman ? 'Behandlung' : 'Kezelés'}: ${appointment.treatment}` : '',
+    `${isGerman ? 'Telefon' : 'Telefon'}: ${CLINIC_PHONE_DISPLAY}`,
   ].filter(Boolean).join('\n');
   const encodedTitle = encodeURIComponent(title);
   const encodedLocation = encodeURIComponent(location);
@@ -125,6 +133,42 @@ async function sendNoAnswerEmail(appointment: AppointmentForNoAnswerEmail) {
   const resend = new Resend(resendKey);
   const greetingName = escapeHtml(getPreferredGreetingName(appointment.name, appointment.nickname));
   const customerPhone = escapeHtml(appointment.phone || '');
+
+  if (isGermanAppointment(appointment)) {
+    try {
+      await resend.emails.send({
+        from: 'Crown Dental <info@crowndental.hu>',
+        to: email,
+        subject: 'Wir haben versucht, Sie telefonisch zu erreichen – Crown Dental',
+        html: `
+          <div style="display:none; max-height:0; overflow:hidden;">Wir wollten Ihren Termin abstimmen, konnten Sie aber leider nicht erreichen. Bitte rufen Sie uns zurück.</div>
+          <div style="font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif; max-width:620px; margin:0 auto; background:#ffffff; border:1px solid #e2e8f0; border-radius:18px; overflow:hidden;">
+            <div style="background:linear-gradient(135deg,#0284c7,#0ea5e9); padding:34px 30px; text-align:center;">
+              <p style="margin:0 0 10px; color:#bae6fd; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px;">Crown Dental Terminabstimmung</p>
+              <h1 style="margin:0; color:#ffffff; font-size:26px; line-height:1.25; font-weight:800;">Guten Tag ${greetingName}!</h1>
+            </div>
+            <div style="padding:34px 30px;">
+              <p style="font-size:17px; color:#1f2937; line-height:1.65; margin:0 0 18px;">Wir haben versucht, Sie wegen Ihrer Terminanfrage telefonisch zu erreichen, konnten Sie aber leider nicht erreichen.</p>
+              <div style="background:#f0f9ff; border:1px solid #bae6fd; border-radius:14px; padding:22px; margin:24px 0;">
+                <p style="margin:0 0 10px; color:#0369a1; font-size:13px; font-weight:800; text-transform:uppercase; letter-spacing:1px;">Wie geht es weiter?</p>
+                <p style="margin:0; color:#334155; font-size:16px; line-height:1.6;">Bitte prüfen Sie Ihre verpassten Anrufe und rufen Sie uns direkt unter folgender Nummer zurück:</p>
+                <p style="margin:16px 0 0; font-size:24px; font-weight:900; color:#0284c7;">${CLINIC_PHONE_DISPLAY}</p>
+              </div>
+              ${customerPhone ? `<p style="font-size:14px; color:#64748b; line-height:1.6; margin:0 0 24px;">Ihre angegebene Telefonnummer: <strong style="color:#0f172a;">${customerPhone}</strong></p>` : ''}
+              <a href="tel:${CLINIC_PHONE_TEL}" style="display:block; text-align:center; background:#0284c7; color:#ffffff; text-decoration:none; font-size:17px; font-weight:900; padding:16px 22px; border-radius:14px;">Crown Dental zurückrufen</a>
+            </div>
+            <div style="background:#f8fafc; padding:20px 30px; border-top:1px solid #e2e8f0; text-align:center;">
+              <p style="font-size:14px; color:#64748b; margin:0; line-height:1.5;">Mit freundlichen Grüßen<br><strong style="color:#0f172a;">Ihr Crown Dental Team</strong></p>
+              <p style="font-size:12px; color:#94a3b8; margin:10px 0 0;">${CLINIC_PHONE_DISPLAY} | info@crowndental.hu</p>
+            </div>
+          </div>`,
+      });
+      return { sent: true };
+    } catch (mailErr) {
+      console.error('Deutsche Rückruf-E-Mail konnte nicht gesendet werden:', mailErr);
+      return { sent: false, warning: 'A státusz mentve, de az e-mail küldése közben hiba történt.' };
+    }
+  }
 
   try {
     await resend.emails.send({
@@ -191,6 +235,39 @@ async function sendAppointmentCancellationEmail(appointment: AppointmentForNoAns
   const resend = new Resend(resendKey);
   const greetingName = escapeHtml(getPreferredGreetingName(appointment.name, appointment.nickname));
 
+  if (isGermanAppointment(appointment)) {
+    try {
+      await resend.emails.send({
+        from: 'Crown Dental <info@crowndental.hu>',
+        to: email,
+        subject: 'Ihre Terminanfrage wurde storniert – Crown Dental',
+        html: `
+          <div style="display:none; max-height:0; overflow:hidden;">Ihre Terminanfrage wurde aus unserem System entfernt.</div>
+          <div style="font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif; max-width:620px; margin:0 auto; background:#ffffff; border:1px solid #e2e8f0; border-radius:18px; overflow:hidden;">
+            <div style="background:linear-gradient(135deg,#0f172a,#334155); padding:34px 30px; text-align:center;">
+              <p style="margin:0 0 10px; color:#cbd5e1; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px;">Crown Dental Terminanfrage</p>
+              <h1 style="margin:0; color:#ffffff; font-size:26px; line-height:1.25; font-weight:800;">Guten Tag ${greetingName}!</h1>
+            </div>
+            <div style="padding:34px 30px;">
+              <p style="font-size:17px; color:#1f2937; line-height:1.65; margin:0 0 18px;">Wir bestätigen, dass Ihre Terminanfrage storniert wurde. Derzeit besteht keine aktive Buchungsanfrage in unserem System.</p>
+              <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:14px; padding:22px; margin:24px 0;">
+                <p style="margin:0; color:#334155; font-size:16px; line-height:1.6;">Wenn Sie später einen neuen Termin vereinbaren möchten, sind wir telefonisch und über unsere Website gerne für Sie da.</p>
+              </div>
+              <a href="tel:${CLINIC_PHONE_TEL}" style="display:block; text-align:center; background:#0284c7; color:#ffffff; text-decoration:none; font-size:17px; font-weight:900; padding:16px 22px; border-radius:14px;">Neuen Termin vereinbaren</a>
+            </div>
+            <div style="background:#f8fafc; padding:20px 30px; border-top:1px solid #e2e8f0; text-align:center;">
+              <p style="font-size:14px; color:#64748b; margin:0; line-height:1.5;">Mit freundlichen Grüßen<br><strong style="color:#0f172a;">Ihr Crown Dental Team</strong></p>
+              <p style="font-size:12px; color:#94a3b8; margin:10px 0 0;">${CLINIC_PHONE_DISPLAY} | info@crowndental.hu</p>
+            </div>
+          </div>`,
+      });
+      return { sent: true };
+    } catch (mailErr) {
+      console.error('Deutsche Stornierungs-E-Mail konnte nicht gesendet werden:', mailErr);
+      return { sent: false, warning: 'A státusz mentve, de az e-mail küldése közben hiba történt.' };
+    }
+  }
+
   try {
     await resend.emails.send({
       from: 'Crown Dental <info@crowndental.hu>',
@@ -251,20 +328,69 @@ async function sendAppointmentConfirmationEmail(
   }
 
   const resend = new Resend(resendKey);
+  const isGerman = isGermanAppointment(appointment);
   const greetingName = escapeHtml(getPreferredGreetingName(appointment.name, appointment.nickname));
   const customerPhone = escapeHtml(appointment.phone || '');
-  const treatment = escapeHtml(appointment.treatment || 'Fogászati időpont');
+  const treatment = escapeHtml(appointment.treatment || (isGerman ? 'Zahnarzttermin' : 'Fogászati időpont'));
   const location = escapeHtml(appointmentMeta.location);
   const displayDateTime = escapeHtml(appointmentMeta.displayDateTime);
   const googleCalendarUrl = escapeHtml(appointmentMeta.googleCalendarUrl);
   const appleCalendarUrl = escapeHtml(appointmentMeta.appleCalendarUrl);
   const consultationPolicyNotice = appointmentMeta.isConsultationPolicyApplicable
-    ? `
+    ? isGerman
+      ? `
+            <p style="font-size:11px; color:#64748b; line-height:1.55; margin:18px 0 0 0;">
+              <strong>Wichtiger Hinweis für Beratungstermine:</strong> Bei Beratungsterminen ab dem 01.07.2026 kann Crown Dental eine Bereitstellungsgebühr in Höhe des jeweils gültigen Beratungshonorars berechnen, wenn der Termin nicht spätestens 24 Stunden vor der Behandlung abgesagt wird oder der Patient zum vereinbarten Termin nicht erscheint.
+            </p>
+        `
+      : `
             <p style="font-size:11px; color:#64748b; line-height:1.55; margin:18px 0 0 0;">
               <strong>Fontos tájékoztatás konzultációs időpont esetén:</strong> A 2026.07.01. utáni konzultációs időpontokra vonatkozóan, amennyiben az időpont lemondása nem történik meg legkésőbb 24 órával a kezelés előtt, vagy a páciens nem jelenik meg az egyeztetett időpontban, a Crown Dental jogosult a konzultáció mindenkori díjával megegyező rendelkezésre állási díjat felszámítani.
             </p>
-      `
+        `
     : '';
+
+  if (isGerman) {
+    try {
+      await resend.emails.send({
+        from: 'Crown Dental <info@crowndental.hu>',
+        to: email,
+        subject: `Ihr Termin ist bestätigt – ${appointmentMeta.displayDateTime} | Crown Dental`,
+        html: `
+          <div style="display:none; max-height:0; overflow:hidden;">Ihr Termin bei Crown Dental wurde für ${displayDateTime} bestätigt. Fügen Sie ihn mit einem Klick Ihrem Kalender hinzu.</div>
+          <div style="font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif; max-width:640px; margin:0 auto; background:#ffffff; border:1px solid #e2e8f0; border-radius:20px; overflow:hidden;">
+            <div style="background:linear-gradient(135deg,#0284c7,#0f172a); padding:36px 30px; text-align:center;">
+              <p style="margin:0 0 10px; color:#bae6fd; font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:1.8px;">Crown Dental Terminbestätigung</p>
+              <h1 style="margin:0; color:#ffffff; font-size:28px; line-height:1.25; font-weight:900;">Guten Tag ${greetingName}!</h1>
+              <p style="margin:14px 0 0; color:#e0f2fe; font-size:16px; line-height:1.6;">Ihr genauer Zahnarzttermin wurde verbindlich eingetragen.</p>
+            </div>
+            <div style="padding:34px 30px;">
+              <div style="background:#f0f9ff; border:1px solid #bae6fd; border-radius:16px; padding:24px; margin:0 0 26px;">
+                <p style="margin:0 0 8px; color:#0369a1; font-size:12px; font-weight:900; text-transform:uppercase; letter-spacing:1.2px;">Ihr Termin</p>
+                <p style="margin:0; color:#0f172a; font-size:30px; line-height:1.2; font-weight:900;">${displayDateTime}</p>
+                <p style="margin:18px 0 0; color:#334155; font-size:15px; line-height:1.6;"><strong>Behandlung:</strong> ${treatment}<br><strong>Ort:</strong> ${location}</p>
+                ${customerPhone ? `<p style="margin:14px 0 0; color:#64748b; font-size:14px; line-height:1.6;">Ihre Telefonnummer: <strong style="color:#0f172a;">${customerPhone}</strong></p>` : ''}
+              </div>
+              <p style="font-size:16px; color:#334155; line-height:1.65; margin:0 0 18px;">Bitte kommen Sie nach Möglichkeit 5 Minuten vor Ihrem Termin. So können Sie die kurze Wartezeit entspannt in unserem komfortablen Praxiswartebereich verbringen. Falls Sie den Termin nicht wahrnehmen können, bitten wir Sie, uns spätestens 24 Stunden vor der Behandlung telefonisch zu informieren, damit wir den frei gewordenen Termin einem anderen Patienten anbieten können.</p>
+              <div style="display:block; margin:26px 0;">
+                <a href="${googleCalendarUrl}" style="display:block; text-align:center; background:#0284c7; color:#ffffff; text-decoration:none; font-size:17px; font-weight:900; padding:16px 22px; border-radius:14px; margin-bottom:12px;">Zu Google Kalender hinzufügen</a>
+                <a href="${appleCalendarUrl}" style="display:block; text-align:center; background:#0f172a; color:#ffffff; text-decoration:none; font-size:17px; font-weight:900; padding:16px 22px; border-radius:14px;">Zu Apple Kalender / Outlook hinzufügen</a>
+              </div>
+              <p style="font-size:14px; color:#64748b; line-height:1.6; margin:0;">Falls sich der Kalender nicht automatisch öffnet, können Sie den Termin auch manuell eintragen: <strong style="color:#0f172a;">${displayDateTime}</strong>.</p>
+              ${consultationPolicyNotice}
+            </div>
+            <div style="background:#f8fafc; padding:22px 30px; border-top:1px solid #e2e8f0; text-align:center;">
+              <p style="font-size:14px; color:#64748b; margin:0; line-height:1.5;">Mit freundlichen Grüßen<br><strong style="color:#0f172a;">Ihr Crown Dental Team</strong></p>
+              <p style="font-size:12px; color:#94a3b8; margin:10px 0 0;">${CLINIC_PHONE_DISPLAY} | info@crowndental.hu</p>
+            </div>
+          </div>`,
+      });
+      return { sent: true };
+    } catch (mailErr) {
+      console.error('Deutsche Terminbestätigung konnte nicht gesendet werden:', mailErr);
+      return { sent: false, error: 'Az e-mail küldése közben hiba történt, ezért a státusz nem lett átállítva.' };
+    }
+  }
 
   try {
     await resend.emails.send({
@@ -386,7 +512,7 @@ export async function POST(req: Request) {
       if (safeTable === 'appointments' && value === 'no_answer') {
         const { data, error } = await supabase
           .from('appointments')
-          .select('name,nickname,email,phone,status')
+          .select('name,nickname,email,phone,treatment,status')
           .eq('id', id)
           .maybeSingle();
 
@@ -401,7 +527,7 @@ export async function POST(req: Request) {
       if (safeTable === 'appointments' && value === 'cancelled') {
         const { data, error } = await supabase
           .from('appointments')
-          .select('name,nickname,email,phone,status')
+          .select('name,nickname,email,phone,treatment,status')
           .eq('id', id)
           .maybeSingle();
 

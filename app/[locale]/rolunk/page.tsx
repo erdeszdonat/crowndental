@@ -26,6 +26,10 @@ const metadataByLocale: Record<SupportedLocale, { title: string; description: st
     description:
       'Spoznajte kliniku Crown Dental v Ostrihome a jej vlastné zubnotechnické laboratórium, ktoré od roku 1994 spolupracujú na kvalitných náhradách.',
   },
+  de: {
+    title: 'Über Crown Dental Esztergom | Eigenes Dentallabor seit 1994',
+    description: 'Lernen Sie Crown Dental Esztergom und unser eigenes Dentallabor kennen, die seit 1994 gemeinsam langlebigen und natürlich wirkenden Zahnersatz schaffen.',
+  },
 };
 
 export function generateMetadata({ params }: AboutPageProps): Metadata {
@@ -49,7 +53,7 @@ export default function RolunkPage({ params }: AboutPageProps) {
   const breadcrumbJsonLd = buildBreadcrumbJsonLd(
     locale,
     'rolunk',
-    locale === 'sk' ? 'O nás' : locale === 'en' ? 'About us' : 'Rólunk',
+    locale === 'sk' ? 'O nás' : locale === 'en' ? 'About us' : locale === 'de' ? 'Über uns' : 'Rólunk',
   );
 
   return (

@@ -34,6 +34,11 @@ const metadataByLocale: Record<
       'Budapeštianska klinika Crown Dental sa pripravuje. Do otvorenia poskytujeme kompletnú zubnú starostlivosť v našej fungujúcej klinike v Ostrihome.',
     keywords: ['zubár Budapešť', 'zubná klinika Budapešť', 'Crown Dental Budapešť'],
   },
+  de: {
+    title: 'Crown Dental Budapest – Eröffnung demnächst | Zahnklinik',
+    description: 'Die Crown Dental Praxis in Budapest befindet sich in Vorbereitung. Bis zur Eröffnung begrüßen wir Patienten in unserer vollständig geöffneten Praxis in Esztergom.',
+    keywords: ['Zahnarzt Budapest', 'Zahnklinik Budapest', 'Crown Dental Budapest'],
+  },
 };
 
 export function generateMetadata({ params }: BudapestLayoutProps): Metadata {

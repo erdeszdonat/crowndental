@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useLocale } from 'next-intl';
 import { motion, AnimatePresence, useScroll, useTransform, useInView } from 'framer-motion';
 import { createClient } from 'next-sanity';
 import { dataset, projectId } from '@/sanity/env';
+import locationGerman from '@/messages/location-de.json';
 import {
   MapPin,
   Phone,
@@ -66,7 +67,14 @@ function useTreatmentImage(slug: string) {
   return url;
 }
 
+const germanText = locationGerman.budapest as Record<string, string>;
+
+function de(value: string) {
+  return germanText[value] ?? value;
+}
+
 function t(locale: string, hu: string, en: string, sk: string) {
+  if (locale === 'de') return de(en);
   if (locale === 'en') return en;
   if (locale === 'sk') return sk;
   return hu;
@@ -134,7 +142,14 @@ const servicesSk = [
 ];
 
 function getServices(locale: string) {
-  const text = locale === 'en' ? servicesEn : locale === 'sk' ? servicesSk : servicesHu;
+  const text = locale === 'de'
+    ? servicesEn.map((service) => ({
+        ...service,
+        title: de(service.title),
+        description: de(service.description),
+        price: de(service.price),
+      }))
+    : locale === 'en' ? servicesEn : locale === 'sk' ? servicesSk : servicesHu;
   return text.map((s, i) => ({ ...s, ...servicesBase[i] }));
 }
 
@@ -173,13 +188,15 @@ const reviewsSk = [
 ];
 
 function getReviews(locale: string) {
+  if (locale === 'de') return reviewsEn.map((review) => ({ ...review, text: de(review.text), date: de(review.date) }));
   if (locale === 'en') return reviewsEn;
   if (locale === 'sk') return reviewsSk;
   return reviewsHu;
 }
 
 // ─── FAQs ─────────────────────────────────────────────────────────────────
-function getFaqs(locale: string) {
+function getFaqs(locale: string): Array<{ question: string; answer: string }> {
+  if (locale === 'de') return getFaqs('en').map((faq) => ({ question: de(faq.question), answer: de(faq.answer) }));
   if (locale === 'en') return [
     { question: 'Where exactly is the Budapest clinic located?', answer: 'Our clinic is located in Budapest\'s 3rd district, at the Római Part waterfront: 1039 Budapest, Királyok útja 55. It\'s situated right next to the Danube, in a quiet and pleasant environment.' },
     { question: 'Is parking available at the clinic?', answer: 'Yes, free parking is available in front of the clinic and in the surrounding streets. The clinic is also easily accessible by car from Szentendrei út, and is just a few minutes\' walk from the Aquincum HÉV (suburban railway) stop.' },
@@ -412,50 +429,12 @@ function ComingSoonNotice() {
                     </a>
                   </div>
                 </div>
-                <div className="flex-shrink-0">
-                  <div className="bg-white rounded-2xl border border-amber-100 p-6 shadow-sm text-center min-w-[200px]">
-                    <div className="text-sm font-bold text-amber-600 uppercase tracking-wider mb-3">
-                      {t(locale, 'Nyitásig hátra van', 'Opening countdown', 'Otvorenie o')}
-                    </div>
-                    <CountdownTimer locale={locale} />
-                    <div className="mt-4 pt-4 border-t border-gray-100">
-                      <p className="text-xs text-gray-500">{t(locale, 'Előjegyzés telefonon:', 'Pre-booking by phone:', 'Predbežná rezervácia:')}</p>
-                      <a href="tel:+36705646837" className="text-sm font-bold text-sky-600 hover:text-sky-500 transition-colors">+36 70 564 6837</a>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
         </motion.div>
       </div>
     </section>
-  );
-}
-
-function CountdownTimer({ locale }: { locale: string }) {
-  const target = new Date('2026-06-01T08:00:00+02:00').getTime();
-  const calcTimeLeft = useCallback(() => {
-    const diff = Math.max(0, target - Date.now());
-    return { days: Math.floor(diff / 86400000), hours: Math.floor((diff % 86400000) / 3600000), minutes: Math.floor((diff % 3600000) / 60000) };
-  }, [target]);
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0 });
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-    setTimeLeft(calcTimeLeft());
-    const interval = setInterval(() => setTimeLeft(calcTimeLeft()), 1000);
-    return () => clearInterval(interval);
-  }, [calcTimeLeft]);
-  if (!mounted) return <div className="h-[72px] flex items-center justify-center opacity-0">...</div>;
-  return (
-    <div className="flex items-center justify-center gap-3">
-      <div><div className="text-4xl font-black text-gray-900 tabular-nums">{timeLeft.days}</div><div className="text-xs text-gray-500 font-bold uppercase">{t(locale, 'nap', 'days', 'dní')}</div></div>
-      <div className="text-2xl text-gray-300 font-light">:</div>
-      <div><div className="text-4xl font-black text-gray-900 tabular-nums">{timeLeft.hours}</div><div className="text-xs text-gray-500 font-bold uppercase">{t(locale, 'óra', 'hrs', 'hod')}</div></div>
-      <div className="text-2xl text-gray-300 font-light">:</div>
-      <div><div className="text-4xl font-black text-gray-900 tabular-nums">{timeLeft.minutes}</div><div className="text-xs text-gray-500 font-bold uppercase">{t(locale, 'perc', 'min', 'min')}</div></div>
-    </div>
   );
 }
 
@@ -478,7 +457,7 @@ function AICalculatorBanner() {
               {t(locale, 'AI-alapú eszköz', 'AI-powered tool', 'AI nástroj')}
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
-              {t(locale, 'Sokallja a máshol kapott', 'Think you\'ve been quoted', 'Zdá sa vám ponuka inej')}
+              {t(locale, 'Sokallja a máshol kapott', 'Think you\'ve been quoted', 'Zdá sa vám ponuka inej')}{' '}
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-sky-200">
                 {t(locale, 'árajánlatot?', 'too much?', 'kliniky príliš vysoká?')}
@@ -549,7 +528,7 @@ function ServicesSection() {
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <span className="text-sky-600 font-bold uppercase tracking-[0.2em] text-sm mb-4 block">{t(locale, 'Szolgáltatásaink', 'Our Services', 'Naše služby')}</span>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-6 leading-tight">
-              {t(locale, 'Minden kezelés,', 'Every treatment,', 'Všetky ošetrenia,')}
+              {t(locale, 'Minden kezelés,', 'Every treatment,', 'Všetky ošetrenia,')}{' '}
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-cyan-500">{t(locale, 'egy helyen.', 'one place.', 'na jednom mieste.')}</span>
             </h2>
@@ -675,7 +654,7 @@ function BeforeAfterBanner() {
           <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
             <span className="text-sky-600 font-bold uppercase tracking-[0.2em] text-sm mb-4 block">{t(locale, 'Esztétikai fogászat', 'Aesthetic Dentistry', 'Estetická stomatológia')}</span>
             <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6 leading-tight">
-              {t(locale, 'Mosolyának', 'Your smile\'s', 'Najlepšia verzia')}<br />
+              {t(locale, 'Mosolyának', 'Your smile\'s', 'Najlepšia verzia')}{' '}<br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-cyan-500">
                 {t(locale, 'legjobb verziója.', 'best version.', 'vášho úsmevu.')}
               </span>

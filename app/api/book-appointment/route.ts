@@ -5,6 +5,15 @@ import { isBudapestBookingAvailable, isBudapestCity } from '@/lib/bookingAvailab
 import { upsertMarketingSubscriber } from '@/lib/marketingSubscribers';
 import { getPreferredGreetingName } from '@/lib/names';
 
+function escapeHtml(value: unknown) {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+
 export async function POST(req: Request) {
   console.log("--- ÚJ IDŐPONTFOGLALÁSI KÉRÉS ÉRKEZETT ---");
 
@@ -51,33 +60,59 @@ export async function POST(req: Request) {
     if (resendKey) {
       try {
         const resend = new Resend(resendKey);
-        const greeting = getPreferredGreetingName(name, nickname);
+        const greeting = escapeHtml(getPreferredGreetingName(name, nickname));
+        const isGerman = marketingConsentLocale === 'de';
+        const emailCopy = isGerman
+          ? {
+              subject: 'Ihre Terminanfrage wurde erhalten – Crown Dental',
+              greeting: `Guten Tag ${greeting}!`,
+              intro: 'Vielen Dank, dass Sie sich für Crown Dental entschieden haben. Ihre Terminanfrage wurde erfolgreich in unserem System erfasst.',
+              details: 'Ihre Angaben',
+              clinic: 'Gewählte Praxis',
+              treatment: 'Gewünschte Behandlung',
+              phone: 'Telefonnummer',
+              next: 'Unser Team meldet sich in Kürze, spätestens innerhalb von 24 Stunden, unter der angegebenen Telefonnummer bei Ihnen, um den genauen Termin abzustimmen.',
+              signoff: 'Mit freundlichen Grüßen',
+              team: 'Ihr Crown Dental Team',
+            }
+          : {
+              subject: 'Időpontfoglalási kérését rögzítettük - Crown Dental',
+              greeting: `Kedves ${greeting}!`,
+              intro: 'Köszönjük, hogy a Crown Dentalt választotta! Foglalási kérését sikeresen rögzítettük rendszerünkben.',
+              details: 'Az Ön által megadott adatok:',
+              clinic: 'Választott rendelő',
+              treatment: 'Kezelés típusa',
+              phone: 'Telefonszám',
+              next: 'Munkatársaink hamarosan (legkésőbb 24 órán belül) felveszik Önnel a kapcsolatot a megadott telefonszámon, hogy egyeztessük a pontos időpontot.',
+              signoff: 'Üdvözlettel',
+              team: 'A Crown Dental csapata',
+            };
 
         await resend.emails.send({
           from: 'Crown Dental <info@crowndental.hu>',
           to: email,
-          subject: 'Időpontfoglalási kérését rögzítettük - Crown Dental',
+          subject: emailCopy.subject,
           html: `
             <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width:600px; margin:0 auto; background:#ffffff; border:1px solid #e2e8f0; border-radius:16px; overflow:hidden;">
               <div style="background: linear-gradient(135deg, #0284c7, #0ea5e9); padding:35px 30px; text-align:center;">
-                <h1 style="margin:0; color:#ffffff; font-size:24px; font-weight:bold;">Kedves ${greeting}!</h1>
+                <h1 style="margin:0; color:#ffffff; font-size:24px; font-weight:bold;">${emailCopy.greeting}</h1>
               </div>
               <div style="padding:35px 30px;">
                 <p style="font-size:16px; color:#374151; line-height:1.6; margin-top:0;">
-                  Köszönjük, hogy a Crown Dentalt választotta! Foglalási kérését sikeresen rögzítettük rendszerünkben.
+                  ${emailCopy.intro}
                 </p>
                 <div style="background:#f0f9ff; padding:20px 25px; border-radius:12px; margin:25px 0; border:1px solid #bae6fd;">
-                  <h3 style="margin:0 0 15px 0; color:#0369a1; font-size:13px; text-transform:uppercase; letter-spacing:1px;">Az Ön által megadott adatok:</h3>
-                  <p style="margin:8px 0; color:#1e293b; font-size:15px;"><strong>Választott rendelő:</strong> ${city}</p>
-                  <p style="margin:8px 0; color:#1e293b; font-size:15px;"><strong>Kezelés típusa:</strong> ${treatment}</p>
-                  <p style="margin:8px 0; color:#1e293b; font-size:15px;"><strong>Telefonszám:</strong> ${phone}</p>
+                  <h3 style="margin:0 0 15px 0; color:#0369a1; font-size:13px; text-transform:uppercase; letter-spacing:1px;">${emailCopy.details}</h3>
+                  <p style="margin:8px 0; color:#1e293b; font-size:15px;"><strong>${emailCopy.clinic}:</strong> ${escapeHtml(city)}</p>
+                  <p style="margin:8px 0; color:#1e293b; font-size:15px;"><strong>${emailCopy.treatment}:</strong> ${escapeHtml(treatment)}</p>
+                  <p style="margin:8px 0; color:#1e293b; font-size:15px;"><strong>${emailCopy.phone}:</strong> ${escapeHtml(phone)}</p>
                 </div>
                 <p style="font-size:16px; color:#374151; line-height:1.6;">
-                  Munkatársaink hamarosan (legkésőbb 24 órán belül) felveszik Önnel a kapcsolatot a megadott telefonszámon, hogy egyeztessük a pontos időpontot.
+                  ${emailCopy.next}
                 </p>
               </div>
               <div style="background:#f8fafc; padding:20px 30px; border-top:1px solid #e2e8f0; text-align:center;">
-                <p style="font-size:14px; color:#64748b; margin:0; line-height:1.5;">Üdvözlettel,<br><strong style="color:#0f172a;">A Crown Dental csapata</strong></p>
+                <p style="font-size:14px; color:#64748b; margin:0; line-height:1.5;">${emailCopy.signoff},<br><strong style="color:#0f172a;">${emailCopy.team}</strong></p>
                 <p style="font-size:12px; color:#94a3b8; margin-top:10px;">+36 70 564 6837 | info@crowndental.hu</p>
               </div>
             </div>

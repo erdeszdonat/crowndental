@@ -4,7 +4,7 @@ import BlogClient from './BlogClient';
 
 export const revalidate = 60;
 
-const blogMetadata: Record<'hu' | 'en' | 'sk', { title: string; description: string; keywords: string[] }> = {
+const blogMetadata: Record<'hu' | 'en' | 'sk' | 'de', { title: string; description: string; keywords: string[] }> = {
   hu: {
     title: "Fogászati Tudástár & Blog | Crown Dental",
     description: "Olvassa szakértő fogorvosaink tanácsait! Cikkeink segítenek a helyes szájápolásban, a fogászati problémák megelőzésében és a kezelések megértésében.",
@@ -19,6 +19,11 @@ const blogMetadata: Record<'hu' | 'en' | 'sk', { title: string; description: str
     title: "Dentálna poradňa a blog | Crown Dental",
     description: "Prečítajte si odborné články Crown Dental o starostlivosti o zuby, prevencii, možnostiach ošetrenia a cenách.",
     keywords: ['zubný blog', 'starostlivosť o zuby', 'zubné implantáty', 'ortodoncia', 'Crown Dental blog'],
+  },
+  de: {
+    title: 'Zahnmedizinischer Ratgeber & Blog | Crown Dental',
+    description: 'Lesen Sie verständliche Fachartikel von Crown Dental über Zahnpflege, Vorsorge, Behandlungsmöglichkeiten, Preise und sichere Therapieentscheidungen.',
+    keywords: ['Zahnarzt Blog', 'Zahnpflege Tipps', 'Zahnimplantate Informationen', 'Kieferorthopädie Ratgeber', 'Crown Dental Blog'],
   },
 };
 

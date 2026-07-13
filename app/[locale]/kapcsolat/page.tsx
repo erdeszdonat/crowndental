@@ -26,6 +26,10 @@ const metadataByLocale: Record<SupportedLocale, { title: string; description: st
     description:
       'Kontaktujte Crown Dental Ostrihom na adrese Petőfi Sándor utca 11, 2500 Esztergom. Telefón, e-mail, navigácia a online rezervácia.',
   },
+  de: {
+    title: 'Kontakt und Anfahrt | Crown Dental Zahnarzt Esztergom',
+    description: 'Kontaktieren Sie Crown Dental Esztergom in der Petőfi Sándor utca 11, 2500 Esztergom. Telefon, E-Mail, Anfahrt und Online-Terminbuchung.',
+  },
 };
 
 export function generateMetadata({ params }: ContactPageProps): Metadata {
@@ -49,7 +53,7 @@ export default function ContactPage({ params }: ContactPageProps) {
   const breadcrumbJsonLd = buildBreadcrumbJsonLd(
     locale,
     'kapcsolat',
-    locale === 'sk' ? 'Kontakt' : locale === 'en' ? 'Contact' : 'Kapcsolat',
+    locale === 'sk' ? 'Kontakt' : locale === 'en' ? 'Contact' : locale === 'de' ? 'Kontakt' : 'Kapcsolat',
   );
 
   return (
