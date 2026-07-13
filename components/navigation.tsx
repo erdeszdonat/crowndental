@@ -7,7 +7,7 @@ import { Phone, Calendar, Menu, X, Globe, ChevronDown } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
 
 // ─── Zászló ikonok ────────────────────────────────────────────────────────────
-function FlagIcon({ code }: { code: string }) {
+export function FlagIcon({ code }: { code: string }) {
   if (code === 'hu') return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" className="w-5 h-[14px] rounded-sm flex-shrink-0">
       <rect width="3" height="0.667" y="0" fill="#CE2939"/>
@@ -32,11 +32,17 @@ function FlagIcon({ code }: { code: string }) {
     </svg>
   );
   if (code === 'de') return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 3" className="w-5 h-[14px] rounded-sm flex-shrink-0">
-      <rect width="5" height="1" y="0" fill="#000000"/>
-      <rect width="5" height="1" y="1" fill="#DD0000"/>
-      <rect width="5" height="1" y="2" fill="#FFCE00"/>
-    </svg>
+    <span className="inline-flex flex-shrink-0 items-center -space-x-1" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 3" className="h-[14px] w-5 rounded-sm ring-1 ring-white">
+        <rect width="5" height="1" y="0" fill="#000000"/>
+        <rect width="5" height="1" y="1" fill="#DD0000"/>
+        <rect width="5" height="1" y="2" fill="#FFCE00"/>
+      </svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" className="h-[14px] w-[14px] rounded-sm ring-1 ring-white">
+        <rect width="32" height="32" fill="#D52B1E"/>
+        <path d="M13 7h6v6h6v6h-6v6h-6v-6H7v-6h6z" fill="#FFFFFF"/>
+      </svg>
+    </span>
   );
   return null;
 }
