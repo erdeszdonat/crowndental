@@ -92,8 +92,16 @@ export default function StatsDashboard({ appointments, quotes, adminPassword }: 
       cancelled: appointments.filter(a => a.status === 'cancelled').length,
       special: appointments.filter(a => a.status === 'special').length,
     };
-    const conversionRate = apptAll > 0 ? Math.round((apptByStatus.processed / apptAll) * 100) : 0;
+    const successfulConversions = apptByStatus.processed + apptByStatus.special;
+    const conversionRate = apptAll > 0 ? Math.round((successfulConversions / apptAll) * 100) : 0;
+    const appointmentConversionShare = successfulConversions > 0
+      ? Math.round((apptByStatus.processed / successfulConversions) * 100)
+      : 0;
+    const specialConversionShare = successfulConversions > 0
+      ? 100 - appointmentConversionShare
+      : 0;
     const noAnswerRate = apptAll > 0 ? Math.round((apptByStatus.no_answer / apptAll) * 100) : 0;
+    const cancelledRate = apptAll > 0 ? Math.round((apptByStatus.cancelled / apptAll) * 100) : 0;
 
     // ── TREATMENT BREAKDOWN ──
     const treatmentMap = new Map<string, { name: string; total: number; new: number; no_answer: number; processed: number; cancelled: number; special: number }>();
@@ -207,7 +215,7 @@ export default function StatsDashboard({ appointments, quotes, adminPassword }: 
 
     return {
       apptToday, apptWeek, apptMonth, apptYear, apptAll,
-      apptByStatus, conversionRate, noAnswerRate,
+      apptByStatus, successfulConversions, conversionRate, appointmentConversionShare, specialConversionShare, noAnswerRate, cancelledRate,
       byTreatment, topTreatment,
       byCity,
       quoteToday, quoteWeek, quoteMonth, quoteAll,
@@ -238,11 +246,19 @@ export default function StatsDashboard({ appointments, quotes, adminPassword }: 
       </div>
 
       {/* ── CONVERSION & TOP STATS ── */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         <StatCard
           label="Konverzió"
           value={`${stats.conversionRate}%`}
-          sub={`${formatNum(stats.apptByStatus.processed)} időpont / ${formatNum(stats.apptAll)} kérés`}
+          sub={(
+            <>
+              <p>{formatNum(stats.successfulConversions)} sikeres / {formatNum(stats.apptAll)} kérés</p>
+              <div className="mt-1 flex flex-wrap gap-x-2 gap-y-0.5">
+                <span className="text-green-700">{stats.appointmentConversionShare}% időpontot kapott</span>
+                <span className="text-purple-700">{stats.specialConversionShare}% különleges egyeztetés</span>
+              </div>
+            </>
+          )}
           icon={Target}
           accent="green"
         />
@@ -252,6 +268,13 @@ export default function StatsDashboard({ appointments, quotes, adminPassword }: 
           sub={`${formatNum(stats.apptByStatus.no_answer)} fő nem reagált`}
           icon={PhoneOff}
           accent="red"
+        />
+        <StatCard
+          label="Sztornózva"
+          value={`${stats.cancelledRate}%`}
+          sub={`${formatNum(stats.apptByStatus.cancelled)} törölt időpontkérés`}
+          icon={AlertCircle}
+          accent="slate"
         />
         <StatCard
           label="Top kezelés"
@@ -390,7 +413,7 @@ export default function StatsDashboard({ appointments, quotes, adminPassword }: 
               </thead>
               <tbody className="divide-y divide-gray-100">
                 {stats.byTreatment.map((t, i) => {
-                  const conv = t.total > 0 ? Math.round((t.processed / t.total) * 100) : 0;
+                  const conv = t.total > 0 ? Math.round(((t.processed + t.special) / t.total) * 100) : 0;
                   return (
                     <tr key={i} className="hover:bg-gray-50">
                       <td className="px-4 py-3 font-bold text-gray-900">
@@ -605,12 +628,13 @@ function KpiCard({ label, value, sub, icon: Icon, color }: { label: string; valu
   );
 }
 
-function StatCard({ label, value, sub, icon: Icon, accent, small }: { label: string; value: string | number; sub?: string; icon: any; accent: 'green' | 'red' | 'amber' | 'purple'; small?: boolean }) {
+function StatCard({ label, value, sub, icon: Icon, accent, small }: { label: string; value: string | number; sub?: React.ReactNode; icon: any; accent: 'green' | 'red' | 'amber' | 'purple' | 'slate'; small?: boolean }) {
   const colors = {
     green: { bg: 'bg-green-50', border: 'border-green-100', text: 'text-green-700', icon: 'text-green-600' },
     red: { bg: 'bg-red-50', border: 'border-red-100', text: 'text-red-700', icon: 'text-red-600' },
     amber: { bg: 'bg-amber-50', border: 'border-amber-100', text: 'text-amber-700', icon: 'text-amber-600' },
     purple: { bg: 'bg-purple-50', border: 'border-purple-100', text: 'text-purple-700', icon: 'text-purple-600' },
+    slate: { bg: 'bg-slate-50', border: 'border-slate-200', text: 'text-slate-700', icon: 'text-slate-500' },
   }[accent];
   return (
     <div className={`${colors.bg} ${colors.border} border rounded-2xl p-4`}>
@@ -619,7 +643,7 @@ function StatCard({ label, value, sub, icon: Icon, accent, small }: { label: str
         <Icon className={`w-4 h-4 ${colors.icon}`} />
       </div>
       <p className={`font-black text-gray-900 ${small ? 'text-base leading-tight' : 'text-2xl'}`}>{value}</p>
-      {sub && <p className="text-[10px] text-gray-500 font-bold mt-1.5 truncate">{sub}</p>}
+      {sub && <div className="text-[10px] text-gray-500 font-bold mt-1.5">{sub}</div>}
     </div>
   );
 }
