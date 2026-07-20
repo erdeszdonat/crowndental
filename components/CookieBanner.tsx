@@ -12,10 +12,14 @@ type ConsentSettings = {
   marketing: boolean;
 };
 
+const CONSENT_STORAGE_KEY = 'crown_cookie_consent';
+const CONSENT_EVENT = 'crown-cookie-consent';
+
 export default function CookieBanner() {
   const t = useTranslations('cookie');
   const locale = useLocale();
   const p = locale === 'hu' ? '' : `/${locale}`;
+  const closeLabel = ({ hu: 'Bezárás', en: 'Close', sk: 'Zavrieť', de: 'Schließen' } as Record<string, string>)[locale] ?? 'Close';
 
   const [isMounted, setIsMounted] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -29,11 +33,16 @@ export default function CookieBanner() {
   useEffect(() => {
     setIsMounted(true);
     try {
-      const savedConsent = localStorage.getItem('crown_cookie_consent');
+      const savedConsent = localStorage.getItem(CONSENT_STORAGE_KEY);
       if (!savedConsent) {
         setIsVisible(true);
       } else {
-        const parsedConsent = JSON.parse(savedConsent);
+        const saved = JSON.parse(savedConsent) as Partial<ConsentSettings>;
+        const parsedConsent: ConsentSettings = {
+          necessary: true,
+          analytics: saved.analytics === true,
+          marketing: saved.marketing === true,
+        };
         setConsent(parsedConsent);
         applyGoogleConsent(parsedConsent);
       }
@@ -74,10 +83,12 @@ export default function CookieBanner() {
 
   const saveConsent = (settings: ConsentSettings) => {
     try {
-      localStorage.setItem('crown_cookie_consent', JSON.stringify(settings));
+      localStorage.setItem(CONSENT_STORAGE_KEY, JSON.stringify(settings));
     } catch (e) {}
     applyGoogleConsent(settings);
+    window.dispatchEvent(new CustomEvent<ConsentSettings>(CONSENT_EVENT, { detail: settings }));
     setIsVisible(false);
+    setShowDetails(false);
   };
 
   const toggleToggle = (type: 'analytics' | 'marketing') => {
@@ -134,7 +145,12 @@ export default function CookieBanner() {
                     <h3 className="text-2xl font-bold text-gray-900 mb-2">{t('settingsTitle')}</h3>
                     <p className="text-gray-500 text-sm">{t('settingsSubtitle')}</p>
                   </div>
-                  <button onClick={() => { setIsVisible(false); setShowDetails(false); }} className="p-2 text-gray-400 hover:text-gray-600 bg-white rounded-lg border border-gray-200">
+                  <button
+                    type="button"
+                    aria-label={closeLabel}
+                    onClick={() => { setIsVisible(false); setShowDetails(false); }}
+                    className="p-2 text-gray-400 hover:text-gray-600 bg-white rounded-lg border border-gray-200"
+                  >
                     <X className="w-5 h-5" />
                   </button>
                 </div>
@@ -160,7 +176,14 @@ export default function CookieBanner() {
                     <div className="flex-1">
                       <div className="flex justify-between items-center mb-1">
                         <h4 className="font-bold text-gray-900">{t('analyticsTitle')}</h4>
-                        <button onClick={() => toggleToggle('analytics')} className={`relative w-12 h-6 rounded-full transition-colors duration-300 focus:outline-none ${consent.analytics ? 'bg-sky-600' : 'bg-gray-300'}`}>
+                        <button
+                          type="button"
+                          role="switch"
+                          aria-checked={consent.analytics}
+                          aria-label={t('analyticsTitle')}
+                          onClick={() => toggleToggle('analytics')}
+                          className={`relative w-12 h-6 rounded-full transition-colors duration-300 focus:outline-none focus:ring-4 focus:ring-sky-200 ${consent.analytics ? 'bg-sky-600' : 'bg-gray-300'}`}
+                        >
                           <span className={`absolute top-1 left-1 bg-white w-4 h-4 rounded-full transition-transform duration-300 ${consent.analytics ? 'transform translate-x-6' : ''}`} />
                         </button>
                       </div>
@@ -175,7 +198,14 @@ export default function CookieBanner() {
                     <div className="flex-1">
                       <div className="flex justify-between items-center mb-1">
                         <h4 className="font-bold text-gray-900">{t('marketingTitle')}</h4>
-                        <button onClick={() => toggleToggle('marketing')} className={`relative w-12 h-6 rounded-full transition-colors duration-300 focus:outline-none ${consent.marketing ? 'bg-sky-600' : 'bg-gray-300'}`}>
+                        <button
+                          type="button"
+                          role="switch"
+                          aria-checked={consent.marketing}
+                          aria-label={t('marketingTitle')}
+                          onClick={() => toggleToggle('marketing')}
+                          className={`relative w-12 h-6 rounded-full transition-colors duration-300 focus:outline-none focus:ring-4 focus:ring-sky-200 ${consent.marketing ? 'bg-sky-600' : 'bg-gray-300'}`}
+                        >
                           <span className={`absolute top-1 left-1 bg-white w-4 h-4 rounded-full transition-transform duration-300 ${consent.marketing ? 'transform translate-x-6' : ''}`} />
                         </button>
                       </div>

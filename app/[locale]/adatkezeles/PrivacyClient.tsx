@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import { 
   ShieldCheck, 
   Database, 
@@ -12,9 +13,7 @@ import {
   Scale,
   Book,
   Activity,
-  Server,
-  MapPin,
-  Phone
+  Server
 } from 'lucide-react';
 
 function PrivacyHero() {
@@ -31,7 +30,7 @@ function PrivacyHero() {
           className="max-w-4xl mx-auto"
         >
           <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-sky-300 text-sm font-bold tracking-widest uppercase mb-6">
-            <ShieldCheck className="w-4 h-4" /> GDPR Kompatibilis & Jogilag Hitelesített
+            <ShieldCheck className="w-4 h-4" /> Adatvédelem & Átláthatóság
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6 tracking-tight">
             Adatkezelési <span className="text-sky-400">Tájékoztató</span>
@@ -40,7 +39,7 @@ function PrivacyHero() {
             Nálunk nemcsak a mosolya, de a személyes adatai is a legmagasabb szintű védelemben részesülnek. Kérjük, olvassa el részletes tájékoztatónkat.
           </p>
           <p className="text-sm text-slate-400 mt-6 font-medium tracking-widest uppercase">
-            Hatályos: 2024. május 01-től visszavonásig
+            Hatályos: 2026. július 20-tól visszavonásig
           </p>
         </motion.div>
       </div>
@@ -96,15 +95,15 @@ function PrivacyContent() {
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-16">
           
           <aside className="w-full lg:w-1/3 xl:w-1/4">
-            <div className="sticky top-32 bg-slate-50 p-6 rounded-3xl border border-slate-200 shadow-sm">
-              <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-6">Tartalomjegyzék</h3>
-              <nav className="flex flex-col gap-2">
+            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5 shadow-sm lg:sticky lg:top-32 lg:p-6">
+              <h3 className="mb-4 text-xs font-black uppercase tracking-widest text-slate-400 lg:mb-6">Tartalomjegyzék</h3>
+              <nav className="flex gap-2 overflow-x-auto pb-2 lg:flex-col lg:overflow-visible lg:pb-0">
                 {sections.map((section) => (
                   <a
                     key={section.id}
                     href={`#${section.id}`}
                     onClick={(e) => scrollTo(e, section.id)}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${
+                    className={`flex min-w-max items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all lg:min-w-0 ${
                       activeSection === section.id 
                         ? 'bg-sky-600 text-white shadow-md' 
                         : 'text-slate-500 hover:bg-sky-100 hover:text-sky-700'
@@ -119,7 +118,7 @@ function PrivacyContent() {
           </aside>
 
           <main className="w-full lg:w-2/3 xl:w-3/4">
-            <div className="prose prose-slate prose-lg max-w-none prose-headings:font-extrabold prose-headings:text-slate-900 prose-a:text-sky-600 prose-a:font-bold hover:prose-a:text-sky-700 prose-p:text-slate-600 prose-p:leading-relaxed prose-li:text-slate-600 text-left">
+            <div className="legal-content max-w-none text-left">
               
               <div id="bevezeto" className="scroll-mt-32">
                 <p className="lead text-xl text-slate-500 font-medium mb-10">
@@ -130,14 +129,15 @@ function PrivacyContent() {
                 </p>
 
                 <h2>1. Az Adatkezelő Adatai</h2>
-                <div className="bg-slate-50 p-8 rounded-2xl border border-slate-100 my-6 not-prose">
-                  <ul className="space-y-3 text-slate-700 font-medium">
-                    <li><strong className="text-slate-900">Cégnév:</strong> Crown Dentál Praxis és Labor Fogászati Kft.</li>
+                <div className="legal-reset my-6 rounded-2xl border border-slate-200 bg-slate-50 p-6 sm:p-8">
+                  <ul className="space-y-3 text-slate-700">
+                    <li><strong>Cégnév:</strong> Crown Dental Praxis és Labor Fogászati Kft.</li>
                     <li><strong className="text-slate-900">Székhely és Rendelő:</strong> 2500 Esztergom, Petőfi Sándor utca 11.</li>
                     <li><strong className="text-slate-900">Budapesti Telephely:</strong> 1039 Budapest, Királyok útja 55.</li>
                     <li><strong className="text-slate-900">Cégjegyzékszám:</strong> 11-09-026431</li>
                     <li><strong className="text-slate-900">Adószám:</strong> 26537353-2-11</li>
-                    <li><strong className="text-slate-900">E-mail:</strong> info@crowndental.hu</li>
+                    <li><strong className="text-slate-900">Telefon:</strong> +36 70 564 6837</li>
+                    <li><strong className="text-slate-900">E-mail:</strong> <a href="mailto:info@crowndental.hu">info@crowndental.hu</a></li>
                     <li><strong className="text-slate-900">Adatvédelmi tisztviselő elérhetősége:</strong> info@crowndental.hu</li>
                   </ul>
                 </div>
@@ -158,15 +158,15 @@ function PrivacyContent() {
               <div id="kezelt-adatok" className="scroll-mt-32">
                 <h2>3. Milyen adatait kezeljük? (Célok és Jogalapok)</h2>
                 <p>
-                  A Crown Dental magánrendelőit a Páciensek önként keresik fel. Ha a kezelt személy önként fordul hozzánk, a kezeléssel összefüggő egészségügyi és személyazonosító adatainak kezelésére szolgáló hozzájárulását – ellenkező nyilatkozat hiányában – megadottnak kell tekinteni.
+                  A Crown Dental magánrendelőit a Páciensek önként keresik fel. Az egészségügyi és személyazonosító adatokat kizárólag meghatározott célból, a szükséges mértékben, az ellátás nyújtásához és a jogszabályi kötelezettségek teljesítéséhez kezeljük. Ahol a jogszabály külön hozzájárulást kíván meg, azt az adatkezelés előtt kérjük.
                 </p>
 
                 <h3>3.1. Egészségügyi ellátással összefüggő adatok kezelése</h3>
                 <ul>
                   <li><strong>Cél:</strong> Az egészség megőrzése, javítása, az eredményes gyógykezelés elősegítése, az egészségi állapot nyomon követése.</li>
-                  <li><strong>Jogalap:</strong> Jogi kötelezettség (1997. évi CLIV. törvény az egészségügyről; 1997. évi LXXXIII. törvény).</li>
+                  <li><strong>Jogalap:</strong> szerződés teljesítése és jogi kötelezettség (GDPR 6. cikk (1) b) és c)), valamint egészségügyi ellátás nyújtása (GDPR 9. cikk (2) h)); különösen az 1997. évi CLIV. és XLVII. törvény alapján.</li>
                   <li><strong>Kezelt adatok:</strong> Név, születési név, TAJ szám (vényköteles gyógyszer esetén), lakcím, születési adatok, diagnózisok, kezelési tervek, röntgen/CT felvételek.</li>
-                  <li><strong>Időtartam:</strong> Az adatfelvételtől számított 30 év, zárójelentések esetében 50 év, képalkotó diagnosztikai felvételek esetében 10 év.</li>
+                  <li><strong>Időtartam:</strong> Az egészségügyi dokumentációt és a képalkotó diagnosztikai felvételeket legalább 30 évig, a zárójelentést legalább 50 évig kell megőrizni a hatályos 1997. évi XLVII. törvény szerint.</li>
                 </ul>
 
                 <h3>3.2. Érdeklődés és Bejelentkezés (Időpontfoglalás)</h3>
@@ -184,6 +184,14 @@ function PrivacyContent() {
                   <li><strong>Kezelt adatok:</strong> Név, lakcím, ellátás típusa, végösszeg, esetenként Egészségpénztári azonosító.</li>
                   <li><strong>Időtartam:</strong> A Számviteli törvény előírásai szerint 8 év.</li>
                 </ul>
+
+                <h3>3.4. Weboldalhasználat, naplóadatok és sütik</h3>
+                <ul>
+                  <li><strong>Cél:</strong> a weboldal biztonságos működtetése, hibakeresés, visszaélések megelőzése, valamint hozzájárulás esetén statisztika és kampánymérés.</li>
+                  <li><strong>Kezelt adatok:</strong> IP-cím, böngésző- és eszközadatok, a kérés időpontja, meglátogatott oldal, hivatkozó URL, süti- és hozzájárulási azonosítók.</li>
+                  <li><strong>Jogalap:</strong> a szükséges technikai adatkezelésnél jogos érdek; statisztikai és marketingtechnológiáknál az Ön hozzájárulása.</li>
+                  <li><strong>Részletek:</strong> a kategóriák, szolgáltatók és jellemző megőrzési idők a <Link href="/cookie-tajekoztato">Süti (Cookie) tájékoztatóban</Link> találhatók.</li>
+                </ul>
               </div>
 
               <div id="ai-es-karrier" className="scroll-mt-32">
@@ -191,14 +199,13 @@ function PrivacyContent() {
                 
                 <div className="bg-sky-50 border-l-4 border-sky-500 p-6 rounded-r-2xl my-6">
                   <h3 className="text-xl font-bold text-sky-900 mt-0">4.1. AI Árajánlat Kalkulátor</h3>
-                  <p className="text-sky-800">
-                    A Crown Dental Magyarországon egyedülálló módon mesterséges intelligenciát (Google Generative AI - AntiGravity technológia) használ a páciensek által más rendelőkből hozott árajánlatok elemzésére.
-                  </p>
+                  <p className="text-sky-800">A Crown Dental Google Gemini alapú mesterséges intelligenciát használ a páciensek által feltöltött fogászati árajánlatok automatikus, előzetes elemzésére.</p>
                   <ul className="text-sky-800">
-                    <li><strong>Cél:</strong> Azonnali, automatizált másodvélemény és Crown Dental árajánlat (PDF) generálása a feltöltött dokumentum alapján.</li>
+                    <li><strong>Cél:</strong> Automatizált, tájékoztató árösszehasonlítás készítése a feltöltött dokumentum alapján.</li>
                     <li><strong>Kezelt adatok:</strong> Név, e-mail cím, telefonszám, és a feltöltött dokumentumban (kép/PDF) szereplő diagnosztikai vagy pénzügyi tételek.</li>
-                    <li><strong>Adatfeldolgozás módja:</strong> A feltöltött fájlt a rendszer a Google AI szervereire továbbítja. <strong>Kifejezett garancia:</strong> A Google az így továbbított adatokat saját modelljeinek betanítására (training) NEM használja fel. A fájl a szerver memóriájában csak az elemzés idejére (néhány másodperc) létezik, majd véglegesen megsemmisül. Adatbázisunk (Supabase) csak az elemzés végösszegét és a kapcsolati adatokat tárolja.</li>
-                    <li><strong>Jogalap:</strong> Az Érintett kifejezett, önkéntes hozzájárulása az űrlap beküldésével.</li>
+                    <li><strong>Adatfeldolgozás módja:</strong> A feltöltött fájlt a rendszer a Google AI szolgáltatásának továbbítja az elemzéshez. A Crown Dental a feltöltött fájlt nem menti el külön az adatbázisába; az elemzés eredményét és a kapcsolati adatokat a Supabase rendszerben tárolja.</li>
+                    <li><strong>Jogalap:</strong> Az Érintett kifejezett, önkéntes hozzájárulása.</li>
+                    <li><strong>Automatizált döntés:</strong> Az eredmény nem jár joghatással, nem diagnózis és nem kötelező árajánlat. A végleges kezelési tervet fogorvos, személyes vizsgálat alapján állítja fel.</li>
                   </ul>
                 </div>
 
@@ -279,18 +286,21 @@ function PrivacyContent() {
                   <li><strong>Törléshez való jog:</strong> Kérheti adatai törlését (Kivéve jogi kötelezettség, pl. 30 éves megőrzés esetén).</li>
                   <li><strong>Adatkezelés korlátozásához való jog:</strong> Kérheti az adatkezelés korlátozását a kivizsgálás idejére.</li>
                   <li><strong>Tiltakozáshoz való jog:</strong> Tiltakozhat a közvetlen üzletszerzés (hírlevél) ellen.</li>
+                  <li><strong>Adathordozhatósághoz való jog:</strong> A hozzájáruláson vagy szerződésen alapuló, automatizált adatkezelésnél kérheti az Ön által megadott adatok géppel olvasható formában történő kiadását.</li>
+                  <li><strong>Hozzájárulás visszavonása:</strong> Hozzájárulását bármikor visszavonhatja; ez nem érinti a visszavonás előtti adatkezelés jogszerűségét.</li>
                 </ul>
               </div>
 
               <div id="panasz" className="scroll-mt-32">
                 <h2>7. Kérelmek és Panaszkezelés</h2>
                 <p>
-                  Kérelmeit legkésőbb <strong>30 napon belül</strong> írásban megválaszoljuk. Jogsérelem esetén a felügyeleti hatósághoz fordulhat:
+                  Kérelmét indokolatlan késedelem nélkül, főszabály szerint a beérkezéstől számított <strong>egy hónapon belül</strong> megválaszoljuk. A határidő a GDPR feltételei szerint további két hónappal meghosszabbítható; erről egy hónapon belül tájékoztatást adunk. Jogsérelem esetén bírósághoz vagy a felügyeleti hatósághoz fordulhat:
                 </p>
                 <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100 my-6 not-prose">
                   <p className="font-bold text-slate-900 mb-2">Nemzeti Adatvédelmi és Információszabadság Hatóság (NAIH)</p>
                   <ul className="space-y-1 text-slate-600 text-sm">
                     <li><strong>Cím:</strong> 1055 Budapest, Falk Miksa utca 9-11.</li>
+                    <li><strong>Levelezési cím:</strong> 1363 Budapest, Pf. 9.</li>
                     <li><strong>Telefon:</strong> +36 (1) 391-1400</li>
                     <li><strong>E-mail:</strong> ugyfelszolgalat@naih.hu</li>
                   </ul>
@@ -300,14 +310,17 @@ function PrivacyContent() {
               <div id="biztonsag" className="scroll-mt-32">
                 <h2>8. Adatbiztonság és Partnerek</h2>
                 <p>
-                  Informatikai rendszerünket tűzfallal, adatbázisainkat 256-bites titkosítással védjük. Főbb technológiai partnereink:
+                  A kockázatokkal arányos technikai és szervezési intézkedéseket alkalmazunk, ideértve a titkosított adatátvitelt, a hozzáférések korlátozását és a jogosultságok ellenőrzését. Főbb technológiai partnereink:
                 </p>
                 <ul>
                   <li><strong>Vercel Inc.:</strong> Weboldal hoszting.</li>
                   <li><strong>Supabase Inc.:</strong> Titkosított felhő adatbázis.</li>
                   <li><strong>Resend Inc.:</strong> E-mail kommunikációs infrastruktúra.</li>
-                  <li><strong>Google LLC:</strong> AI elemzőmotor és statisztika.</li>
+                  <li><strong>Google Ireland Limited / Google LLC:</strong> AI elemzőmotor, statisztika, hirdetésmérés és térképszolgáltatás.</li>
+                  <li><strong>Meta Platforms Ireland Limited:</strong> marketing-hozzájárulás esetén kampánymérés.</li>
+                  <li><strong>Sanity:</strong> a nyilvános weboldal- és blogtartalom kezelése.</li>
                 </ul>
+                <p>Egyes szolgáltatók az Európai Gazdasági Térségen kívül is kezelhetnek adatot. Ilyen esetben az adattovábbítás az alkalmazandó adatvédelmi jog szerinti megfelelő garanciák – például megfelelőségi határozat vagy általános szerződési feltételek – alapján történik.</p>
               </div>
 
               <div id="jogszabalyok" className="scroll-mt-32">
@@ -316,7 +329,9 @@ function PrivacyContent() {
                   <li>Az Európai Parlament és a Tanács (EU) 2016/679 rendelete (GDPR)</li>
                   <li>2011. évi CXII. törvény (Infotv.)</li>
                   <li>1997. évi CLIV. tv. az egészségügyről</li>
-                  <li>2000. évi C. Törvény a számvitelről</li>
+                  <li>1997. évi XLVII. törvény az egészségügyi és a hozzájuk kapcsolódó személyes adatok kezeléséről és védelméről</li>
+                  <li>2000. évi C. törvény a számvitelről</li>
+                  <li>2008. évi XLVIII. törvény a gazdasági reklámtevékenység alapvető feltételeiről és egyes korlátairól</li>
                 </ul>
               </div>
 

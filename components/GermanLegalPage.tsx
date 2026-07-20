@@ -14,7 +14,7 @@ const documents: Record<GermanLegalDocument, { eyebrow: string; title: string; l
     eyebrow: 'Rechtliche Informationen',
     title: 'Allgemeine Geschäftsbedingungen',
     lead: 'Bedingungen für die Nutzung der zahnmedizinischen Leistungen und Online-Dienste von Crown Dental.',
-    updated: 'Stand: 13. Juli 2026',
+    updated: 'Stand: 20. Juli 2026',
     sections: [
       {
         title: '1. Anbieter und Geltungsbereich',
@@ -34,10 +34,14 @@ const documents: Record<GermanLegalDocument, { eyebrow: string; title: string; l
       },
       {
         title: '5. Absage und Nichterscheinen',
-        paragraphs: ['Kann ein bestätigter Termin nicht wahrgenommen werden, bitten wir um telefonische Absage spätestens 24 Stunden vor Behandlungsbeginn. Für Beratungstermine ab dem 1. Juli 2026 kann bei verspäteter Absage oder Nichterscheinen eine Bereitstellungsgebühr in Höhe des jeweils gültigen Beratungshonorars berechnet werden.'],
+        paragraphs: ['Kann ein bestätigter Termin nicht wahrgenommen werden, bitten wir um eine möglichst frühzeitige telefonische oder schriftliche Absage, nach Möglichkeit mindestens 24 Stunden vor Behandlungsbeginn. Wiederholtes Nichterscheinen ohne vorherige Mitteilung kann dazu führen, dass weitere Termine nur nach individueller Abstimmung angeboten werden.'],
       },
       {
-        title: '6. Haftung und Beschwerden',
+        title: '6. KI-Angebotsvergleich',
+        paragraphs: ['Der automatisierte Angebotsvergleich dient nur der ersten Orientierung. Er ist weder eine Diagnose noch ein Behandlungsplan oder ein verbindliches Angebot. Die endgültige Planung und der Preis können erst nach einer persönlichen zahnärztlichen Untersuchung festgelegt werden.'],
+      },
+      {
+        title: '7. Haftung und Beschwerden',
         paragraphs: ['Crown Dental erbringt die Leistungen nach den geltenden fachlichen und gesetzlichen Vorschriften. Beschwerden können an info@crowndental.hu gerichtet werden. Zwingende Verbraucher- und Patientenrechte bleiben unberührt.'],
       },
     ],
@@ -46,7 +50,7 @@ const documents: Record<GermanLegalDocument, { eyebrow: string; title: string; l
     eyebrow: 'Datenschutz',
     title: 'Datenschutzerklärung',
     lead: 'Informationen darüber, wie Crown Dental personenbezogene Daten verarbeitet, schützt und für die Patientenkommunikation verwendet.',
-    updated: 'Stand: 13. Juli 2026',
+    updated: 'Stand: 20. Juli 2026',
     sections: [
       {
         title: '1. Verantwortlicher',
@@ -78,7 +82,7 @@ const documents: Record<GermanLegalDocument, { eyebrow: string; title: string; l
     eyebrow: 'Cookie-Einstellungen',
     title: 'Cookie-Richtlinie',
     lead: 'Welche Cookies und ähnlichen Technologien auf crowndental.hu verwendet werden und wie Sie Ihre Auswahl ändern können.',
-    updated: 'Stand: 13. Juli 2026',
+    updated: 'Stand: 20. Juli 2026',
     sections: [
       {
         title: '1. Was sind Cookies?',
@@ -93,7 +97,15 @@ const documents: Record<GermanLegalDocument, { eyebrow: string; title: string; l
         items: ['Google Analytics hilft uns, die Nutzung der Website in zusammengefasster Form zu verstehen.', 'Google Ads unterstützt die Messung von Werbekampagnen und Termin-Conversions.', 'Meta Pixel unterstützt – nur nach Einwilligung – die Messung und Optimierung von Kampagnen.', 'Nicht notwendige Dienste werden erst nach Ihrer entsprechenden Auswahl aktiviert.'],
       },
       {
-        title: '4. Einwilligung ändern',
+        title: '4. Eingesetzte Speichertechnologien',
+        items: ['crown_cookie_consent (notwendiger lokaler Speicher): speichert Ihre Auswahl bis zur Löschung der Browserdaten.', 'Buchungsbestätigung (notwendiger Sitzungsspeicher): bleibt bis zum Ende der Browser-Sitzung bestehen.', '_ga und _ga_* (Google Analytics): typischerweise bis zu zwei Jahre.', '_gcl_au und _gcl_aw_* (Google Ads): typischerweise bis zu 90 Tage.', '_fbp (Meta): typischerweise bis zu 90 Tage.'],
+      },
+      {
+        title: '5. Externe Anbieter',
+        paragraphs: ['Google Ireland Limited beziehungsweise Google LLC stellt Analytics, Ads und eingebettete Karteninhalte bereit. Meta Platforms Ireland Limited stellt den Meta Pixel bereit. Bei einer Verarbeitung außerhalb des EWR werden die nach dem anwendbaren Datenschutzrecht erforderlichen Garantien verwendet.'],
+      },
+      {
+        title: '6. Einwilligung ändern',
         paragraphs: ['Sie können Ihre Auswahl jederzeit über „Cookie-Einstellungen“ im unteren Bereich der Website ändern oder widerrufen. Zusätzlich können Cookies in den Einstellungen Ihres Browsers gelöscht oder blockiert werden.'],
       },
     ],
@@ -102,7 +114,7 @@ const documents: Record<GermanLegalDocument, { eyebrow: string; title: string; l
     eyebrow: 'Unternehmensangaben',
     title: 'Impressum',
     lead: 'Offizielle Angaben zum Betreiber der Website und zu den technischen Dienstleistern.',
-    updated: 'Stand: 13. Juli 2026',
+    updated: 'Stand: 20. Juli 2026',
     sections: [
       {
         title: '1. Websitebetreiber',
@@ -122,7 +134,7 @@ const documents: Record<GermanLegalDocument, { eyebrow: string; title: string; l
       },
       {
         title: '5. Streitbeilegung',
-        paragraphs: ['Zuständige Schlichtungsstelle: Komárom-Esztergom Megyei Békéltető Testület, 2800 Tatabánya, Fő tér 36, Ungarn.'],
+        paragraphs: ['Regional zuständige Schlichtungsstelle am Sitz des Anbieters: Fejér Vármegyei Békéltető Testület, Hosszúsétatér 4–6, 8000 Székesfehérvár, Ungarn; bekeltetes@fmkik.hu; +36 22 510 310.'],
       },
     ],
   },
