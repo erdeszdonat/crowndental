@@ -94,7 +94,7 @@ function ImpresszumContent() {
             </div>
           </aside>
           <main className="w-full lg:w-2/3 xl:w-3/4 text-left">
-            <div className="prose prose-slate prose-lg max-w-none prose-headings:font-extrabold prose-headings:text-slate-900 prose-a:text-sky-600 prose-a:font-bold hover:prose-a:text-sky-700 prose-p:text-slate-600 prose-p:leading-relaxed prose-li:text-slate-600">
+            <div className="legal-content max-w-none">
               <div id="szolgaltato" className="scroll-mt-32">
                 <h2>1. A weboldal üzemeltetője (Szolgáltató)</h2>
                 <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 my-6 not-prose shadow-sm">
@@ -124,7 +124,7 @@ function ImpresszumContent() {
               </div>
               <div id="jogvita" className="scroll-mt-32">
                 <h2>5. Békéltető testület</h2>
-                <p>Komárom-Esztergom Megyei Békéltető Testület: 2800 Tatabánya, Fő tér 36.</p>
+                <p>A Szolgáltató székhelye szerint illetékes regionális testület a <strong>Fejér Vármegyei Békéltető Testület</strong> (8000 Székesfehérvár, Hosszúsétatér 4–6.; bekeltetes@fmkik.hu; +36 22 510 310).</p>
               </div>
             </div>
           </main>
