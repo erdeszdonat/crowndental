@@ -47,25 +47,25 @@ const clinicDescriptions: Record<SupportedLocale, string> = {
 const clinicFaqs: Record<SupportedLocale, Array<{ q: string; a: string }>> = {
   hu: [
     { q: 'Hol található a Crown Dental esztergomi rendelője?', a: 'Rendelőnk Esztergom belvárosában, a 2500 Esztergom, Petőfi Sándor utca 11. címen található.' },
-    { q: 'Hétvégén is van rendelés Esztergomban?', a: 'Igen. Szombaton és vasárnap 7:00 és 13:00 között is fogadunk pácienseket.' },
+    { q: 'Hétvégén is van rendelés Esztergomban?', a: 'Igen. Szombaton és vasárnap 08:00 és 20:00 között is fogadunk pácienseket.' },
     { q: 'Fogadnak szlovákiai pácienseket is?', a: 'Igen. Rendelőnk Párkányból és Dél-Szlovákiából is könnyen megközelíthető, a weboldalon pedig szlovák nyelven is kérhető időpont.' },
     { q: 'Helyben készülnek a fogpótlások?', a: 'Igen. Saját fogtechnikai laborunk a rendelővel egy épületben működik, így a fogorvos és a fogtechnikus közvetlenül együtt dolgozik.' },
   ],
   en: [
     { q: 'Where is Crown Dental Esztergom located?', a: 'Our clinic is in central Esztergom at 11 Petőfi Sándor Street, 2500 Esztergom, Hungary.' },
-    { q: 'Is the Esztergom clinic open at weekends?', a: 'Yes. We also see patients on Saturdays and Sundays from 7:00 to 13:00.' },
+    { q: 'Is the Esztergom clinic open at weekends?', a: 'Yes. We also see patients on Saturdays and Sundays from 08:00 to 20:00.' },
     { q: 'Do you welcome patients from Slovakia?', a: 'Yes. The clinic is easy to reach from Štúrovo and southern Slovakia, and appointments can also be requested through our Slovak website.' },
     { q: 'Are dental restorations made on site?', a: 'Yes. Our dental laboratory operates in the same building, allowing dentists and dental technicians to work together directly.' },
   ],
   sk: [
     { q: 'Kde sa nachádza Crown Dental v Ostrihome?', a: 'Naša klinika sa nachádza v centre Ostrihomu na adrese Petőfi Sándor utca 11, 2500 Esztergom, Maďarsko.' },
-    { q: 'Je klinika v Ostrihome otvorená aj cez víkend?', a: 'Áno. Pacientov prijímame aj v sobotu a v nedeľu od 7:00 do 13:00.' },
+    { q: 'Je klinika v Ostrihome otvorená aj cez víkend?', a: 'Áno. Pacientov prijímame aj v sobotu a v nedeľu od 08:00 do 20:00.' },
     { q: 'Prijímate pacientov zo Slovenska?', a: 'Áno. Klinika je ľahko dostupná zo Štúrova aj z južného Slovenska a termín si môžete vyžiadať online v slovenčine.' },
     { q: 'Vyrábajú sa zubné náhrady priamo na mieste?', a: 'Áno. Vlastné zubnotechnické laboratórium je v rovnakej budove, takže zubár a zubný technik spolupracujú priamo.' },
   ],
   de: [
     { q: 'Wo befindet sich Crown Dental Esztergom?', a: 'Unsere Praxis liegt im Zentrum von Esztergom, Petőfi Sándor utca 11, 2500 Esztergom, Ungarn.' },
-    { q: 'Ist die Praxis in Esztergom auch am Wochenende geöffnet?', a: 'Ja. Wir behandeln Patienten auch samstags und sonntags von 7:00 bis 13:00 Uhr.' },
+    { q: 'Ist die Praxis in Esztergom auch am Wochenende geöffnet?', a: 'Ja. Wir behandeln Patienten auch samstags und sonntags von 08:00 bis 20:00 Uhr.' },
     { q: 'Behandeln Sie auch deutschsprachige Patienten?', a: 'Ja. Termine können über unsere deutschsprachige Website angefragt werden.' },
     { q: 'Wird Zahnersatz direkt vor Ort hergestellt?', a: 'Ja. Unser eigenes Dentallabor befindet sich im selben Gebäude, sodass Zahnärzte und Zahntechniker unmittelbar zusammenarbeiten.' },
   ],
@@ -121,14 +121,14 @@ function buildClinicJsonLd(locale: SupportedLocale) {
       {
         '@type': 'OpeningHoursSpecification',
         dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-        opens: '08:00',
-        closes: '20:00',
+        opens: '09:00',
+        closes: '18:00',
       },
       {
         '@type': 'OpeningHoursSpecification',
         dayOfWeek: ['Saturday', 'Sunday'],
-        opens: '07:00',
-        closes: '13:00',
+        opens: '08:00',
+        closes: '20:00',
       },
     ],
     areaServed: [
@@ -197,3 +197,4 @@ export default function EsztergomLayout({ children, params }: Props) {
     </>
   );
 }
+
