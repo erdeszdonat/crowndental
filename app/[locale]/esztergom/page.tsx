@@ -204,21 +204,21 @@ function getFaqs(locale: string): Array<{ question: string; answer: string }> {
     { question: 'Where can I park near the Esztergom clinic?', answer: 'Paid street parking is available on Petőfi Sándor Street and surrounding streets. As a convenient alternative, the nearby Bástya shopping centre car park or parking spaces around Hősök tere are just a one-to-two-minute walk away.' },
     { question: 'Is the clinic accessible for people with mobility impairments?', answer: 'Yes, the entire clinic is fully accessible. Our ground-floor entrance is easily reachable by wheelchair and pushchair, with no steps or thresholds. There is also a spacious, compliant accessible bathroom available for patients.' },
     { question: 'Are dental prosthetics made on-site?', answer: 'Yes! Our own modern dental laboratory operates in the same building as our Esztergom clinic. This means crowns, bridges, and denture repairs are completed in record time at much more affordable prices.' },
-    { question: 'Is the clinic open on weekends in Esztergom?', answer: 'Yes, for the convenience of our patients we hold weekend surgeries on Saturday and Sunday from 7:00 to 13:00, so you can count on us even in the event of sudden pain at the weekend.' },
+    { question: 'Is the clinic open on weekends in Esztergom?', answer: 'Yes, for the convenience of our patients we hold weekend surgeries on Saturday and Sunday from 08:00 to 20:00, so you can count on us even in the event of sudden pain at the weekend.' },
     { question: 'What payment options are available?', answer: 'You can pay by cash or bank card. We have agreements with almost all major Hungarian health insurance funds, so we can also issue invoices to health fund cards.' },
   ];
   if (locale === 'sk') return [
     { question: 'Kde môžem parkovať pri ordinácii v Ostrihome?', answer: 'Na ulici Petőfi Sándor a okolitých uliciach je spoplatnené parkovanie. Ako pohodlná alternatíva je parkovisko neďalekého nákupného centra Bástya alebo parkovacie miesta pri Hősök tere, ktoré sú len jednu-dve minúty pešo.' },
     { question: 'Je ordinácia prístupná pre pohybovo postihnutých?', answer: 'Áno, celá ordinácia je plne bezbariérová. Náš prízemný vchod je ľahko dostupný pre vozíčkarov aj kočíky, bez schodov a prahov. Pre pacientov je k dispozícii aj priestranná bezbariérová toaleta.' },
     { question: 'Vyrábajú sa zubné náhrady priamo na mieste?', answer: 'Áno! Naše vlastné moderné zubnotechnické laboratórium sa nachádza v tej istej budove ako naša ordinácia v Ostrihome. Korunky, mosty a opravy protéz sú hotové rekordne rýchlo a za oveľa dostupnejšie ceny.' },
-    { question: 'Je ordinácia otvorená aj cez víkend?', answer: 'Áno, pre pohodlie našich pacientov máme cez víkend otvorené v sobotu aj v nedeľu od 7:00 do 13:00, takže pri náhlej bolesti sa môžete na nás spoľahnúť aj cez víkend.' },
+    { question: 'Je ordinácia otvorená aj cez víkend?', answer: 'Áno, pre pohodlie našich pacientov máme cez víkend otvorené v sobotu aj v nedeľu od 08:00 do 20:00, takže pri náhlej bolesti sa môžete na nás spoľahnúť aj cez víkend.' },
     { question: 'Aké možnosti platby sú k dispozícii?', answer: 'Platiť môžete v hotovosti aj platobnou kartou. Máme zmluvy takmer so všetkými väčšími maďarskými zdravotnými poisťovňami, takže môžeme vystaviť faktúru aj na zdravotnú kartu.' },
   ];
   return [
     { question: 'Hol tudok parkolni az esztergomi rendelőnél?', answer: 'A Petőfi Sándor utcában és a környező utcákban fizetős utcai parkolás áll rendelkezésre. Kényelmes alternatívaként érdemes a közeli Bástya áruház parkolóját, vagy a Hősök tere körüli parkolóhelyeket igénybe venni, amik csak egy-két perc sétára vannak.' },
     { question: 'Mozgáskorlátozottak számára is megközelíthető a rendelő?', answer: 'Igen, a teljes rendelő akadálymentesített. Földszinti bejáratunk kerekesszékkel és babakocsival is könnyedén, küszöbök nélkül megközelíthető. Ezen felül tágas, szabványnak megfelelő akadálymentesített mosdó (rokkant WC) is pácienseink rendelkezésére áll.' },
     { question: 'Helyben készülnek a fogpótlások?', answer: 'Igen! Az esztergomi rendelőnkkel egy épületben működik a saját, modern gépekkel felszerelt fogtechnikai laborunk. Emiatt a fogpótlásokat (koronák, hidak) és a kivehető fogsor javításokat rekordidő alatt, sokkal kedvezőbb áron tudjuk elkészíteni.' },
-    { question: 'Hétvégén is van rendelés Esztergomban?', answer: 'Igen, a pácienseink kényelme érdekében szombaton és vasárnap is tartunk ügyeletet 7:00 és 13:00 óra között, így hirtelen fellépő fájdalom esetén hétvégén is számíthat ránk.' },
+    { question: 'Hétvégén is van rendelés Esztergomban?', answer: 'Igen, a pácienseink kényelme érdekében szombaton és vasárnap is tartunk ügyeletet 08:00 és 20:00 óra között, így hirtelen fellépő fájdalom esetén hétvégén is számíthat ránk.' },
     { question: 'Milyen fizetési lehetőségek vannak?', answer: 'Rendelőnkben készpénzzel és bankkártyával is fizethet. Ezen felül szerződésben állunk Magyarország szinte összes nagyobb egészségpénztárával, így EP kártyára is tudunk számlát kiállítani.' },
   ];
 }
@@ -322,7 +322,7 @@ function HeroSection() {
             {[
               { icon: <Zap className="w-4 h-4" />, text: t(locale, 'Korona 3 nap alatt', 'Crown in 3 days', 'Korunka za 3 dni') },
               { icon: <Shield className="w-4 h-4" />, text: t(locale, '30 év tapasztalat', '30 years experience', '30 rokov skúseností') },
-              { icon: <Clock className="w-4 h-4" />, text: t(locale, 'Hétvégén is 7:00-13:00', 'Weekends 7:00–13:00', 'Víkendy 7:00–13:00') },
+              { icon: <Clock className="w-4 h-4" />, text: t(locale, 'Hétvégén is 08:00–20:00', 'Weekends 08:00–20:00', 'Víkendy 08:00–20:00') },
             ].map((chip, i) => (
               <div key={i} className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full bg-white/20 border border-white/30 text-white font-bold text-xs sm:text-sm backdrop-blur-md shadow-lg shadow-black/10">
                 <span className="text-sky-200">{chip.icon}</span>
@@ -959,11 +959,11 @@ function ContactAndMap() {
                   <div className="space-y-1.5">
                     <div className="flex justify-between items-center">
                       <span className="font-bold text-gray-700">{t(locale, 'Hétfő – Péntek', 'Monday – Friday', 'Pondelok – Piatok')}</span>
-                      <span className="font-bold text-gray-900">8:00 – 20:00</span>
+                      <span className="font-bold text-gray-900">09:00 – 18:00</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="font-bold text-amber-600">{t(locale, 'Szombat – Vasárnap', 'Saturday – Sunday', 'Sobota – Nedeľa')}</span>
-                      <span className="font-bold text-gray-900">7:00 – 13:00</span>
+                      <span className="font-bold text-gray-900">08:00 – 20:00</span>
                     </div>
                   </div>
                 </div>
@@ -1022,3 +1022,4 @@ export default function EsztergomPage() {
     </main>
   );
 }
+
