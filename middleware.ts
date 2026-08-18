@@ -12,6 +12,11 @@ export default createMiddleware({
 
   // Ne érzékelje automatikusan a böngésző nyelvét – a felhasználó választ
   localeDetection: false,
+
+  // A blogfordítások eltérő slugot használnak. A next-intl automatikus Link
+  // fejléce ugyanazt a slugot tenné minden locale alá, ezért a valódi
+  // hreflang-készleteket az oldal metadata és a sitemap állítja elő.
+  alternateLinks: false,
 });
 
 export const config = {

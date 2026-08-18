@@ -696,6 +696,7 @@
         { "title": "No Pain", "desc": "We work under deep local anaesthesia, so you will feel nothing." },
         { "title": "Temporary Crown Immediately", "desc": "You will never be without a tooth — we fit a temporary crown straight away." }
       ],
+      "processTitle": "How Your Crown Is Made",
       "processSteps": [
         { "title": "Consultation", "desc": "X-ray, assessment, and precise treatment plan preparation.", "time": "30 min" },
         { "title": "Preparation", "desc": "Under local anaesthesia we shape the tooth for a perfect fit.", "time": "60–90 min" },
@@ -1065,6 +1066,7 @@
         { "title": "Modern 3D CT Diagnostics", "desc": "Procedures are planned with tenth-millimetre accuracy based on 3D CBCT imaging." },
         { "title": "Safety and Sterility", "desc": "We apply the strictest hygiene standards in our clinics to prevent infections." }
       ],
+      "processTitle": "How the Procedure Works",
       "processSteps": [
         { "title": "Diagnostics", "desc": "Panoramic X-ray or 3D CT to see the exact position of roots and nerves.", "time": "15 min" },
         { "title": "Anaesthesia", "desc": "Maximum-efficacy local anaesthesia applied, waiting for full effect.", "time": "5–10 min" },

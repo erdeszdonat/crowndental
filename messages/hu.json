@@ -696,6 +696,7 @@
         { "title": "Nincs fájdalom", "desc": "Modern, mélyreható érzéstelenítésben dolgozunk, így semmit sem fog érezni." },
         { "title": "Ideiglenes korona azonnal", "desc": "Egyetlen percig sem marad fog nélkül, azonnal készítünk ideiglenes védőkoronát." }
       ],
+      "processTitle": "A korona elkészítésének menete",
       "processSteps": [
         { "title": "Konzultáció", "desc": "Röntgen, állapotfelmérés és pontos kezelési terv készítése.", "time": "30 perc" },
         { "title": "Előkészítés", "desc": "Helyi érzéstelenítésben alakítjuk ki a fog formáját a tökéletes illeszkedéshez.", "time": "60-90 perc" },
@@ -1065,6 +1066,7 @@
         { "title": "Modern 3D CT Diagnosztika", "desc": "A beavatkozásokat 3D CBCT felvétel alapján tizedmilliméteres pontossággal tervezzük meg." },
         { "title": "Biztonság és sterilitás", "desc": "Rendelőinkben a legszigorúbb higiéniai előírásokat alkalmazzuk a fertőzések elkerülése végett." }
       ],
+      "processTitle": "A beavatkozás menete",
       "processSteps": [
         { "title": "Diagnosztika", "desc": "Panoráma röntgen vagy 3D CT készítése, hogy pontosan lássuk a gyökerek és idegek elhelyezkedését.", "time": "15 perc" },
         { "title": "Érzéstelenítés", "desc": "Maximális hatékonyságú helyi érzéstelenítést alkalmazunk, megvárva annak teljes hatását.", "time": "5-10 perc" },

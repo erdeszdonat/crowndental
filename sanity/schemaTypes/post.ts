@@ -38,6 +38,12 @@ export default {
       validation: (Rule: any) => Rule.required(),
     },
     {
+      name: 'translationGroupId',
+      title: 'Fordítási csoport azonosítója',
+      description: 'Az ugyanahhoz a cikkhez tartozó HU/SK/EN/DE változatokban pontosan azonos érték legyen.',
+      type: 'string',
+    },
+    {
       name: 'category',
       title: 'Blog kategória',
       type: 'string',
@@ -78,6 +84,13 @@ export default {
       name: 'medicalReviewerRole',
       title: 'Orvosi ellenőrző titulusa / szakterülete',
       type: 'string',
+    },
+    {
+      name: 'medicalReviewedAt',
+      title: 'Utolsó valódi orvosi felülvizsgálat dátuma',
+      description: 'Csak akkor módosítsd, ha a megnevezett szakember ténylegesen újraellenőrizte a cikket.',
+      type: 'date',
+      hidden: ({ document }: any) => !document?.medicalReviewerName,
     },
     {
       name: 'seoTitle',

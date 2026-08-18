@@ -1,9 +1,13 @@
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import { createClient } from 'next-sanity';
 import { dataset, projectId } from '@/sanity/env';
 import BlogPostClient from './BlogPostClient';
 import { buildBlogPostingJsonLd } from '@/lib/faqSchema';
+import {
+  blogLanguageAlternates,
+  findBlogTranslation,
+} from '@/lib/blogTranslations';
 import {
   SITE_URL,
   buildBreadcrumbJsonLd,
@@ -31,6 +35,7 @@ type BlogPost = {
   authorProfileUrl?: string;
   medicalReviewerName?: string;
   medicalReviewerRole?: string;
+  medicalReviewedAt?: string;
 };
 
 const client = createClient({
@@ -55,12 +60,18 @@ const postFields = `
   authorRole,
   authorProfileUrl,
   medicalReviewerName,
-  medicalReviewerRole
+  medicalReviewerRole,
+  medicalReviewedAt
 `;
 
 async function getPost(locale: string, slug: string): Promise<BlogPost | null> {
   const query = `*[_type == "post" && slug.current == $slug && coalesce(language, "hu") == $language][0]{${postFields}}`;
   return client.fetch(query, { slug, language: locale });
+}
+
+async function getPostLanguageBySlug(slug: string): Promise<{ language: string } | null> {
+  const query = `*[_type == "post" && slug.current == $slug][0]{"language": coalesce(language, "hu")}`;
+  return client.fetch(query, { slug });
 }
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
@@ -92,7 +103,10 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     title,
     description,
     authors: post.authorName ? [{ name: post.authorName, url: post.authorProfileUrl }] : [{ name: 'Crown Dental' }],
-    alternates: { canonical },
+    alternates: {
+      canonical,
+      languages: blogLanguageAlternates(params.slug),
+    },
     robots: {
       index: true,
       follow: true,
@@ -116,7 +130,26 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const locale = normalizeLocale(params.locale);
   const post = await getPost(locale, params.slug);
-  if (!post) notFound();
+  if (!post) {
+    // Historic language-switcher links kept the source-language slug under a
+    // different locale prefix. Redirect those URLs to the real translation.
+    const translation = findBlogTranslation(params.slug);
+    if (translation) {
+      const translatedSlug = translation.group[locale];
+      if (translatedSlug !== params.slug) {
+        permanentRedirect(localizedUrl(locale, `blog/${translatedSlug}`));
+      }
+    }
+
+    // Future, unmapped cross-locale slugs still consolidate to the document's
+    // actual canonical language instead of becoming another persistent 404.
+    const sourcePost = await getPostLanguageBySlug(params.slug);
+    if (sourcePost) {
+      permanentRedirect(localizedUrl(sourcePost.language, `blog/${params.slug}`));
+    }
+
+    notFound();
+  }
 
   const blogJsonLd = buildBlogPostingJsonLd({ ...post, slug: params.slug, language: locale });
   const breadcrumbJsonLd = buildBreadcrumbJsonLd(locale, `blog/${params.slug}`, post.title);

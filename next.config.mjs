@@ -24,6 +24,14 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      // CANONICAL HOST - az apex domaint mindig permanensen a www hostra visszük.
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'crowndental.hu' }],
+        destination: 'https://www.crowndental.hu/:path*',
+        permanent: true,
+      },
+
       // SZOLGÁLTATÁSOK - Régi URL-ek → Új struktúra
       { source: '/cpg/891877/Fogsor', destination: '/kezelesek/fogsor', permanent: true },
       { source: '/cpg/133087/Fogtechnikai-megoldasok', destination: '/kezelesek/fogtechnikai-megoldasok', permanent: true },
@@ -39,6 +47,8 @@ const nextConfig = {
       { source: '/fogaszati-szolgaltatasok', destination: '/kezelesek', permanent: true },
       { source: '/gockutatas-fogaszati-hater-panaszok', destination: '/kezelesek/gockutatas', permanent: true },
       { source: '/fajdalommentes-fogaszat-esztergom', destination: '/esztergom', permanent: true },
+      { source: '/szallas', destination: '/utazas-szallas', permanent: true },
+      { source: '/:locale(en|sk|de)/szallas', destination: '/:locale/utazas-szallas', permanent: true },
 
       // FUNKCIONÁLIS OLDALAK
       { source: '/cpg/978873/Arlista', destination: '/kezelesek', permanent: true },
@@ -52,13 +62,17 @@ const nextConfig = {
       { source: '/cpg/930300,3399946/Faj-vagy-csak-kellemetlen', destination: '/blog/faj-vagy-csak-kellemetlen', permanent: true },
       { source: '/cpg/930300,3494336/Fogorvos-es-Fogtechnikus-egy-Csapatban', destination: '/blog/fogorvos-es-fogtechnikus-egy-csapatban', permanent: true },
       { source: '/cpg/930300,3466371/Hagyomanyos-vagy-elektromos-fogkefe-A-tiszta-fogak', destination: '/blog/hagyomanyos-vagy-elektromos-fogkefe-a-tiszta-fogak', permanent: true },
-      { source: '/cpg/930300,3348316/Hogyan-valasszunk-fogorvost-5-szempont-ami-segit-a', destination: '/blog/fogorvos-valasztas', permanent: true },
-      { source: '/cpg/930300,3348306/Ragyogo-mosoly-egy-ora-alatt-igy-mukodik-a-valodi', destination: '/blog/ragyogo-mosoly-egy-ora-alatt', permanent: true },
-      { source: '/cpg/930300,3348311/Soha-nincs-keso-a-tokeletes-mosolyhoz-fogszabalyoz', destination: '/blog/fogszabalyozas-felnottkent', permanent: true },
-      { source: '/cpg/930300,3348301/Uj-mosoly-varakozas-nelkul-minden-a-modern-fogsoro', destination: '/blog/modern-fogsorok', permanent: true },
+      { source: '/cpg/930300,3348316/Hogyan-valasszunk-fogorvost-5-szempont-ami-segit-a', destination: '/blog/hogyan-valasszunk-fogorvost-5-szempont-ami-segit-a', permanent: true },
+      { source: '/cpg/930300,3348306/Ragyogo-mosoly-egy-ora-alatt-igy-mukodik-a-valodi', destination: '/blog/ragyogo-mosoly-egy-ora-alatt-igy-mukodik-a-valodi', permanent: true },
+      { source: '/cpg/930300,3348311/Soha-nincs-keso-a-tokeletes-mosolyhoz-fogszabalyoz', destination: '/blog/soha-nincs-keso-a-tokeletes-mosolyhoz-fogszabalyoz', permanent: true },
+      { source: '/cpg/930300,3348301/Uj-mosoly-varakozas-nelkul-minden-a-modern-fogsoro', destination: '/blog/uj-mosoly-varakozas-nelkul-minden-a-modern-fogsoro', permanent: true },
 
-      // WILDCARD - minden maradék régi URL
-      { source: '/cpg/:path*', destination: '/', permanent: false },
+      // Régi feed URL-eknek a bloglista a legközelebbi valódi megfelelője.
+      { source: '/feed', destination: '/blog', permanent: true },
+      { source: '/blog/feed', destination: '/blog', permanent: true },
+
+      // A nem leképezett /cpg/ URL-ek szándékosan maradnak valódi 404-ek.
+      // A főoldalra irányított tömeges 307 soft-404 jelzést okozott volna.
     ];
   },
   async rewrites() {

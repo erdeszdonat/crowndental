@@ -696,6 +696,7 @@
         { "title": "Bez bolesti", "desc": "Pracujeme v hlbokej lokálnej anestéze, takže nič neucítite." },
         { "title": "Dočasná korunka ihneď", "desc": "Ani minútu nebudete bez zuba – ihneď nasadíme dočasnú ochrannú korunku." }
       ],
+      "processTitle": "Ako prebieha zhotovenie korunky",
       "processSteps": [
         { "title": "Konzultácia", "desc": "Röntgen, posúdenie stavu a príprava presného liečebného plánu.", "time": "30 min" },
         { "title": "Príprava", "desc": "V lokálnej anestéze tvarujeme zub pre dokonalé priliehanie.", "time": "60–90 min" },
@@ -1065,6 +1066,7 @@
         { "title": "Moderná 3D CT diagnostika", "desc": "Zákroky plánujeme s presnosťou na desatinu milimetra na základe 3D CBCT zobrazenia." },
         { "title": "Bezpečnosť a sterilita", "desc": "V našich ordináciách uplatňujeme najprísnejšie hygienické štandardy na zabránenie infekciám." }
       ],
+      "processTitle": "Ako prebieha zákrok",
       "processSteps": [
         { "title": "Diagnostika", "desc": "Panoramatický röntgen alebo 3D CT na presné zobrazenie polohy koreňov a nervov.", "time": "15 min" },
         { "title": "Anestéza", "desc": "Maximálne účinná lokálna anestéza s čakaním na plný efekt.", "time": "5–10 min" },
