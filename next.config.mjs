@@ -67,6 +67,10 @@ const nextConfig = {
       { source: '/cpg/930300,3348311/Soha-nincs-keso-a-tokeletes-mosolyhoz-fogszabalyoz', destination: '/blog/soha-nincs-keso-a-tokeletes-mosolyhoz-fogszabalyoz', permanent: true },
       { source: '/cpg/930300,3348301/Uj-mosoly-varakozas-nelkul-minden-a-modern-fogsoro', destination: '/blog/uj-mosoly-varakozas-nelkul-minden-a-modern-fogsoro', permanent: true },
 
+      // Régi angol slug, amely korábban a fogorvosválasztási cikk kanonikus
+      // változataként szerepelt a Search Console-ban.
+      { source: '/en/blog/fogorvos-valasztas', destination: '/en/blog/how-to-choose-dentist-10-signs-good-clinic', permanent: true },
+
       // Régi feed URL-eknek a bloglista a legközelebbi valódi megfelelője.
       { source: '/feed', destination: '/blog', permanent: true },
       { source: '/blog/feed', destination: '/blog', permanent: true },
