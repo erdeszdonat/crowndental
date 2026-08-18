@@ -23,6 +23,11 @@ type Expansion = {
   blocks: PortableTextBlock[]
 }
 
+type Supplement = {
+  marker: string
+  blocks: PortableTextBlock[]
+}
+
 type PostSnapshot = {
   _id: string
   title: string
@@ -188,7 +193,7 @@ const expansions: Expansion[] = [
   {
     slug: 'fogorvos-esztergomban-miert-valasztjak-crown-dentalt-szlovak-paciensek',
     title: 'Fogorvos Esztergomban szlovák pácienseknek',
-    marker: 'seo260818huclinic',
+    marker: 'seo260818huclinh',
     blocks: [
       ...section('seo260818huclin', 'Hogyan hasonlítson össze határ menti fogászatokat?', [
         'A rendelő kiválasztásakor ne csak egyetlen kezelés árát nézze. Fontos, hogy rendelkezésre áll-e megfelelő diagnosztika, írásos kezelési terv, részletes árajánlat és későbbi kontroll. Kérdezze meg azt is, hogy ki végzi az egyes kezelési szakaszokat, hogyan működik a fogtechnikai együttműködés, és milyen nyelven kap tájékoztatást.',
@@ -211,7 +216,7 @@ const expansions: Expansion[] = [
   {
     slug: 'dentist-hungary-why-international-patients-choose-esztergom',
     title: 'Dentist in Hungary and Esztergom',
-    marker: 'seo260818enclinic',
+    marker: 'seo260818enclinh',
     blocks: [
       ...section('seo260818enclin', 'How to compare dental clinics abroad', [
         'Do not compare clinics on the advertised price of a single procedure alone. Check whether appropriate diagnostics, a written treatment plan, an itemised quotation and follow-up care are available. Ask who will carry out each stage, how the dentist works with the dental laboratory and in which language important instructions will be provided.',
@@ -234,7 +239,7 @@ const expansions: Expansion[] = [
   {
     slug: 'zahnarzt-ungarn-warum-patienten-esztergom-waehlen',
     title: 'Zahnarzt in Ungarn und Esztergom',
-    marker: 'seo260818declinic',
+    marker: 'seo260818declinh',
     blocks: [
       ...section('seo260818declin', 'Wie lassen sich Zahnkliniken im Ausland vergleichen?', [
         'Vergleichen Sie Kliniken nicht allein anhand des beworbenen Preises einer einzelnen Leistung. Entscheidend sind geeignete Diagnostik, ein schriftlicher Behandlungsplan, ein detailliertes Angebot und eine geregelte Nachsorge. Fragen Sie, wer die einzelnen Schritte durchführt, wie die Zusammenarbeit mit dem Dentallabor organisiert ist und in welcher Sprache wichtige Hinweise erklärt werden.',
@@ -301,7 +306,92 @@ const expansions: Expansion[] = [
   },
 ]
 
-const slugs = expansions.map(({slug}) => slug)
+const supplementsBySlug: Record<string, Supplement> = {
+  'fogimplantatum-magyarorszagon-arak-elonyok-kulfoldi-pacienseknek': {
+    marker: 'seo260818huimp2h',
+    blocks: section('seo260818huimp2', 'Mikor nem célszerű azonnal implantálni?', [
+      'Aktív gyulladás, kezeletlen fogágybetegség, elégtelen szájhigiéné vagy nem megfelelően beállított általános betegség esetén először az alapállapot rendezése lehet szükséges. Ugyanez igaz akkor is, ha a rendelkezésre álló csont mennyisége vagy minősége további beavatkozást igényel. A halasztás ilyenkor nem felesleges várakozás, hanem a kockázatok csökkentésének része. Az implantáció időpontját a klinikai vizsgálat, a képalkotó eredmények és a páciens egészségi állapota együtt határozza meg.',
+      'A konzultációra készüljön a rendszeresen szedett gyógyszerek listájával, és jelezze a véralvadásgátlót, cukorbetegséget, csontritkulás elleni kezelést, dohányzást, korábbi sugárkezelést vagy ismert gyógyszerallergiát. Gyógyszert önállóan ne hagyjon el a fogászati beavatkozás miatt; az esetleges módosításról a kezelőorvosoknak kell egyeztetniük.',
+    ]),
+  },
+  'dental-implants-hungary-costs-benefits-international-patients': {
+    marker: 'seo260818enimp2h',
+    blocks: section('seo260818enimp2', 'When might implant placement need to be postponed?', [
+      'Active infection, untreated gum disease, inadequate oral hygiene or a poorly controlled general health condition may need to be addressed before implant placement. Additional treatment may also be required when bone volume or quality is insufficient. In these situations, postponement is part of reducing risk rather than unnecessary waiting. Timing should be based on the clinical examination, imaging findings and the patient’s overall health together.',
+      'Bring a complete medication list and report anticoagulants, diabetes, osteoporosis medication, smoking, previous radiotherapy and known drug allergies. Do not stop prescribed medicine on your own because of dental treatment. Any necessary change should be agreed between the relevant treating clinicians.',
+    ]),
+  },
+  'zahnimplantate-ungarn-kosten-vorteile-internationale-patienten': {
+    marker: 'seo260818deimp2h',
+    blocks: section('seo260818deimp2', 'Wann sollte eine Implantation zunächst verschoben werden?', [
+      'Aktive Entzündungen, unbehandelte Parodontitis, unzureichende Mundhygiene oder eine schlecht eingestellte Allgemeinerkrankung können eine Vorbehandlung erforderlich machen. Auch bei unzureichendem Knochenangebot sind zusätzliche Schritte möglich. Eine Verschiebung dient in solchen Situationen der Risikoreduktion und ist keine unnötige Wartezeit. Der geeignete Zeitpunkt ergibt sich gemeinsam aus klinischer Untersuchung, Bildgebung und allgemeinem Gesundheitszustand.',
+      'Bringen Sie eine vollständige Medikamentenliste mit und nennen Sie Blutverdünner, Diabetes, Osteoporosemedikamente, Rauchen, frühere Bestrahlungen und bekannte Arzneimittelallergien. Setzen Sie verordnete Medikamente wegen einer Zahnbehandlung nicht selbstständig ab. Notwendige Änderungen müssen zwischen den behandelnden Ärzten abgestimmt werden.',
+    ]),
+  },
+  'mennyibe-kerul-mufogsor-magyarorszagon-2026-arkalauz': {
+    marker: 'seo260818hudent2h',
+    blocks: section('seo260818hudent2', 'Milyen hosszú távú költségekkel számoljon?', [
+      'A fogsor teljes költségéhez idővel korrekció, alábélelés, professzionális tisztítás vagy egy sérült elem javítása is hozzátartozhat. Ezek szükségessége függ a használattól, a szövetek változásától és az otthoni ápolástól. Az olcsóbb induló megoldás nem feltétlenül kedvezőbb, ha kevés próbát, korrekciót vagy rövid utánkövetést tartalmaz. Érdemes már az ajánlatkéréskor rákérdezni a kontrollok és a későbbi javítások feltételeire.',
+      'A fogsor élettartamára nem adható minden páciensre érvényes fix évszám. Ha meglazul, billeg, feltöri az ínyt, megváltozik a harapás vagy romlik a rágás, kontroll szükséges. A tartósan rosszul illeszkedő fogsor nemcsak kényelmetlen, hanem a nyálkahártyát is sértheti és egyoldalú rágáshoz vezethet.',
+    ]),
+  },
+  'dentures-cost-hungary-2026-price-guide': {
+    marker: 'seo260818endent2h',
+    blocks: section('seo260818endent2', 'What longer-term costs should be considered?', [
+      'Over time, the overall cost may include adjustments, relining, professional cleaning or repair of a damaged component. The need for these services depends on use, tissue changes and home care. The lowest initial price is not necessarily the best value if it includes fewer try-ins, limited adjustment or little follow-up. Ask about review appointments and future repair arrangements when requesting the original quotation.',
+      'There is no single fixed lifespan that applies to every denture. Arrange a review if it becomes loose, rocks during chewing, creates sores, changes the bite or makes eating more difficult. A persistently poor fit is not only uncomfortable; it can irritate the supporting tissues and encourage one-sided chewing.',
+    ]),
+  },
+  'zahnersatz-prothesen-kosten-ungarn-2026-preisratgeber': {
+    marker: 'seo260818dedent2h',
+    blocks: section('seo260818dedent2', 'Welche Folgekosten sollten berücksichtigt werden?', [
+      'Im Lauf der Zeit können Korrekturen, Unterfütterungen, professionelle Reinigung oder die Reparatur eines beschädigten Elements notwendig werden. Der Bedarf hängt von Nutzung, Gewebeveränderungen und häuslicher Pflege ab. Der niedrigste Anfangspreis ist nicht automatisch wirtschaftlicher, wenn weniger Anproben, begrenzte Korrekturen oder kaum Nachsorge enthalten sind. Fragen Sie bereits beim ersten Angebot nach Kontrollterminen und Bedingungen für spätere Reparaturen.',
+      'Eine feste Lebensdauer, die für jede Prothese gilt, lässt sich nicht nennen. Eine Kontrolle ist erforderlich, wenn die Prothese locker wird, beim Kauen kippt, Druckstellen verursacht, den Biss verändert oder das Essen erschwert. Eine dauerhaft schlechte Passung ist nicht nur unangenehm, sondern kann die Schleimhaut reizen und einseitiges Kauen fördern.',
+    ]),
+  },
+  'fogorvos-esztergomban-miert-valasztjak-crown-dentalt-szlovak-paciensek': {
+    marker: 'seo260818huclinic2h',
+    blocks: section('seo260818huclinic2', 'Ellenőrzőlista az első esztergomi konzultációhoz', [
+      'Írja össze előre a legfontosabb panaszokat, korábbi kezeléseket, rendszeresen szedett gyógyszereket és azt, hogy milyen eredményt szeretne elérni. Vigye magával a meglévő felvételeket és fogászati dokumentumokat, de számítson rá, hogy friss diagnosztika is szükséges lehet. Kérdezze meg, melyik probléma sürgős, melyik halasztható, és milyen sorrendben érdemes elvégezni a kezeléseket.',
+      'A konzultáció végén legyen világos a következő időpont célja, időtartama és várható költsége. Ha több megoldás is lehetséges, kérjen összehasonlítást a várható előnyökről, korlátokról, tisztíthatóságról és későbbi karbantartásról. Külföldi páciensként külön egyeztesse, melyik kontroll végezhető helyben, és mikor szükséges visszatérni Esztergomba.',
+    ]),
+  },
+  'dentist-hungary-why-international-patients-choose-esztergom': {
+    marker: 'seo260818enclinic2h',
+    blocks: section('seo260818enclinic2', 'Checklist for a first consultation in Esztergom', [
+      'Prepare a summary of your main symptoms, previous dental treatment, regular medication and desired outcome. Bring available images and records, while allowing for the possibility that current diagnostics will still be required. Ask which problems are urgent, which can safely wait and in what order the proposed treatments should be completed.',
+      'By the end of the consultation, the purpose, approximate duration and expected cost of the next appointment should be clear. If several options are available, request a comparison of benefits, limitations, cleanability and future maintenance. As an international patient, confirm which reviews may be completed at home and when returning to Esztergom is important.',
+    ]),
+  },
+  'zahnarzt-ungarn-warum-patienten-esztergom-waehlen': {
+    marker: 'seo260818declinic2h',
+    blocks: section('seo260818declinic2', 'Checkliste für die erste Beratung in Esztergom', [
+      'Notieren Sie die wichtigsten Beschwerden, frühere Zahnbehandlungen, regelmäßig eingenommene Medikamente und Ihr gewünschtes Ergebnis. Bringen Sie vorhandene Aufnahmen und Unterlagen mit, rechnen Sie jedoch damit, dass eine aktuelle Diagnostik erforderlich sein kann. Fragen Sie, welche Probleme dringend sind, was warten kann und in welcher Reihenfolge die vorgeschlagenen Behandlungen sinnvoll sind.',
+      'Am Ende der Beratung sollten Ziel, ungefähre Dauer und erwartete Kosten des nächsten Termins klar sein. Wenn mehrere Lösungen möglich sind, bitten Sie um einen Vergleich von Vorteilen, Grenzen, Reinigungsmöglichkeiten und späterer Pflege. Klären Sie als internationaler Patient, welche Kontrollen zu Hause erfolgen können und wann eine Rückkehr nach Esztergom wichtig ist.',
+    ]),
+  },
+  'master-craftsmanship-story-of-crown-dental': {
+    marker: 'seo260818enstory2h',
+    blocks: section('seo260818enstory2', 'How clinical and laboratory feedback improves a restoration', [
+      'A restoration may need adjustment during a try-in even when the digital design is technically correct. The mouth provides information that a screen cannot fully reproduce: the way the patient speaks, the movement of the lips, the relationship with neighbouring teeth and the comfort of the bite. Direct feedback between clinician and technician allows these observations to be incorporated before final completion.',
+      'This workflow is particularly useful when matching a visible front tooth or coordinating several restorations. It does not eliminate biological limits or guarantee a perfect result, but it creates more opportunities to identify correctable issues at the appropriate stage. Patients also benefit from understanding why a careful try-in may be more valuable than the fastest possible delivery.',
+    ]),
+  },
+  'meisterhandwerk-geschichte-von-crown-dental': {
+    marker: 'seo260818destory2h',
+    blocks: section('seo260818destory2', 'Wie klinische und zahntechnische Rückmeldung eine Versorgung verbessert', [
+      'Eine Versorgung kann bei der Anprobe Anpassungen benötigen, auch wenn die digitale Konstruktion technisch korrekt ist. Im Mund zeigen sich Informationen, die ein Bildschirm nicht vollständig abbildet: Aussprache, Lippenbewegung, Beziehung zu Nachbarzähnen und Komfort des Bisses. Durch die direkte Rückmeldung zwischen Zahnarzt und Zahntechniker können diese Beobachtungen vor der endgültigen Fertigstellung berücksichtigt werden.',
+      'Dieser Ablauf ist besonders beim Angleichen eines sichtbaren Frontzahns oder bei mehreren aufeinander abgestimmten Restaurationen hilfreich. Er beseitigt keine biologischen Grenzen und garantiert kein perfektes Ergebnis, schafft aber zusätzliche Möglichkeiten, korrigierbare Punkte im richtigen Arbeitsschritt zu erkennen. Patienten verstehen dadurch auch, warum eine sorgfältige Anprobe wichtiger sein kann als die schnellstmögliche Fertigstellung.',
+    ]),
+  },
+}
+
+const maintenanceItems = expansions.map((expansion) => ({
+  ...expansion,
+  supplement: supplementsBySlug[expansion.slug],
+}))
+
+const slugs = maintenanceItems.map(({slug}) => slug)
 
 function hasExpansion(post: PostSnapshot | undefined, marker: string): boolean {
   return Boolean(post?.content?.some((item) => item?._key === marker))
@@ -334,10 +424,14 @@ export default function BlogSeoMaintenanceTool() {
 
   const status = useMemo(() => {
     const bySlug = new Map(posts.map((post) => [post.slug, post]))
-    return expansions.map((expansion) => ({
+    return maintenanceItems.map((expansion) => ({
       ...expansion,
       post: bySlug.get(expansion.slug),
-      complete: hasExpansion(bySlug.get(expansion.slug), expansion.marker),
+      initialComplete: hasExpansion(bySlug.get(expansion.slug), expansion.marker),
+      supplementComplete: hasExpansion(bySlug.get(expansion.slug), expansion.supplement.marker),
+      complete:
+        hasExpansion(bySlug.get(expansion.slug), expansion.marker) &&
+        hasExpansion(bySlug.get(expansion.slug), expansion.supplement.marker),
     }))
   }, [posts])
 
@@ -351,10 +445,14 @@ export default function BlogSeoMaintenanceTool() {
     try {
       const transaction = client.transaction()
       for (const item of pending) {
+        const blocks = [
+          ...(item.initialComplete ? [] : item.blocks),
+          ...(item.supplementComplete ? [] : item.supplement.blocks),
+        ]
         transaction.patch(item.post!._id, (patch) =>
           patch
             .setIfMissing({content: []})
-            .append('content', item.blocks)
+            .append('content', blocks)
             .set({authorName: 'Crown Dental'})
             .unset(['medicalReviewerName', 'medicalReviewerRole', 'medicalReviewedAt']),
         )
