@@ -74,7 +74,11 @@ const postFields = `
 
 async function getPost(locale: string, slug: string): Promise<BlogPost | null> {
   const query = `*[_type == "post" && slug.current == $slug && coalesce(language, "hu") == $language][0]{${postFields}}`;
-  return client.fetch(query, { slug: sanityBlogSlug(slug), language: locale });
+  return client.fetch(
+    query,
+    { slug: sanityBlogSlug(slug), language: locale },
+    { cache: 'no-store' },
+  );
 }
 
 async function getConsolidatedPost(locale: string, slug: string): Promise<BlogPost | null> {
@@ -99,7 +103,7 @@ async function getConsolidatedPost(locale: string, slug: string): Promise<BlogPo
 
 async function getPostLanguageBySlug(slug: string): Promise<{ language: string } | null> {
   const query = `*[_type == "post" && slug.current == $slug][0]{"language": coalesce(language, "hu")}`;
-  return client.fetch(query, { slug });
+  return client.fetch(query, { slug }, { cache: 'no-store' });
 }
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
