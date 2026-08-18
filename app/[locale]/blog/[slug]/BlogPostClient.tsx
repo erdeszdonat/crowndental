@@ -11,6 +11,27 @@ import {
   ArrowRight
 } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
+import Link from 'next/link';
+import { INTERNATIONAL_PATIENT_PATHS } from '@/lib/internationalPaths';
+
+function relatedTreatmentSlug(post: any): string {
+  const haystack = `${post?.title ?? ''} ${post?.excerpt ?? ''} ${post?.slug ?? ''}`.toLocaleLowerCase();
+  if (/implant|all-on-4/.test(haystack)) return 'implantatum';
+  if (/protez|denture|zahnersatz|fogsor|műfogsor|zubn[aé] n[aá]hrad/.test(haystack)) return 'fogsor';
+  if (/koron|crown|krone|most[ií]k|bridge|brücke|cirk|zircon|zirkon/.test(haystack)) return 'koronak-hidak';
+  if (/ortodon|braces|zahnspang|fogszab/.test(haystack)) return 'fogszabalyozas';
+  if (/whiten|bleach|bielen|feh[eé]r[ií]t/.test(haystack)) return 'fogfeherites';
+  if (/root canal|wurzel|gy[oö]k[eé]r|endodon/.test(haystack)) return 'gyokerkezeles';
+  if (/extract|h[uú]z[aá]s|entfern|extrak/.test(haystack)) return 'foghuzas';
+  return 'allapotfelmeres';
+}
+
+const articleLinkCopy = {
+  hu: { heading: 'Kapcsolódó következő lépések', treatment: 'Kapcsolódó kezelés', all: 'Kezelések és árak', international: 'Utazás és szállás' },
+  sk: { heading: 'Súvisiace ďalšie kroky', treatment: 'Súvisiace ošetrenie', all: 'Ošetrenia a ceny', international: 'Zubné ošetrenie v Maďarsku' },
+  en: { heading: 'Useful next steps', treatment: 'Related treatment', all: 'Treatments and prices', international: 'Dental treatment in Hungary' },
+  de: { heading: 'Passende nächste Schritte', treatment: 'Passende Behandlung', all: 'Behandlungen und Preise', international: 'Zahnbehandlung in Ungarn' },
+} as const;
 
 function AnimatedCounter({ end, suffix = "", text, desc }: { end: number, suffix?: string, text: string, desc: string }) {
   const [count, setCount] = useState(0);
@@ -117,6 +138,9 @@ export default function BlogPostClient({ post }: { post: any }) {
   const locale = useLocale();
   const p = locale === 'hu' ? '' : `/${locale}`;
   const dateLocale = locale === 'sk' ? 'sk-SK' : locale === 'en' ? 'en-GB' : locale === 'de' ? 'de-DE' : 'hu-HU';
+  const linkCopy = articleLinkCopy[locale as keyof typeof articleLinkCopy] ?? articleLinkCopy.hu;
+  const treatmentSlug = relatedTreatmentSlug(post);
+  const internationalPath = INTERNATIONAL_PATIENT_PATHS[locale as keyof typeof INTERNATIONAL_PATIENT_PATHS] ?? INTERNATIONAL_PATIENT_PATHS.hu;
 
   if (!post) return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -139,24 +163,13 @@ export default function BlogPostClient({ post }: { post: any }) {
             <Clock className="w-4 h-4 text-sky-600" />
             {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString(dateLocale) : t('freshContent')}
           </div>
-          {(post.authorName || post.medicalReviewerName) && (
-            <div className="mb-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-600">
-              {post.authorName && (
-                <span>
-                  {locale === 'sk' ? 'Autor' : locale === 'en' ? 'Author' : locale === 'de' ? 'Autor' : 'Szerző'}:{' '}
-                  <strong className="text-gray-900">{post.authorName}</strong>
-                  {post.authorRole ? ` · ${post.authorRole}` : ''}
-                </span>
-              )}
-              {post.medicalReviewerName && (
-                <span>
-                  {locale === 'sk' ? 'Odborne skontroloval' : locale === 'en' ? 'Medically reviewed by' : locale === 'de' ? 'Medizinisch geprüft von' : 'Orvos-szakmailag ellenőrizte'}:{' '}
-                  <strong className="text-gray-900">{post.medicalReviewerName}</strong>
-                  {post.medicalReviewerRole ? ` · ${post.medicalReviewerRole}` : ''}
-                </span>
-              )}
-            </div>
-          )}
+          <div className="mb-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-600">
+            <span>
+              {locale === 'sk' ? 'Vydavateľ odborného obsahu' : locale === 'en' ? 'Dental information published by' : locale === 'de' ? 'Fachinformation veröffentlicht von' : 'Szakmai tartalom kiadója'}:{' '}
+              <strong className="text-gray-900">{post.authorName || 'Crown Dental'}</strong>
+              {post.authorRole ? ` · ${post.authorRole}` : ''}
+            </span>
+          </div>
           <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight mb-8 tracking-tight italic">
             {post.title}
           </h1>
@@ -253,6 +266,21 @@ export default function BlogPostClient({ post }: { post: any }) {
             return result;
           })()}
         </div>
+
+        <aside className="mb-20 rounded-[2rem] border border-sky-100 bg-sky-50 p-7 md:p-9">
+          <h2 className="text-2xl font-extrabold text-slate-900">{linkCopy.heading}</h2>
+          <div className="mt-6 grid gap-4 md:grid-cols-3">
+            <Link href={`${p}/kezelesek/${treatmentSlug}`} className="flex items-center justify-between gap-3 rounded-2xl bg-white p-5 font-black text-sky-700 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+              {linkCopy.treatment}<ArrowRight className="h-5 w-5 shrink-0" />
+            </Link>
+            <Link href={`${p}/kezelesek`} className="flex items-center justify-between gap-3 rounded-2xl bg-white p-5 font-black text-sky-700 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+              {linkCopy.all}<ArrowRight className="h-5 w-5 shrink-0" />
+            </Link>
+            <Link href={`${p}/${internationalPath}`} className="flex items-center justify-between gap-3 rounded-2xl bg-white p-5 font-black text-sky-700 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+              {linkCopy.international}<ArrowRight className="h-5 w-5 shrink-0" />
+            </Link>
+          </div>
+        </aside>
 
         <div className="p-10 md:p-16 bg-gradient-to-br from-sky-600 to-sky-800 rounded-[3rem] shadow-2xl text-center relative overflow-hidden text-white mt-24 transform hover:scale-[1.01] transition-transform duration-500">
           <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />

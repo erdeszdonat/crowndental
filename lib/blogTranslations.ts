@@ -131,7 +131,7 @@ export const BLOG_TRANSLATION_GROUPS: readonly BlogTranslationGroup[] = [
   },
   {
     hu: 'mennyibe-kerul-mufogsor-magyarorszagon-2026-arkalauz',
-    sk: 'ko-ko-stoja-umele-zuby-v-ma-arsku-v-roku-2026-kompletn-sprievodca-cenami',
+    sk: 'kolko-stoja-umele-zuby-v-madarsku-2026',
     en: 'dentures-cost-hungary-2026-price-guide',
     de: 'zahnersatz-prothesen-kosten-ungarn-2026-preisratgeber',
   },
@@ -143,7 +143,7 @@ export const BLOG_TRANSLATION_GROUPS: readonly BlogTranslationGroup[] = [
   },
   {
     hu: 'fogimplantatum-magyarorszagon-arak-elonyok-kulfoldi-pacienseknek',
-    sk: 'zubn-implantat-v-ma-arsku-ko-ko-m-ete-u-etri-a-pre-o-je-crown-dental-najlep-ou-vo-bou',
+    sk: 'zubny-implantat-v-madarsku-cena-a-vyhody',
     en: 'dental-implants-hungary-costs-benefits-international-patients',
     de: 'zahnimplantate-ungarn-kosten-vorteile-internationale-patienten',
   },

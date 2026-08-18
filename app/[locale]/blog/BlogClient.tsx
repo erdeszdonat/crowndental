@@ -11,6 +11,9 @@ import {
   type BlogCategory,
   type BlogLanguage,
 } from '@/lib/blogConfig';
+import { canonicalBlogSlug, isMergedBlogSource } from '@/lib/blogConsolidation';
+import Link from 'next/link';
+import { INTERNATIONAL_PATIENT_PATHS } from '@/lib/internationalPaths';
 
 type BlogPost = {
   _id: string;
@@ -52,8 +55,8 @@ const copyByLocale = {
     },
     categories: {
       professional: {
-        title: 'Orvosi szakmai cikkek',
-        description: 'A leggyakrabban keresett fogászati kérdésekre válaszoló, orvosi szakmai cikkjeink.',
+        title: 'Crown Dental szakmai cikkek',
+        description: 'A leggyakrabban keresett fogászati kérdésekre válaszoló, Crown Dental által kiadott szakmai cikkeink.',
       },
       magazine: {
         title: 'Fejlődésünk és érdekességek',
@@ -80,8 +83,8 @@ const copyByLocale = {
     },
     categories: {
       professional: {
-        title: 'Medical dental articles',
-        description: 'Doctor-led articles answering the most frequently searched dental questions.',
+        title: 'Crown Dental guidance',
+        description: 'Practical dental articles published by Crown Dental, answering commonly searched treatment questions.',
       },
       magazine: {
         title: 'Our progress and insights',
@@ -108,8 +111,8 @@ const copyByLocale = {
     },
     categories: {
       professional: {
-        title: 'Odborné lekárske články',
-        description: 'Odborné články lekárov, ktoré odpovedajú na najčastejšie vyhľadávané otázky o zuboch.',
+        title: 'Odborné články Crown Dental',
+        description: 'Praktické články vydané Crown Dental, ktoré odpovedajú na často vyhľadávané otázky o zubnom ošetrení.',
       },
       magazine: {
         title: 'Náš rozvoj a zaujímavosti',
@@ -136,14 +139,32 @@ const copyByLocale = {
     },
     categories: {
       professional: {
-        title: 'Zahnmedizinische Fachartikel',
-        description: 'Medizinisch fundierte Artikel zu den am häufigsten gestellten Fragen rund um Zähne und Behandlungen.',
+        title: 'Crown Dental Ratgeber',
+        description: 'Von Crown Dental veröffentlichte Fachinformationen zu häufig gesuchten Fragen rund um Zähne und Behandlungen.',
       },
       magazine: {
         title: 'Neuigkeiten und Einblicke',
         description: 'Neuigkeiten von Crown Dental, Praxisentwicklungen, Geschichten hinter den Kulissen und Wissenswertes.',
       },
     },
+  },
+} as const;
+
+const internationalCtaByLocale = {
+  sk: {
+    title: 'Plánujete zubné ošetrenie v Maďarsku?',
+    text: 'Pozrite si postup vyšetrenia, plánovanie návštev, najčastejšie ošetrenia a informácie pre pacientov zo Slovenska.',
+    label: 'Informácie pre pacientov zo Slovenska',
+  },
+  en: {
+    title: 'Considering dental treatment in Hungary?',
+    text: 'See how assessment, treatment planning, travel and aftercare work for patients travelling from the UK.',
+    label: 'Information for UK patients',
+  },
+  de: {
+    title: 'Planen Sie eine Zahnbehandlung in Ungarn?',
+    text: 'Erfahren Sie, wie Untersuchung, Behandlungsplanung, Anreise und Nachsorge für deutschsprachige Patienten ablaufen.',
+    label: 'Informationen für deutsche Patienten',
   },
 } as const;
 
@@ -187,7 +208,13 @@ export default function BlogClient({ initialPosts = EMPTY_BLOG_POSTS }: { initia
         const response = await fetch(url, { cache: 'no-store' });
         const data = await response.json();
 
-        if (!cancelled && data.result) setClientPosts(data.result);
+        if (!cancelled && data.result) {
+          setClientPosts(
+            data.result
+              .filter((post: BlogPost) => post.slug && !isMergedBlogSource(post.slug))
+              .map((post: BlogPost) => ({ ...post, slug: canonicalBlogSlug(post.slug) })),
+          );
+        }
       } catch (error) {
         console.error(error);
       } finally {
@@ -257,6 +284,20 @@ export default function BlogClient({ initialPosts = EMPTY_BLOG_POSTS }: { initia
           <p>{t('description2')}</p>
         </div>
       </section>
+
+      {locale !== 'hu' && internationalCtaByLocale[locale as keyof typeof internationalCtaByLocale] && (
+        <section className="container mx-auto mb-8 max-w-6xl px-4">
+          <div className="flex flex-col gap-5 rounded-[2rem] bg-slate-950 p-7 text-white md:flex-row md:items-center md:justify-between md:p-9">
+            <div>
+              <h2 className="text-2xl font-black">{internationalCtaByLocale[locale as keyof typeof internationalCtaByLocale].title}</h2>
+              <p className="mt-2 max-w-3xl leading-7 text-slate-300">{internationalCtaByLocale[locale as keyof typeof internationalCtaByLocale].text}</p>
+            </div>
+            <Link href={`/${locale}/${INTERNATIONAL_PATIENT_PATHS[locale as keyof typeof INTERNATIONAL_PATIENT_PATHS]}`} className="shrink-0 rounded-full bg-sky-500 px-6 py-3 text-center font-black transition hover:bg-sky-400">
+              {internationalCtaByLocale[locale as keyof typeof internationalCtaByLocale].label}
+            </Link>
+          </div>
+        </section>
+      )}
 
       <section className="container mx-auto px-4 max-w-6xl">
         <div className="bg-white border border-sky-100 rounded-[2rem] shadow-sm p-4 md:p-5">
@@ -335,7 +376,7 @@ export default function BlogClient({ initialPosts = EMPTY_BLOG_POSTS }: { initia
         ) : filteredPosts.length > 0 ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredPosts.map((post) => (
-              <a href={getPostPath(post.language, post.slug)} key={post._id} className="group flex flex-col bg-white rounded-[2rem] overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-gray-100">
+              <Link href={getPostPath(post.language, post.slug)} key={post._id} className="group flex flex-col bg-white rounded-[2rem] overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-gray-100">
                 <div className="relative h-56 w-full overflow-hidden bg-gray-100">
                   {post.imageUrl && (
                     <img src={post.imageUrl} alt={post.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
@@ -351,7 +392,7 @@ export default function BlogClient({ initialPosts = EMPTY_BLOG_POSTS }: { initia
                   </h2>
                   <p className="text-gray-500 line-clamp-3 mb-6 font-medium flex-1">{post.excerpt}</p>
                 </div>
-              </a>
+              </Link>
             ))}
           </div>
         ) : (

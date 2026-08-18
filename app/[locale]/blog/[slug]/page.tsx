@@ -9,6 +9,13 @@ import {
   findBlogTranslation,
 } from '@/lib/blogTranslations';
 import {
+  canonicalBlogSlug,
+  mergeArchivedBlogContent,
+  mergedBlogSource,
+  mergedBlogTarget,
+  sanityBlogSlug,
+} from '@/lib/blogConsolidation';
+import {
   SITE_URL,
   buildBreadcrumbJsonLd,
   localizedUrl,
@@ -20,6 +27,7 @@ type BlogPostPageProps = {
 };
 
 type BlogPost = {
+  slug?: string;
   title: string;
   seoTitle?: string;
   seoDescription?: string;
@@ -66,7 +74,27 @@ const postFields = `
 
 async function getPost(locale: string, slug: string): Promise<BlogPost | null> {
   const query = `*[_type == "post" && slug.current == $slug && coalesce(language, "hu") == $language][0]{${postFields}}`;
-  return client.fetch(query, { slug, language: locale });
+  return client.fetch(query, { slug: sanityBlogSlug(slug), language: locale });
+}
+
+async function getConsolidatedPost(locale: string, slug: string): Promise<BlogPost | null> {
+  const sourceSlug = mergedBlogSource(slug);
+  if (!sourceSlug) {
+    const post = await getPost(locale, slug);
+    return post ? { ...post, slug } : null;
+  }
+
+  const [post, sourcePost] = await Promise.all([
+    getPost(locale, slug),
+    getPost(locale, sourceSlug),
+  ]);
+  if (!post) return null;
+
+  return {
+    ...post,
+    slug,
+    content: mergeArchivedBlogContent(post.content, sourcePost?.content, sourceSlug),
+  };
 }
 
 async function getPostLanguageBySlug(slug: string): Promise<{ language: string } | null> {
@@ -76,7 +104,8 @@ async function getPostLanguageBySlug(slug: string): Promise<{ language: string }
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
   const locale = normalizeLocale(params.locale);
-  const post = await getPost(locale, params.slug);
+  const canonicalSlug = canonicalBlogSlug(params.slug);
+  const post = await getConsolidatedPost(locale, canonicalSlug);
 
   if (!post) {
     return {
@@ -85,7 +114,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     };
   }
 
-  const canonical = localizedUrl(locale, `blog/${params.slug}`);
+  const canonical = localizedUrl(locale, `blog/${canonicalSlug}`);
   const title = post.seoTitle || `${post.title} | Crown Dental`;
   const description =
     post.seoDescription ||
@@ -105,7 +134,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     authors: post.authorName ? [{ name: post.authorName, url: post.authorProfileUrl }] : [{ name: 'Crown Dental' }],
     alternates: {
       canonical,
-      languages: blogLanguageAlternates(params.slug),
+      languages: blogLanguageAlternates(canonicalSlug),
     },
     robots: {
       index: true,
@@ -129,7 +158,17 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const locale = normalizeLocale(params.locale);
-  const post = await getPost(locale, params.slug);
+  const mergeTarget = mergedBlogTarget(params.slug);
+  if (mergeTarget) {
+    permanentRedirect(localizedUrl(locale, `blog/${mergeTarget}`));
+  }
+
+  const canonicalSlug = canonicalBlogSlug(params.slug);
+  if (canonicalSlug !== params.slug) {
+    permanentRedirect(localizedUrl(locale, `blog/${canonicalSlug}`));
+  }
+
+  const post = await getConsolidatedPost(locale, canonicalSlug);
   if (!post) {
     // Historic language-switcher links kept the source-language slug under a
     // different locale prefix. Redirect those URLs to the real translation.
@@ -151,8 +190,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     notFound();
   }
 
-  const blogJsonLd = buildBlogPostingJsonLd({ ...post, slug: params.slug, language: locale });
-  const breadcrumbJsonLd = buildBreadcrumbJsonLd(locale, `blog/${params.slug}`, post.title);
+  const blogJsonLd = buildBlogPostingJsonLd({ ...post, slug: canonicalSlug, language: locale });
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd(locale, `blog/${canonicalSlug}`, post.title);
 
   return (
     <>

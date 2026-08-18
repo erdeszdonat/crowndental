@@ -71,6 +71,17 @@ const nextConfig = {
       { source: '/feed', destination: '/blog', permanent: true },
       { source: '/blog/feed', destination: '/blog', permanent: true },
 
+      // KANNIBALIZÁLÓ BLOGCIKKEK - a hasznos forrástartalom a célcikkben
+      // megmarad, a régi URL pedig permanensen átadja a jelzéseit.
+      { source: '/blog/hetvege', destination: '/blog/fogaszati-ugyelet-esztergomban-2026', permanent: true },
+      { source: '/sk/blog/vikendovy-zubar-preco-je-dolezite-osetrenie-v-sobotu-a-nedelu', destination: '/sk/blog/zubna-pohotovost-ostrihom-2026-ordinacne-hodiny', permanent: true },
+      { source: '/en/blog/weekend-dentist-why-saturday-and-sunday-care-matters', destination: '/en/blog/emergency-dentist-esztergom-2026-weekend-hours', permanent: true },
+      { source: '/de/blog/zahnarzt-am-wochenende-samstag-sonntag-esztergom', destination: '/de/blog/zahnaerztlicher-notdienst-esztergom-2026-wochenende', permanent: true },
+
+      // A két sérült szlovák slug olvasható, stabil kanonikus URL-re költözik.
+      { source: '/sk/blog/ko-ko-stoja-umele-zuby-v-ma-arsku-v-roku-2026-kompletn-sprievodca-cenami', destination: '/sk/blog/kolko-stoja-umele-zuby-v-madarsku-2026', permanent: true },
+      { source: '/sk/blog/zubn-implantat-v-ma-arsku-ko-ko-m-ete-u-etri-a-pre-o-je-crown-dental-najlep-ou-vo-bou', destination: '/sk/blog/zubny-implantat-v-madarsku-cena-a-vyhody', permanent: true },
+
       // A nem leképezett /cpg/ URL-ek szándékosan maradnak valódi 404-ek.
       // A főoldalra irányított tömeges 307 soft-404 jelzést okozott volna.
     ];
