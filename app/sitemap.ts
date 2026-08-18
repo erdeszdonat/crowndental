@@ -1,6 +1,8 @@
 import type { MetadataRoute } from 'next';
 import { normalizeBlogLanguage } from '@/lib/blogConfig';
+import { blogLanguageAlternates } from '@/lib/blogTranslations';
 import {
+  HREFLANG_BY_LOCALE,
   languageAlternates,
   localizedUrl,
   SUPPORTED_LOCALES,
@@ -43,6 +45,7 @@ const staticPaths = [
   'blog',
   'karrier',
   'idopont',
+  'utazas-szallas',
 ];
 
 const hungarianOnlyPaths = ['aszf', 'adatkezeles', 'cookie-tajekoztato', 'impresszum'];
@@ -63,8 +66,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.3,
       alternates: {
         languages: {
-          hu: localizedUrl('hu', path),
-          de: localizedUrl('de', path),
+          [HREFLANG_BY_LOCALE.hu]: localizedUrl('hu', path),
+          [HREFLANG_BY_LOCALE.de]: localizedUrl('de', path),
         },
       },
     })),
@@ -76,11 +79,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .filter((post) => SUPPORTED_LOCALES.includes(normalizeBlogLanguage(post.language)))
     .map((post) => {
       const language = normalizeBlogLanguage(post.language);
+      const alternates = blogLanguageAlternates(post.slug!);
       return {
         url: localizedUrl(language, `blog/${post.slug}`),
         lastModified: post._updatedAt ? new Date(post._updatedAt) : undefined,
         changeFrequency: 'monthly' as const,
         priority: 0.7,
+        ...(alternates ? { alternates: { languages: alternates } } : {}),
       };
     });
 

@@ -3,8 +3,48 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Phone, Calendar, Menu, X, Globe, ChevronDown } from 'lucide-react';
+import { Phone, Calendar, Menu, X, ChevronDown } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
+
+const languages = [
+  { code: 'hu', hrefLang: 'hu-HU', label: 'Magyar' },
+  { code: 'en', hrefLang: 'en-GB', label: 'English' },
+  { code: 'sk', hrefLang: 'sk-SK', label: 'Slovenčina' },
+  { code: 'de', hrefLang: 'de-DE', label: 'Deutsch' },
+] as const;
+
+type LocaleCode = (typeof languages)[number]['code'];
+
+function localeFallbackPath(pathname: string, newLocale: LocaleCode): string {
+  const pathWithoutLocale = pathname.replace(/^\/(en|sk|de)(?=\/|$)/, '') || '/';
+  const prefix = newLocale === 'hu' ? '' : `/${newLocale}`;
+
+  // A translated post may have a different slug. Until the hreflang link is
+  // read in the browser, the locale's blog hub is the only guaranteed URL.
+  if (/^\/blog\/[^/]+\/?$/.test(pathWithoutLocale)) {
+    return `${prefix}/blog`;
+  }
+
+  return `${prefix}${pathWithoutLocale === '/' ? '/' : pathWithoutLocale}`;
+}
+
+function localeDestination(pathname: string, newLocale: LocaleCode): string {
+  const fallback = localeFallbackPath(pathname, newLocale);
+  const pathWithoutLocale = pathname.replace(/^\/(en|sk|de)(?=\/|$)/, '') || '/';
+  if (typeof document === 'undefined' || !/^\/blog\//.test(pathWithoutLocale)) {
+    return fallback;
+  }
+
+  const hrefLang = languages.find((language) => language.code === newLocale)?.hrefLang;
+  const alternate = hrefLang
+    ? document.querySelector<HTMLLinkElement>(`link[rel="alternate"][hreflang="${hrefLang}"]`)
+    : null;
+
+  if (!alternate?.href) return fallback;
+
+  const target = new URL(alternate.href);
+  return `${target.pathname}${target.search}${target.hash}`;
+}
 
 // ─── Zászló ikonok ────────────────────────────────────────────────────────────
 export function FlagIcon({ code }: { code: string }) {
@@ -56,13 +96,6 @@ function LanguageSwitcher() {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  const languages = [
-    { code: 'hu', label: 'Magyar' },
-    { code: 'en', label: 'English' },
-    { code: 'sk', label: 'Slovenčina' },
-    { code: 'de', label: 'Deutsch' },
-  ];
-
   // Kattintás kezelése kívülről zárja be
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -74,24 +107,10 @@ function LanguageSwitcher() {
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
-  const switchLocale = (newLocale: string) => {
+  const switchLocale = (newLocale: LocaleCode) => {
     setOpen(false);
     if (newLocale === locale) return;
-
-    // Az aktuális pathname alapján kiszámoljuk az új URL-t
-    let newPath = pathname;
-
-    // Eltávolítjuk a jelenlegi locale prefixet (ha van)
-    if (locale !== 'hu') {
-      newPath = pathname.replace(new RegExp(`^/${locale}`), '') || '/';
-    }
-
-    // Hozzáadjuk az új locale prefixet (ha nem hu)
-    if (newLocale !== 'hu') {
-      newPath = `/${newLocale}${newPath === '/' ? '' : newPath}`;
-    }
-
-    router.push(newPath);
+    router.push(localeDestination(pathname, newLocale));
   };
 
   const currentLang = languages.find(l => l.code === locale) ?? languages[0];
@@ -144,6 +163,7 @@ function LanguageSwitcher() {
 export default function Navigation() {
   const t = useTranslations('nav');
   const locale = useLocale();
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
@@ -250,16 +270,18 @@ export default function Navigation() {
             <div className="pt-2 border-t border-gray-100">
               <p className="text-xs text-gray-400 uppercase tracking-wider mb-3 px-4">Nyelv / Language</p>
               <div className="flex gap-2 px-4">
-                {[
-                  { code: 'hu', label: 'Magyar' },
-                  { code: 'en', label: 'English' },
-                  { code: 'sk', label: 'Slovenčina' },
-                  { code: 'de', label: 'Deutsch' },
-                ].map((lang) => (
+                {languages.map((lang) => (
                   <a
                     key={lang.code}
-                    href={lang.code === 'hu' ? pathname.replace(/^\/(en|sk|de)/, '') || '/' : `/${lang.code}${pathname.replace(/^\/(en|sk|de)/, '') || ''}`}
-                    onClick={() => setIsOpen(false)}
+                    href={localeFallbackPath(pathname, lang.code)}
+                    hrefLang={lang.hrefLang}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      setIsOpen(false);
+                      if (lang.code !== locale) {
+                        router.push(localeDestination(pathname, lang.code));
+                      }
+                    }}
                     className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold transition-colors ${
                       locale === lang.code ? 'bg-sky-100 text-sky-700' : 'bg-gray-100 text-gray-600 hover:bg-sky-50'
                     }`}

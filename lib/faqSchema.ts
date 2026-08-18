@@ -35,8 +35,10 @@ export function buildBlogPostingJsonLd(post: {
   authorProfileUrl?: string;
   medicalReviewerName?: string;
   medicalReviewerRole?: string;
+  medicalReviewedAt?: string;
 }) {
   const localePrefix = post.language && post.language !== 'hu' ? `/${post.language}` : '';
+  const hasNamedAuthor = Boolean(post.authorName && post.authorName !== 'Crown Dental');
 
   return {
     '@context': 'https://schema.org',
@@ -45,9 +47,9 @@ export function buildBlogPostingJsonLd(post: {
     description: post.excerpt || '',
     image: post.imageUrl || 'https://www.crowndental.hu/og-image.jpg',
     datePublished: post.publishedAt || '',
-    dateModified: post._updatedAt || post.publishedAt || '',
+    dateModified: post.medicalReviewedAt || post._updatedAt || post.publishedAt || '',
     inLanguage: post.language || 'hu',
-    author: post.authorName
+    author: hasNamedAuthor
       ? {
           '@type': 'Person',
           name: post.authorName,

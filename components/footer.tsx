@@ -23,6 +23,12 @@ export default function Footer() {
     sk: 'Kvalitná stomatológia s vlastným zubotechnickým laboratóriom v Ostrihome, bez kompromisov.',
     de: 'Hochwertige Zahnmedizin mit eigenem Dentallabor in Esztergom – ohne Kompromisse.',
   };
+  const travelLinkLabel: Record<string, string> = {
+    hu: 'Utazás és szállás',
+    en: 'Travel, accommodation and aftercare',
+    sk: 'Cesta, ubytovanie a následná starostlivosť',
+    de: 'Anreise, Unterkunft und Nachsorge',
+  };
 
   const openCookieBanner = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -101,6 +107,7 @@ export default function Footer() {
               <li><Link href={`${prefix}/rolunk`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('aboutLink')}</Link></li>
               <li><Link href={`${prefix}/kapcsolat`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('contactLink')}</Link></li>
               <li><Link href={`${prefix}/blog`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('blogLink')}</Link></li>
+              <li><Link href={`${prefix}/utazas-szallas`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {travelLinkLabel[locale] ?? travelLinkLabel.hu}</Link></li>
               <li><Link href={`${prefix}/karrier`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('careerLink')}</Link></li>
             </ul>
 

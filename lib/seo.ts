@@ -9,6 +9,13 @@ export const SUPPORTED_LOCALES = ['hu', 'en', 'sk', 'de'] as const;
 
 export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
 
+export const HREFLANG_BY_LOCALE: Record<SupportedLocale, string> = {
+  hu: 'hu-HU',
+  en: 'en-GB',
+  sk: 'sk-SK',
+  de: 'de-DE',
+};
+
 export const TREATMENT_SLUGS = [
   'allapotfelmeres',
   'implantatum',
@@ -42,7 +49,7 @@ const messagesByLocale = {
 
 const openGraphLocales: Record<SupportedLocale, string> = {
   hu: 'hu_HU',
-  en: 'en_US',
+  en: 'en_GB',
   sk: 'sk_SK',
   de: 'de_DE',
 };
@@ -64,10 +71,10 @@ export function localizedUrl(locale: string, path = ''): string {
 
 export function languageAlternates(path = ''): Record<string, string> {
   return {
-    hu: localizedUrl('hu', path),
-    en: localizedUrl('en', path),
-    sk: localizedUrl('sk', path),
-    de: localizedUrl('de', path),
+    [HREFLANG_BY_LOCALE.hu]: localizedUrl('hu', path),
+    [HREFLANG_BY_LOCALE.en]: localizedUrl('en', path),
+    [HREFLANG_BY_LOCALE.sk]: localizedUrl('sk', path),
+    [HREFLANG_BY_LOCALE.de]: localizedUrl('de', path),
     'x-default': localizedUrl('hu', path),
   };
 }
