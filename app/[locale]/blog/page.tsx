@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { buildLocalizedMetadata, normalizeLocale } from '@/lib/seo';
 import BlogClient from './BlogClient';
+import { canonicalBlogSlug, isMergedBlogSource } from '@/lib/blogConsolidation';
 
 export const revalidate = 60;
 
@@ -53,7 +54,9 @@ async function getBlogPosts() {
     if (!response.ok) return [];
 
     const data = await response.json();
-    return data.result || [];
+    return (data.result || [])
+      .filter((post: { slug?: string }) => post.slug && !isMergedBlogSource(post.slug))
+      .map((post: { slug: string }) => ({ ...post, slug: canonicalBlogSlug(post.slug) }));
   } catch (error) {
     console.error('Blog lista betöltési hiba:', error);
     return [];

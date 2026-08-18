@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { MapPin, Phone, Mail, ChevronRight, Facebook, Instagram, Settings } from 'lucide-react';
 import Link from 'next/link';
 import { useTranslations, useLocale } from 'next-intl';
+import { INTERNATIONAL_PATIENT_PATHS } from '@/lib/internationalPaths';
 
 export default function Footer() {
   const t = useTranslations('footer');
@@ -28,6 +29,12 @@ export default function Footer() {
     en: 'Travel, accommodation and aftercare',
     sk: 'Cesta, ubytovanie a následná starostlivosť',
     de: 'Anreise, Unterkunft und Nachsorge',
+  };
+  const internationalPatientLabel: Record<string, string> = {
+    hu: 'Utazás fogászati kezeléshez',
+    en: 'Dental treatment in Hungary',
+    sk: 'Zubné ošetrenie v Maďarsku',
+    de: 'Zahnbehandlung in Ungarn',
   };
 
   const openCookieBanner = (e: React.MouseEvent) => {
@@ -107,6 +114,9 @@ export default function Footer() {
               <li><Link href={`${prefix}/rolunk`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('aboutLink')}</Link></li>
               <li><Link href={`${prefix}/kapcsolat`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('contactLink')}</Link></li>
               <li><Link href={`${prefix}/blog`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('blogLink')}</Link></li>
+              {locale !== 'hu' && (
+                <li><Link href={`${prefix}/${INTERNATIONAL_PATIENT_PATHS[locale as keyof typeof INTERNATIONAL_PATIENT_PATHS] ?? INTERNATIONAL_PATIENT_PATHS.hu}`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {internationalPatientLabel[locale] ?? internationalPatientLabel.hu}</Link></li>
+              )}
               <li><Link href={`${prefix}/utazas-szallas`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {travelLinkLabel[locale] ?? travelLinkLabel.hu}</Link></li>
               <li><Link href={`${prefix}/karrier`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('careerLink')}</Link></li>
             </ul>

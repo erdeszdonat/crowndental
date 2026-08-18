@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { normalizeBlogLanguage } from '@/lib/blogConfig';
+import { canonicalBlogSlug, isMergedBlogSource } from '@/lib/blogConsolidation';
 import { blogLanguageAlternates } from '@/lib/blogTranslations';
 import {
   HREFLANG_BY_LOCALE,
@@ -50,6 +51,24 @@ const staticPaths = [
 
 const hungarianOnlyPaths = ['aszf', 'adatkezeles', 'cookie-tajekoztato', 'impresszum'];
 
+const internationalPatientRoutes: MetadataRoute.Sitemap = [
+  { locale: 'sk', path: 'zubne-osetrenie-madarsko' },
+  { locale: 'en', path: 'dental-treatment-hungary' },
+  { locale: 'de', path: 'zahnbehandlung-ungarn' },
+].map(({ locale, path }) => ({
+  url: localizedUrl(locale, path),
+  changeFrequency: 'weekly' as const,
+  priority: 0.9,
+  alternates: {
+    languages: {
+      [HREFLANG_BY_LOCALE.sk]: localizedUrl('sk', 'zubne-osetrenie-madarsko'),
+      [HREFLANG_BY_LOCALE.en]: localizedUrl('en', 'dental-treatment-hungary'),
+      [HREFLANG_BY_LOCALE.de]: localizedUrl('de', 'zahnbehandlung-ungarn'),
+      'x-default': localizedUrl('en', 'dental-treatment-hungary'),
+    },
+  },
+}));
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = staticPaths.flatMap((path) =>
     SUPPORTED_LOCALES.map((locale) => ({
@@ -76,12 +95,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const sanityPosts = await fetchSanityPosts();
   const dynamicBlogRoutes: MetadataRoute.Sitemap = sanityPosts
     .filter((post) => post.slug)
+    .filter((post) => !isMergedBlogSource(post.slug!))
     .filter((post) => SUPPORTED_LOCALES.includes(normalizeBlogLanguage(post.language)))
     .map((post) => {
       const language = normalizeBlogLanguage(post.language);
-      const alternates = blogLanguageAlternates(post.slug!);
+      const slug = canonicalBlogSlug(post.slug!);
+      const alternates = blogLanguageAlternates(slug);
       return {
-        url: localizedUrl(language, `blog/${post.slug}`),
+        url: localizedUrl(language, `blog/${slug}`),
         lastModified: post._updatedAt ? new Date(post._updatedAt) : undefined,
         changeFrequency: 'monthly' as const,
         priority: 0.7,
@@ -89,7 +110,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       };
     });
 
-  return [...staticRoutes, ...legalRoutes, ...dynamicBlogRoutes];
+  return [...staticRoutes, ...legalRoutes, ...internationalPatientRoutes, ...dynamicBlogRoutes];
 }
 
 export const dynamic = 'force-static';

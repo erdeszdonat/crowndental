@@ -73,26 +73,8 @@ function assessPost(post, group) {
   const issues = [];
   let score = 100;
 
-  if (!post.authorName || post.authorName === 'Crown Dental') {
-    issues.push('Nincs név szerinti szakmai szerző');
-    score -= 15;
-  }
-  if (!post.authorRole) {
-    issues.push('Hiányzik a szerző titulusa');
-    score -= 5;
-  }
-  if (!post.authorProfileUrl) {
-    issues.push('Hiányzik a szerző profiloldala');
-    score -= 5;
-  }
-  if (!post.medicalReviewerName) {
-    issues.push('Hiányzik az orvosi reviewer');
-    score -= 20;
-  }
-  if (!post.medicalReviewerRole) {
-    issues.push('Hiányzik a reviewer titulusa');
-    score -= 5;
-  }
+  // A felhasználó szerkesztőségi döntése alapján a Crown Dental a tartalom
+  // szervezeti kiadója. Név szerinti orvosi reviewer nem auditkövetelmény.
   if (!post.seoTitle) {
     issues.push('Hiányzik a SEO title');
     score -= 10;
@@ -155,7 +137,8 @@ async function main() {
 
   const posts = await fetchPosts();
   const rows = posts.map((post) => {
-    const group = groupBySlug.get(post.slug);
+    const canonicalSlug = SLUG_MIGRATIONS[post.slug] || post.slug;
+    const group = groupBySlug.get(canonicalSlug);
     const assessment = assessPost(post, group);
     return {
       priority: assessment.priority,
@@ -189,12 +172,11 @@ async function main() {
     generatedAt: new Date().toISOString(),
     posts: posts.length,
     translationGroups: groups.length,
-    mappedPosts: posts.filter((post) => groupBySlug.has(post.slug)).length,
+    mappedPosts: posts.filter((post) => groupBySlug.has(SLUG_MIGRATIONS[post.slug] || post.slug)).length,
     languages: Object.fromEntries(
       Object.entries(Object.groupBy(posts, (post) => post.language)).map(([key, value]) => [key, value.length]),
     ),
-    namedClinicalAuthors: posts.filter((post) => post.authorName && post.authorName !== 'Crown Dental').length,
-    medicalReviewers: posts.filter((post) => post.medicalReviewerName).length,
+    crownDentalAuthored: posts.filter((post) => !post.authorName || post.authorName === 'Crown Dental').length,
     actionCounts,
   };
 
