@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { Resend } from 'resend';
+import { createHash } from 'node:crypto';
 import { getPreferredGreetingName } from '@/lib/names';
+import { requireAdminSession } from '@/lib/adminAuth';
+import { normalizeLocale, noStoreJson, rejectUntrustedMutation, type SupportedLocale } from '@/lib/serverSecurity';
 
 const ALLOWED_TABLES = new Set(['appointments', 'career_applications', 'quote_leads']);
 const ALLOWED_STATUSES = new Set(['new', 'no_answer', 'processed', 'cancelled', 'special']);
@@ -17,6 +19,10 @@ type AppointmentForNoAnswerEmail = {
   phone?: string | null;
   status?: string | null;
   treatment?: string | null;
+  locale?: string | null;
+  confirmation_email_idempotency_key?: string | null;
+  no_answer_email_idempotency_key?: string | null;
+  cancellation_email_idempotency_key?: string | null;
 };
 
 type AppointmentForConfirmationEmail = AppointmentForNoAnswerEmail & {
@@ -39,6 +45,92 @@ function escapeHtml(value: unknown) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
+}
+
+type ResendEmailPayload = {
+  from: string;
+  to: string;
+  subject: string;
+  html: string;
+};
+
+class ResendSendError extends Error {
+  constructor(status: number | null, code?: string) {
+    const safeCode = String(code || 'unknown').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 60);
+    super(`Resend küldési hiba (${status ? `HTTP ${status}` : 'hálózati hiba'}, kód: ${safeCode || 'unknown'}).`);
+    this.name = 'ResendSendError';
+  }
+}
+
+function buildEmailIdempotencyKey(
+  event: 'processed' | 'no-answer' | 'cancelled',
+  appointmentId: unknown,
+  previousEventKey: unknown,
+  eventPayload: unknown = '',
+) {
+  const digest = createHash('sha256')
+    .update([
+      'crown-admin-email-v1',
+      String(event),
+      String(appointmentId ?? ''),
+      String(previousEventKey ?? ''),
+      String(eventPayload ?? ''),
+    ].join('\u001f'))
+    .digest('hex');
+
+  return `crown-admin-${event}-${digest}`;
+}
+
+async function sendResendEmail(
+  payload: ResendEmailPayload,
+  idempotencyKey: string,
+) {
+  const resendKey = process.env.RESEND_API_KEY;
+  if (!resendKey) {
+    throw new ResendSendError(null, 'missing_api_key');
+  }
+
+  let response: Response;
+  try {
+    response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${resendKey}`,
+        'Content-Type': 'application/json',
+        'Idempotency-Key': idempotencyKey,
+      },
+      body: JSON.stringify(payload),
+    });
+  } catch {
+    throw new ResendSendError(null, 'network_error');
+  }
+
+  const providerBody = await response.json().catch(() => null) as {
+    id?: unknown;
+    name?: unknown;
+    error?: { name?: unknown } | unknown;
+  } | null;
+
+  const providerCode =
+    typeof providerBody?.name === 'string'
+      ? providerBody.name
+      : providerBody?.error && typeof providerBody.error === 'object' && 'name' in providerBody.error
+        ? String(providerBody.error.name)
+        : undefined;
+
+  if (!response.ok || typeof providerBody?.id !== 'string' || !providerBody.id) {
+    throw new ResendSendError(response.status, providerCode);
+  }
+
+  return { id: providerBody.id };
+}
+
+function createIdempotentResendSender(idempotencyKey: string) {
+  return {
+    emails: {
+      send: (payload: ResendEmailPayload) => sendResendEmail(payload, idempotencyKey),
+    },
+  };
 }
 
 function parseAppointmentDateTime(value: unknown) {
@@ -74,10 +166,8 @@ function isConsultationTreatment(treatment?: string | null) {
   return /(konzult|consult|beratung)/i.test(String(treatment || ''));
 }
 
-function isGermanAppointment(appointment: AppointmentForNoAnswerEmail) {
-  return /(zahn|kiefer|beratung|oralchirurgie|wurzelkanal|sonstiges|röntgen|dvt|beurteilung)/i.test(
-    String(appointment.treatment || ''),
-  );
+function getAppointmentLocale(appointment: AppointmentForNoAnswerEmail): SupportedLocale {
+  return normalizeLocale(appointment.locale);
 }
 
 function getAppointmentLocation(city?: string | null) {
@@ -98,14 +188,20 @@ function buildAppointmentDateTimeMeta(
   if (!parsed) return null;
 
   const location = getAppointmentLocation(appointment.city);
-  const isGerman = isGermanAppointment(appointment);
-  const title = isGerman ? 'Crown Dental Zahnarzttermin' : 'Crown Dental fogászati időpont';
+  const locale = getAppointmentLocale(appointment);
+  const calendarCopy: Record<SupportedLocale, { title: string; appointment: string; treatment: string; phone: string }> = {
+    hu: { title: 'Crown Dental fogászati időpont', appointment: 'Időpont', treatment: 'Kezelés', phone: 'Telefon' },
+    en: { title: 'Crown Dental dental appointment', appointment: 'Appointment', treatment: 'Treatment', phone: 'Phone' },
+    sk: { title: 'Termín zubného ošetrenia Crown Dental', appointment: 'Termín', treatment: 'Ošetrenie', phone: 'Telefón' },
+    de: { title: 'Crown Dental Zahnarzttermin', appointment: 'Termin', treatment: 'Behandlung', phone: 'Telefon' },
+  };
+  const copy = calendarCopy[locale];
   const details = [
-    `${isGerman ? 'Termin' : 'Időpont'}: ${parsed.displayDateTime}`,
-    appointment.treatment ? `${isGerman ? 'Behandlung' : 'Kezelés'}: ${appointment.treatment}` : '',
-    `${isGerman ? 'Telefon' : 'Telefon'}: ${CLINIC_PHONE_DISPLAY}`,
+    `${copy.appointment}: ${parsed.displayDateTime}`,
+    appointment.treatment ? `${copy.treatment}: ${appointment.treatment}` : '',
+    `${copy.phone}: ${CLINIC_PHONE_DISPLAY}`,
   ].filter(Boolean).join('\n');
-  const encodedTitle = encodeURIComponent(title);
+  const encodedTitle = encodeURIComponent(copy.title);
   const encodedLocation = encodeURIComponent(location);
   const encodedDetails = encodeURIComponent(details);
 
@@ -118,23 +214,59 @@ function buildAppointmentDateTimeMeta(
   };
 }
 
-async function sendNoAnswerEmail(appointment: AppointmentForNoAnswerEmail) {
+async function sendNoAnswerEmail(
+  appointment: AppointmentForNoAnswerEmail,
+  idempotencyKey: string,
+) {
   const resendKey = process.env.RESEND_API_KEY;
   const email = appointment.email?.trim();
 
   if (!email || !email.includes('@')) {
-    return { sent: false, warning: 'A státusz mentve, de nincs érvényes e-mail cím a visszahívó levélhez.' };
+    return { sent: false, error: 'Nincs érvényes e-mail cím, ezért a „nem vette fel” státusz nem lett beállítva.' };
   }
 
   if (!resendKey) {
-    return { sent: false, warning: 'A státusz mentve, de hiányzik a RESEND_API_KEY, ezért nem ment ki e-mail.' };
+    return { sent: false, error: 'Hiányzik a RESEND_API_KEY, ezért a „nem vette fel” státusz nem lett beállítva.' };
   }
 
-  const resend = new Resend(resendKey);
+  const resend = createIdempotentResendSender(idempotencyKey);
   const greetingName = escapeHtml(getPreferredGreetingName(appointment.name, appointment.nickname));
   const customerPhone = escapeHtml(appointment.phone || '');
+  const appointmentLocale = getAppointmentLocale(appointment);
 
-  if (isGermanAppointment(appointment)) {
+  if (appointmentLocale === 'en' || appointmentLocale === 'sk') {
+    const copy = appointmentLocale === 'sk'
+      ? {
+          subject: 'Pokúšali sme sa vám dovolať – Crown Dental',
+          greeting: `Dobrý deň, ${greetingName}!`,
+          intro: 'Pokúšali sme sa vás telefonicky kontaktovať ohľadom vašej žiadosti o termín, ale nepodarilo sa nám vás zastihnúť.',
+          action: 'Prosíme, zavolajte nám späť na číslo:',
+          button: 'Zavolať do Crown Dental',
+          signoff: 'S pozdravom',
+        }
+      : {
+          subject: 'We tried to reach you by phone – Crown Dental',
+          greeting: `Hello ${greetingName}!`,
+          intro: 'We tried to contact you by phone about your appointment request, but unfortunately could not reach you.',
+          action: 'Please call us back directly on:',
+          button: 'Call Crown Dental',
+          signoff: 'Kind regards',
+        };
+    try {
+      await resend.emails.send({
+        from: 'Crown Dental <info@crowndental.hu>',
+        to: email,
+        subject: copy.subject,
+        html: `<div style="font-family:'Segoe UI',sans-serif;max-width:620px;margin:auto;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden"><div style="background:#0284c7;padding:34px 30px;text-align:center;color:white"><h1>${copy.greeting}</h1></div><div style="padding:34px 30px"><p style="font-size:17px;line-height:1.65;color:#1f2937">${copy.intro}</p><div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:14px;padding:22px;margin:24px 0"><p style="color:#334155">${copy.action}</p><p style="font-size:24px;font-weight:900;color:#0284c7">${CLINIC_PHONE_DISPLAY}</p></div>${customerPhone ? `<p style="color:#64748b">${customerPhone}</p>` : ''}<a href="tel:${CLINIC_PHONE_TEL}" style="display:block;text-align:center;background:#0284c7;color:white;text-decoration:none;font-weight:900;padding:16px;border-radius:14px">${copy.button}</a></div><div style="background:#f8fafc;padding:20px;text-align:center;color:#64748b">${copy.signoff},<br><strong>Crown Dental</strong></div></div>`,
+      });
+      return { sent: true };
+    } catch (mailErr) {
+      console.error('Nemzetközi visszahívó e-mail hiba:', mailErr);
+      return { sent: false, error: 'Az e-mail küldése sikertelen volt, ezért a „nem vette fel” státusz nem lett beállítva.' };
+    }
+  }
+
+  if (getAppointmentLocale(appointment) === 'de') {
     try {
       await resend.emails.send({
         from: 'Crown Dental <info@crowndental.hu>',
@@ -166,7 +298,7 @@ async function sendNoAnswerEmail(appointment: AppointmentForNoAnswerEmail) {
       return { sent: true };
     } catch (mailErr) {
       console.error('Deutsche Rückruf-E-Mail konnte nicht gesendet werden:', mailErr);
-      return { sent: false, warning: 'A státusz mentve, de az e-mail küldése közben hiba történt.' };
+      return { sent: false, error: 'Az e-mail küldése sikertelen volt, ezért a „nem vette fel” státusz nem lett beállítva.' };
     }
   }
 
@@ -216,26 +348,58 @@ async function sendNoAnswerEmail(appointment: AppointmentForNoAnswerEmail) {
     return { sent: true };
   } catch (mailErr) {
     console.error('Nem vette fel státusz e-mail hiba:', mailErr);
-    return { sent: false, warning: 'A státusz mentve, de az e-mail küldése közben hiba történt.' };
+    return { sent: false, error: 'Az e-mail küldése sikertelen volt, ezért a „nem vette fel” státusz nem lett beállítva.' };
   }
 }
 
-async function sendAppointmentCancellationEmail(appointment: AppointmentForNoAnswerEmail) {
+async function sendAppointmentCancellationEmail(
+  appointment: AppointmentForNoAnswerEmail,
+  idempotencyKey: string,
+) {
   const resendKey = process.env.RESEND_API_KEY;
   const email = appointment.email?.trim();
 
   if (!email || !email.includes('@')) {
-    return { sent: false, warning: 'A státusz mentve, de nincs érvényes e-mail cím a sztornózó levélhez.' };
+    return { sent: false, error: 'Nincs érvényes e-mail cím, ezért a sztornózott státusz nem lett beállítva.' };
   }
 
   if (!resendKey) {
-    return { sent: false, warning: 'A státusz mentve, de hiányzik a RESEND_API_KEY, ezért nem ment ki e-mail.' };
+    return { sent: false, error: 'Hiányzik a RESEND_API_KEY, ezért a sztornózott státusz nem lett beállítva.' };
   }
 
-  const resend = new Resend(resendKey);
+  const resend = createIdempotentResendSender(idempotencyKey);
   const greetingName = escapeHtml(getPreferredGreetingName(appointment.name, appointment.nickname));
+  const appointmentLocale = getAppointmentLocale(appointment);
 
-  if (isGermanAppointment(appointment)) {
+  if (appointmentLocale === 'en' || appointmentLocale === 'sk') {
+    const copy = appointmentLocale === 'sk'
+      ? {
+          subject: 'Vaša žiadosť o termín bola zrušená – Crown Dental',
+          greeting: `Dobrý deň, ${greetingName}!`,
+          intro: 'Potvrdzujeme, že vaša žiadosť o termín bola zrušená. V našom systéme momentálne nemáte aktívnu žiadosť o rezerváciu.',
+          action: 'Ak si neskôr budete chcieť dohodnúť nový termín, radi vám pomôžeme telefonicky alebo cez našu webovú stránku.',
+          button: 'Dohodnúť nový termín', signoff: 'S pozdravom',
+        }
+      : {
+          subject: 'Your appointment request has been cancelled – Crown Dental',
+          greeting: `Hello ${greetingName}!`,
+          intro: 'We confirm that your appointment request has been cancelled. There is currently no active booking request in our system.',
+          action: 'If you would like to arrange a new appointment later, we will be happy to help by phone or through our website.',
+          button: 'Arrange a new appointment', signoff: 'Kind regards',
+        };
+    try {
+      await resend.emails.send({
+        from: 'Crown Dental <info@crowndental.hu>', to: email, subject: copy.subject,
+        html: `<div style="font-family:'Segoe UI',sans-serif;max-width:620px;margin:auto;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden"><div style="background:#0f172a;padding:34px 30px;text-align:center;color:white"><h1>${copy.greeting}</h1></div><div style="padding:34px 30px"><p style="font-size:17px;line-height:1.65;color:#1f2937">${copy.intro}</p><div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;padding:22px;margin:24px 0"><p style="color:#334155">${copy.action}</p></div><a href="tel:${CLINIC_PHONE_TEL}" style="display:block;text-align:center;background:#0284c7;color:white;text-decoration:none;font-weight:900;padding:16px;border-radius:14px">${copy.button}</a></div><div style="background:#f8fafc;padding:20px;text-align:center;color:#64748b">${copy.signoff},<br><strong>Crown Dental</strong></div></div>`,
+      });
+      return { sent: true };
+    } catch (mailErr) {
+      console.error('Nemzetközi sztornózó e-mail hiba:', mailErr);
+      return { sent: false, error: 'Az e-mail küldése sikertelen volt, ezért a sztornózott státusz nem lett beállítva.' };
+    }
+  }
+
+  if (getAppointmentLocale(appointment) === 'de') {
     try {
       await resend.emails.send({
         from: 'Crown Dental <info@crowndental.hu>',
@@ -264,7 +428,7 @@ async function sendAppointmentCancellationEmail(appointment: AppointmentForNoAns
       return { sent: true };
     } catch (mailErr) {
       console.error('Deutsche Stornierungs-E-Mail konnte nicht gesendet werden:', mailErr);
-      return { sent: false, warning: 'A státusz mentve, de az e-mail küldése közben hiba történt.' };
+      return { sent: false, error: 'Az e-mail küldése sikertelen volt, ezért a sztornózott státusz nem lett beállítva.' };
     }
   }
 
@@ -308,13 +472,14 @@ async function sendAppointmentCancellationEmail(appointment: AppointmentForNoAns
     return { sent: true };
   } catch (mailErr) {
     console.error('Időpont sztornózva e-mail hiba:', mailErr);
-    return { sent: false, warning: 'A státusz mentve, de az e-mail küldése közben hiba történt.' };
+    return { sent: false, error: 'Az e-mail küldése sikertelen volt, ezért a sztornózott státusz nem lett beállítva.' };
   }
 }
 
 async function sendAppointmentConfirmationEmail(
   appointment: AppointmentForConfirmationEmail,
-  appointmentMeta: AppointmentDateTimeMeta
+  appointmentMeta: AppointmentDateTimeMeta,
+  idempotencyKey: string,
 ) {
   const resendKey = process.env.RESEND_API_KEY;
   const email = appointment.email?.trim();
@@ -327,8 +492,9 @@ async function sendAppointmentConfirmationEmail(
     return { sent: false, error: 'Hiányzik a RESEND_API_KEY, ezért az időpont visszaigazoló e-mail nem küldhető el.' };
   }
 
-  const resend = new Resend(resendKey);
-  const isGerman = isGermanAppointment(appointment);
+  const resend = createIdempotentResendSender(idempotencyKey);
+  const appointmentLocale = getAppointmentLocale(appointment);
+  const isGerman = appointmentLocale === 'de';
   const greetingName = escapeHtml(getPreferredGreetingName(appointment.name, appointment.nickname));
   const customerPhone = escapeHtml(appointment.phone || '');
   const treatment = escapeHtml(appointment.treatment || (isGerman ? 'Zahnarzttermin' : 'Fogászati időpont'));
@@ -349,6 +515,32 @@ async function sendAppointmentConfirmationEmail(
             </p>
         `
     : '';
+
+  if (appointmentLocale === 'en' || appointmentLocale === 'sk') {
+    const copy = appointmentLocale === 'sk'
+      ? {
+          subject: `Váš termín je potvrdený – ${appointmentMeta.displayDateTime} | Crown Dental`, greeting: `Dobrý deň, ${greetingName}!`,
+          eyebrow: 'Potvrdenie termínu Crown Dental', intro: 'Váš presný termín zubného ošetrenia bol potvrdený.', appointment: 'Váš termín', treatment: 'Ošetrenie', location: 'Miesto',
+          arrive: 'Prosíme, príďte približne 5 minút vopred. Ak sa nemôžete dostaviť, oznámte nám to telefonicky aspoň 24 hodín pred ošetrením.',
+          google: 'Pridať do Kalendára Google', apple: 'Pridať do Apple Kalendára / Outlooku', fallback: 'Ak sa kalendár neotvorí automaticky, termín si môžete uložiť manuálne:', signoff: 'S pozdravom',
+        }
+      : {
+          subject: `Your appointment is confirmed – ${appointmentMeta.displayDateTime} | Crown Dental`, greeting: `Hello ${greetingName}!`,
+          eyebrow: 'Crown Dental appointment confirmation', intro: 'Your exact dental appointment has been confirmed.', appointment: 'Your appointment', treatment: 'Treatment', location: 'Location',
+          arrive: 'Please arrive about 5 minutes early. If you cannot attend, please let us know by phone at least 24 hours before treatment.',
+          google: 'Add to Google Calendar', apple: 'Add to Apple Calendar / Outlook', fallback: 'If the calendar does not open automatically, you can add the appointment manually:', signoff: 'Kind regards',
+        };
+    try {
+      await resend.emails.send({
+        from: 'Crown Dental <info@crowndental.hu>', to: email, subject: copy.subject,
+        html: `<div style="font-family:'Segoe UI',sans-serif;max-width:640px;margin:auto;border:1px solid #e2e8f0;border-radius:20px;overflow:hidden"><div style="background:linear-gradient(135deg,#0284c7,#0f172a);padding:36px 30px;text-align:center;color:white"><p>${copy.eyebrow}</p><h1>${copy.greeting}</h1><p>${copy.intro}</p></div><div style="padding:34px 30px"><div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:16px;padding:24px"><p>${copy.appointment}</p><p style="font-size:30px;font-weight:900">${displayDateTime}</p><p><strong>${copy.treatment}:</strong> ${treatment}<br><strong>${copy.location}:</strong> ${location}</p></div><p style="font-size:16px;line-height:1.65;color:#334155">${copy.arrive}</p><a href="${googleCalendarUrl}" style="display:block;text-align:center;background:#0284c7;color:white;text-decoration:none;font-weight:900;padding:16px;border-radius:14px;margin:12px 0">${copy.google}</a><a href="${appleCalendarUrl}" style="display:block;text-align:center;background:#0f172a;color:white;text-decoration:none;font-weight:900;padding:16px;border-radius:14px">${copy.apple}</a><p style="color:#64748b">${copy.fallback} <strong>${displayDateTime}</strong></p></div><div style="background:#f8fafc;padding:20px;text-align:center;color:#64748b">${copy.signoff},<br><strong>Crown Dental</strong></div></div>`,
+      });
+      return { sent: true };
+    } catch (mailErr) {
+      console.error('Nemzetközi időpont-visszaigazoló e-mail hiba:', mailErr);
+      return { sent: false, error: 'Az e-mail küldése közben hiba történt, ezért a státusz nem lett átállítva.' };
+    }
+  }
 
   if (isGerman) {
     try {
@@ -454,12 +646,13 @@ async function sendAppointmentConfirmationEmail(
 }
 
 export async function POST(req: Request) {
-  try {
-    const { password, action, table, id, value, appointmentDateTime, statusNote } = await req.json();
+  const originError = rejectUntrustedMutation(req);
+  if (originError) return originError;
+  const authError = requireAdminSession(req);
+  if (authError) return authError;
 
-    if (password !== process.env.ADMIN_PASSWORD) {
-      return NextResponse.json({ error: 'Jogosulatlan hozzáférés!' }, { status: 401 });
-    }
+  try {
+    const { action, table, id, value, appointmentDateTime, statusNote } = await req.json();
 
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -479,11 +672,15 @@ export async function POST(req: Request) {
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
     let noAnswerEmailResult: Awaited<ReturnType<typeof sendNoAnswerEmail>> | null = null;
-    let appointmentForNoAnswerEmail: AppointmentForNoAnswerEmail | null = null;
+    let noAnswerEmailIdempotencyKey: string | undefined;
+    let noAnswerEmailSentAt: string | undefined;
     let cancellationEmailResult: Awaited<ReturnType<typeof sendAppointmentCancellationEmail>> | null = null;
-    let appointmentForCancellationEmail: AppointmentForNoAnswerEmail | null = null;
+    let cancellationEmailIdempotencyKey: string | undefined;
+    let cancellationEmailSentAt: string | undefined;
     let appointmentConfirmationEmailSent = false;
     let appointmentConfirmationDateTime: string | undefined;
+    let appointmentConfirmationIdempotencyKey: string | undefined;
+    let appointmentConfirmationSentAt: string | undefined;
     let specialNoteUpdatedAt: string | undefined;
     let normalizedStatusNote = '';
 
@@ -512,7 +709,7 @@ export async function POST(req: Request) {
       if (safeTable === 'appointments' && value === 'no_answer') {
         const { data, error } = await supabase
           .from('appointments')
-          .select('name,nickname,email,phone,treatment,status')
+          .select('name,nickname,email,phone,treatment,status,locale,no_answer_email_idempotency_key')
           .eq('id', id)
           .maybeSingle();
 
@@ -520,14 +717,28 @@ export async function POST(req: Request) {
         if (!data) return NextResponse.json({ error: 'Nem található időpontkérés.' }, { status: 404 });
 
         if (data.status !== 'no_answer') {
-          appointmentForNoAnswerEmail = data;
+          noAnswerEmailIdempotencyKey = buildEmailIdempotencyKey(
+            'no-answer',
+            id,
+            data.no_answer_email_idempotency_key,
+          );
+          noAnswerEmailResult = await sendNoAnswerEmail(data, noAnswerEmailIdempotencyKey);
+
+          if (!noAnswerEmailResult.sent) {
+            return noStoreJson(
+              { error: noAnswerEmailResult.error || 'A visszahívó e-mail nem küldhető el; a státusz változatlan maradt.' },
+              { status: 502 },
+            );
+          }
+
+          noAnswerEmailSentAt = new Date().toISOString();
         }
       }
 
       if (safeTable === 'appointments' && value === 'cancelled') {
         const { data, error } = await supabase
           .from('appointments')
-          .select('name,nickname,email,phone,treatment,status')
+          .select('name,nickname,email,phone,treatment,status,locale,cancellation_email_idempotency_key')
           .eq('id', id)
           .maybeSingle();
 
@@ -535,14 +746,28 @@ export async function POST(req: Request) {
         if (!data) return NextResponse.json({ error: 'Nem található időpontkérés.' }, { status: 404 });
 
         if (data.status !== 'cancelled') {
-          appointmentForCancellationEmail = data;
+          cancellationEmailIdempotencyKey = buildEmailIdempotencyKey(
+            'cancelled',
+            id,
+            data.cancellation_email_idempotency_key,
+          );
+          cancellationEmailResult = await sendAppointmentCancellationEmail(data, cancellationEmailIdempotencyKey);
+
+          if (!cancellationEmailResult.sent) {
+            return noStoreJson(
+              { error: cancellationEmailResult.error || 'A sztornózó e-mail nem küldhető el; a státusz változatlan maradt.' },
+              { status: 502 },
+            );
+          }
+
+          cancellationEmailSentAt = new Date().toISOString();
         }
       }
 
       if (safeTable === 'appointments' && value === 'processed') {
         const { data, error } = await supabase
           .from('appointments')
-          .select('name,nickname,email,phone,city,treatment,status')
+          .select('name,nickname,email,phone,city,treatment,status,locale,confirmation_email_idempotency_key')
           .eq('id', id)
           .maybeSingle();
 
@@ -556,18 +781,32 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'Kérjük, adja meg a pontos időpontot év-hónap-nap óra:perc formátumban.' }, { status: 400 });
           }
 
-          const appointmentConfirmationResult = await sendAppointmentConfirmationEmail(data, appointmentMeta);
+          appointmentConfirmationIdempotencyKey = buildEmailIdempotencyKey(
+            'processed',
+            id,
+            data.confirmation_email_idempotency_key,
+            appointmentMeta.displayDateTime,
+          );
+          const appointmentConfirmationResult = await sendAppointmentConfirmationEmail(
+            data,
+            appointmentMeta,
+            appointmentConfirmationIdempotencyKey,
+          );
 
           if (!appointmentConfirmationResult.sent) {
-            return NextResponse.json({ error: appointmentConfirmationResult.error || 'Az időpont visszaigazoló e-mail nem küldhető el.' }, { status: 500 });
+            return noStoreJson(
+              { error: appointmentConfirmationResult.error || 'Az időpont-visszaigazoló e-mail nem küldhető el; a státusz változatlan maradt.' },
+              { status: 502 },
+            );
           }
 
           appointmentConfirmationEmailSent = true;
           appointmentConfirmationDateTime = appointmentMeta.displayDateTime;
+          appointmentConfirmationSentAt = new Date().toISOString();
         }
       }
 
-      const updatePayload: Record<string, any> = { status: value };
+      const updatePayload: Record<string, unknown> = { status: value };
 
       if (safeTable === 'appointments' && value === 'special') {
         specialNoteUpdatedAt = new Date().toISOString();
@@ -575,49 +814,39 @@ export async function POST(req: Request) {
         updatePayload.special_note_updated_at = specialNoteUpdatedAt;
       }
 
-      const { error } = await supabase.from(safeTable).update(updatePayload).eq('id', id);
-      if (error) throw error;
+      if (noAnswerEmailResult?.sent && noAnswerEmailIdempotencyKey && noAnswerEmailSentAt) {
+        updatePayload.no_answer_email_sent_at = noAnswerEmailSentAt;
+        updatePayload.no_answer_email_idempotency_key = noAnswerEmailIdempotencyKey;
+      }
 
-      if (appointmentConfirmationEmailSent && appointmentConfirmationDateTime) {
-        const { error: confirmationMetaError } = await supabase
-          .from('appointments')
-          .update({
-            confirmed_appointment_local: appointmentConfirmationDateTime,
-            confirmation_email_sent_at: new Date().toISOString(),
-          })
-          .eq('id', id);
+      if (cancellationEmailResult?.sent && cancellationEmailIdempotencyKey && cancellationEmailSentAt) {
+        updatePayload.cancellation_email_sent_at = cancellationEmailSentAt;
+        updatePayload.cancellation_email_idempotency_key = cancellationEmailIdempotencyKey;
+      }
 
-        if (confirmationMetaError) {
-          console.warn('Időpont visszaigazolás meta mentési figyelmeztetés:', confirmationMetaError);
-        }
+      if (
+        appointmentConfirmationEmailSent &&
+        appointmentConfirmationDateTime &&
+        appointmentConfirmationIdempotencyKey &&
+        appointmentConfirmationSentAt
+      ) {
+        updatePayload.confirmed_appointment_local = appointmentConfirmationDateTime;
+        updatePayload.confirmation_email_sent_at = appointmentConfirmationSentAt;
+        updatePayload.confirmation_email_idempotency_key = appointmentConfirmationIdempotencyKey;
       }
 
       if (safeTable === 'appointments' && value === 'cancelled') {
-        const { error: cancellationMetaError } = await supabase
-          .from('appointments')
-          .update({
-            confirmed_appointment_local: null,
-            confirmation_email_sent_at: null,
-          })
-          .eq('id', id);
-
-        if (cancellationMetaError) {
-          console.warn('Időpont sztornózás meta törlési figyelmeztetés:', cancellationMetaError);
-        }
+        updatePayload.confirmed_appointment_local = null;
+        updatePayload.confirmation_email_sent_at = null;
       }
 
-      if (appointmentForNoAnswerEmail) {
-        noAnswerEmailResult = await sendNoAnswerEmail(appointmentForNoAnswerEmail);
-      }
-
-      if (appointmentForCancellationEmail) {
-        cancellationEmailResult = await sendAppointmentCancellationEmail(appointmentForCancellationEmail);
-      }
+      const { error } = await supabase.from(safeTable).update(updatePayload).eq('id', id);
+      if (error) throw error;
     } else {
       return NextResponse.json({ error: 'Ismeretlen admin művelet.' }, { status: 400 });
     }
 
-    return NextResponse.json({
+    return noStoreJson({
       success: true,
       noAnswerEmailSent: noAnswerEmailResult?.sent ?? false,
       cancellationEmailSent: cancellationEmailResult?.sent ?? false,
@@ -625,10 +854,9 @@ export async function POST(req: Request) {
       specialNoteUpdatedAt,
       appointmentConfirmationEmailSent,
       appointmentConfirmationDateTime,
-      warning: noAnswerEmailResult?.warning || cancellationEmailResult?.warning,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Action API Hiba:', error);
-    return NextResponse.json({ error: 'Szerverhiba történt a művelet során.' }, { status: 500 });
+    return noStoreJson({ error: 'Szerverhiba történt a művelet során.' }, { status: 500 });
   }
 }

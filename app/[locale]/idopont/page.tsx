@@ -4,10 +4,11 @@ import {
   buildLocalizedMetadata,
   localizedUrl,
   normalizeLocale,
+  safeJsonLd,
   type SupportedLocale,
 } from '@/lib/seo';
 
-type BookingPageProps = { params: { locale: string } };
+type BookingPageProps = { params: Promise<{ locale: string }> };
 
 const metadataByLocale: Record<SupportedLocale, { title: string; description: string; keywords: string[] }> = {
   hu: {
@@ -32,12 +33,14 @@ const metadataByLocale: Record<SupportedLocale, { title: string; description: st
   },
 };
 
-export function generateMetadata({ params }: BookingPageProps): Metadata {
+export async function generateMetadata(props: BookingPageProps): Promise<Metadata> {
+  const params = await props.params;
   const locale = normalizeLocale(params.locale);
   return buildLocalizedMetadata({ locale, path: 'idopont', ...metadataByLocale[locale] });
 }
 
-export default function BookingPage({ params }: BookingPageProps) {
+export default async function BookingPage(props: BookingPageProps) {
+  const params = await props.params;
   const locale = normalizeLocale(params.locale);
   const url = localizedUrl(locale, 'idopont');
   const jsonLd = {
@@ -65,7 +68,7 @@ export default function BookingPage({ params }: BookingPageProps) {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       <BookingClient />
     </>
   );

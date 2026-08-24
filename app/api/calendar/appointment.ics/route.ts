@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 function escapeIcs(value: unknown) {
   return String(value ?? '')
     .replace(/\\/g, '\\\\')
-    .replace(/\n/g, '\\n')
+    .replace(/\r\n?|\n/g, '\\n')
     .replace(/,/g, '\\,')
     .replace(/;/g, '\\;');
 }
@@ -54,6 +54,9 @@ export async function GET(req: Request) {
     headers: {
       'Content-Type': 'text/calendar; charset=utf-8',
       'Content-Disposition': 'attachment; filename="crown-dental-idopont.ics"',
+      'Cache-Control': 'private, no-store',
+      'Referrer-Policy': 'no-referrer',
+      'X-Robots-Tag': 'noindex, nofollow',
     },
   });
 }

@@ -1,10 +1,12 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useId, useRef } from 'react';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Phone, Calendar, Menu, X, ChevronDown } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
+import { INTERNATIONAL_PATIENT_PATHS } from '@/lib/internationalPaths';
 
 const languages = [
   { code: 'hu', hrefLang: 'hu-HU', label: 'Magyar' },
@@ -14,36 +16,54 @@ const languages = [
 ] as const;
 
 type LocaleCode = (typeof languages)[number]['code'];
+const internationalPatientPathSet = new Set(
+  Object.values(INTERNATIONAL_PATIENT_PATHS).map((path) => `/${path}`)
+);
+
+function localizedPath(locale: LocaleCode, path: string): string {
+  const normalizedPath = path === '/' ? '' : `/${path.replace(/^\/+|\/+$/g, '')}`;
+  const prefix = locale === 'hu' ? '' : `/${locale}`;
+  return `${prefix}${normalizedPath}` || '/';
+}
 
 function localeFallbackPath(pathname: string, newLocale: LocaleCode): string {
-  const pathWithoutLocale = pathname.replace(/^\/(en|sk|de)(?=\/|$)/, '') || '/';
-  const prefix = newLocale === 'hu' ? '' : `/${newLocale}`;
+  const pathWithoutLocale = pathname.replace(/^\/(hu|en|sk|de)(?=\/|$)/, '') || '/';
+
+  // These landing pages intentionally use a different, search-friendly slug
+  // in every language, so preserving the current slug would create a 404.
+  if (internationalPatientPathSet.has(pathWithoutLocale.replace(/\/$/, ''))) {
+    return localizedPath(newLocale, INTERNATIONAL_PATIENT_PATHS[newLocale]);
+  }
 
   // A translated post may have a different slug. Until the hreflang link is
   // read in the browser, the locale's blog hub is the only guaranteed URL.
   if (/^\/blog\/[^/]+\/?$/.test(pathWithoutLocale)) {
-    return `${prefix}/blog`;
+    return localizedPath(newLocale, 'blog');
   }
 
-  return `${prefix}${pathWithoutLocale === '/' ? '/' : pathWithoutLocale}`;
+  return localizedPath(newLocale, pathWithoutLocale);
 }
 
 function localeDestination(pathname: string, newLocale: LocaleCode): string {
   const fallback = localeFallbackPath(pathname, newLocale);
-  const pathWithoutLocale = pathname.replace(/^\/(en|sk|de)(?=\/|$)/, '') || '/';
-  if (typeof document === 'undefined' || !/^\/blog\//.test(pathWithoutLocale)) {
-    return fallback;
-  }
+  if (typeof document === 'undefined') return fallback;
 
   const hrefLang = languages.find((language) => language.code === newLocale)?.hrefLang;
-  const alternate = hrefLang
-    ? document.querySelector<HTMLLinkElement>(`link[rel="alternate"][hreflang="${hrefLang}"]`)
-    : null;
+  const alternate = Array.from(
+    document.querySelectorAll<HTMLLinkElement>('link[rel="alternate"][hreflang]')
+  ).find((link) => {
+    const value = link.hreflang.toLowerCase();
+    return value === hrefLang?.toLowerCase() || value === newLocale;
+  });
 
   if (!alternate?.href) return fallback;
 
-  const target = new URL(alternate.href);
-  return `${target.pathname}${target.search}${target.hash}`;
+  try {
+    const target = new URL(alternate.href, window.location.origin);
+    return `${target.pathname}${target.search}${target.hash}`;
+  } catch {
+    return fallback;
+  }
 }
 
 // ─── Zászló ikonok ────────────────────────────────────────────────────────────
@@ -95,6 +115,9 @@ function LanguageSwitcher() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const menuItemRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const menuId = useId();
 
   // Kattintás kezelése kívülről zárja be
   useEffect(() => {
@@ -107,8 +130,47 @@ function LanguageSwitcher() {
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
+  useEffect(() => {
+    if (!open) return;
+
+    const currentIndex = Math.max(0, languages.findIndex((language) => language.code === locale));
+    const frame = window.requestAnimationFrame(() => {
+      menuItemRefs.current[currentIndex]?.focus();
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [locale, open]);
+
+  const closeAndRestoreFocus = () => {
+    setOpen(false);
+    triggerRef.current?.focus();
+  };
+
+  const handleMenuKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      closeAndRestoreFocus();
+      return;
+    }
+
+    const items = menuItemRefs.current.filter((item): item is HTMLButtonElement => item !== null);
+    if (items.length === 0) return;
+
+    const focusedIndex = Math.max(0, items.indexOf(document.activeElement as HTMLButtonElement));
+    let nextIndex: number | null = null;
+    if (event.key === 'ArrowDown') nextIndex = (focusedIndex + 1) % items.length;
+    if (event.key === 'ArrowUp') nextIndex = (focusedIndex - 1 + items.length) % items.length;
+    if (event.key === 'Home') nextIndex = 0;
+    if (event.key === 'End') nextIndex = items.length - 1;
+
+    if (nextIndex !== null) {
+      event.preventDefault();
+      items[nextIndex]?.focus();
+    }
+  };
+
   const switchLocale = (newLocale: LocaleCode) => {
     setOpen(false);
+    triggerRef.current?.focus();
     if (newLocale === locale) return;
     router.push(localeDestination(pathname, newLocale));
   };
@@ -116,11 +178,31 @@ function LanguageSwitcher() {
   const currentLang = languages.find(l => l.code === locale) ?? languages[0];
 
   return (
-    <div ref={ref} className="relative z-50">
+    <div
+      ref={ref}
+      className="relative z-50"
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setOpen(false);
+      }}
+    >
       <button
-        onClick={() => setOpen(!open)}
+        id={`${menuId}-trigger`}
+        ref={triggerRef}
+        type="button"
+        onClick={() => setOpen((current) => !current)}
+        onKeyDown={(event) => {
+          if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+            event.preventDefault();
+            setOpen(true);
+          } else if (event.key === 'Escape' && open) {
+            event.preventDefault();
+            closeAndRestoreFocus();
+          }
+        }}
         aria-label={t('ariaLabel')}
+        aria-haspopup="menu"
         aria-expanded={open}
+        aria-controls={menuId}
         className="flex items-center gap-1.5 px-3 py-2 rounded-full text-gray-700 hover:text-sky-600 hover:bg-sky-50 transition-all text-sm font-bold"
       >
         <FlagIcon code={currentLang.code} />
@@ -131,15 +213,26 @@ function LanguageSwitcher() {
       <AnimatePresence>
         {open && (
           <motion.div
+            id={menuId}
+            role="menu"
+            aria-labelledby={`${menuId}-trigger`}
+            onKeyDown={handleMenuKeyDown}
             initial={{ opacity: 0, y: 6, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 6, scale: 0.97 }}
             transition={{ duration: 0.15 }}
             className="absolute right-0 mt-2 w-44 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden"
           >
-            {languages.map((lang) => (
+            {languages.map((lang, index) => (
               <button
                 key={lang.code}
+                ref={(element) => {
+                  menuItemRefs.current[index] = element;
+                }}
+                type="button"
+                role="menuitem"
+                tabIndex={-1}
+                aria-current={locale === lang.code ? 'true' : undefined}
                 onClick={() => switchLocale(lang.code)}
                 className={`w-full flex items-center gap-3 px-4 py-3 text-sm font-medium hover:bg-sky-50 transition-colors text-left ${
                   locale === lang.code ? 'bg-sky-50 text-sky-700 font-bold' : 'text-gray-700'
@@ -170,15 +263,16 @@ export default function Navigation() {
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   // Locale-függő prefix az URL-ekhez
   const prefix = locale === 'hu' ? '' : `/${locale}`;
+  const homeHref = prefix || '/';
 
   const navLinks = [
-    { name: t('home'), href: `${prefix}/` },
+    { name: t('home'), href: homeHref },
     { name: t('services'), href: `${prefix}/kezelesek` },
     { name: t('about'), href: `${prefix}/rolunk` },
     { name: t('blog'), href: `${prefix}/blog` },
@@ -202,8 +296,15 @@ export default function Navigation() {
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-sm py-0' : 'bg-transparent py-2'}`}>
       <nav className="container mx-auto px-4 flex items-center justify-between h-20">
         {/* Logo */}
-        <a href={`${prefix}/`} className="flex items-center relative h-full py-2 z-50">
-          <img src="/logo.webp" alt="Crown Dental Logo" className="h-12 md:h-14 w-auto object-contain drop-shadow-sm" />
+        <a href={homeHref} className="flex items-center relative h-full py-2 z-50">
+          <Image
+            src="/logo.webp"
+            alt="Crown Dental Logo"
+            width={140}
+            height={84}
+            priority
+            className="h-12 w-auto object-contain drop-shadow-sm md:h-14"
+          />
         </a>
 
         {/* Desktop nav linkek */}
@@ -239,6 +340,9 @@ export default function Navigation() {
           {/* Mobile hamburger */}
           <button
             onClick={() => setIsOpen(!isOpen)}
+            aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            aria-expanded={isOpen}
+            aria-controls="mobile-navigation"
             className="lg:hidden p-2 rounded-lg text-gray-900 bg-gray-100 hover:bg-gray-200 transition-colors"
           >
             {isOpen ? <X /> : <Menu />}
@@ -250,6 +354,7 @@ export default function Navigation() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
+            id="mobile-navigation"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}

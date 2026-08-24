@@ -1,14 +1,48 @@
 import type { Metadata } from 'next';
+import { createClient } from 'next-sanity';
 import CareerClient from './CareerClient';
+import { apiVersion, dataset, projectId } from '@/sanity/env';
 import {
   buildBreadcrumbJsonLd,
   buildLocalizedMetadata,
   localizedUrl,
   normalizeLocale,
+  safeJsonLd,
   type SupportedLocale,
 } from '@/lib/seo';
 
-type CareerPageProps = { params: { locale: string } };
+type CareerPageProps = { params: Promise<{ locale: string }> };
+
+const client = createClient({
+  projectId,
+  dataset,
+  apiVersion,
+  useCdn: true,
+});
+
+const careerHeroImageQuery = `*[_type == "treatment" && slug.current == "karrier"][0]{
+  "url": coalesce(mainImage.asset->url, heroImage.asset->url)
+}`;
+
+async function getCareerHeroImageUrl(): Promise<string | null> {
+  try {
+    const result = await client.fetch<{ url?: string } | null>(
+      careerHeroImageQuery,
+      {},
+      { next: { revalidate: 3600 } },
+    );
+
+    if (!result?.url) return null;
+
+    const url = new URL(result.url);
+    return url.protocol === 'https:' && url.hostname === 'cdn.sanity.io' ? url.toString() : null;
+  } catch (error) {
+    console.error('Karrier hero Sanity kép betöltési hiba:', error);
+    return null;
+  }
+}
+
+export const revalidate = 3600;
 
 const metadataByLocale: Record<SupportedLocale, { title: string; description: string }> = {
   hu: {
@@ -29,13 +63,16 @@ const metadataByLocale: Record<SupportedLocale, { title: string; description: st
   },
 };
 
-export function generateMetadata({ params }: CareerPageProps): Metadata {
+export async function generateMetadata(props: CareerPageProps): Promise<Metadata> {
+  const params = await props.params;
   const locale = normalizeLocale(params.locale);
   return buildLocalizedMetadata({ locale, path: 'karrier', ...metadataByLocale[locale] });
 }
 
-export default function CareerPage({ params }: CareerPageProps) {
+export default async function CareerPage(props: CareerPageProps) {
+  const params = await props.params;
   const locale = normalizeLocale(params.locale);
+  const heroImageUrl = await getCareerHeroImageUrl();
   const url = localizedUrl(locale, 'karrier');
   const pageJsonLd = {
     '@context': 'https://schema.org',
@@ -55,9 +92,9 @@ export default function CareerPage({ params }: CareerPageProps) {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(pageJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-      <CareerClient />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(pageJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }} />
+      <CareerClient heroImageUrl={heroImageUrl} />
     </>
   );
 }

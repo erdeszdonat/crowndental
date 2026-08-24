@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI, SchemaType } from '@google/generative-ai';
 import { normalizeBlogCategory, normalizeBlogLanguage } from '@/lib/blogConfig';
+import { requireAdminSession } from '@/lib/adminAuth';
+import { cleanText, enforceRateLimit, noStoreJson, rejectUntrustedMutation } from '@/lib/serverSecurity';
 
 export const maxDuration = 120;
 
@@ -144,12 +146,23 @@ const responseSchema = {
 };
 
 export async function POST(req: Request) {
+  const originError = rejectUntrustedMutation(req);
+  if (originError) return originError;
+  const authError = requireAdminSession(req);
+  if (authError) return authError;
+  const rateLimitError = await enforceRateLimit(req, 'admin-blog-generate', { limit: 12, windowMs: 15 * 60_000 });
+  if (rateLimitError) return rateLimitError;
+
   try {
-    const { topic, keywords, language = 'hu', category = 'professional' } = await req.json();
-    if (!topic) return NextResponse.json({ error: 'Téma megadása kötelező' }, { status: 400 });
+    const input = await req.json();
+    const topic = cleanText(input.topic, 180);
+    const keywords = cleanText(input.keywords, 500);
+    const language = input.language ?? 'hu';
+    const category = input.category ?? 'professional';
+    if (topic.length < 3) return noStoreJson({ error: 'Legalább 3 karakteres téma megadása kötelező.' }, { status: 400 });
 
     const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) return NextResponse.json({ error: 'Hiányzó GEMINI_API_KEY' }, { status: 500 });
+    if (!apiKey) return noStoreJson({ error: 'Hiányzó GEMINI_API_KEY' }, { status: 500 });
 
     const genAI = new GoogleGenerativeAI(apiKey);
     const modelConfig = {

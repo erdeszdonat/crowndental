@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import {
   ArrowLeft,
@@ -12,7 +12,9 @@ import {
 } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
+import Image from 'next/image';
 import { INTERNATIONAL_PATIENT_PATHS } from '@/lib/internationalPaths';
+import { sanityImageLoader } from '@/lib/sanityImage';
 
 function relatedTreatmentSlug(post: any): string {
   const haystack = `${post?.title ?? ''} ${post?.excerpt ?? ''} ${post?.slug ?? ''}`.toLocaleLowerCase();
@@ -33,43 +35,15 @@ const articleLinkCopy = {
   de: { heading: 'Passende nächste Schritte', treatment: 'Passende Behandlung', all: 'Behandlungen und Preise', international: 'Zahnbehandlung in Ungarn' },
 } as const;
 
+function formatStatNumber(value: number) {
+  return String(value).replace(/\B(?=(\d{3})+(?!\d))/g, '\u00a0');
+}
+
 function AnimatedCounter({ end, suffix = "", text, desc }: { end: number, suffix?: string, text: string, desc: string }) {
-  const [count, setCount] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true);
-      },
-      { threshold: 0.1 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (!isVisible) return;
-    let start = 0;
-    const duration = 2000;
-    const increment = end / (duration / 16);
-    const timer = setInterval(() => {
-      start += increment;
-      if (start >= end) {
-        setCount(end);
-        clearInterval(timer);
-      } else {
-        setCount(Math.ceil(start));
-      }
-    }, 16);
-    return () => clearInterval(timer);
-  }, [isVisible, end]);
-
   return (
-    <div ref={ref} className="text-center p-8 bg-white rounded-3xl shadow-sm border border-gray-50 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1">
+    <div className="text-center p-8 bg-white rounded-3xl shadow-sm border border-gray-50 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1">
       <div className="text-5xl font-extrabold text-sky-600 mb-4 tracking-tight">
-        {count.toLocaleString()}{suffix}
+        {formatStatNumber(end)}{suffix}
       </div>
       <div className="text-lg font-bold text-gray-900 mb-2">{text}</div>
       <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
@@ -175,10 +149,15 @@ export default function BlogPostClient({ post }: { post: any }) {
           </h1>
           {post.imageUrl && (
             <div className="relative aspect-video rounded-[2.5rem] overflow-hidden shadow-2xl mb-12 border border-gray-100 group">
-              <img
+              <Image
+                loader={sanityImageLoader}
                 src={post.imageUrl}
                 alt={post.title}
-                className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000"
+                fill
+                sizes="(max-width: 767px) calc(100vw - 2rem), 896px"
+                quality={82}
+                preload
+                className="object-cover transform group-hover:scale-105 transition-transform duration-1000"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
             </div>

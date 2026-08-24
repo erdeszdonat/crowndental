@@ -1,22 +1,38 @@
 import type { Metadata } from 'next';
 import PrivacyClient from './PrivacyClient';
-import { SITE_URL } from '@/lib/seo';
+import { buildLocalizedMetadata, normalizeLocale, type SupportedLocale } from '@/lib/seo';
 import GermanLegalPage from '@/components/GermanLegalPage';
+import LocalizedLegalPage from '@/components/LocalizedLegalPage';
 
-const title = 'Adatkezelési Tájékoztató | Crown Dental';
-const description = 'A Crown Dental hivatalos adatkezelési tájékoztatója, adatvédelmi gyakorlata és a GDPR szerinti érintetti jogok.';
+const metadataByLocale: Record<SupportedLocale, { title: string; description: string }> = {
+  hu: {
+    title: 'Adatkezelési Tájékoztató | Crown Dental',
+    description: 'A Crown Dental hivatalos adatkezelési tájékoztatója, adatvédelmi gyakorlata és a GDPR szerinti érintetti jogok.',
+  },
+  en: {
+    title: 'Privacy Notice | Crown Dental',
+    description: 'How Crown Dental processes appointment, patient, quotation, career, marketing and website data, including GDPR rights and service providers.',
+  },
+  sk: {
+    title: 'Oznámenie o ochrane osobných údajov | Crown Dental',
+    description: 'Ako Crown Dental spracúva údaje o termínoch, pacientoch, ponukách, kariére, marketingu a webovej stránke vrátane práv podľa GDPR.',
+  },
+  de: {
+    title: 'Datenschutzerklärung | Crown Dental',
+    description: 'Datenschutzerklärung von Crown Dental zu Terminanfragen, Patientendaten, E-Mails, Marketingeinwilligung, Cookies und Betroffenenrechten.',
+  },
+};
 
-export function generateMetadata({ params }: { params: { locale: string } }): Metadata {
-  const isGerman = params.locale === 'de';
-  return {
-    title: isGerman ? 'Datenschutzerklärung | Crown Dental' : title,
-    description: isGerman ? 'Datenschutzerklärung von Crown Dental zu Terminanfragen, Patientendaten, E-Mails, Marketingeinwilligung, Cookies und Betroffenenrechten.' : description,
-    alternates: { canonical: `${SITE_URL}${isGerman ? '/de' : ''}/adatkezeles`, languages: { hu: `${SITE_URL}/adatkezeles`, de: `${SITE_URL}/de/adatkezeles` } },
-    robots: { index: params.locale === 'hu' || isGerman, follow: true },
-  };
+export async function generateMetadata(props: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const params = await props.params;
+  const locale = normalizeLocale(params.locale);
+  return buildLocalizedMetadata({ locale, path: 'adatkezeles', ...metadataByLocale[locale] });
 }
 
-export default function AdatkezelesPage({ params }: { params: { locale: string } }) {
-  if (params.locale === 'de') return <GermanLegalPage document="privacy" />;
-  return <PrivacyClient />;
+export default async function AdatkezelesPage(props: { params: Promise<{ locale: string }> }) {
+  const params = await props.params;
+  const locale = normalizeLocale(params.locale);
+  if (locale === 'hu') return <PrivacyClient />;
+  if (locale === 'de') return <GermanLegalPage document="privacy" />;
+  return <LocalizedLegalPage document="privacy" locale={locale} />;
 }

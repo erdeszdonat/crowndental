@@ -6,14 +6,16 @@ import { buildTreatmentMetadata } from '@/lib/seo';
 const slug = 'gockutatas' as const;
 
 type TreatmentPageProps = {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 };
 
-export function generateMetadata({ params }: TreatmentPageProps): Metadata {
+export async function generateMetadata(props: TreatmentPageProps): Promise<Metadata> {
+  const params = await props.params;
   return buildTreatmentMetadata(params.locale, slug);
 }
 
-export default function GockutatasPage({ params }: TreatmentPageProps) {
+export default async function GockutatasPage(props: TreatmentPageProps) {
+  const params = await props.params;
   return (
     <>
       <TreatmentSeoScripts locale={params.locale} slug={slug} />

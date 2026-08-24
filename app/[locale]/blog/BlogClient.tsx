@@ -13,7 +13,9 @@ import {
 } from '@/lib/blogConfig';
 import { canonicalBlogSlug, isMergedBlogSource } from '@/lib/blogConsolidation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { INTERNATIONAL_PATIENT_PATHS } from '@/lib/internationalPaths';
+import { sanityImageLoader } from '@/lib/sanityImage';
 
 type BlogPost = {
   _id: string;
@@ -191,10 +193,7 @@ export default function BlogClient({ initialPosts = EMPTY_BLOG_POSTS }: { initia
 
   useEffect(() => {
     if (initialPosts.length > 0) {
-      setClientPosts(initialPosts);
-      setLoading(false);
-    } else {
-      setLoading(true);
+      return;
     }
 
     let cancelled = false;
@@ -227,7 +226,7 @@ export default function BlogClient({ initialPosts = EMPTY_BLOG_POSTS }: { initia
     return () => {
       cancelled = true;
     };
-  }, [initialPosts]);
+  }, [initialPosts.length]);
 
   const posts = useMemo<NormalizedPost[]>(
     () =>
@@ -261,7 +260,7 @@ export default function BlogClient({ initialPosts = EMPTY_BLOG_POSTS }: { initia
           count: posts.filter((post) => post.language === selectedLanguage && post.category === category.id).length,
         })),
       ],
-    [posts, selectedLanguage]
+    [localeCopy.allCategory, posts, selectedLanguage]
   );
 
   const filteredPosts = useMemo(
@@ -379,7 +378,16 @@ export default function BlogClient({ initialPosts = EMPTY_BLOG_POSTS }: { initia
               <Link href={getPostPath(post.language, post.slug)} key={post._id} className="group flex flex-col bg-white rounded-[2rem] overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-gray-100">
                 <div className="relative h-56 w-full overflow-hidden bg-gray-100">
                   {post.imageUrl && (
-                    <img src={post.imageUrl} alt={post.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                    <Image
+                      loader={sanityImageLoader}
+                      src={post.imageUrl}
+                      alt={post.title}
+                      fill
+                      sizes="(max-width: 767px) calc(100vw - 2rem), (max-width: 1023px) calc(50vw - 2.5rem), 352px"
+                      quality={76}
+                      loading="lazy"
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
                   )}
                 </div>
                 <div className="p-8 flex flex-col flex-1">

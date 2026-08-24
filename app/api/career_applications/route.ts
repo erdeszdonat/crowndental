@@ -1,129 +1,151 @@
-import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { Resend } from 'resend';
+import { sendTransactionalEmail } from '@/lib/addToAudience';
 import { getPreferredGreetingName } from '@/lib/names';
+import {
+  claimIdempotency, cleanText, completeIdempotency, enforceRateLimit, getIdempotencyKey, getIdempotencyResponse,
+  isValidEmail, isValidPhone, normalizeEmail, normalizeLocale, noStoreJson, releaseIdempotency, type SupportedLocale,
+  rejectUntrustedMutation,
+} from '@/lib/serverSecurity';
+
+const LOCATIONS = new Set(['Esztergom', 'Budapest']);
+const POSITIONS = new Set(['Fogorvos', 'Asszisztens']);
+
+const EMAIL_COPY: Record<SupportedLocale, {
+  subject: string; greeting: (name: string) => string; intro: string; details: string;
+  position: string; location: string; next: string; signoff: string;
+}> = {
+  hu: { subject: 'Jelentkezését sikeresen fogadtuk – Crown Dental', greeting: (name) => `Kedves ${name}!`, intro: 'Köszönjük, hogy jelentkezett a Crown Dental csapatába. Pályázatát sikeresen rögzítettük.', details: 'Jelentkezésének részletei', position: 'Pozíció', location: 'Rendelő', next: 'HR csapatunk áttekinti a megadott adatokat, és megfelelő egyezés esetén telefonon jelentkezik.', signoff: 'Üdvözlettel, a Crown Dental HR csapata' },
+  en: { subject: 'We received your application – Crown Dental', greeting: (name) => `Hello ${name}!`, intro: 'Thank you for applying to join Crown Dental. Your application has been recorded successfully.', details: 'Application details', position: 'Position', location: 'Clinic', next: 'Our HR team will review your details and contact you by phone if your profile matches the role.', signoff: 'Kind regards, the Crown Dental HR team' },
+  sk: { subject: 'Vašu žiadosť sme prijali – Crown Dental', greeting: (name) => `Dobrý deň, ${name}!`, intro: 'Ďakujeme za váš záujem pracovať v Crown Dental. Vašu žiadosť sme úspešne zaznamenali.', details: 'Údaje žiadosti', position: 'Pozícia', location: 'Klinika', next: 'Náš HR tím údaje posúdi a v prípade zhody vás bude kontaktovať telefonicky.', signoff: 'S pozdravom, HR tím Crown Dental' },
+  de: { subject: 'Ihre Bewerbung ist bei uns eingegangen – Crown Dental', greeting: (name) => `Guten Tag ${name}!`, intro: 'Vielen Dank für Ihre Bewerbung bei Crown Dental. Ihre Bewerbung wurde erfolgreich erfasst.', details: 'Ihre Bewerbung', position: 'Position', location: 'Praxis', next: 'Unser HR-Team prüft Ihre Angaben und meldet sich bei passendem Profil telefonisch bei Ihnen.', signoff: 'Mit freundlichen Grüßen, Ihr Crown Dental HR-Team' },
+};
 
 function escapeHtml(value: unknown) {
   return String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
 }
 
-export async function POST(req: Request) {
-  console.log("--- ÚJ KARRIER JELENTKEZÉS ÉRKEZETT ---");
+type CareerReceipt = {
+  id: string;
+  location: string;
+  position: string;
+  name: string;
+  email: string;
+  locale?: string | null;
+  receipt_email_sent_at?: string | null;
+  receipt_email_idempotency_key?: string | null;
+};
 
+async function sendCareerReceipt(application: CareerReceipt, providerKey: string) {
+  const copy = EMAIL_COPY[normalizeLocale(application.locale)];
+  const greeting = copy.greeting(escapeHtml(getPreferredGreetingName(application.name)));
+  return sendTransactionalEmail({
+    from: 'Crown Dental HR <info@crowndental.hu>',
+    to: application.email,
+    subject: copy.subject,
+    html: `<div style="font-family:'Segoe UI',sans-serif;max-width:600px;margin:auto;border:1px solid #e2e8f0;border-radius:16px;overflow:hidden"><div style="background:#0284c7;padding:35px;text-align:center;color:white"><h1>${greeting}</h1></div><div style="padding:35px"><p>${copy.intro}</p><div style="background:#f0f9ff;padding:20px;border-radius:12px"><h3>${copy.details}</h3><p><strong>${copy.position}:</strong> ${escapeHtml(application.position)}</p><p><strong>${copy.location}:</strong> ${escapeHtml(application.location)}</p></div><p>${copy.next}</p></div><div style="background:#f8fafc;padding:20px;text-align:center;color:#64748b">${copy.signoff}</div></div>`,
+  }, providerKey);
+}
+
+function settleCareerIdempotency(idempotencyKey: string, payload: Record<string, unknown>, emailSent: boolean) {
+  if (emailSent) completeIdempotency('career', idempotencyKey, payload, 24 * 60 * 60_000);
+  else releaseIdempotency('career', idempotencyKey);
+}
+
+export async function POST(request: Request) {
+  const originError = rejectUntrustedMutation(request);
+  if (originError) return originError;
+  const rateLimitError = await enforceRateLimit(request, 'career-application', { limit: 5, windowMs: 60 * 60_000 });
+  if (rateLimitError) return rateLimitError;
+
+  let idempotencyKey = '';
   try {
-    const body = await req.json();
-    const { location, position, experience, name, email, phone, message, locale } = body;
+    const body = await request.json();
+    idempotencyKey = getIdempotencyKey(request, body.idempotencyKey);
+    if (!claimIdempotency('career', idempotencyKey)) {
+      const replay = getIdempotencyResponse<Record<string, unknown>>('career', idempotencyKey);
+      if (replay) return noStoreJson(replay);
+      return noStoreJson({ error: 'Ezt a jelentkezést már feldolgoztuk.' }, { status: 409 });
+    }
 
-    // Kötelező adatok ellenőrzése
-    if (!name || !email || !phone || !location || !position) {
-      return NextResponse.json({ error: 'Minden kötelező mezőt ki kell tölteni!' }, { status: 400 });
+    const location = cleanText(body.location, 40);
+    const position = cleanText(body.position, 80);
+    const experience = cleanText(body.experience, 20) || '0';
+    const name = cleanText(body.name, 120);
+    const email = normalizeEmail(body.email);
+    const phone = cleanText(body.phone, 40);
+    const message = cleanText(body.message, 2_000);
+    const locale = normalizeLocale(body.locale);
+
+    if (!name || !LOCATIONS.has(location) || !POSITIONS.has(position) || !isValidEmail(email) || !isValidPhone(phone)) {
+      releaseIdempotency('career', idempotencyKey);
+      return noStoreJson({ error: 'Kérjük, ellenőrizze a jelentkezés adatait.' }, { status: 400 });
     }
 
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-    const resendKey = process.env.RESEND_API_KEY;
-
-    // 1. SUPABASE MENTÉS
-    if (supabaseUrl && supabaseKey) {
-      const supabase = createClient(supabaseUrl, supabaseKey);
-      
-      const { error } = await supabase.from('career_applications').insert([{
-        location,
-        position,
-        experience,
-        name,
-        email,
-        phone,
-        message: message || ''
-      }]);
-
-      if (error) {
-        console.error("Supabase mentési hiba (Karrier):", error);
-        return NextResponse.json({ error: `Adatbázis hiba: ${error.message}` }, { status: 500 });
-      }
-    } else {
-      return NextResponse.json({ error: 'Hiányoznak a Supabase környezeti változók!' }, { status: 500 });
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    if (!supabaseUrl || !supabaseKey) {
+      releaseIdempotency('career', idempotencyKey);
+      return noStoreJson({ error: 'A jelentkezési szolgáltatás átmenetileg nem érhető el.' }, { status: 503 });
     }
 
-    // 2. RESEND E-MAIL KÜLDÉS A JELENTKEZŐNEK
-    if (resendKey) {
-      try {
-        const resend = new Resend(resendKey);
-        const firstName = escapeHtml(getPreferredGreetingName(name));
-        const isGerman = locale === 'de';
-        const copy = isGerman
-          ? {
-              subject: 'Ihre Bewerbung ist bei uns eingegangen – Crown Dental',
-              greeting: `Guten Tag ${firstName}!`,
-              intro: 'Vielen Dank für Ihre Bewerbung bei Crown Dental. Ihre Unterlagen wurden erfolgreich in unserem System erfasst.',
-              details: 'Ihre Bewerbung', position: 'Position', location: 'Praxis', experience: 'Berufserfahrung', years: 'Jahre',
-              next: `Unser HR-Team prüft Ihre Angaben. Wenn Ihr Profil zu der Position passt, melden wir uns unter ${escapeHtml(phone)}, um die nächsten Schritte zu besprechen.`,
-              closing: 'Wir wünschen Ihnen viel Erfolg!', signoff: 'Mit freundlichen Grüßen', team: 'Ihr Crown Dental HR-Team',
+    const supabase = createClient(supabaseUrl, supabaseKey, { auth: { persistSession: false } });
+    const receiptEmailIdempotencyKey = `career-receipt/${idempotencyKey}`;
+    const { data: application, error } = await supabase.from('career_applications').insert({
+      location, position, experience, name, email, phone, message, locale, idempotency_key: idempotencyKey,
+      receipt_email_idempotency_key: receiptEmailIdempotencyKey,
+    }).select('id').single();
+    if (error || !application?.id) {
+      if (error?.code === '23505') {
+        const { data: existing, error: existingError } = await supabase
+          .from('career_applications')
+          .select('id,location,position,name,email,locale,receipt_email_sent_at,receipt_email_idempotency_key')
+          .eq('idempotency_key', idempotencyKey)
+          .maybeSingle();
+        if (existing?.id) {
+          let emailSent = Boolean(existing.receipt_email_sent_at);
+          if (!emailSent) {
+            const emailResult = await sendCareerReceipt(
+              existing as CareerReceipt,
+              existing.receipt_email_idempotency_key || receiptEmailIdempotencyKey,
+            );
+            emailSent = emailResult.ok;
+            if (emailSent) {
+              const { error: markerError } = await supabase
+                .from('career_applications')
+                .update({ receipt_email_sent_at: new Date().toISOString() })
+                .eq('id', existing.id);
+              if (markerError) console.error('Karrier e-mail jelölési hiba:', markerError);
             }
-          : {
-              subject: 'Jelentkezését sikeresen fogadtuk! - Crown Dental',
-              greeting: `Kedves ${firstName}!`,
-              intro: 'Köszönjük, hogy jelentkezett a Crown Dental csapatába! Örömmel értesítjük, hogy pályázati anyagát rendszerünk sikeresen rögzítette.',
-              details: 'Jelentkezésének részletei:', position: 'Megpályázott pozíció', location: 'Választott rendelő', experience: 'Megadott tapasztalat', years: 'év',
-              next: `HR vezetőnk hamarosan áttanulmányozza a megadott adatait. Amennyiben profilja illeszkedik az elvárásainkhoz, a megadott telefonszámon (${escapeHtml(phone)}) keresni fogjuk a további lépésekkel kapcsolatban.`,
-              closing: 'Sikeres pályázást kívánunk!', signoff: 'Üdvözlettel', team: 'A Crown Dental HR csapata',
-            };
-
-        await resend.emails.send({
-          from: 'Crown Dental HR <info@crowndental.hu>',
-          to: email,
-          subject: copy.subject,
-          html: `
-            <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width:600px; margin:0 auto; background:#ffffff; border:1px solid #e2e8f0; border-radius:16px; overflow:hidden;">
-              
-              <div style="background: linear-gradient(135deg, #0284c7, #0ea5e9); padding:35px 30px; text-align:center;">
-                <h1 style="margin:0; color:#ffffff; font-size:24px; font-weight:bold;">${copy.greeting}</h1>
-              </div>
-              
-              <div style="padding:35px 30px;">
-                <p style="font-size:16px; color:#374151; line-height:1.6; margin-top:0;">
-                  ${copy.intro}
-                </p>
-                
-                <div style="background:#f0f9ff; padding:20px 25px; border-radius:12px; margin:25px 0; border:1px solid #bae6fd;">
-                  <h3 style="margin:0 0 15px 0; color:#0369a1; font-size:13px; text-transform:uppercase; letter-spacing:1px;">${copy.details}</h3>
-                  <p style="margin:8px 0; color:#1e293b; font-size:15px;"><strong>${copy.position}:</strong> ${escapeHtml(position)}</p>
-                  <p style="margin:8px 0; color:#1e293b; font-size:15px;"><strong>${copy.location}:</strong> ${escapeHtml(location)}</p>
-                  <p style="margin:8px 0; color:#1e293b; font-size:15px;"><strong>${copy.experience}:</strong> ${experience === '5' ? '5+' : escapeHtml(experience)} ${copy.years}</p>
-                </div>
-                
-                <p style="font-size:16px; color:#374151; line-height:1.6;">
-                  ${copy.next}
-                </p>
-                
-                <p style="font-size:16px; color:#374151; line-height:1.6;">
-                  ${copy.closing}
-                </p>
-              </div>
-              
-              <div style="background:#f8fafc; padding:20px 30px; border-top:1px solid #e2e8f0; text-align:center;">
-                <p style="font-size:14px; color:#64748b; margin:0; line-height:1.5;">
-                  ${copy.signoff},<br>
-                  <strong style="color:#0f172a;">${copy.team}</strong>
-                </p>
-                <p style="font-size:12px; color:#94a3b8; margin-top:10px;">
-                  Crown Dental Praxis és Labor<br>
-                  +36 70 564 6837 | hr@crowndental.hu
-                </p>
-              </div>
-              
-            </div>
-          `
-        });
-      } catch (mailErr) {
-        console.error("Resend e-mail hiba (Karrier):", mailErr);
+          }
+          const replayPayload = { success: true, applicationId: existing.id, emailSent };
+          settleCareerIdempotency(idempotencyKey, replayPayload, emailSent);
+          return noStoreJson(replayPayload);
+        }
+        if (existingError) console.error('Karrier ismétlés lekérdezési hiba:', existingError);
       }
+      releaseIdempotency('career', idempotencyKey);
+      console.error('Karrier jelentkezés mentési hiba:', error);
+      return noStoreJson({ error: 'A jelentkezés mentése átmenetileg nem sikerült.' }, { status: 503 });
     }
 
-    return NextResponse.json({ success: true });
+    const emailResult = await sendCareerReceipt({
+      id: String(application.id), location, position, name, email, locale,
+    }, receiptEmailIdempotencyKey);
+    const emailSent = emailResult.ok;
+    if (emailSent) {
+      const { error: markerError } = await supabase
+        .from('career_applications')
+        .update({ receipt_email_sent_at: new Date().toISOString() })
+        .eq('id', application.id);
+      if (markerError) console.error('Karrier e-mail jelölési hiba:', markerError);
+    }
 
-  } catch (error: any) {
-    console.error("Végzetes API hiba a jelentkezésnél:", error);
-    return NextResponse.json({ error: 'Szerverhiba történt az adatok feldolgozásakor.' }, { status: 500 });
+    const responsePayload = { success: true, applicationId: application.id, emailSent };
+    settleCareerIdempotency(idempotencyKey, responsePayload, emailSent);
+    return noStoreJson(responsePayload);
+  } catch (error) {
+    if (idempotencyKey) releaseIdempotency('career', idempotencyKey);
+    console.error('Karrier API hiba:', error);
+    return noStoreJson({ error: 'Szerverhiba történt az adatok feldolgozásakor.' }, { status: 500 });
   }
 }

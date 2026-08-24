@@ -8,7 +8,7 @@ import {
 } from '@/lib/seo';
 
 type PageProps = {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 };
 
 type PageContent = {
@@ -66,7 +66,8 @@ const content: Record<SupportedLocale, PageContent> = {
   },
 };
 
-export function generateMetadata({ params }: PageProps): Metadata {
+export async function generateMetadata(props: PageProps): Promise<Metadata> {
+  const params = await props.params;
   const locale = normalizeLocale(params.locale);
   return buildLocalizedMetadata({
     locale,
@@ -76,7 +77,8 @@ export function generateMetadata({ params }: PageProps): Metadata {
   });
 }
 
-export default function TravelAccommodationPage({ params }: PageProps) {
+export default async function TravelAccommodationPage(props: PageProps) {
+  const params = await props.params;
   const locale = normalizeLocale(params.locale);
   const page = content[locale];
   const prefix = localePrefix(locale);

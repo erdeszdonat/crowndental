@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { cache } from 'react';
 import { notFound, permanentRedirect } from 'next/navigation';
 import { createClient } from 'next-sanity';
 import { dataset, projectId } from '@/sanity/env';
@@ -20,10 +21,11 @@ import {
   buildBreadcrumbJsonLd,
   localizedUrl,
   normalizeLocale,
+  safeJsonLd,
 } from '@/lib/seo';
 
 type BlogPostPageProps = {
-  params: { locale: string; slug: string };
+  params: Promise<{ locale: string; slug: string }>;
 };
 
 type BlogPost = {
@@ -53,6 +55,32 @@ const client = createClient({
   useCdn: false,
 });
 
+export const revalidate = 300;
+
+export async function generateStaticParams(): Promise<Array<{ locale: string; slug: string }>> {
+  try {
+    const posts = await client.fetch<Array<{ slug?: string; locale?: string }>>(
+      `*[_type == "post" && defined(slug.current)]{
+        "slug": slug.current,
+        "locale": coalesce(language, "hu")
+      }`,
+      {},
+      { next: { revalidate: 300 } },
+    );
+    const supportedLocales = new Set(['hu', 'en', 'sk', 'de']);
+    const unique = new Map<string, { locale: string; slug: string }>();
+    for (const post of posts) {
+      if (!post.slug || !post.locale || !supportedLocales.has(post.locale) || mergedBlogTarget(post.slug)) continue;
+      const slug = canonicalBlogSlug(post.slug);
+      unique.set(`${post.locale}/${slug}`, { locale: post.locale, slug });
+    }
+    return [...unique.values()];
+  } catch (error) {
+    console.error('Blog statikus útvonalak betöltési hiba:', error);
+    return [];
+  }
+}
+
 const postFields = `
   title,
   seoTitle,
@@ -72,14 +100,14 @@ const postFields = `
   medicalReviewedAt
 `;
 
-async function getPost(locale: string, slug: string): Promise<BlogPost | null> {
+const getPost = cache(async (locale: string, slug: string): Promise<BlogPost | null> => {
   const query = `*[_type == "post" && slug.current == $slug && coalesce(language, "hu") == $language][0]{${postFields}}`;
   return client.fetch(
     query,
     { slug: sanityBlogSlug(slug), language: locale },
-    { cache: 'no-store' },
+    { next: { revalidate: 300 } },
   );
-}
+});
 
 async function getConsolidatedPost(locale: string, slug: string): Promise<BlogPost | null> {
   const sourceSlug = mergedBlogSource(slug);
@@ -101,12 +129,13 @@ async function getConsolidatedPost(locale: string, slug: string): Promise<BlogPo
   };
 }
 
-async function getPostLanguageBySlug(slug: string): Promise<{ language: string } | null> {
+const getPostLanguageBySlug = cache(async (slug: string): Promise<{ language: string } | null> => {
   const query = `*[_type == "post" && slug.current == $slug][0]{"language": coalesce(language, "hu")}`;
-  return client.fetch(query, { slug }, { cache: 'no-store' });
-}
+  return client.fetch(query, { slug }, { next: { revalidate: 300 } });
+});
 
-export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
+export async function generateMetadata(props: BlogPostPageProps): Promise<Metadata> {
+  const params = await props.params;
   const locale = normalizeLocale(params.locale);
   const canonicalSlug = canonicalBlogSlug(params.slug);
   const post = await getConsolidatedPost(locale, canonicalSlug);
@@ -160,7 +189,8 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   };
 }
 
-export default async function BlogPostPage({ params }: BlogPostPageProps) {
+export default async function BlogPostPage(props: BlogPostPageProps) {
+  const params = await props.params;
   const locale = normalizeLocale(params.locale);
   const mergeTarget = mergedBlogTarget(params.slug);
   if (mergeTarget) {
@@ -199,8 +229,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(blogJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }} />
       <BlogPostClient post={post} />
     </>
   );

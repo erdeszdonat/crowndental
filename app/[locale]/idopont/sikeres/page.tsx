@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import BookingSuccessClient from './BookingSuccessClient';
 
 type Props = {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 };
 
 const metadataByLocale: Record<string, { title: string; description: string; canonical: string }> = {
@@ -28,7 +28,8 @@ const metadataByLocale: Record<string, { title: string; description: string; can
   },
 };
 
-export function generateMetadata({ params }: Props): Metadata {
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const params = await props.params;
   const metadata = metadataByLocale[params.locale] ?? metadataByLocale.hu;
 
   return {

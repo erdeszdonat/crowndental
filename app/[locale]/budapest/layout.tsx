@@ -4,12 +4,13 @@ import {
   buildLocalizedMetadata,
   localizedUrl,
   normalizeLocale,
+  safeJsonLd,
   type SupportedLocale,
 } from '@/lib/seo';
 
 type BudapestLayoutProps = {
   children: React.ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 };
 
 const metadataByLocale: Record<
@@ -41,7 +42,8 @@ const metadataByLocale: Record<
   },
 };
 
-export function generateMetadata({ params }: BudapestLayoutProps): Metadata {
+export async function generateMetadata(props: BudapestLayoutProps): Promise<Metadata> {
+  const params = await props.params;
   const locale = normalizeLocale(params.locale);
   return buildLocalizedMetadata({
     locale,
@@ -51,7 +53,13 @@ export function generateMetadata({ params }: BudapestLayoutProps): Metadata {
   });
 }
 
-export default function BudapestLayout({ children, params }: BudapestLayoutProps) {
+export default async function BudapestLayout(props: BudapestLayoutProps) {
+  const params = await props.params;
+
+  const {
+    children
+  } = props;
+
   const locale = normalizeLocale(params.locale);
   const pageUrl = localizedUrl(locale, 'budapest');
   const pageJsonLd = {
@@ -84,8 +92,8 @@ export default function BudapestLayout({ children, params }: BudapestLayoutProps
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(pageJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(pageJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }} />
       {children}
     </>
   );

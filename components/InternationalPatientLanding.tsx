@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { ArrowRight, CheckCircle2, FlaskConical, MapPin, Route, ShieldCheck } from 'lucide-react';
 import { buildFaqJsonLd } from '@/lib/faqSchema';
-import { localePrefix, localizedUrl } from '@/lib/seo';
+import { localePrefix, localizedUrl, safeJsonLd } from '@/lib/seo';
 import type { InternationalLandingContent } from '@/lib/internationalPatients';
 
 export default function InternationalPatientLanding({ content }: { content: InternationalLandingContent }) {
@@ -24,8 +24,8 @@ export default function InternationalPatientLanding({ content }: { content: Inte
 
   return (
     <main className="min-h-screen bg-slate-50 pt-24 text-slate-900 md:pt-32">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(serviceJsonLd) }} />
 
       <section className="overflow-hidden bg-slate-950 text-white">
         <div className="container mx-auto grid max-w-6xl gap-12 px-4 py-20 lg:grid-cols-[1.2fr_.8fr] lg:items-center">

@@ -7,7 +7,8 @@ import {
 
 export const metadata = buildInternationalPatientMetadata('sk');
 
-export default function SlovakInternationalPatientPage({ params }: { params: { locale: string } }) {
+export default async function SlovakInternationalPatientPage(props: { params: Promise<{ locale: string }> }) {
+  const params = await props.params;
   if (params.locale !== 'sk') notFound();
   return <InternationalPatientLanding content={INTERNATIONAL_PATIENT_CONTENT.sk} />;
 }

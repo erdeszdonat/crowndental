@@ -5,15 +5,35 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { Cookie, X, Check, ShieldCheck, Settings, Info } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
+import {
+  CONSENT_EVENT,
+  CONSENT_STORAGE_KEY,
+  createConsentRecord,
+  parseStoredConsent,
+  type ConsentPreferences,
+  type StoredConsent,
+} from '@/lib/cookieConsent';
 
-type ConsentSettings = {
-  necessary: boolean;
-  analytics: boolean;
-  marketing: boolean;
+type ConsentWindow = Window & {
+  dataLayer?: unknown[];
+  gtag?: (...args: unknown[]) => void;
 };
 
-const CONSENT_STORAGE_KEY = 'crown_cookie_consent';
-const CONSENT_EVENT = 'crown-cookie-consent';
+function applyGoogleConsent(settings: ConsentPreferences) {
+  if (typeof window === 'undefined') return;
+
+  const win = window as ConsentWindow;
+  win.dataLayer = win.dataLayer || [];
+  win.gtag = win.gtag || ((...args: unknown[]) => {
+    win.dataLayer?.push(args);
+  });
+  win.gtag('consent', 'update', {
+    analytics_storage: settings.analytics ? 'granted' : 'denied',
+    ad_storage: settings.marketing ? 'granted' : 'denied',
+    ad_user_data: settings.marketing ? 'granted' : 'denied',
+    ad_personalization: settings.marketing ? 'granted' : 'denied',
+  });
+}
 
 export default function CookieBanner() {
   const t = useTranslations('cookie');
@@ -24,31 +44,28 @@ export default function CookieBanner() {
   const [isMounted, setIsMounted] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
-  const [consent, setConsent] = useState<ConsentSettings>({
+  const [consent, setConsent] = useState<ConsentPreferences>({
     necessary: true,
     analytics: false,
     marketing: false,
   });
 
   useEffect(() => {
-    setIsMounted(true);
-    try {
-      const savedConsent = localStorage.getItem(CONSENT_STORAGE_KEY);
-      if (!savedConsent) {
+    const frame = window.requestAnimationFrame(() => {
+      setIsMounted(true);
+      try {
+        const parsed = parseStoredConsent(localStorage.getItem(CONSENT_STORAGE_KEY));
+        setConsent(parsed.preferences);
+        if (parsed.requiresDecision || !parsed.consent) {
+          setIsVisible(true);
+        } else {
+          applyGoogleConsent(parsed.consent);
+        }
+      } catch {
         setIsVisible(true);
-      } else {
-        const saved = JSON.parse(savedConsent) as Partial<ConsentSettings>;
-        const parsedConsent: ConsentSettings = {
-          necessary: true,
-          analytics: saved.analytics === true,
-          marketing: saved.marketing === true,
-        };
-        setConsent(parsedConsent);
-        applyGoogleConsent(parsedConsent);
       }
-    } catch (error) {
-      setIsVisible(true);
-    }
+    });
+    return () => window.cancelAnimationFrame(frame);
   }, []);
 
   useEffect(() => {
@@ -60,33 +77,20 @@ export default function CookieBanner() {
     return () => window.removeEventListener('open-cookie-banner', handleOpen);
   }, []);
 
-  const applyGoogleConsent = (settings: ConsentSettings) => {
-    if (typeof window !== 'undefined') {
-      const win = window as any;
-      win.dataLayer = win.dataLayer || [];
-      win.gtag = win.gtag || function() {
-        // eslint-disable-next-line prefer-rest-params
-        win.dataLayer.push(arguments);
-      };
-      win.gtag('consent', 'update', {
-        'analytics_storage': settings.analytics ? 'granted' : 'denied',
-        'ad_storage': settings.marketing ? 'granted' : 'denied',
-        'ad_user_data': settings.marketing ? 'granted' : 'denied',
-        'ad_personalization': settings.marketing ? 'granted' : 'denied',
-      });
-    }
-  };
-
   const handleAcceptAll = () => { saveConsent({ necessary: true, analytics: true, marketing: true }); };
   const handleRejectAll = () => { saveConsent({ necessary: true, analytics: false, marketing: false }); };
   const handleSaveSelection = () => { saveConsent(consent); };
 
-  const saveConsent = (settings: ConsentSettings) => {
+  const saveConsent = (settings: ConsentPreferences) => {
+    const storedConsent = createConsentRecord(settings);
     try {
-      localStorage.setItem(CONSENT_STORAGE_KEY, JSON.stringify(settings));
-    } catch (e) {}
-    applyGoogleConsent(settings);
-    window.dispatchEvent(new CustomEvent<ConsentSettings>(CONSENT_EVENT, { detail: settings }));
+      localStorage.setItem(CONSENT_STORAGE_KEY, JSON.stringify(storedConsent));
+    } catch {
+      // Private browsing or storage policies may prevent persistence; the
+      // current page can still honour the explicit in-session decision.
+    }
+    applyGoogleConsent(storedConsent);
+    window.dispatchEvent(new CustomEvent<StoredConsent>(CONSENT_EVENT, { detail: storedConsent }));
     setIsVisible(false);
     setShowDetails(false);
   };

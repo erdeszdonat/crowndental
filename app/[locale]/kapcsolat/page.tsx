@@ -5,10 +5,11 @@ import {
   buildLocalizedMetadata,
   localizedUrl,
   normalizeLocale,
+  safeJsonLd,
   type SupportedLocale,
 } from '@/lib/seo';
 
-type ContactPageProps = { params: { locale: string } };
+type ContactPageProps = { params: Promise<{ locale: string }> };
 
 const metadataByLocale: Record<SupportedLocale, { title: string; description: string }> = {
   hu: {
@@ -32,12 +33,14 @@ const metadataByLocale: Record<SupportedLocale, { title: string; description: st
   },
 };
 
-export function generateMetadata({ params }: ContactPageProps): Metadata {
+export async function generateMetadata(props: ContactPageProps): Promise<Metadata> {
+  const params = await props.params;
   const locale = normalizeLocale(params.locale);
   return buildLocalizedMetadata({ locale, path: 'kapcsolat', ...metadataByLocale[locale] });
 }
 
-export default function ContactPage({ params }: ContactPageProps) {
+export default async function ContactPage(props: ContactPageProps) {
+  const params = await props.params;
   const locale = normalizeLocale(params.locale);
   const url = localizedUrl(locale, 'kapcsolat');
   const contactPageJsonLd = {
@@ -58,8 +61,8 @@ export default function ContactPage({ params }: ContactPageProps) {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(contactPageJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(contactPageJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }} />
       <ContactClient />
     </>
   );

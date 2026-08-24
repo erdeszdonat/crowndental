@@ -4,7 +4,8 @@ import { buildHomeMetadata } from '@/lib/seo';
 
 export const revalidate = 3600;
 
-export function generateMetadata({ params }: { params: { locale: string } }): Metadata {
+export async function generateMetadata(props: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const params = await props.params;
   return buildHomeMetadata(params.locale);
 }
 

@@ -5,19 +5,27 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useLocale } from 'next-intl';
 import { ArrowRight, CalendarCheck2, CheckCircle2, Home, Mail, Phone } from 'lucide-react';
+import {
+  CONSENT_EVENT,
+  CONSENT_STORAGE_KEY,
+  currentConsentFrom,
+  parseStoredConsent,
+} from '@/lib/cookieConsent';
 
 const BOOKING_SUCCESS_STORAGE_KEY = 'crown_booking_success';
 const BOOKING_SUCCESS_CONTACT_KEY = 'crown_booking_contact';
 const BOOKING_SUCCESS_EVENT = 'appointment_booking_success';
 
-type BookingContact = {
-  email: string;
-  name?: string;
-  nickname?: string;
-  phone?: string;
-  clinic?: string;
+type BookingConsent = {
+  consentToken?: string;
   marketingConsent?: boolean;
 };
+
+type SupportedLocale = 'hu' | 'en' | 'sk' | 'de';
+
+function normalizeLocale(locale: string): SupportedLocale {
+  return locale === 'en' || locale === 'sk' || locale === 'de' ? locale : 'hu';
+}
 
 const copyByLocale = {
   hu: {
@@ -108,9 +116,10 @@ const copyByLocale = {
 
 export default function BookingSuccessClient() {
   const locale = useLocale();
-  const text = copyByLocale[locale as keyof typeof copyByLocale] ?? copyByLocale.hu;
-  const prefix = locale === 'hu' ? '' : `/${locale}`;
-  const [contact, setContact] = useState<BookingContact | null>(null);
+  const safeLocale = normalizeLocale(locale);
+  const text = copyByLocale[safeLocale];
+  const prefix = safeLocale === 'hu' ? '' : `/${safeLocale}`;
+  const [bookingConsent, setBookingConsent] = useState<BookingConsent | null>(null);
   const [offerStatus, setOfferStatus] = useState<'idle' | 'loading' | 'done' | 'already' | 'dismissed' | 'error'>('idle');
 
   useEffect(() => {
@@ -119,62 +128,91 @@ export default function BookingSuccessClient() {
     if (!isRealBookingRedirect) return;
 
     const storedContact = sessionStorage.getItem(BOOKING_SUCCESS_CONTACT_KEY);
+    let initialBookingConsent: BookingConsent | null = null;
+    let initialOfferStatus: 'already' | null = null;
     if (storedContact) {
       try {
-        const parsed = JSON.parse(storedContact) as BookingContact;
-        if (parsed?.email) {
-          setContact(parsed);
-          if (parsed.marketingConsent) setOfferStatus('already');
+        const parsed = JSON.parse(storedContact) as BookingConsent;
+        if (parsed?.marketingConsent) {
+          initialBookingConsent = { marketingConsent: true };
+          initialOfferStatus = 'already';
+        } else if (typeof parsed?.consentToken === 'string' && parsed.consentToken.length > 0) {
+          initialBookingConsent = { consentToken: parsed.consentToken, marketingConsent: false };
         }
       } catch {}
     }
 
+    const stateFrame = window.requestAnimationFrame(() => {
+      if (initialBookingConsent) setBookingConsent(initialBookingConsent);
+      if (initialOfferStatus) setOfferStatus(initialOfferStatus);
+    });
+
     sessionStorage.removeItem(BOOKING_SUCCESS_STORAGE_KEY);
 
-    const win = window as typeof window & {
-      dataLayer?: unknown[];
-      gtag?: (...args: unknown[]) => void;
+    let conversionSent = false;
+    const sendConversion = () => {
+      if (conversionSent) return;
+      conversionSent = true;
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: BOOKING_SUCCESS_EVENT,
+        event_category: 'booking',
+        event_label: 'appointment_success_page',
+        page_path: window.location.pathname,
+      });
     };
-
-    win.dataLayer = win.dataLayer || [];
-    win.dataLayer.push({
-      event: BOOKING_SUCCESS_EVENT,
-      event_category: 'booking',
-      event_label: 'appointment_success_page',
-      page_path: window.location.pathname,
-    });
-
-    win.gtag?.('event', BOOKING_SUCCESS_EVENT, {
-      event_category: 'booking',
-      event_label: 'appointment_success_page',
-    });
+    try {
+      const stored = parseStoredConsent(localStorage.getItem(CONSENT_STORAGE_KEY)).consent;
+      if (stored && (stored.analytics || stored.marketing)) sendConversion();
+    } catch {
+      // Invalid or unavailable consent storage means no measurement event.
+    }
+    const handleConsent = (event: Event) => {
+      const detail = currentConsentFrom((event as CustomEvent<unknown>).detail);
+      if (detail && (detail.analytics || detail.marketing)) sendConversion();
+    };
+    window.addEventListener(CONSENT_EVENT, handleConsent);
+    return () => {
+      window.cancelAnimationFrame(stateFrame);
+      window.removeEventListener(CONSENT_EVENT, handleConsent);
+    };
   }, []);
 
   const handleOfferSignup = async () => {
-    if (!contact?.email) return;
+    if (!bookingConsent?.consentToken) return;
     setOfferStatus('loading');
     try {
       const res = await fetch('/api/marketing-consent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email: contact.email,
-          name: contact.name,
-          nickname: contact.nickname,
-          phone: contact.phone,
-          clinic: contact.clinic,
-          source: 'booking_success_page',
-          locale,
+          consentToken: bookingConsent.consentToken,
+          locale: safeLocale,
         }),
       });
-      if (!res.ok) throw new Error('Marketing consent failed');
-      const updatedContact = { ...contact, marketingConsent: true };
-      sessionStorage.setItem(BOOKING_SUCCESS_CONTACT_KEY, JSON.stringify(updatedContact));
-      setContact(updatedContact);
+      const data = await res.json().catch(() => ({})) as { success?: boolean };
+      if (!res.ok || data.success !== true) throw new Error('Marketing consent failed');
+      const updatedConsent = { marketingConsent: true };
+      try {
+        sessionStorage.setItem(BOOKING_SUCCESS_CONTACT_KEY, JSON.stringify(updatedConsent));
+      } catch {
+        // Consent is already saved server-side; storage only controls this local panel.
+      }
+      setBookingConsent(updatedConsent);
       setOfferStatus('done');
     } catch {
       setOfferStatus('error');
     }
+  };
+
+  const dismissOffer = () => {
+    try {
+      sessionStorage.removeItem(BOOKING_SUCCESS_CONTACT_KEY);
+    } catch {
+      // The token remains short-lived server-side if browser storage is unavailable.
+    }
+    setBookingConsent(null);
+    setOfferStatus('dismissed');
   };
 
   return (
@@ -215,7 +253,7 @@ export default function BookingSuccessClient() {
                   ))}
                 </div>
 
-                {contact && offerStatus !== 'dismissed' && (
+                {bookingConsent && offerStatus !== 'dismissed' && (
                   <div className="mt-8 rounded-3xl border border-sky-100 bg-white p-5 shadow-sm">
                     <div className="mb-3 inline-flex rounded-full bg-sky-50 px-3 py-1 text-xs font-black uppercase tracking-[0.18em] text-sky-700">
                       Crown Dental extra
@@ -242,7 +280,7 @@ export default function BookingSuccessClient() {
                           </button>
                           <button
                             type="button"
-                            onClick={() => setOfferStatus('dismissed')}
+                            onClick={dismissOffer}
                             className="rounded-2xl px-5 py-4 text-sm font-black text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900"
                           >
                             {text.offerNoThanks}

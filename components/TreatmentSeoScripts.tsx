@@ -5,6 +5,7 @@ import {
   getTreatmentContent,
   localizedUrl,
   normalizeLocale,
+  safeJsonLd,
   type TreatmentSlug,
 } from '@/lib/seo';
 
@@ -31,7 +32,7 @@ export default function TreatmentSeoScripts({ locale, slug }: TreatmentSeoScript
     <script
       key={`${slug}-schema-${index}`}
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      dangerouslySetInnerHTML={{ __html: safeJsonLd(schema) }}
     />
   ));
 }

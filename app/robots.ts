@@ -2,13 +2,12 @@ import type { MetadataRoute } from 'next';
 import { SITE_URL } from '@/lib/seo';
 
 const privatePaths = [
+  '/admin',
   '/admin/',
+  '/studio',
   '/studio/',
+  '/api',
   '/api/',
-  '/idopont/sikeres',
-  '/en/idopont/sikeres',
-  '/sk/idopont/sikeres',
-  '/de/idopont/sikeres',
 ];
 
 export default function robots(): MetadataRoute.Robots {
