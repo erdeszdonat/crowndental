@@ -1,6 +1,17 @@
 import {getCliClient} from 'sanity/cli'
+import {createClient} from '@sanity/client'
 
-const client = getCliClient({apiVersion: '2026-08-18'})
+const apiVersion = '2026-08-18'
+const writeToken = process.env.SANITY_WRITE_TOKEN || process.env.SANITY_AUTH_TOKEN
+const client = writeToken
+  ? createClient({
+      projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'h68mmabs',
+      dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
+      apiVersion,
+      token: writeToken,
+      useCdn: false,
+    })
+  : getCliClient({apiVersion})
 const applyChanges = process.argv.includes('--apply')
 const siteHosts = new Set(['crowndental.hu', 'www.crowndental.hu'])
 
