@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && if [ \"$SANITY_REPAIR_ON_BUILD\" = \"1\" ]; then node scripts/repair-sanity-links.mjs --apply; fi",
+    "build": "next build",
     "start": "next start",
     "lint": "eslint ."
   },
