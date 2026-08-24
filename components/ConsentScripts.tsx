@@ -2,12 +2,13 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Script from 'next/script';
-
-type ConsentSettings = {
-  necessary: boolean;
-  analytics: boolean;
-  marketing: boolean;
-};
+import {
+  CONSENT_EVENT,
+  CONSENT_STORAGE_KEY,
+  currentConsentFrom,
+  parseStoredConsent,
+  type StoredConsent,
+} from '@/lib/cookieConsent';
 
 type GtagFunction = (...args: unknown[]) => void;
 type FbqFunction = (...args: unknown[]) => void;
@@ -20,25 +21,8 @@ declare global {
   }
 }
 
-const CONSENT_STORAGE_KEY = 'crown_cookie_consent';
-const CONSENT_EVENT = 'crown-cookie-consent';
 const GOOGLE_TAG_ID = 'G-9BS3P1DC4T';
 const GOOGLE_ADS_ID = 'AW-16510822421';
-
-function parseStoredConsent(value: string | null): ConsentSettings | null {
-  if (!value) return null;
-
-  try {
-    const parsed = JSON.parse(value) as Partial<ConsentSettings>;
-    return {
-      necessary: true,
-      analytics: parsed.analytics === true,
-      marketing: parsed.marketing === true,
-    };
-  } catch {
-    return null;
-  }
-}
 
 function ensureGtag(): GtagFunction {
   window.dataLayer = window.dataLayer ?? [];
@@ -49,19 +33,28 @@ function ensureGtag(): GtagFunction {
 }
 
 export default function ConsentScripts() {
-  const [consent, setConsent] = useState<ConsentSettings | null>(null);
+  const [consent, setConsent] = useState<StoredConsent | null>(null);
   const configuredGoogle = useRef({ analytics: false, marketing: false });
 
   useEffect(() => {
-    setConsent(parseStoredConsent(window.localStorage.getItem(CONSENT_STORAGE_KEY)));
+    let consentEventReceived = false;
+    const frame = window.requestAnimationFrame(() => {
+      if (!consentEventReceived) {
+        setConsent(parseStoredConsent(window.localStorage.getItem(CONSENT_STORAGE_KEY)).consent);
+      }
+    });
 
     const handleConsent = (event: Event) => {
-      const customEvent = event as CustomEvent<ConsentSettings>;
-      setConsent(customEvent.detail);
+      consentEventReceived = true;
+      const customEvent = event as CustomEvent<unknown>;
+      setConsent(currentConsentFrom(customEvent.detail));
     };
 
     window.addEventListener(CONSENT_EVENT, handleConsent);
-    return () => window.removeEventListener(CONSENT_EVENT, handleConsent);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener(CONSENT_EVENT, handleConsent);
+    };
   }, []);
 
   useEffect(() => {

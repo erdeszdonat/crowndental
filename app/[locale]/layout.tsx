@@ -1,20 +1,22 @@
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
+import { setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
+import '../globals.css';
 import ClientLayout from "./ClientLayout";
 import ConsentScripts from '@/components/ConsentScripts';
-import { SITE_URL, normalizeLocale } from '@/lib/seo';
+import { SITE_URL, normalizeLocale, safeJsonLd } from '@/lib/seo';
 
 const locales = ['hu', 'en', 'sk', 'de'];
 
 type Props = {
   children: React.ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 };
 
 // Dinamikus metadata localenként
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const params = await props.params;
   const locale = normalizeLocale(params.locale);
 
   const titles: Record<string, string> = {
@@ -30,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     de: 'Moderne Zahnmedizin in Esztergom mit eigenem Dentallabor, Wochenendterminen und Online-Terminbuchung.',
   };
 
-  const localeMap: Record<string, string> = { hu: 'hu_HU', en: 'en_US', sk: 'sk_SK', de: 'de_DE' };
+  const localeMap: Record<string, string> = { hu: 'hu_HU', en: 'en_GB', sk: 'sk_SK', de: 'de_DE' };
 
   return {
     metadataBase: new URL(SITE_URL),
@@ -99,24 +101,34 @@ const organizationJsonLd = {
   ],
 };
 
-export default async function LocaleLayout({ children, params }: Props) {
+export default async function LocaleLayout(props: Props) {
+  const params = await props.params;
+
+  const {
+    children
+  } = props;
+
   const { locale } = params;
 
   if (!locales.includes(locale)) notFound();
 
-  // Fordítási üzenetek betöltése
-  const messages = await getMessages();
+  // The locale is a static root parameter. Avoid request-scoped locale APIs,
+  // otherwise every public route becomes private/no-store on the CDN.
+  setRequestLocale(locale);
+  const messages = (await import(`../../messages/${locale}.json`)).default;
 
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
-      />
-      <NextIntlClientProvider locale={locale} messages={messages}>
-        <ConsentScripts />
-        <ClientLayout>{children}</ClientLayout>
-      </NextIntlClientProvider>
-    </>
+    <html lang={locale}>
+      <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: safeJsonLd(organizationJsonLd) }}
+        />
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          <ConsentScripts />
+          <ClientLayout>{children}</ClientLayout>
+        </NextIntlClientProvider>
+      </body>
+    </html>
   );
 }

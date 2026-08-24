@@ -22,7 +22,10 @@ const SLUG_MIGRATIONS = {
 };
 
 function csvCell(value) {
-  const stringValue = String(value ?? '');
+  const rawValue = String(value ?? '');
+  // Prevent spreadsheet applications from interpreting CMS-controlled text
+  // as a formula when the audit CSV is opened.
+  const stringValue = /^[=+\-@\t\r]/.test(rawValue) ? `'${rawValue}` : rawValue;
   return `"${stringValue.replaceAll('"', '""')}"`;
 }
 

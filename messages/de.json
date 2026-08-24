@@ -571,7 +571,7 @@
         "description": "Lebensechter Zahnersatz mit Titanimplantaten in nur einem Tag."
       },
       {
-        "id": "Nebelzabalyozas",
+        "id": "fogszabalyozas",
         "title": "Kieferorthopädie",
         "description": "Feste und herausnehmbare Zahnspangen für Kinder und Erwachsene."
       },
@@ -581,17 +581,17 @@
         "description": "Metallkeramik- und Zirkonkronen in Premiumqualität aus unserem eigenen Labor."
       },
       {
-        "id": "Nebelfeheriten",
+        "id": "fogfeherites",
         "title": "Zahnaufhellung",
         "description": "Professionelles Bleaching mit Methoden zu Hause oder in der Klinik."
       },
       {
-        "id": "Nebel",
+        "id": "fogsor",
         "title": "Zahnersatz",
         "description": "Herausnehmbarer und festsitzender Zahnersatz, passgenau, Unterfütterung."
       },
       {
-        "id": "Gyokerkezeles",
+        "id": "gyokerkezeles",
         "title": "Wurzelkanal",
         "description": "Schmerzlose maschinelle Wurzelkanalfüllung mit modernster Technologie."
       },
@@ -611,12 +611,12 @@
         "description": "Keramikveneers und unsichtbare Füllungen für ein perfektes Lächeln."
       },
       {
-        "id": "Nebelhuzas",
+        "id": "foghuzas",
         "title": "Zahnextraktion",
         "description": "Sanfte Zahnentfernung mit schneller Genesung."
       },
       {
-        "id": "Gockutatas",
+        "id": "gockutatas",
         "title": "Suche nach fokalen Infektionen",
         "description": "Erkennung versteckter Entzündungen und fokaler Infektionen mit moderner 3D-CT."
       },

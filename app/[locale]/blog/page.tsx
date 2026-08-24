@@ -28,7 +28,8 @@ const blogMetadata: Record<'hu' | 'en' | 'sk' | 'de', { title: string; descripti
   },
 };
 
-export function generateMetadata({ params }: { params: { locale: string } }): Metadata {
+export async function generateMetadata(props: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const locale = normalizeLocale(params.locale);
   return buildLocalizedMetadata({ locale, path: 'blog', ...blogMetadata[locale] });
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ArrowLeft, CheckCircle2, Star } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -9,26 +9,87 @@ import { BUDAPEST_BOOKING_OPEN_LABELS, isBudapestBookingAvailable, isBudapestCit
 
 const BOOKING_SUCCESS_STORAGE_KEY = 'crown_booking_success';
 const BOOKING_SUCCESS_CONTACT_KEY = 'crown_booking_contact';
+const SUPPORTED_LOCALES = new Set(['hu', 'en', 'sk', 'de']);
+
+type SupportedLocale = 'hu' | 'en' | 'sk' | 'de';
+type BookingResponse = {
+  success?: boolean;
+  appointmentId?: string;
+  consentToken?: string;
+  marketingConsentSaved?: boolean;
+};
+
+const bookingFeedback: Record<SupportedLocale, {
+  generic: string;
+  invalid: string;
+  network: string;
+  rateLimited: string;
+  unavailable: string;
+}> = {
+  hu: {
+    generic: 'Az időpontkérést most nem sikerült elküldeni. Kérjük, próbálja újra.',
+    invalid: 'Kérjük, ellenőrizze a megadott adatokat, majd próbálja újra.',
+    network: 'Nincs hálózati kapcsolat. Ellenőrizze az internetkapcsolatot, majd próbálja újra.',
+    rateLimited: 'Túl sok kérés érkezett rövid időn belül. Kérjük, várjon néhány percet.',
+    unavailable: 'A foglalási rendszer átmenetileg nem érhető el. Kérjük, próbálja újra később.',
+  },
+  en: {
+    generic: 'We could not send your appointment request. Please try again.',
+    invalid: 'Please check the information you entered and try again.',
+    network: 'You appear to be offline. Check your connection and try again.',
+    rateLimited: 'Too many requests were sent in a short time. Please wait a few minutes.',
+    unavailable: 'The booking service is temporarily unavailable. Please try again later.',
+  },
+  sk: {
+    generic: 'Žiadosť o termín sa nepodarilo odoslať. Skúste to prosím znova.',
+    invalid: 'Skontrolujte zadané údaje a skúste to znova.',
+    network: 'Nie ste pripojení k internetu. Skontrolujte pripojenie a skúste to znova.',
+    rateLimited: 'Za krátky čas bolo odoslaných priveľa žiadostí. Počkajte prosím niekoľko minút.',
+    unavailable: 'Rezervačný systém je dočasne nedostupný. Skúste to prosím neskôr.',
+  },
+  de: {
+    generic: 'Ihre Terminanfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut.',
+    invalid: 'Bitte prüfen Sie Ihre Angaben und versuchen Sie es erneut.',
+    network: 'Sie scheinen offline zu sein. Prüfen Sie Ihre Verbindung und versuchen Sie es erneut.',
+    rateLimited: 'In kurzer Zeit wurden zu viele Anfragen gesendet. Bitte warten Sie einige Minuten.',
+    unavailable: 'Das Buchungssystem ist vorübergehend nicht erreichbar. Bitte versuchen Sie es später erneut.',
+  },
+};
+
+function normalizeLocale(locale: string): SupportedLocale {
+  return SUPPORTED_LOCALES.has(locale) ? locale as SupportedLocale : 'hu';
+}
+
+function createIdempotencyKey(prefix: string) {
+  const value = typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+    ? crypto.randomUUID()
+    : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  return `${prefix}-${value}`;
+}
 
 function BookingForm() {
   const t = useTranslations('booking');
   const locale = useLocale();
+  const safeLocale = normalizeLocale(locale);
   const router = useRouter();
-  const p = locale === 'hu' ? '' : `/${locale}`;
+  const p = safeLocale === 'hu' ? '' : `/${safeLocale}`;
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [formData, setFormData] = useState({ city:'Esztergom', name:'', nickname:'', email:'', phone:'', treatment:'' });
   const [otherNote, setOtherNote] = useState('');
   const [marketingConsent, setMarketingConsent] = useState(false);
+  const idempotencyKeyRef = useRef<string | null>(null);
   const isBudapestOpen = isBudapestBookingAvailable();
-  const budapestOpenLabel = BUDAPEST_BOOKING_OPEN_LABELS[locale as keyof typeof BUDAPEST_BOOKING_OPEN_LABELS] ?? BUDAPEST_BOOKING_OPEN_LABELS.hu;
+  const budapestOpenLabel = BUDAPEST_BOOKING_OPEN_LABELS[safeLocale] ?? BUDAPEST_BOOKING_OPEN_LABELS.hu;
   const otherNotePlaceholders: Record<string, string> = {
     hu: 'Írja le röviden, mi a panasza vagy mit szeretne...',
     en: 'Briefly describe your concern or what you would like...',
     sk: 'Stručne opíšte svoj problém alebo požiadavku...',
     de: 'Beschreiben Sie kurz Ihre Beschwerden oder Ihren Wunsch...',
   };
-  const otherNotePlaceholder = otherNotePlaceholders[locale] ?? otherNotePlaceholders.hu;
+  const otherNotePlaceholder = otherNotePlaceholders[safeLocale] ?? otherNotePlaceholders.hu;
+  const feedback = bookingFeedback[safeLocale];
 
   const treatments = t.raw('treatments') as string[];
   const otherLabel = treatments[treatments.length - 1];
@@ -36,6 +97,8 @@ function BookingForm() {
 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    idempotencyKeyRef.current = null;
+    setSubmitError(null);
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
@@ -48,30 +111,50 @@ function BookingForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.treatment) return;
+    setSubmitError(null);
     setIsSubmitting(true);
     try {
       const payload = isOther && otherNote ? { ...formData, treatment: `${formData.treatment}: ${otherNote}` } : formData;
+      const idempotencyKey = idempotencyKeyRef.current ?? createIdempotencyKey('booking');
+      idempotencyKeyRef.current = idempotencyKey;
       const bookingPayload = {
         ...payload,
+        locale: safeLocale,
+        idempotencyKey,
         marketingConsent,
         marketingConsentSource: 'booking_form',
-        marketingConsentLocale: locale,
+        marketingConsentLocale: safeLocale,
       };
-      const res = await fetch('/api/book-appointment', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(bookingPayload) });
-      const data = await res.json();
-      if (data.success) {
+      const res = await fetch('/api/book-appointment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Idempotency-Key': idempotencyKey,
+        },
+        body: JSON.stringify(bookingPayload),
+      });
+      const data = await res.json().catch(() => ({})) as BookingResponse;
+      if (!res.ok || data.success !== true) {
+        if (res.status === 400 || res.status === 422) setSubmitError(feedback.invalid);
+        else if (res.status === 429) setSubmitError(feedback.rateLimited);
+        else if (res.status >= 500) setSubmitError(feedback.unavailable);
+        else setSubmitError(feedback.generic);
+        return;
+      }
+
+      try {
         sessionStorage.setItem(BOOKING_SUCCESS_STORAGE_KEY, '1');
         sessionStorage.setItem(BOOKING_SUCCESS_CONTACT_KEY, JSON.stringify({
-          email: formData.email,
-          name: formData.name,
-          nickname: formData.nickname,
-          phone: formData.phone,
-          clinic: formData.city,
-          marketingConsent,
+          consentToken: typeof data.consentToken === 'string' ? data.consentToken : undefined,
+          marketingConsent: marketingConsent && data.marketingConsentSaved === true,
         }));
-        router.push(`${p}/idopont/sikeres`);
+      } catch {
+        // The booking is already saved; storage is only used to enhance the success page.
       }
-    } catch {}
+      router.push(`${p}/idopont/sikeres`);
+    } catch {
+      setSubmitError(feedback.network);
+    }
     finally { setIsSubmitting(false); }
   };
 
@@ -104,9 +187,12 @@ function BookingForm() {
                 </label>
               </div>
               <div className="space-y-4">
-                <input required name="name" value={formData.name} onChange={handleChange} placeholder={`${t('fullName')} *`} className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-600"/>
-                <input required name="phone" value={formData.phone} onChange={handleChange} placeholder={`${t('phone')} *`} className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-600"/>
-                <input required name="email" type="email" value={formData.email} onChange={handleChange} placeholder={`${t('email')} *`} className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-600"/>
+                <label htmlFor="booking-name" className="sr-only">{t('fullName')}</label>
+                <input id="booking-name" required autoComplete="name" name="name" value={formData.name} onChange={handleChange} placeholder={`${t('fullName')} *`} className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-600"/>
+                <label htmlFor="booking-phone" className="sr-only">{t('phone')}</label>
+                <input id="booking-phone" required autoComplete="tel" inputMode="tel" type="tel" name="phone" value={formData.phone} onChange={handleChange} placeholder={`${t('phone')} *`} className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-600"/>
+                <label htmlFor="booking-email" className="sr-only">{t('email')}</label>
+                <input id="booking-email" required autoComplete="email" name="email" type="email" value={formData.email} onChange={handleChange} placeholder={`${t('email')} *`} className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-600"/>
               </div>
               <button type="submit" className="w-full py-4 bg-gray-900 text-white font-bold rounded-full hover:bg-sky-600 transition-colors shadow-lg mt-4 flex items-center justify-center gap-2">
                 {t('nextStep')} <ArrowRight className="w-5 h-5"/>
@@ -130,7 +216,11 @@ function BookingForm() {
                     {formData.treatment===treatment && treatment===otherLabel && (
                       <textarea
                         value={otherNote}
-                        onChange={e => setOtherNote(e.target.value)}
+                        onChange={e => {
+                          idempotencyKeyRef.current = null;
+                          setSubmitError(null);
+                          setOtherNote(e.target.value);
+                        }}
                         placeholder={otherNotePlaceholder}
                         rows={3}
                         className="w-full p-4 bg-gray-50 border-2 border-sky-300 rounded-xl outline-none focus:ring-2 focus:ring-sky-500 resize-none text-sm text-gray-700"
@@ -143,7 +233,11 @@ function BookingForm() {
                 <input
                   type="checkbox"
                   checked={marketingConsent}
-                  onChange={(event) => setMarketingConsent(event.target.checked)}
+                  onChange={(event) => {
+                    idempotencyKeyRef.current = null;
+                    setSubmitError(null);
+                    setMarketingConsent(event.target.checked);
+                  }}
                   className="mt-1 h-5 w-5 flex-shrink-0 rounded border-sky-300 text-sky-600 focus:ring-sky-500"
                 />
                 <span>
@@ -151,6 +245,11 @@ function BookingForm() {
                   <span className="mt-1 block text-xs leading-relaxed text-gray-500">{t('marketingOptInText')}</span>
                 </span>
               </label>
+              {submitError && (
+                <p role="alert" aria-live="assertive" className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-bold text-red-700">
+                  {submitError}
+                </p>
+              )}
               <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t">
                 <button type="button" onClick={()=>setStep(1)} className="flex items-center justify-center gap-2 px-6 py-4 text-gray-500 font-bold hover:text-gray-900">
                   <ArrowLeft className="w-5 h-5"/> {t('prevStep')}

@@ -7,7 +7,8 @@ import {
 
 export const metadata = buildInternationalPatientMetadata('de');
 
-export default function GermanInternationalPatientPage({ params }: { params: { locale: string } }) {
+export default async function GermanInternationalPatientPage(props: { params: Promise<{ locale: string }> }) {
+  const params = await props.params;
   if (params.locale !== 'de') notFound();
   return <InternationalPatientLanding content={INTERNATIONAL_PATIENT_CONTENT.de} />;
 }

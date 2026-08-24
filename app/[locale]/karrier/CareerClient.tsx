@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { createClient } from 'next-sanity';
-import { dataset, projectId } from '@/sanity/env';
+import { sanityImageLoader } from '@/lib/sanityImage';
 import {
   Briefcase,
   Users,
@@ -16,13 +16,6 @@ import {
 } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
 
-const client = createClient({
-  projectId,
-  dataset,
-  apiVersion: '2024-03-08',
-  useCdn: true,
-});
-
 const benefitIcons = [
   <Gem className="w-6 h-6" />,
   <Users className="w-6 h-6" />,
@@ -30,23 +23,63 @@ const benefitIcons = [
   <Heart className="w-6 h-6" />,
 ];
 
-function CareerHero() {
+type SupportedLocale = 'hu' | 'en' | 'sk' | 'de';
+
+const careerFeedback: Record<SupportedLocale, {
+  generic: string;
+  invalid: string;
+  network: string;
+  rateLimited: string;
+  pending: string;
+  unavailable: string;
+}> = {
+  hu: {
+    generic: 'A jelentkezést most nem sikerült elküldeni. Kérjük, próbálja újra.',
+    invalid: 'Kérjük, ellenőrizze a megadott adatokat, majd próbálja újra.',
+    network: 'Nincs hálózati kapcsolat. Ellenőrizze az internetkapcsolatot, majd próbálja újra.',
+    rateLimited: 'Túl sok kérés érkezett rövid időn belül. Kérjük, várjon néhány percet.',
+    pending: 'A jelentkezés feldolgozása még folyamatban van. Kérjük, várjon egy pillanatot, majd próbálja újra.',
+    unavailable: 'A jelentkezési rendszer átmenetileg nem érhető el. Kérjük, próbálja újra később.',
+  },
+  en: {
+    generic: 'We could not send your application. Please try again.',
+    invalid: 'Please check the information you entered and try again.',
+    network: 'You appear to be offline. Check your connection and try again.',
+    rateLimited: 'Too many requests were sent in a short time. Please wait a few minutes.',
+    pending: 'Your application is still being processed. Please wait a moment and try again.',
+    unavailable: 'The application service is temporarily unavailable. Please try again later.',
+  },
+  sk: {
+    generic: 'Žiadosť sa nepodarilo odoslať. Skúste to prosím znova.',
+    invalid: 'Skontrolujte zadané údaje a skúste to znova.',
+    network: 'Nie ste pripojení k internetu. Skontrolujte pripojenie a skúste to znova.',
+    rateLimited: 'Za krátky čas bolo odoslaných priveľa žiadostí. Počkajte prosím niekoľko minút.',
+    pending: 'Vaša žiadosť sa ešte spracúva. Chvíľu počkajte a skúste to znova.',
+    unavailable: 'Systém žiadostí je dočasne nedostupný. Skúste to prosím neskôr.',
+  },
+  de: {
+    generic: 'Ihre Bewerbung konnte nicht gesendet werden. Bitte versuchen Sie es erneut.',
+    invalid: 'Bitte prüfen Sie Ihre Angaben und versuchen Sie es erneut.',
+    network: 'Sie scheinen offline zu sein. Prüfen Sie Ihre Verbindung und versuchen Sie es erneut.',
+    rateLimited: 'In kurzer Zeit wurden zu viele Anfragen gesendet. Bitte warten Sie einige Minuten.',
+    pending: 'Ihre Bewerbung wird noch verarbeitet. Bitte warten Sie einen Moment und versuchen Sie es erneut.',
+    unavailable: 'Das Bewerbungssystem ist vorübergehend nicht erreichbar. Bitte versuchen Sie es später erneut.',
+  },
+};
+
+function normalizeLocale(locale: string): SupportedLocale {
+  return locale === 'en' || locale === 'sk' || locale === 'de' ? locale : 'hu';
+}
+
+function createIdempotencyKey() {
+  const value = typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+    ? crypto.randomUUID()
+    : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  return `career-${value}`;
+}
+
+function CareerHero({ imageUrl }: { imageUrl: string | null }) {
   const t = useTranslations('career');
-  const locale = useLocale();
-  const p = locale === 'hu' ? '' : `/${locale}`;
-  const [imageUrl, setImageUrl] = useState("");
-  useEffect(() => {
-    const fetchImage = async () => {
-      try {
-        const query = `*[_type == "treatment" && slug.current == "karrier"][0]{"url": coalesce(mainImage.asset->url, heroImage.asset->url)}`;
-        const result = await client.fetch(query);
-        if (result?.url) setImageUrl(result.url);
-      } catch (error) {
-        console.error("Sanity hiba:", error);
-      }
-    };
-    fetchImage();
-  }, []);
 
   return (
     <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-gray-50">
@@ -71,7 +104,18 @@ function CareerHero() {
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6, delay: 0.2 }} className="relative">
             <div className="absolute -inset-4 bg-sky-100 rounded-[3rem] -z-10 transform rotate-3"></div>
             <div className="relative rounded-[2rem] overflow-hidden shadow-2xl aspect-[4/3] bg-gray-100">
-              {imageUrl && <img src={imageUrl} alt="Crown Dental Csapat" className="w-full h-full object-cover animate-in fade-in duration-700" />}
+              {imageUrl && (
+                <Image
+                  loader={sanityImageLoader}
+                  src={imageUrl}
+                  alt="Crown Dental Csapat"
+                  fill
+                  priority
+                  quality={78}
+                  sizes="(max-width: 1023px) calc(100vw - 2rem), 50vw"
+                  className="object-cover animate-in fade-in duration-700"
+                />
+              )}
               <div className="absolute inset-0 bg-gradient-to-t from-gray-900/50 to-transparent" />
             </div>
           </motion.div>
@@ -140,23 +184,50 @@ function EmployeeReviews() {
 function CareerForm() {
   const t = useTranslations('career');
   const locale = useLocale();
+  const safeLocale = normalizeLocale(locale);
+  const feedback = careerFeedback[safeLocale];
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [formData, setFormData] = useState({ location: '', position: '', experience: '0', name: '', email: '', phone: '', message: '' });
+  const idempotencyKeyRef = useRef<string | null>(null);
+
+  const updateField = (field: keyof typeof formData, value: string) => {
+    idempotencyKeyRef.current = null;
+    setSubmitError(null);
+    setFormData((current) => ({ ...current, [field]: value }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitError(null);
     setIsSubmitting(true);
     try {
+      const idempotencyKey = idempotencyKeyRef.current ?? createIdempotencyKey();
+      idempotencyKeyRef.current = idempotencyKey;
       const response = await fetch('/api/career_applications', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, locale }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Idempotency-Key': idempotencyKey,
+        },
+        body: JSON.stringify({ ...formData, locale: safeLocale, idempotencyKey }),
       });
-      const data = await response.json();
-      if (data.success) setIsSuccess(true);
-    } catch (error) {
-      alert(t('formError'));
+      const data = await response.json().catch(() => ({})) as { success?: boolean };
+      if (!response.ok || data.success !== true) {
+        if (response.status === 409) {
+          setSubmitError(feedback.pending);
+          return;
+        }
+        if (response.status === 400 || response.status === 422) setSubmitError(feedback.invalid);
+        else if (response.status === 429) setSubmitError(feedback.rateLimited);
+        else if (response.status >= 500) setSubmitError(feedback.unavailable);
+        else setSubmitError(feedback.generic);
+        return;
+      }
+      setIsSuccess(true);
+    } catch {
+      setSubmitError(feedback.network);
     } finally {
       setIsSubmitting(false);
     }
@@ -174,20 +245,30 @@ function CareerForm() {
       <div className="container mx-auto px-4 max-w-3xl">
         <form onSubmit={handleSubmit} className="bg-gray-50 rounded-[2rem] shadow-xl p-6 md:p-10 space-y-8">
           <div className="grid sm:grid-cols-2 gap-5">
-            <input required placeholder={t('formName')} name="name" onChange={(e) => setFormData({...formData, name: e.target.value})} className="p-3.5 rounded-xl border w-full" />
-            <input required placeholder={t('formPhone')} name="phone" onChange={(e) => setFormData({...formData, phone: e.target.value})} className="p-3.5 rounded-xl border w-full" />
-            <input required placeholder={t('formEmail')} type="email" name="email" onChange={(e) => setFormData({...formData, email: e.target.value})} className="p-3.5 rounded-xl border w-full sm:col-span-2" />
-            <select required className="p-3.5 rounded-xl border w-full" onChange={(e) => setFormData({...formData, location: e.target.value})}>
+            <label htmlFor="career-name" className="sr-only">{t('formName')}</label>
+            <input id="career-name" required autoComplete="name" placeholder={t('formName')} name="name" value={formData.name} onChange={(e) => updateField('name', e.target.value)} className="p-3.5 rounded-xl border w-full" />
+            <label htmlFor="career-phone" className="sr-only">{t('formPhone')}</label>
+            <input id="career-phone" required autoComplete="tel" inputMode="tel" type="tel" placeholder={t('formPhone')} name="phone" value={formData.phone} onChange={(e) => updateField('phone', e.target.value)} className="p-3.5 rounded-xl border w-full" />
+            <label htmlFor="career-email" className="sr-only">{t('formEmail')}</label>
+            <input id="career-email" required autoComplete="email" placeholder={t('formEmail')} type="email" name="email" value={formData.email} onChange={(e) => updateField('email', e.target.value)} className="p-3.5 rounded-xl border w-full sm:col-span-2" />
+            <label htmlFor="career-location" className="sr-only">{t('formLocationPlaceholder')}</label>
+            <select id="career-location" required name="location" value={formData.location} className="p-3.5 rounded-xl border w-full" onChange={(e) => updateField('location', e.target.value)}>
                <option value="">{t('formLocationPlaceholder')}</option>
                <option value="Esztergom">Esztergom</option>
                <option value="Budapest">Budapest</option>
             </select>
-            <select required className="p-3.5 rounded-xl border w-full" onChange={(e) => setFormData({...formData, position: e.target.value})}>
+            <label htmlFor="career-position" className="sr-only">{t('formPositionPlaceholder')}</label>
+            <select id="career-position" required name="position" value={formData.position} className="p-3.5 rounded-xl border w-full" onChange={(e) => updateField('position', e.target.value)}>
                <option value="">{t('formPositionPlaceholder')}</option>
                <option value="Fogorvos">{t('formPositionDoctor')}</option>
                <option value="Asszisztens">{t('formPositionAssistant')}</option>
             </select>
           </div>
+          {submitError && (
+            <p role="alert" aria-live="assertive" className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-bold text-red-700">
+              {submitError}
+            </p>
+          )}
           <button type="submit" disabled={isSubmitting} className="w-full py-4 bg-sky-600 text-white rounded-xl font-bold">
             {isSubmitting ? t('formSubmitting') : t('formSubmit')}
           </button>
@@ -197,10 +278,10 @@ function CareerForm() {
   );
 }
 
-export default function CareerClient() {
+export default function CareerClient({ heroImageUrl }: { heroImageUrl: string | null }) {
   return (
     <div className="bg-white min-h-screen">
-      <CareerHero />
+      <CareerHero imageUrl={heroImageUrl} />
       <MissionAndBenefits />
       <EmployeeReviews />
       <CareerForm />

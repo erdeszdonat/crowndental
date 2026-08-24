@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform, useInView } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -9,6 +9,7 @@ import {
   MapPin, Phone, Award, Building2, Shield, Calendar,
   ArrowRight, CheckCircle2, Star, Heart, Upload, Search, Activity,
   Sparkles, User, FileText, Loader2, Download, ChevronDown, Wrench,
+  Pause, Play,
 } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
 import { getPreferredGreetingName } from '@/lib/names';
@@ -32,16 +33,29 @@ const compressImage = (file: File): Promise<File> =>
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = (e) => {
+      if (typeof e.target?.result !== 'string') {
+        reject(new Error('invalid_image_data'));
+        return;
+      }
       const img = document.createElement('img');
-      img.src = e.target?.result as string;
+      img.src = e.target.result;
+      img.onerror = () => reject(new Error('image_decode_failed'));
       img.onload = () => {
+        if (!img.width || !img.height || img.width * img.height > 40_000_000) {
+          reject(new Error('image_dimensions_unsupported'));
+          return;
+        }
         const canvas = document.createElement('canvas');
         let w = img.width, h = img.height;
         const MAX = 1200;
         if (w > h && w > MAX) { h = Math.round(h * MAX / w); w = MAX; }
         else if (h > MAX) { w = Math.round(w * MAX / h); h = MAX; }
         canvas.width = w; canvas.height = h;
-        const ctx = canvas.getContext('2d')!;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          reject(new Error('canvas_unavailable'));
+          return;
+        }
         ctx.fillStyle = '#FFF'; ctx.fillRect(0, 0, w, h); ctx.drawImage(img, 0, 0, w, h);
         canvas.toBlob(blob => blob
           ? resolve(new File([blob], 'c_' + file.name.replace(/\.[^.]+$/, '') + '.jpg', { type: 'image/jpeg' }))
@@ -51,22 +65,35 @@ const compressImage = (file: File): Promise<File> =>
     reader.onerror = reject;
   });
 
-// PDF builder
-function buildPDF(result: any, name: string, phone: string, email: string, nickname: string, locale: string) {
-  const date = new Date().toLocaleDateString(locale === 'sk' ? 'sk-SK' : locale === 'en' ? 'en-GB' : locale === 'de' ? 'de-DE' : 'hu-HU', { year:'numeric', month:'long', day:'numeric' });
-  const fmt = (n: number) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' HUF';
-  const L: Record<string, Record<string, string>> = {
-    hu: { title:'Személyre szabott árajánlat', savings:'Az Ön megtakarítása', breakdown:'Kezelések részletezése', treatment:'Kezelés', other:'Másik árajánlat', crown:'Crown Dental', saving:'Megtakarítás', total:'Összesen', sig1:'Páciens aláírása', sig2:'Kezelőorvos aláírása és pecsétje', f1:'Ez egy automatikusan generált árajánlat.', f2:'Az árajánlat a kiállítás napjától számított 30 napig érvényes.', tag:'Saját labor, kiemelkedő minőség, elérhető árak.' },
-    en: { title:'Personalised Quote', savings:'Your Savings', breakdown:'Treatment Breakdown', treatment:'Treatment', other:'Other Quote', crown:'Crown Dental', saving:'Saving', total:'Total', sig1:'Patient signature', sig2:"Dentist's signature & stamp", f1:'This is an automatically generated quote.', f2:'Valid for 30 days from the date of issue.', tag:'Own lab, outstanding quality, affordable prices.' },
-    sk: { title:'Individuálna cenová ponuka', savings:'Vaša úspora', breakdown:'Prehľad ošetrení', treatment:'Ošetrenie', other:'Iná ponuka', crown:'Crown Dental', saving:'Úspora', total:'Celkom', sig1:'Podpis pacienta', sig2:'Podpis a pečiatka lekára', f1:'Toto je automaticky vygenerovaná cenová ponuka.', f2:'Platnosť 30 dní od vystavenia.', tag:'Vlastné laboratórium, vynikajúca kvalita, dostupné ceny.' },
-    de: { title:'Persönliches Angebot', savings:'Ihre Ersparnis', breakdown:'Behandlungsübersicht', treatment:'Behandlung', other:'Anderes Angebot', crown:'Crown Dental', saving:'Ersparnis', total:'Gesamt', sig1:'Unterschrift des Patienten', sig2:'Unterschrift und Stempel des Zahnarztes', f1:'Dieses Angebot wurde automatisch erstellt.', f2:'Gültig für 30 Tage ab Ausstellungsdatum.', tag:'Eigenes Labor, ausgezeichnete Qualität, faire Preise.' },
-  };
-  const l = L[locale] ?? L.hu;
-  const rows = result.items.map((item: any, i: number) => {
-    const diff = item.competitorPrice - item.ourPrice;
-    return `<tr style="background:${i%2===0?'#fff':'#f8fafc'}"><td style="padding:9px 12px;border-bottom:1px solid #e5e7eb;font-size:12px">${item.name}</td><td style="padding:9px 12px;border-bottom:1px solid #e5e7eb;text-align:right;font-size:12px;color:#9ca3af;text-decoration:line-through">${fmt(item.competitorPrice)}</td><td style="padding:9px 12px;border-bottom:1px solid #e5e7eb;text-align:right;font-size:12px;color:#0369a1;font-weight:600">${fmt(item.ourPrice)}</td><td style="padding:9px 12px;border-bottom:1px solid #e5e7eb;text-align:right;font-size:12px;color:${diff>0?'#059669':'#6b7280'};font-weight:600">${diff>0?'-'+fmt(diff):'—'}</td></tr>`;
-  }).join('');
-  return `<!DOCTYPE html><html lang="${locale}"><head><meta charset="UTF-8"><style>@page{size:A4;margin:16mm 18mm}*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Segoe UI',Arial,sans-serif;color:#1e293b;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}</style></head><body><div style="max-width:700px;margin:0 auto"><table style="width:100%;margin-bottom:6px"><tr><td><div style="font-size:26px;font-weight:800;color:#0369a1">CROWN DENTAL</div><div style="font-size:10px;color:#94a3b8;letter-spacing:1.2px;text-transform:uppercase">Praxis és Labor · Esztergom · Budapest</div></td><td style="text-align:right;font-size:11px;color:#6b7280">${date}<br>+36 70 564 6837</td></tr></table><div style="height:3px;background:linear-gradient(90deg,#0284c7,#38bdf8,#7dd3fc);border-radius:2px;margin-bottom:22px"></div><div style="font-size:19px;font-weight:700;margin-bottom:5px">${l.title}</div><div style="font-size:12px;color:#6b7280;margin-bottom:20px">${nickname||name} | ${phone} | ${email}</div><div style="background:#f0f9ff;border:1.5px solid #bae6fd;border-radius:10px;padding:18px;text-align:center;margin-bottom:22px"><div style="font-size:11px;color:#0369a1;text-transform:uppercase;letter-spacing:1.2px;font-weight:600">${l.savings}</div><div style="font-size:32px;font-weight:800;color:#059669;margin-top:4px">${fmt(result.savings)}</div></div><table style="width:100%;border-collapse:collapse;border:1px solid #e2e8f0;margin-bottom:8px"><thead><tr style="background:#f1f5f9"><th style="padding:9px 12px;text-align:left;font-size:10px;color:#6b7280;text-transform:uppercase;border-bottom:2px solid #0284c7">${l.treatment}</th><th style="padding:9px 12px;text-align:right;font-size:10px;color:#6b7280;text-transform:uppercase;border-bottom:2px solid #0284c7">${l.other}</th><th style="padding:9px 12px;text-align:right;font-size:10px;color:#6b7280;text-transform:uppercase;border-bottom:2px solid #0284c7">${l.crown}</th><th style="padding:9px 12px;text-align:right;font-size:10px;color:#6b7280;text-transform:uppercase;border-bottom:2px solid #0284c7">${l.saving}</th></tr></thead><tbody>${rows}</tbody><tfoot><tr style="background:#f0f9ff"><td style="padding:10px 12px;font-weight:700;font-size:13px;border-top:2px solid #0284c7">${l.total}</td><td style="padding:10px 12px;font-weight:700;text-align:right;color:#9ca3af;border-top:2px solid #0284c7;text-decoration:line-through">${fmt(result.competitorTotal)}</td><td style="padding:10px 12px;font-weight:700;text-align:right;color:#0284c7;border-top:2px solid #0284c7">${fmt(result.ourTotal)}</td><td style="padding:10px 12px;font-weight:700;text-align:right;color:#059669;border-top:2px solid #0284c7">-${fmt(result.savings)}</td></tr></tfoot></table><div style="margin-top:50px;border-top:1px solid #e5e7eb;padding-top:12px"><div style="font-size:13px;font-weight:700;color:#0369a1;margin-bottom:40px">Signatures</div><table style="width:100%"><tr><td style="width:44%;text-align:center"><div style="border-bottom:1.5px solid #94a3b8;height:1px;margin-bottom:6px"></div><div style="font-size:11px;color:#6b7280">${l.sig1}</div></td><td style="width:12%"></td><td style="width:44%;text-align:center"><div style="border-bottom:1.5px solid #94a3b8;height:1px;margin-bottom:6px"></div><div style="font-size:11px;color:#6b7280">${l.sig2}</div></td></tr></table></div><div style="margin-top:40px;border-top:1px solid #e5e7eb;padding-top:12px"><p style="font-size:9px;color:#9ca3af;text-align:center;margin-bottom:5px">${l.f1}</p><p style="font-size:9px;color:#9ca3af;text-align:center;margin-bottom:8px">${l.f2}</p><p style="font-size:10px;color:#0284c7;text-align:center;font-weight:700">Crown Dental – ${l.tag}</p></div></div></body></html>`;
+function escapePdfHtml(value: unknown) {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+
+function buildPDF(result: QuoteAnalysisResult, name: string, phone: string, email: string, nickname: string, locale: QuoteLocale) {
+  const copy = {
+    hu: { title: 'Automatikus előzetes ár-összehasonlítás', difference: 'Becsült megtakarítási tartomány', treatment: 'Kezelés', other: 'Másik árajánlat', crown: 'Crown Dental tájékoztató ártartomány', total: 'Összesen', manual: 'Kézi ellenőrzés szükséges', noSaving: 'Biztos megtakarítás nem állapítható meg', notice: 'Ez automatikus, tájékoztató becslés; nem diagnózis és nem kötelező érvényű ajánlat. A végleges kezelési tervet és árat személyes vizsgálat után adjuk meg.' },
+    en: { title: 'Automated preliminary price comparison', difference: 'Estimated savings range', treatment: 'Treatment', other: 'Other quote', crown: 'Crown Dental guide range', total: 'Total', manual: 'Manual review required', noSaving: 'No guaranteed saving can be stated', notice: 'This automated estimate is for guidance only; it is not a diagnosis or a binding quote. A final treatment plan and price require an in-person examination.' },
+    sk: { title: 'Automatické predbežné porovnanie cien', difference: 'Odhadované rozpätie úspory', treatment: 'Ošetrenie', other: 'Iná ponuka', crown: 'Orientačné cenové rozpätie Crown Dental', total: 'Celkom', manual: 'Potrebná manuálna kontrola', noSaving: 'Zaručenú úsporu nemožno určiť', notice: 'Ide o automatický orientačný odhad; nejde o diagnózu ani záväznú ponuku. Konečný plán ošetrenia a cenu určíme po osobnom vyšetrení.' },
+    de: { title: 'Automatisierter vorläufiger Preisvergleich', difference: 'Geschätzte Ersparnisspanne', treatment: 'Behandlung', other: 'Anderes Angebot', crown: 'Crown Dental Richtpreisspanne', total: 'Gesamt', manual: 'Manuelle Prüfung erforderlich', noSaving: 'Keine sichere Ersparnis feststellbar', notice: 'Diese automatisierte Schätzung dient nur zur Orientierung; sie ist weder Diagnose noch verbindliches Angebot. Behandlungsplan und Endpreis werden nach einer persönlichen Untersuchung festgelegt.' },
+  }[locale];
+  const number = new Intl.NumberFormat(locale === 'hu' ? 'hu-HU' : locale === 'sk' ? 'sk-SK' : locale === 'de' ? 'de-DE' : 'en-GB');
+  const money = (value: number) => `${number.format(value)} HUF`;
+  const range = (min: number | null, max: number | null) => min === null || max === null
+    ? copy.manual
+    : min === max ? money(min) : `${number.format(min)}–${number.format(max)} HUF`;
+  const date = new Date().toLocaleDateString(locale === 'hu' ? 'hu-HU' : locale === 'sk' ? 'sk-SK' : locale === 'de' ? 'de-DE' : 'en-GB');
+  const patientLine = [nickname || name, phone, email].map(escapePdfHtml).join(' | ');
+  const rows = result.items.map((item) => `<tr><td>${escapePdfHtml(item.name)}</td><td class="number">${money(item.competitorPrice)}</td><td class="number crown">${range(item.ourPriceMin, item.ourPriceMax)}</td></tr>`).join('');
+  const summary = result.savingsMin !== null && result.savingsMax !== null
+    ? range(result.savingsMin, result.savingsMax)
+    : result.requiresManualReview ? copy.manual : copy.noSaving;
+
+  return `<!doctype html><html lang="${locale}"><head><meta charset="utf-8"><title>${copy.title}</title><style>@page{size:A4;margin:16mm 18mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#0f172a;margin:0}.header{display:flex;justify-content:space-between;border-bottom:3px solid #0284c7;padding-bottom:14px}.brand{font-size:26px;font-weight:900;color:#0369a1}.meta{font-size:11px;color:#64748b;text-align:right}h1{font-size:22px;margin:24px 0 6px}.patient{font-size:12px;color:#64748b}.summary{background:#f0f9ff;border:1px solid #bae6fd;border-radius:12px;padding:18px;text-align:center;margin:22px 0}.summary strong{display:block;font-size:22px;color:#0369a1;margin-top:5px}table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:10px;border-bottom:1px solid #e2e8f0;text-align:left}.number{text-align:right}.crown{color:#0369a1;font-weight:800}tfoot td{border-top:2px solid #0284c7;font-weight:900}.notice{margin-top:24px;padding:14px;border:1px solid #fbbf24;background:#fffbeb;border-radius:10px;font-size:11px;line-height:1.55;color:#78350f}</style></head><body><div class="header"><div><div class="brand">CROWN DENTAL</div><div class="meta">Praxis és Labor · Esztergom · Budapest</div></div><div class="meta">${date}<br>+36 70 564 6837</div></div><h1>${copy.title}</h1><div class="patient">${patientLine}</div><div class="summary">${copy.difference}<strong>${summary}</strong></div><table><thead><tr><th>${copy.treatment}</th><th class="number">${copy.other}</th><th class="number">${copy.crown}</th></tr></thead><tbody>${rows}</tbody><tfoot><tr><td>${copy.total}</td><td class="number">${money(result.competitorTotal)}</td><td class="number crown">${range(result.ourTotalMin, result.ourTotalMax)}</td></tr></tfoot></table><div class="notice">${copy.notice}</div></body></html>`;
 }
 
 // ─── Lebegő CTA ───────────────────────────────────────────────────────────────
@@ -106,18 +133,22 @@ function HeroSlider({ images }: { images: HomeSanityImages['hero'] }) {
   const locale = useLocale();
   const p = locale === 'hu' ? '' : `/${locale}`;
   const [current, setCurrent] = useState(0);
-  const [hasHeroHydrated, setHasHeroHydrated] = useState(false);
+  const [isManuallyPaused, setIsManuallyPaused] = useState(false);
+  const [isInteractionPaused, setIsInteractionPaused] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset:['start start','end start'] });
   const imgY = useTransform(scrollYProgress, [0,1], ['0%','20%']);
   const textY = useTransform(scrollYProgress, [0,1], ['0%','40%']);
   const opacity = useTransform(scrollYProgress, [0,0.5], [1,0]);
+  const carouselPaused = Boolean(prefersReducedMotion) || isManuallyPaused || isInteractionPaused;
+  const carouselControl = {
+    hu: { pause: 'Diavetítés szüneteltetése', play: 'Diavetítés folytatása' },
+    en: { pause: 'Pause slideshow', play: 'Resume slideshow' },
+    sk: { pause: 'Pozastaviť prezentáciu', play: 'Pokračovať v prezentácii' },
+    de: { pause: 'Diashow pausieren', play: 'Diashow fortsetzen' },
+  }[locale === 'en' || locale === 'sk' || locale === 'de' ? locale : 'hu'];
 
-  useEffect(() => {
-    setHasHeroHydrated(true);
-  }, []);
-
-  // @ts-ignore
   const slideData = tSlides.raw('slides') as Array<{ tag:string; titleTop:string; titleBottom:string; subtitle:string; primaryText:string }>;
 
   const staticSlides = [
@@ -127,15 +158,25 @@ function HeroSlider({ images }: { images: HomeSanityImages['hero'] }) {
   ];
 
   useEffect(() => {
+    if (carouselPaused) return;
     const t = setInterval(() => setCurrent(c => (c+1)%3), 10000);
     return () => clearInterval(t);
-  }, []);
+  }, [carouselPaused]);
 
   return (
-    <section ref={ref} className="relative mt-24 h-[90svh] min-h-[700px] w-full overflow-hidden flex items-center justify-center bg-gray-950">
-      <motion.div style={{ y:imgY }} className="absolute inset-0 z-0 will-change-transform">
-        <AnimatePresence mode="wait">
-          <motion.div key={current} initial={hasHeroHydrated ? { opacity:0, scale:1.03 } : false} animate={{ opacity:1, scale:1 }} exit={{ opacity:0 }} transition={{ duration:hasHeroHydrated ? 0.65 : 0, ease:'easeInOut' }} className="absolute inset-0">
+    <section
+      ref={ref}
+      onMouseEnter={() => setIsInteractionPaused(true)}
+      onMouseLeave={() => setIsInteractionPaused(false)}
+      onFocusCapture={() => setIsInteractionPaused(true)}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setIsInteractionPaused(false);
+      }}
+      className="relative mt-24 h-[90svh] min-h-[700px] w-full overflow-hidden flex items-center justify-center bg-gray-950"
+    >
+      <motion.div style={prefersReducedMotion ? undefined : { y:imgY }} className="absolute inset-0 z-0 will-change-transform">
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div key={current} initial={prefersReducedMotion ? false : { opacity:0, scale:1.03 }} animate={{ opacity:1, scale:1 }} exit={{ opacity:0 }} transition={{ duration:prefersReducedMotion ? 0 : 0.65, ease:'easeInOut' }} className="absolute inset-0">
             {staticSlides[current].image
               ? (
                 <div className="absolute inset-x-0 top-0 h-[120%]">
@@ -158,10 +199,10 @@ function HeroSlider({ images }: { images: HomeSanityImages['hero'] }) {
       <div className="absolute bottom-0 left-0 right-0 h-56 bg-gradient-to-t from-white to-transparent z-10" />
       <div className="absolute inset-0 z-[1] opacity-[0.03]" style={{ backgroundImage:'linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px)', backgroundSize:'80px 80px' }} />
 
-      <motion.div style={{ y:textY, opacity }} className="relative z-20 container mx-auto px-4 md:px-8">
+      <motion.div style={prefersReducedMotion ? undefined : { y:textY, opacity }} className="relative z-20 container mx-auto px-4 md:px-8">
         <div className="max-w-3xl">
-          <AnimatePresence mode="wait">
-            <motion.div key={current} initial={hasHeroHydrated ? { opacity:0, y:24 } : false} animate={{ opacity:1, y:0 }} exit={{ opacity:0, y:-24 }} transition={{ duration:hasHeroHydrated ? 0.45 : 0 }}>
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div key={current} initial={prefersReducedMotion ? false : { opacity:0, y:24 }} animate={{ opacity:1, y:0 }} exit={{ opacity:0, y:-24 }} transition={{ duration:prefersReducedMotion ? 0 : 0.45 }}>
               <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/10 border border-white/20 backdrop-blur-xl rounded-full text-sky-300 text-xs sm:text-sm font-bold tracking-wider uppercase mb-8">
                 <Sparkles className="w-4 h-4" /> {slideData[current]?.tag}
               </div>
@@ -171,27 +212,26 @@ function HeroSlider({ images }: { images: HomeSanityImages['hero'] }) {
               </h1>
               <p className="text-lg sm:text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed max-w-2xl font-light">{slideData[current]?.subtitle}</p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <a href={staticSlides[current].href}>
-                  <motion.button whileHover={{ scale:1.03 }} whileTap={{ scale:0.97 }} className="group flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-5 bg-sky-500 hover:bg-sky-400 text-white text-lg font-bold rounded-2xl shadow-[0_0_60px_rgba(14,165,233,0.4)] transition-all">
-                    {staticSlides[current].icon} {slideData[current]?.primaryText} <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </motion.button>
-                </a>
-                <a href="tel:+36705646837">
-                  <motion.button whileHover={{ scale:1.03 }} whileTap={{ scale:0.97 }} className="flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-5 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white text-lg font-bold rounded-2xl transition-all border border-white/20">
-                    <Phone className="w-5 h-5" /> +36 70 564 6837
-                  </motion.button>
-                </a>
+                <motion.a href={staticSlides[current].href} whileHover={prefersReducedMotion ? undefined : { scale:1.03 }} whileTap={prefersReducedMotion ? undefined : { scale:0.97 }} className="group flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-5 bg-sky-500 hover:bg-sky-400 text-white text-lg font-bold rounded-2xl shadow-[0_0_60px_rgba(14,165,233,0.4)] transition-all">
+                  {staticSlides[current].icon} {slideData[current]?.primaryText} <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </motion.a>
+                <motion.a href="tel:+36705646837" whileHover={prefersReducedMotion ? undefined : { scale:1.03 }} whileTap={prefersReducedMotion ? undefined : { scale:0.97 }} className="flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-5 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white text-lg font-bold rounded-2xl transition-all border border-white/20">
+                  <Phone className="w-5 h-5" /> +36 70 564 6837
+                </motion.a>
               </div>
             </motion.div>
           </AnimatePresence>
-          <div className="flex gap-2 mt-10">
+          <div className="flex items-center gap-2 mt-10">
             {[0,1,2].map(i => <button key={i} onClick={() => setCurrent(i)} className={`h-1.5 rounded-full transition-all ${i===current?'w-10 bg-sky-400':'w-5 bg-white/30 hover:bg-white/50'}`} aria-label={`Slide ${i+1}`} />)}
+            {!prefersReducedMotion && <button type="button" onClick={() => setIsManuallyPaused((paused) => !paused)} aria-pressed={isManuallyPaused} aria-label={isManuallyPaused ? carouselControl.play : carouselControl.pause} className="ml-2 rounded-full border border-white/20 bg-white/10 p-2 text-white/80 hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
+              {isManuallyPaused ? <Play className="h-4 w-4"/> : <Pause className="h-4 w-4"/>}
+            </button>}
           </div>
         </div>
       </motion.div>
       <motion.div initial={{ opacity:0 }} animate={{ opacity:1 }} transition={{ delay:1.2 }} className="absolute bottom-28 left-1/2 -translate-x-1/2 z-20 hidden md:flex flex-col items-center gap-2 text-white/40">
         <span className="text-xs tracking-widest uppercase">{tCommon('scrollDown')}</span>
-        <motion.div animate={{ y:[0,8,0] }} transition={{ duration:1.5, repeat:Infinity }}><ChevronDown className="w-5 h-5" /></motion.div>
+        <motion.div animate={prefersReducedMotion ? undefined : { y:[0,8,0] }} transition={prefersReducedMotion ? undefined : { duration:1.5, repeat:Infinity }}><ChevronDown className="w-5 h-5" /></motion.div>
       </motion.div>
     </section>
   );
@@ -272,19 +312,14 @@ function LocationSelector({ locations }: { locations: HomeSanityImages['location
 }
 
 // ─── Stats ────────────────────────────────────────────────────────────────────
+function formatStatNumber(value: number) {
+  return String(value).replace(/\B(?=(\d{3})+(?!\d))/g, '\u00a0');
+}
+
 function AnimatedNumber({ end, suffix='', label, desc }: { end:number; suffix?:string; label:string; desc:string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once:true, margin:'-100px' });
-  const [count, setCount] = useState(0);
-  useEffect(() => {
-    if (!inView) return;
-    let s = 0; const step = end/(2000/16);
-    const t = setInterval(() => { s+=step; if(s>=end){setCount(end);clearInterval(t);}else setCount(Math.ceil(s)); }, 16);
-    return () => clearInterval(t);
-  }, [inView, end]);
   return (
-    <div ref={ref} className="text-center">
-      <div className="text-5xl md:text-6xl lg:text-7xl font-black text-sky-500 mb-3 tracking-tight tabular-nums whitespace-nowrap">{count.toLocaleString()}{suffix}</div>
+    <div className="text-center transition-transform duration-500 hover:-translate-y-1">
+      <div className="text-5xl md:text-6xl lg:text-7xl font-black text-sky-500 mb-3 tracking-tight tabular-nums whitespace-nowrap">{formatStatNumber(end)}{suffix}</div>
       <div className="text-lg font-bold text-gray-900 mb-1">{label}</div>
       <p className="text-gray-500 text-sm leading-relaxed max-w-[200px] mx-auto">{desc}</p>
     </div>
@@ -316,29 +351,230 @@ function StatsSection() {
 }
 
 // ─── AI Quote Analyzer ────────────────────────────────────────────────────────
+type QuoteLocale = 'hu' | 'en' | 'sk' | 'de';
+type QuoteAnalysisResult = {
+  items: Array<{
+    name: string;
+    competitorPrice: number;
+    ourPriceMin: number | null;
+    ourPriceMax: number | null;
+    manualReview: boolean;
+  }>;
+  competitorTotal: number;
+  ourTotalMin: number | null;
+  ourTotalMax: number | null;
+  savingsMin: number | null;
+  savingsMax: number | null;
+  requiresManualReview: boolean;
+};
+
+const quoteFeedback: Record<QuoteLocale, {
+  unsupportedFile: string;
+  invalid: string;
+  duplicate: string;
+  network: string;
+  rateLimited: string;
+  unavailable: string;
+  manualReview: string;
+  noGuaranteedSaving: string;
+  retryEmail: string;
+  emailNotSent: string;
+  emailRetryFailed: string;
+  resultIntro: string;
+  total: string;
+  imageProcessingFailed: string;
+}> = {
+  hu: {
+    unsupportedFile: 'Csak PDF, JPG, PNG vagy WebP fájl tölthető fel.',
+    invalid: 'A dokumentumot nem sikerült biztonságosan elemezni. Ellenőrizze a fájlt és a megadott adatokat.',
+    duplicate: 'Ezt az elemzési kérést már feldolgoztuk. Válassza ki újra a fájlt egy új elemzéshez.',
+    network: 'Nincs hálózati kapcsolat. Ellenőrizze az internetkapcsolatot, majd próbálja újra.',
+    rateLimited: 'Túl sok elemzési kérés érkezett rövid időn belül. Kérjük, várjon néhány percet.',
+    unavailable: 'Az elemző szolgáltatás átmenetileg nem érhető el. Kérjük, próbálja újra később.',
+    manualReview: 'Kézi ár-ellenőrzés szükséges', noGuaranteedSaving: 'Az ártartomány alapján biztos megtakarítás nem állapítható meg.',
+    retryEmail: 'E-mail újraküldése', emailNotSent: 'Az elemzés elkészült, de az e-mailt most nem sikerült elküldeni.', emailRetryFailed: 'Az e-mail újraküldése most sem sikerült.',
+    resultIntro: 'Az előzetes összehasonlítás eredménye:', total: 'Összesen',
+    imageProcessingFailed: 'A képet nem sikerült biztonságosan feldolgozni. Kérjük, válasszon másik JPG, PNG vagy WebP fájlt.',
+  },
+  en: {
+    unsupportedFile: 'Only PDF, JPG, PNG or WebP files can be uploaded.',
+    invalid: 'We could not safely analyse this document. Check the file and your details.',
+    duplicate: 'This analysis request has already been processed. Select the file again to start a new analysis.',
+    network: 'You appear to be offline. Check your connection and try again.',
+    rateLimited: 'Too many analysis requests were sent in a short time. Please wait a few minutes.',
+    unavailable: 'The analysis service is temporarily unavailable. Please try again later.',
+    manualReview: 'Manual price review required', noGuaranteedSaving: 'No guaranteed saving can be stated from the available price range.',
+    retryEmail: 'Retry email', emailNotSent: 'The analysis is ready, but the email could not be sent.', emailRetryFailed: 'The email retry was not successful.',
+    resultIntro: 'Preliminary comparison result:', total: 'Total',
+    imageProcessingFailed: 'The image could not be processed safely. Please choose a different JPG, PNG or WebP file.',
+  },
+  sk: {
+    unsupportedFile: 'Nahrať môžete iba súbor PDF, JPG, PNG alebo WebP.',
+    invalid: 'Dokument sa nepodarilo bezpečne analyzovať. Skontrolujte súbor a zadané údaje.',
+    duplicate: 'Táto žiadosť o analýzu už bola spracovaná. Pre novú analýzu vyberte súbor znova.',
+    network: 'Nie ste pripojení k internetu. Skontrolujte pripojenie a skúste to znova.',
+    rateLimited: 'Za krátky čas bolo odoslaných priveľa žiadostí o analýzu. Počkajte prosím niekoľko minút.',
+    unavailable: 'Služba analýzy je dočasne nedostupná. Skúste to prosím neskôr.',
+    manualReview: 'Potrebná manuálna kontrola ceny', noGuaranteedSaving: 'Z dostupného cenového rozpätia nemožno určiť zaručenú úsporu.',
+    retryEmail: 'Znova odoslať e-mail', emailNotSent: 'Analýza je hotová, ale e-mail sa nepodarilo odoslať.', emailRetryFailed: 'E-mail sa nepodarilo odoslať ani opakovane.',
+    resultIntro: 'Výsledok predbežného porovnania:', total: 'Celkom',
+    imageProcessingFailed: 'Obrázok sa nepodarilo bezpečne spracovať. Vyberte iný súbor JPG, PNG alebo WebP.',
+  },
+  de: {
+    unsupportedFile: 'Es können nur PDF-, JPG-, PNG- oder WebP-Dateien hochgeladen werden.',
+    invalid: 'Das Dokument konnte nicht sicher analysiert werden. Prüfen Sie die Datei und Ihre Angaben.',
+    duplicate: 'Diese Analyseanfrage wurde bereits verarbeitet. Wählen Sie die Datei für eine neue Analyse erneut aus.',
+    network: 'Sie scheinen offline zu sein. Prüfen Sie Ihre Verbindung und versuchen Sie es erneut.',
+    rateLimited: 'In kurzer Zeit wurden zu viele Analyseanfragen gesendet. Bitte warten Sie einige Minuten.',
+    unavailable: 'Der Analysedienst ist vorübergehend nicht erreichbar. Bitte versuchen Sie es später erneut.',
+    manualReview: 'Manuelle Preisprüfung erforderlich', noGuaranteedSaving: 'Aus der verfügbaren Preisspanne lässt sich keine sichere Ersparnis ableiten.',
+    retryEmail: 'E-Mail erneut senden', emailNotSent: 'Die Analyse ist fertig, aber die E-Mail konnte nicht gesendet werden.', emailRetryFailed: 'Die E-Mail konnte auch beim erneuten Versuch nicht gesendet werden.',
+    resultIntro: 'Ergebnis des vorläufigen Vergleichs:', total: 'Gesamt',
+    imageProcessingFailed: 'Das Bild konnte nicht sicher verarbeitet werden. Bitte wählen Sie eine andere JPG-, PNG- oder WebP-Datei.',
+  },
+};
+
+const quoteDisclosure: Record<QuoteLocale, {
+  accept: string;
+  terms: string;
+  and: string;
+  privacy: string;
+  aiConsent: string;
+}> = {
+  hu: {
+    accept: 'Elfogadom az',
+    terms: 'Általános Szerződési Feltételeket',
+    and: 'és az',
+    privacy: 'Adatkezelési tájékoztatót',
+    aiConsent: 'Kifejezetten hozzájárulok ahhoz, hogy a feltöltött dokumentumot külső AI-szolgáltató dolgozza fel az előzetes összehasonlítás elkészítéséhez.',
+  },
+  en: {
+    accept: 'I accept the',
+    terms: 'Terms and Conditions',
+    and: 'and the',
+    privacy: 'Privacy Policy',
+    aiConsent: 'I expressly consent to an external AI provider processing the uploaded document to prepare the preliminary comparison.',
+  },
+  sk: {
+    accept: 'Súhlasím so',
+    terms: 'Všeobecnými obchodnými podmienkami',
+    and: 'a so',
+    privacy: 'Zásadami ochrany osobných údajov',
+    aiConsent: 'Výslovne súhlasím so spracovaním nahraného dokumentu externým poskytovateľom AI na prípravu predbežného porovnania.',
+  },
+  de: {
+    accept: 'Ich akzeptiere die',
+    terms: 'Allgemeinen Geschäftsbedingungen',
+    and: 'und die',
+    privacy: 'Datenschutzerklärung',
+    aiConsent: 'Ich willige ausdrücklich ein, dass ein externer KI-Anbieter das hochgeladene Dokument für den vorläufigen Vergleich verarbeitet.',
+  },
+};
+
+function isQuoteAnalysisResult(value: unknown): value is QuoteAnalysisResult {
+  if (!value || typeof value !== 'object') return false;
+  const candidate = value as Partial<QuoteAnalysisResult>;
+  const validNumber = (number: unknown) => typeof number === 'number'
+    && Number.isSafeInteger(number)
+    && number >= 0
+    && number <= 100_000_000;
+  const validNullablePrice = (number: unknown) => number === null || (
+    typeof number === 'number' && validNumber(number) && number > 0
+  );
+  const validItems = Array.isArray(candidate.items)
+    && candidate.items.length > 0
+    && candidate.items.length <= 100
+    && candidate.items.every((item) => Boolean(item)
+      && typeof item.name === 'string'
+      && item.name.trim().length > 0
+      && item.name.trim().length <= 240
+      && validNumber(item.competitorPrice)
+      && validNullablePrice(item.ourPriceMin)
+      && validNullablePrice(item.ourPriceMax)
+      && (item.ourPriceMin === null) === (item.ourPriceMax === null)
+      && (item.ourPriceMin === null || item.ourPriceMax === null || item.ourPriceMin <= item.ourPriceMax)
+      && typeof item.manualReview === 'boolean'
+      && item.manualReview === (item.ourPriceMin === null));
+  if (!validItems || !candidate.items) return false;
+  const competitorTotal = candidate.items.reduce((sum, item) => sum + item.competitorPrice, 0);
+  const requiresManualReview = candidate.items.some((item) => item.ourPriceMin === null);
+  if (!Number.isSafeInteger(competitorTotal) || candidate.competitorTotal !== competitorTotal || candidate.requiresManualReview !== requiresManualReview) return false;
+  if (requiresManualReview) {
+    return candidate.ourTotalMin === null
+      && candidate.ourTotalMax === null
+      && candidate.savingsMin === null
+      && candidate.savingsMax === null;
+  }
+  const ourTotalMin = candidate.items.reduce((sum, item) => sum + (item.ourPriceMin || 0), 0);
+  const ourTotalMax = candidate.items.reduce((sum, item) => sum + (item.ourPriceMax || 0), 0);
+  const hasGuaranteedSaving = competitorTotal > ourTotalMax;
+  return Number.isSafeInteger(ourTotalMin)
+    && Number.isSafeInteger(ourTotalMax)
+    && candidate.ourTotalMin === ourTotalMin
+    && candidate.ourTotalMax === ourTotalMax
+    && candidate.savingsMin === (hasGuaranteedSaving ? competitorTotal - ourTotalMax : null)
+    && candidate.savingsMax === (hasGuaranteedSaving ? competitorTotal - ourTotalMin : null);
+}
+
+function createQuoteIdempotencyKey() {
+  const value = typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+    ? crypto.randomUUID()
+    : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  return `quote-${value}`;
+}
+
 function QuoteAnalyzerSection() {
   const t = useTranslations('home.quoteAnalyzer');
   const tC = useTranslations('common');
   const locale = useLocale();
-  const p = locale === 'hu' ? '' : `/${locale}`;
+  const safeLocale: QuoteLocale = locale === 'en' || locale === 'sk' || locale === 'de' ? locale : 'hu';
+  const p = safeLocale === 'hu' ? '' : `/${safeLocale}`;
+  const feedback = quoteFeedback[safeLocale];
+  const disclosure = quoteDisclosure[safeLocale];
   const [isDragging, setIsDragging] = useState(false);
   const [step, setStep] = useState(1);
   const [file, setFile] = useState<File|null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [result, setResult] = useState<any>(null);
+  const [isEmailRetrying, setIsEmailRetrying] = useState(false);
+  const [result, setResult] = useState<QuoteAnalysisResult | null>(null);
+  const [emailSent, setEmailSent] = useState<boolean | null>(null);
+  const [emailRetryFailed, setEmailRetryFailed] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string|null>(null);
-  const [formData, setFormData] = useState({ name:'', nickname:'', email:'', phone:'', acceptedTerms:false });
+  const [formData, setFormData] = useState({ name:'', nickname:'', email:'', phone:'', acceptedTerms:false, aiProcessingConsent:false });
+  const idempotencyKeyRef = useRef<string | null>(null);
+
+  const resetQuoteSubmission = () => {
+    idempotencyKeyRef.current = null;
+    setErrorMsg(null);
+    setEmailSent(null);
+    setEmailRetryFailed(false);
+  };
+
+  const updateQuoteField = (field: keyof typeof formData, value: string | boolean) => {
+    resetQuoteSubmission();
+    setFormData((current) => ({ ...current, [field]: value }));
+  };
 
   const processFile = async (f: File) => {
     const MAX = 4.2;
-    setErrorMsg(null);
-    if (f.type.startsWith('image/')) {
+    const isPdf = f.type === 'application/pdf';
+    const isSupportedImage = f.type === 'image/jpeg' || f.type === 'image/png' || f.type === 'image/webp';
+    resetQuoteSubmission();
+    if (!isPdf && !isSupportedImage) {
+      setFile(null);
+      setErrorMsg(feedback.unsupportedFile);
+      return;
+    }
+    if (isSupportedImage) {
       setIsLoading(true);
       try {
         const c = await compressImage(f);
         if (c.size > MAX*1024*1024) { setErrorMsg(t('errors.tooLarge', { size:(c.size/1024/1024).toFixed(1) })); setIsLoading(false); return; }
         setFile(c); setStep(2);
-      } catch { if (f.size > MAX*1024*1024) { setErrorMsg(t('errors.tooLarge', { size:'4.2' })); setIsLoading(false); return; } setFile(f); setStep(2); }
+      } catch {
+        setFile(null);
+        setErrorMsg(feedback.imageProcessingFailed);
+      }
       finally { setIsLoading(false); }
     } else {
       if (f.size > MAX*1024*1024) { setErrorMsg(t('errors.pdfTooLarge')); return; }
@@ -348,30 +584,125 @@ function QuoteAnalyzerSection() {
 
   const analyzeQuote = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!file || !formData.acceptedTerms) return;
-    setIsLoading(true); setStep(3);
+    if (!file || !formData.acceptedTerms || !formData.aiProcessingConsent) return;
+    setErrorMsg(null);
+    setIsLoading(true);
+    setStep(3);
+    const idempotencyKey = idempotencyKeyRef.current ?? createQuoteIdempotencyKey();
+    idempotencyKeyRef.current = idempotencyKey;
     let attempts = 0;
     while (attempts < 2) {
+      attempts += 1;
       try {
         const data = new FormData();
-        ['file','name','nickname','email','phone'].forEach(k => data.append(k, k==='file'?file:(formData as any)[k]));
-        const res = await fetch('/api/analyze-quote', { method:'POST', body:data });
-        const json = await res.json();
-        if (json.success) { setResult(json.result); setStep(4); break; }
-        if (++attempts >= 2) { setErrorMsg(t('errors.analysisFailed', { error: json.error||'?' })); setStep(2); }
-        else await new Promise(r => setTimeout(r, 1500));
+        data.append('file', file);
+        data.append('name', formData.name);
+        data.append('nickname', formData.nickname);
+        data.append('email', formData.email);
+        data.append('phone', formData.phone);
+        data.append('locale', safeLocale);
+        data.append('acceptedTerms', 'true');
+        data.append('aiProcessingConsent', 'true');
+        data.append('idempotencyKey', idempotencyKey);
+        const res = await fetch('/api/analyze-quote', {
+          method: 'POST',
+          headers: { 'Idempotency-Key': idempotencyKey },
+          body: data,
+        });
+        const json = await res.json().catch(() => ({})) as { success?: boolean; result?: unknown; emailSent?: boolean };
+        if (res.ok && json.success === true && isQuoteAnalysisResult(json.result)) {
+          setResult(json.result);
+          setEmailSent(json.emailSent === true);
+          setStep(4);
+          break;
+        }
+
+        if (res.status === 429) {
+          setErrorMsg(feedback.rateLimited);
+          setStep(2);
+          break;
+        }
+        if (res.status === 409) {
+          setErrorMsg(feedback.duplicate);
+          setStep(2);
+          break;
+        }
+        if (res.status === 400 || res.status === 413 || res.status === 415 || res.status === 422) {
+          setErrorMsg(feedback.invalid);
+          setStep(2);
+          break;
+        }
+        if (res.status < 500 && res.status !== 408) {
+          setErrorMsg(feedback.invalid);
+          setStep(2);
+          break;
+        }
+        if (attempts < 2) await new Promise((resolve) => setTimeout(resolve, 1500));
+        else {
+          setErrorMsg(feedback.unavailable);
+          setStep(2);
+        }
       } catch {
-        if (++attempts >= 2) { setErrorMsg(t('errors.networkError')); setStep(2); }
-        else await new Promise(r => setTimeout(r, 1500));
+        if (attempts < 2) await new Promise((resolve) => setTimeout(resolve, 1500));
+        else {
+          setErrorMsg(feedback.network);
+          setStep(2);
+        }
       }
     }
     setIsLoading(false);
   };
 
+  const retryQuoteEmail = async () => {
+    const idempotencyKey = idempotencyKeyRef.current;
+    if (!file || !idempotencyKey || isEmailRetrying) return;
+    setIsEmailRetrying(true);
+    setEmailRetryFailed(false);
+    try {
+      const data = new FormData();
+      data.append('file', file);
+      data.append('name', formData.name);
+      data.append('nickname', formData.nickname);
+      data.append('email', formData.email);
+      data.append('phone', formData.phone);
+      data.append('locale', safeLocale);
+      data.append('acceptedTerms', 'true');
+      data.append('aiProcessingConsent', 'true');
+      data.append('idempotencyKey', idempotencyKey);
+      const response = await fetch('/api/analyze-quote', {
+        method: 'POST',
+        headers: { 'Idempotency-Key': idempotencyKey },
+        body: data,
+      });
+      const payload = await response.json().catch(() => ({})) as { success?: boolean; result?: unknown; emailSent?: boolean };
+      if (response.ok && payload.success === true && isQuoteAnalysisResult(payload.result)) {
+        setResult(payload.result);
+        setEmailSent(payload.emailSent === true);
+        setEmailRetryFailed(payload.emailSent !== true);
+      } else {
+        setEmailRetryFailed(true);
+      }
+    } catch {
+      setEmailRetryFailed(true);
+    } finally {
+      setIsEmailRetrying(false);
+    }
+  };
+
+  const formatResultRange = (min: number | null, max: number | null) => {
+    if (min === null || max === null) return feedback.manualReview;
+    if (min === max) return `${min.toLocaleString()} HUF`;
+    return `${min.toLocaleString()}–${max.toLocaleString()} HUF`;
+  };
+  const resultSummary = result
+    ? result.savingsMin !== null && result.savingsMax !== null
+      ? formatResultRange(result.savingsMin, result.savingsMax)
+      : result.requiresManualReview ? feedback.manualReview : feedback.noGuaranteedSaving
+    : '';
+
   const downloadPDF = () => {
     if (!result) return;
-    const signaturesLabel = locale === 'de' ? 'Unterschriften' : locale === 'sk' ? 'Podpisy' : locale === 'hu' ? 'Aláírások' : 'Signatures';
-    const html = buildPDF(result, formData.name, formData.phone, formData.email, formData.nickname, locale).replace('Signatures', signaturesLabel);
+    const html = buildPDF(result, formData.name, formData.phone, formData.email, formData.nickname, safeLocale);
     const isApple = /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1)||/^((?!chrome|android).)*safari/i.test(navigator.userAgent);
     if (isApple) {
       const w = window.open('','_blank');
@@ -384,9 +715,6 @@ function QuoteAnalyzerSection() {
       if (doc) { doc.open(); doc.write(html); doc.close(); iframe.onload=()=>{ setTimeout(()=>{ iframe.contentWindow?.focus(); iframe.contentWindow?.print(); setTimeout(()=>document.body.removeChild(iframe),1000); },300); }; }
     }
   };
-
-  const termsText = t('step2.terms');
-  const termsParts = termsText.split(/<\/?aszf>/);
 
   return (
     <section id="arajanlat-elemzo" className="py-28 relative overflow-hidden bg-gray-950">
@@ -424,9 +752,9 @@ function QuoteAnalyzerSection() {
                         <h3 className="text-2xl font-bold text-gray-900 mb-2">{t('step1.dropzone')}</h3>
                         <p className="text-gray-500 mb-4 text-sm">{t('step1.dropzoneHint')}</p>
                         <p className="text-xs text-green-600 font-bold mb-6">{t('step1.compressionActive')}</p>
-                        {errorMsg&&<div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm font-bold">{errorMsg}</div>}
-                        <label className="cursor-pointer bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 px-8 rounded-full transition-colors inline-block">
-                          {t('step1.selectFile')}<input type="file" className="hidden" accept=".pdf,image/*" onChange={e=>{if(e.target.files?.[0])processFile(e.target.files[0]);}}/>
+                        {errorMsg&&<div role="alert" aria-live="assertive" className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm font-bold">{errorMsg}</div>}
+                        <label htmlFor="quote-file" className="cursor-pointer bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 px-8 rounded-full transition-colors inline-block">
+                          {t('step1.selectFile')}<input id="quote-file" type="file" className="hidden" accept=".pdf,image/jpeg,image/png,image/webp" onChange={e=>{if(e.target.files?.[0])processFile(e.target.files[0]);}}/>
                         </label>
                       </>}
                     </div>
@@ -438,26 +766,33 @@ function QuoteAnalyzerSection() {
                     <div className="flex items-center gap-4 mb-6 bg-sky-50 p-4 rounded-xl border border-sky-100">
                       <FileText className="w-8 h-8 text-sky-600 flex-shrink-0"/>
                       <div className="overflow-hidden flex-1"><p className="font-bold text-gray-900 text-sm">{t('step2.uploadedFile')}</p><p className="text-sky-700 font-medium truncate text-sm">{file?.name}</p></div>
-                      <button onClick={()=>{setStep(1);setFile(null);setErrorMsg(null);}} className="text-sm text-red-500 hover:text-red-700 font-bold whitespace-nowrap">{tC('cancel')}</button>
+                      <button type="button" onClick={()=>{setStep(1);setFile(null);resetQuoteSubmission();}} className="text-sm text-red-500 hover:text-red-700 font-bold whitespace-nowrap">{tC('cancel')}</button>
                     </div>
-                    {errorMsg&&<div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm font-bold">{errorMsg}</div>}
+                    {errorMsg&&<div role="alert" aria-live="assertive" className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm font-bold">{errorMsg}</div>}
                     <form onSubmit={analyzeQuote} className="space-y-4">
                       <h3 className="text-lg font-bold text-gray-900 mb-4">{t('step2.formTitle')}</h3>
                       <div className="grid grid-cols-2 gap-4">
-                        <div><label className="block text-xs font-bold text-gray-700 mb-1">{t('step2.fullName')}</label><input required type="text" name="name" value={formData.name} onChange={e=>setFormData({...formData,name:e.target.value})} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-sky-600 outline-none text-sm"/></div>
-                        <div><label className="block text-xs font-bold text-gray-700 mb-1">{t('step2.salutation')}</label><input type="text" name="nickname" value={formData.nickname} onChange={e=>setFormData({...formData,nickname:e.target.value})} placeholder={t('step2.salutationPlaceholder')} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-sky-600 outline-none text-sm"/></div>
+                        <div><label htmlFor="quote-name" className="block text-xs font-bold text-gray-700 mb-1">{t('step2.fullName')}</label><input id="quote-name" required autoComplete="name" type="text" name="name" value={formData.name} onChange={e=>updateQuoteField('name', e.target.value)} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-sky-600 outline-none text-sm"/></div>
+                        <div><label htmlFor="quote-nickname" className="block text-xs font-bold text-gray-700 mb-1">{t('step2.salutation')}</label><input id="quote-nickname" type="text" name="nickname" value={formData.nickname} onChange={e=>updateQuoteField('nickname', e.target.value)} placeholder={t('step2.salutationPlaceholder')} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-sky-600 outline-none text-sm"/></div>
                       </div>
                       <div className="grid grid-cols-2 gap-4">
-                        <div><label className="block text-xs font-bold text-gray-700 mb-1">{t('step2.email')}</label><input required type="email" name="email" value={formData.email} onChange={e=>setFormData({...formData,email:e.target.value})} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-sky-600 outline-none text-sm"/></div>
-                        <div><label className="block text-xs font-bold text-gray-700 mb-1">{t('step2.phone')}</label><input required type="tel" name="phone" value={formData.phone} onChange={e=>setFormData({...formData,phone:e.target.value})} placeholder={t('step2.phonePlaceholder')} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-sky-600 outline-none text-sm"/></div>
+                        <div><label htmlFor="quote-email" className="block text-xs font-bold text-gray-700 mb-1">{t('step2.email')}</label><input id="quote-email" required autoComplete="email" type="email" name="email" value={formData.email} onChange={e=>updateQuoteField('email', e.target.value)} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-sky-600 outline-none text-sm"/></div>
+                        <div><label htmlFor="quote-phone" className="block text-xs font-bold text-gray-700 mb-1">{t('step2.phone')}</label><input id="quote-phone" required autoComplete="tel" inputMode="tel" type="tel" name="phone" value={formData.phone} onChange={e=>updateQuoteField('phone', e.target.value)} placeholder={t('step2.phonePlaceholder')} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-sky-600 outline-none text-sm"/></div>
                       </div>
-                      <label className="flex items-start gap-3 mt-4 cursor-pointer">
-                        <input required type="checkbox" name="acceptedTerms" checked={formData.acceptedTerms} onChange={e=>setFormData({...formData,acceptedTerms:e.target.checked})} className="mt-1 w-5 h-5 text-sky-600 rounded"/>
+                      <div className="flex items-start gap-3 mt-4">
+                        <input id="quote-terms" required type="checkbox" name="acceptedTerms" checked={formData.acceptedTerms} onChange={e=>updateQuoteField('acceptedTerms', e.target.checked)} className="mt-1 w-5 h-5 text-sky-600 rounded"/>
                         <span className="text-xs text-gray-600 leading-relaxed">
-                          {termsParts[0]}<a href={`${p}/aszf`} className="text-sky-600 hover:underline">{termsParts[1]}</a>{termsParts[2]}
+                          <label htmlFor="quote-terms" className="cursor-pointer">{disclosure.accept}</label>{' '}
+                          <Link href={`${p}/aszf`} className="text-sky-600 hover:underline">{disclosure.terms}</Link>{' '}
+                          {disclosure.and}{' '}
+                          <Link href={`${p}/adatkezeles`} className="text-sky-600 hover:underline">{disclosure.privacy}</Link>
                         </span>
-                      </label>
-                      <button type="submit" disabled={!formData.acceptedTerms||isLoading} className="w-full mt-4 bg-sky-600 hover:bg-sky-700 text-white font-bold py-3.5 px-8 rounded-xl shadow-lg transition-colors disabled:bg-gray-300 flex items-center justify-center gap-2">
+                      </div>
+                      <div className="flex items-start gap-3 mt-4">
+                        <input id="quote-ai-consent" required type="checkbox" name="aiProcessingConsent" checked={formData.aiProcessingConsent} onChange={e=>updateQuoteField('aiProcessingConsent', e.target.checked)} className="mt-1 w-5 h-5 text-sky-600 rounded"/>
+                        <label htmlFor="quote-ai-consent" className="cursor-pointer text-xs text-gray-600 leading-relaxed">{disclosure.aiConsent}</label>
+                      </div>
+                      <button type="submit" disabled={!formData.acceptedTerms||!formData.aiProcessingConsent||isLoading} className="w-full mt-4 bg-sky-600 hover:bg-sky-700 text-white font-bold py-3.5 px-8 rounded-xl shadow-lg transition-colors disabled:bg-gray-300 flex items-center justify-center gap-2">
                         {isLoading?<Loader2 className="animate-spin w-5 h-5"/>:<><Sparkles className="w-5 h-5"/>{t('step2.analyzeButton')}</>}
                       </button>
                     </form>
@@ -478,21 +813,25 @@ function QuoteAnalyzerSection() {
                       <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-2xl"/>
                       <CheckCircle2 className="w-12 h-12 mx-auto mb-3 text-green-300 drop-shadow-md"/>
                       <h3 className="text-2xl font-bold mb-1">{t('step4.doneTitle', { name: getPreferredGreetingName(formData.name, formData.nickname) })}</h3>
-                      <p className="text-sky-100 mb-3 text-sm">{t('step4.doneSubtitle')}</p>
-                      <div className="text-5xl font-extrabold drop-shadow-md text-green-300">{result.savings.toLocaleString()} HUF</div>
+                      <p className="text-sky-100 mb-3 text-sm">{feedback.resultIntro}</p>
+                      <div className="text-2xl md:text-3xl font-extrabold drop-shadow-md text-green-200">{resultSummary}</div>
                     </div>
                     <div className="p-6 flex-1 flex flex-col">
                       <div className="max-h-[180px] overflow-y-auto mb-6 pr-2">
                         <table className="w-full text-left text-sm">
                           <thead><tr className="border-b border-gray-200 text-gray-500"><th className="pb-2 font-medium">{t('step4.treatment')}</th><th className="pb-2 font-medium text-right">{t('step4.original')}</th><th className="pb-2 font-bold text-sky-600 text-right">Crown</th></tr></thead>
-                          <tbody>{result.items.map((item:any,i:number)=><tr key={i} className="border-b border-gray-50"><td className="py-2 font-medium text-gray-900">{item.name}</td><td className="py-2 text-right text-gray-400 line-through">{item.competitorPrice.toLocaleString()}</td><td className="py-2 text-right font-bold text-sky-600">{item.ourPrice.toLocaleString()}</td></tr>)}</tbody>
+                          <tbody>{result.items.map((item, i)=><tr key={`${item.name}-${i}`} className="border-b border-gray-50"><td className="py-2 font-medium text-gray-900">{item.name}</td><td className="py-2 text-right text-gray-400 line-through">{item.competitorPrice.toLocaleString()} HUF</td><td className={`py-2 text-right font-bold ${item.manualReview ? 'text-amber-600' : 'text-sky-600'}`}>{formatResultRange(item.ourPriceMin, item.ourPriceMax)}</td></tr>)}</tbody>
+                          <tfoot><tr className="border-t-2 border-sky-100"><td className="pt-3 font-bold text-gray-900">{feedback.total}</td><td className="pt-3 text-right font-bold text-gray-500">{result.competitorTotal.toLocaleString()} HUF</td><td className="pt-3 text-right font-bold text-sky-700">{formatResultRange(result.ourTotalMin, result.ourTotalMax)}</td></tr></tfoot>
                         </table>
                       </div>
                       <div className="mt-auto space-y-3">
                         <button onClick={downloadPDF} className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl transition-colors"><Download className="w-5 h-5"/>{t('step4.downloadPDF')}</button>
                         <a href={`${p}/idopont`} className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow-lg shadow-sky-600/30 transition-all"><Calendar className="w-5 h-5"/>{t('step4.bookConsultation')}</a>
-                        <button onClick={()=>{setStep(1);setFile(null);setResult(null);}} className="w-full py-2 text-gray-400 hover:text-gray-600 text-xs font-bold uppercase tracking-widest transition-colors mt-2">{t('step4.newAnalysis')}</button>
-                        <p className="text-center text-xs text-gray-400 pt-2">{t('step4.emailSent', { email: formData.email })}</p>
+                        {emailSent === false && <button type="button" disabled={isEmailRetrying} onClick={retryQuoteEmail} className="w-full py-2.5 text-amber-700 bg-amber-50 hover:bg-amber-100 disabled:opacity-60 text-sm font-bold rounded-xl transition-colors">{isEmailRetrying ? <Loader2 className="w-4 h-4 animate-spin mx-auto"/> : feedback.retryEmail}</button>}
+                        <button onClick={()=>{setStep(1);setFile(null);setResult(null);resetQuoteSubmission();}} className="w-full py-2 text-gray-400 hover:text-gray-600 text-xs font-bold uppercase tracking-widest transition-colors mt-2">{t('step4.newAnalysis')}</button>
+                        {emailSent === true
+                          ? <p className="text-center text-xs text-gray-400 pt-2">{t('step4.emailSent', { email: formData.email })}</p>
+                          : <p role="status" className="text-center text-xs text-amber-700 pt-2">{emailRetryFailed ? feedback.emailRetryFailed : feedback.emailNotSent}</p>}
                       </div>
                     </div>
                   </motion.div>
@@ -602,11 +941,30 @@ function FeaturedPricesSection({ sanityImages }: { sanityImages: HomeSanityImage
 // ─── Reviews ──────────────────────────────────────────────────────────────────
 function ReviewsSection() {
   const t = useTranslations('home.reviews');
+  const locale = useLocale();
+  const prefersReducedMotion = useReducedMotion();
+  const [isManuallyPaused, setIsManuallyPaused] = useState(false);
+  const [isInteractionPaused, setIsInteractionPaused] = useState(false);
+  const marqueePaused = Boolean(prefersReducedMotion) || isManuallyPaused || isInteractionPaused;
+  const marqueeControl = {
+    hu: { pause: 'Értékelések szüneteltetése', play: 'Értékelések folytatása' },
+    en: { pause: 'Pause reviews', play: 'Resume reviews' },
+    sk: { pause: 'Pozastaviť recenzie', play: 'Pokračovať v recenziách' },
+    de: { pause: 'Bewertungen pausieren', play: 'Bewertungen fortsetzen' },
+  }[locale === 'en' || locale === 'sk' || locale === 'de' ? locale : 'hu'];
   // @ts-ignore
   const reviews = t.raw('items') as Array<{ name:string; text:string; date:string }>;
   const ext = [...reviews,...reviews,...reviews];
   return (
-    <section className="py-28 bg-white border-t border-gray-100 overflow-hidden">
+    <section
+      onMouseEnter={() => setIsInteractionPaused(true)}
+      onMouseLeave={() => setIsInteractionPaused(false)}
+      onFocusCapture={() => setIsInteractionPaused(true)}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setIsInteractionPaused(false);
+      }}
+      className="py-28 bg-white border-t border-gray-100 overflow-hidden"
+    >
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <motion.div initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}>
@@ -617,14 +975,18 @@ function ReviewsSection() {
               <span className="text-gray-900 font-bold ml-1 sm:ml-2 text-base sm:text-lg">4.8 / 5</span>
               <span className="text-gray-500 font-medium ml-1 text-xs sm:text-base">{t('ratingCount')}</span>
             </div>
+            {!prefersReducedMotion && <button type="button" onClick={() => setIsManuallyPaused((paused) => !paused)} aria-pressed={isManuallyPaused} className="mt-5 inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-bold text-gray-700 shadow-sm hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500">
+              {isManuallyPaused ? <Play className="h-4 w-4"/> : <Pause className="h-4 w-4"/>}
+              {isManuallyPaused ? marqueeControl.play : marqueeControl.pause}
+            </button>}
           </motion.div>
         </div>
       </div>
-      <style dangerouslySetInnerHTML={{ __html:`@keyframes mhp{0%{transform:translateX(0)}100%{transform:translateX(-33.3333%)}}.amhp{display:flex;width:max-content;animation:mhp 60s linear infinite}.amhp:hover{animation-play-state:paused}` }}/>
+      <style dangerouslySetInnerHTML={{ __html:`@keyframes mhp{0%{transform:translateX(0)}100%{transform:translateX(-33.3333%)}}.amhp{display:flex;width:max-content;animation:mhp 60s linear infinite}.amhp:hover,.amhp:focus-within{animation-play-state:paused}@media(prefers-reduced-motion:reduce){.amhp{animation:none;transform:none}}` }}/>
       <div className="relative w-full">
         <div className="absolute left-0 top-0 bottom-0 w-20 md:w-40 bg-gradient-to-r from-white to-transparent z-10"/>
         <div className="absolute right-0 top-0 bottom-0 w-20 md:w-40 bg-gradient-to-l from-white to-transparent z-10"/>
-        <div className="amhp gap-6 px-6">
+        <div className="amhp gap-6 px-6" style={{ animationPlayState: marqueePaused ? 'paused' : 'running' }}>
           {ext.map((review,i) => (
             <div key={i} className="w-[360px] md:w-[420px] p-8 bg-gray-50 rounded-3xl shadow-sm border border-gray-100 flex-shrink-0 cursor-default hover:shadow-lg transition-shadow duration-300">
               <div className="flex items-center gap-1 mb-5">{[...Array(5)].map((_,j)=><Star key={j} className="w-5 h-5 text-amber-400 fill-current"/>)}</div>
@@ -655,16 +1017,12 @@ function CTASection() {
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-6 leading-tight">{t('title')}</h2>
           <p className="text-lg md:text-xl text-sky-100/80 mb-12 max-w-2xl mx-auto font-light">{t('subtitle')}</p>
           <div className="flex flex-col sm:flex-row justify-center gap-5">
-            <a href={`${p}/idopont`}>
-              <motion.button whileHover={{ scale:1.03 }} whileTap={{ scale:0.97 }} className="flex items-center justify-center gap-3 px-10 py-5 bg-white text-sky-700 font-bold text-lg rounded-2xl shadow-2xl hover:bg-sky-50 transition-all">
-                <Calendar className="w-6 h-6"/> {t('bookOnline')}
-              </motion.button>
-            </a>
-            <a href="tel:+36705646837">
-              <motion.button whileHover={{ scale:1.03 }} whileTap={{ scale:0.97 }} className="flex items-center justify-center gap-3 px-10 py-5 bg-sky-800 hover:bg-sky-900 text-white font-bold text-lg rounded-2xl transition-all border border-sky-500/30">
-                <Phone className="w-5 h-5"/> +36 70 564 6837
-              </motion.button>
-            </a>
+            <motion.a href={`${p}/idopont`} whileHover={{ scale:1.03 }} whileTap={{ scale:0.97 }} className="flex items-center justify-center gap-3 px-10 py-5 bg-white text-sky-700 font-bold text-lg rounded-2xl shadow-2xl hover:bg-sky-50 transition-all">
+              <Calendar className="w-6 h-6"/> {t('bookOnline')}
+            </motion.a>
+            <motion.a href="tel:+36705646837" whileHover={{ scale:1.03 }} whileTap={{ scale:0.97 }} className="flex items-center justify-center gap-3 px-10 py-5 bg-sky-800 hover:bg-sky-900 text-white font-bold text-lg rounded-2xl transition-all border border-sky-500/30">
+              <Phone className="w-5 h-5"/> +36 70 564 6837
+            </motion.a>
           </div>
         </motion.div>
       </div>
@@ -715,43 +1073,6 @@ function FAQSection() {
 }
 
 // ─── Főoldal export ───────────────────────────────────────────────────────────
-type IdleSchedulerWindow = Window & {
-  requestIdleCallback?: (callback: () => void, options?: { timeout: number }) => number;
-  cancelIdleCallback?: (handle: number) => void;
-};
-
-function DeferredBelowFoldSections({ sanityImages }: { sanityImages: HomeSanityImages }) {
-  const [shouldRenderSections, setShouldRenderSections] = useState(false);
-
-  useEffect(() => {
-    const schedulerWindow = window as IdleSchedulerWindow;
-    const renderSections = () => setShouldRenderSections(true);
-
-    if (schedulerWindow.requestIdleCallback) {
-      const idleHandle = schedulerWindow.requestIdleCallback(renderSections, { timeout: 1400 });
-      return () => schedulerWindow.cancelIdleCallback?.(idleHandle);
-    }
-
-    const timeoutHandle = window.setTimeout(renderSections, 800);
-    return () => window.clearTimeout(timeoutHandle);
-  }, []);
-
-  if (!shouldRenderSections) {
-    return <div className="h-24 bg-white md:h-32" aria-hidden="true" />;
-  }
-
-  return (
-    <>
-      <QuoteAnalyzerSection />
-      <LabShowcase imageUrl={sanityImages.labImage} />
-      <FeaturedPricesSection sanityImages={sanityImages.services} />
-      <ReviewsSection />
-      <CTASection />
-      <FAQSection />
-    </>
-  );
-}
-
 export default function HomeClient({ sanityImages = emptyHomeSanityImages }: { sanityImages?: HomeSanityImages }) {
   return (
     <div className="bg-white min-h-screen selection:bg-sky-200 selection:text-sky-900">
@@ -761,7 +1082,12 @@ export default function HomeClient({ sanityImages = emptyHomeSanityImages }: { s
         <TrustBadges />
         <LocationSelector locations={sanityImages.locations} />
         <StatsSection />
-        <DeferredBelowFoldSections sanityImages={sanityImages} />
+        <QuoteAnalyzerSection />
+        <LabShowcase imageUrl={sanityImages.labImage} />
+        <FeaturedPricesSection sanityImages={sanityImages.services} />
+        <ReviewsSection />
+        <CTASection />
+        <FAQSection />
       </main>
     </div>
   );

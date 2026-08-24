@@ -49,7 +49,7 @@ const staticPaths = [
   'utazas-szallas',
 ];
 
-const hungarianOnlyPaths = ['aszf', 'adatkezeles', 'cookie-tajekoztato', 'impresszum'];
+const legalPaths = ['aszf', 'adatkezeles', 'cookie-tajekoztato', 'impresszum'];
 
 const internationalPatientRoutes: MetadataRoute.Sitemap = [
   { locale: 'sk', path: 'zubne-osetrenie-madarsko' },
@@ -78,17 +78,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       alternates: { languages: languageAlternates(path) },
     })),
   );
-  const legalRoutes: MetadataRoute.Sitemap = hungarianOnlyPaths.flatMap((path) =>
-    (['hu', 'de'] as const).map((locale) => ({
+  const legalRoutes: MetadataRoute.Sitemap = legalPaths.flatMap((path) =>
+    SUPPORTED_LOCALES.map((locale) => ({
       url: localizedUrl(locale, path),
       changeFrequency: 'yearly' as const,
       priority: 0.3,
-      alternates: {
-        languages: {
-          [HREFLANG_BY_LOCALE.hu]: localizedUrl('hu', path),
-          [HREFLANG_BY_LOCALE.de]: localizedUrl('de', path),
-        },
-      },
+      alternates: { languages: languageAlternates(path) },
     })),
   );
 

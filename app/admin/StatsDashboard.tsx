@@ -13,7 +13,7 @@ import {
 interface StatsDashboardProps {
   appointments: any[];
   quotes: any[];
-  adminPassword: string;
+  marketingSubscriberCount: number;
 }
 
 const STATUS_COLORS = {
@@ -35,9 +35,15 @@ function daysAgo(n: number) { const d = new Date(); d.setDate(d.getDate() - n); 
 function formatNum(n: number) { return n.toLocaleString('hu-HU'); }
 function formatFt(n: number) { return `${n.toLocaleString('hu-HU')} Ft`; }
 
+function quoteSavingsValue(quote: any): number {
+  const raw = quote?.savings_min ?? quote?.savings;
+  const parsed = typeof raw === 'number' ? raw : Number(raw);
+  return Number.isSafeInteger(parsed) && parsed > 0 ? parsed : 0;
+}
+
 type TimeRange = '7d' | '30d' | '90d' | '365d';
 
-export default function StatsDashboard({ appointments, quotes, adminPassword }: StatsDashboardProps) {
+export default function StatsDashboard({ appointments, quotes, marketingSubscriberCount }: StatsDashboardProps) {
   const [range, setRange] = useState<TimeRange>('30d');
   const [importLoading, setImportLoading] = useState(false);
   const [importResult, setImportResult] = useState<any>(null);
@@ -45,8 +51,8 @@ export default function StatsDashboard({ appointments, quotes, adminPassword }: 
 
   const runResendImport = async (skipEvent: boolean) => {
     const msg = skipEvent
-      ? `Csak FRISSÍTI a meglévő ${appointments.length} kontakt adatait Resend-ben (név, email), DE nem indítja el az automation-t. Új email nem megy ki senkinek.\n\nFolytatod?`
-      : `Importálja mind a ${appointments.length} kontaktot Resend audience-be ÉS elindítja rájuk a 2 éves automation sorozatot.\n\n⚠️ Akinél már fut korábbi futás, az PÁRHUZAMOSAN újabbat is kap (duplikált emailek lehetnek).\n\nFolytatod?`;
+      ? `Csak FRISSÍTI a ${marketingSubscriberCount} igazolt feliratkozó kontaktadatait a Resendben, DE nem indít új automatizmust. Új email nem megy ki senkinek.\n\nFolytatod?`
+      : `Importálja mind a ${marketingSubscriberCount} igazolt feliratkozót a Resend audience-be ÉS elindítja rájuk a 2 éves automatizmust.\n\n⚠️ Akinél már fut korábbi sorozat, annál párhuzamos új sorozat indulhat.\n\nFolytatod?`;
     const confirmed = window.confirm(msg);
     if (!confirmed) return;
     setImportLoading(true);
@@ -56,7 +62,7 @@ export default function StatsDashboard({ appointments, quotes, adminPassword }: 
       const res = await fetch('/api/admin/import-resend', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password: adminPassword, skipEvent }),
+        body: JSON.stringify({ skipEvent }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Ismeretlen hiba');
@@ -134,9 +140,11 @@ export default function StatsDashboard({ appointments, quotes, adminPassword }: 
     const quoteWeek = inPeriod(quotes, weekAgo);
     const quoteMonth = inPeriod(quotes, monthAgo);
     const quoteAll = quotes.length;
-    const totalSavings = quotes.reduce((sum, q) => sum + (Number(q.savings) || 0), 0);
+    // Az új range-alapú modellnél a konzervatív alsó értéket mutatjuk;
+    // kézi ellenőrzéses leadből nem gyártunk megtakarítási statisztikát.
+    const totalSavings = quotes.reduce((sum, q) => sum + quoteSavingsValue(q), 0);
     const avgSavings = quotes.length ? Math.round(totalSavings / quotes.length) : 0;
-    const maxSavings = quotes.reduce((max, q) => Math.max(max, Number(q.savings) || 0), 0);
+    const maxSavings = quotes.reduce((max, q) => Math.max(max, quoteSavingsValue(q)), 0);
 
     // Treatments mentioned in quote items
     const calcTreatmentMap = new Map<string, number>();
@@ -168,7 +176,7 @@ export default function StatsDashboard({ appointments, quotes, adminPassword }: 
         const next = daysAgo(i - 1);
         const apptCount = appointments.filter(a => { const t = new Date(a.created_at); return t >= d && t < next; }).length;
         const quoteList = quotes.filter(q => { const t = new Date(q.created_at); return t >= d && t < next; });
-        const quoteSavings = quoteList.reduce((s, q) => s + (Number(q.savings) || 0), 0);
+        const quoteSavings = quoteList.reduce((s, q) => s + quoteSavingsValue(q), 0);
         series.push({
           label: d.toLocaleDateString('hu-HU', { month: 'short', day: 'numeric' }),
           appts: apptCount,
@@ -188,7 +196,7 @@ export default function StatsDashboard({ appointments, quotes, adminPassword }: 
           label: from.toLocaleDateString('hu-HU', { month: 'short', day: 'numeric' }),
           appts: apptCount,
           quotes: quoteList.length,
-          savings: quoteList.reduce((s, q) => s + (Number(q.savings) || 0), 0),
+          savings: quoteList.reduce((s, q) => s + quoteSavingsValue(q), 0),
           sortKey: from.toISOString(),
         });
       }
@@ -207,7 +215,7 @@ export default function StatsDashboard({ appointments, quotes, adminPassword }: 
           label: d.toLocaleDateString('hu-HU', { year: '2-digit', month: 'short' }),
           appts: apptCount,
           quotes: quoteList.length,
-          savings: quoteList.reduce((s, q) => s + (Number(q.savings) || 0), 0),
+          savings: quoteList.reduce((s, q) => s + quoteSavingsValue(q), 0),
           sortKey: d.toISOString(),
         });
       }
@@ -501,7 +509,7 @@ export default function StatsDashboard({ appointments, quotes, adminPassword }: 
           <div className="flex-1">
             <h3 className="font-black text-gray-900 text-sm uppercase tracking-wider">Resend Audience Import</h3>
             <p className="text-xs text-gray-500 mt-0.5">
-              Importáld az összes meglévő időpontfoglalót a Resend marketing audience-be. Mindegyikre elindul a 2 éves követési sorozat (Google review, 3 hó / 6 hó / éves emlékeztetők).
+              Kizárólag a külön marketinghozzájárulást adó feliratkozókat kezeli. Leiratkozott vagy pusztán időpontot kérő páciens nem kerül exportba.
             </p>
           </div>
         </div>
@@ -510,7 +518,7 @@ export default function StatsDashboard({ appointments, quotes, adminPassword }: 
           <div className="flex flex-col md:flex-row gap-2">
             <button
               onClick={() => runResendImport(true)}
-              disabled={importLoading || appointments.length === 0}
+              disabled={importLoading || marketingSubscriberCount === 0}
               className="flex-1 flex items-center justify-center gap-2 px-5 py-3 bg-white border-2 border-sky-300 text-sky-700 font-black rounded-xl hover:bg-sky-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-sm"
             >
               {importLoading ? (
@@ -521,7 +529,7 @@ export default function StatsDashboard({ appointments, quotes, adminPassword }: 
             </button>
             <button
               onClick={() => runResendImport(false)}
-              disabled={importLoading || appointments.length === 0}
+              disabled={importLoading || marketingSubscriberCount === 0}
               className="flex-1 flex items-center justify-center gap-2 px-5 py-3 bg-gradient-to-r from-sky-600 to-indigo-600 text-white font-black rounded-xl hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all text-sm"
             >
               {importLoading ? (

@@ -6,12 +6,13 @@ import {
   buildLocalizedMetadata,
   localizedUrl,
   normalizeLocale,
+  safeJsonLd,
   type SupportedLocale,
 } from '@/lib/seo';
 
 type Props = {
   children: React.ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 };
 
 const seoContent: Record<SupportedLocale, { title: string; description: string; keywords: string[] }> = {
@@ -71,7 +72,8 @@ const clinicFaqs: Record<SupportedLocale, Array<{ q: string; a: string }>> = {
   ],
 };
 
-export function generateMetadata({ params }: Props): Metadata {
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const params = await props.params;
   const locale = normalizeLocale(params.locale);
   return buildLocalizedMetadata({
     locale,
@@ -178,7 +180,13 @@ function buildClinicJsonLd(locale: SupportedLocale) {
   };
 }
 
-export default function EsztergomLayout({ children, params }: Props) {
+export default async function EsztergomLayout(props: Props) {
+  const params = await props.params;
+
+  const {
+    children
+  } = props;
+
   const locale = normalizeLocale(params.locale);
   const clinicJsonLd = buildClinicJsonLd(locale);
   const breadcrumbJsonLd = buildBreadcrumbJsonLd(
@@ -190,11 +198,10 @@ export default function EsztergomLayout({ children, params }: Props) {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(clinicJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(clinicJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(faqJsonLd) }} />
       {children}
     </>
   );
 }
-

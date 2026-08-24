@@ -1,27 +1,28 @@
 import { NextResponse } from 'next/server';
+import { createAdminSessionToken, setAdminSessionCookie, validateAdminCredentials } from '@/lib/adminAuth';
+import { enforceRateLimit, noStoreJson, rejectUntrustedMutation } from '@/lib/serverSecurity';
 
 export async function POST(req: Request) {
+  const originError = rejectUntrustedMutation(req);
+  if (originError) return originError;
+  const rateLimitError = await enforceRateLimit(req, 'admin-login', { limit: 8, windowMs: 15 * 60_000 });
+  if (rateLimitError) return rateLimitError;
+
   try {
     const { username, password } = await req.json();
-    
-    // Szigorúan szerveroldali környezeti változók lekérése
-    const envUser = process.env.ADMIN_NAME;
-    const envPass = process.env.ADMIN_PASSWORD;
-
-    if (!envUser || !envPass) {
-      return NextResponse.json({ 
-        success: false, 
-        error: 'Környezeti változók nincsenek beállítva a Vercelen (ADMIN_NAME, ADMIN_PASSWORD)!' 
-      }, { status: 500 });
+    if (!validateAdminCredentials(username, password)) {
+      return noStoreJson({ success: false, error: 'Helytelen felhasználónév vagy jelszó!' }, { status: 401 });
     }
 
-    // Név és Jelszó ellenőrzése
-    if (username === envUser && password === envPass) {
-      return NextResponse.json({ success: true });
-    } else {
-      return NextResponse.json({ success: false, error: 'Helytelen felhasználónév vagy jelszó!' }, { status: 401 });
+    const token = createAdminSessionToken();
+    if (!token) {
+      return noStoreJson({ success: false, error: 'Az admin hitelesítés nincs biztonságosan beállítva.' }, { status: 503 });
     }
-  } catch (error) {
-    return NextResponse.json({ success: false, error: 'Szerverhiba történt a belépés során.' }, { status: 500 });
+
+    const response = noStoreJson({ success: true });
+    setAdminSessionCookie(response, token);
+    return response;
+  } catch {
+    return noStoreJson({ success: false, error: 'Szerverhiba történt a belépés során.' }, { status: 500 });
   }
 }

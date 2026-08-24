@@ -5,10 +5,11 @@ import {
   buildLocalizedMetadata,
   localizedUrl,
   normalizeLocale,
+  safeJsonLd,
   type SupportedLocale,
 } from '@/lib/seo';
 
-type AboutPageProps = { params: { locale: string } };
+type AboutPageProps = { params: Promise<{ locale: string }> };
 
 const metadataByLocale: Record<SupportedLocale, { title: string; description: string }> = {
   hu: {
@@ -32,12 +33,14 @@ const metadataByLocale: Record<SupportedLocale, { title: string; description: st
   },
 };
 
-export function generateMetadata({ params }: AboutPageProps): Metadata {
+export async function generateMetadata(props: AboutPageProps): Promise<Metadata> {
+  const params = await props.params;
   const locale = normalizeLocale(params.locale);
   return buildLocalizedMetadata({ locale, path: 'rolunk', ...metadataByLocale[locale] });
 }
 
-export default function RolunkPage({ params }: AboutPageProps) {
+export default async function RolunkPage(props: AboutPageProps) {
+  const params = await props.params;
   const locale = normalizeLocale(params.locale);
   const url = localizedUrl(locale, 'rolunk');
   const aboutPageJsonLd = {
@@ -58,8 +61,8 @@ export default function RolunkPage({ params }: AboutPageProps) {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutPageJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(aboutPageJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }} />
       <RolunkClient />
     </>
   );

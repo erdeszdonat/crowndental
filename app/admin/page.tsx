@@ -28,6 +28,27 @@ type SpecialAppointmentModalState = {
   error: string;
 };
 
+type MoneyRange = { min: number; max: number };
+
+function asSafeMoney(value: unknown): number | null {
+  if (value === null || value === undefined || value === '') return null;
+  const parsed = typeof value === 'number' ? value : Number(value);
+  return Number.isSafeInteger(parsed) && parsed >= 0 ? parsed : null;
+}
+
+function getMoneyRange(minValue: unknown, maxValue: unknown, legacyValue?: unknown): MoneyRange | null {
+  const legacy = asSafeMoney(legacyValue);
+  const min = asSafeMoney(minValue) ?? legacy;
+  const max = asSafeMoney(maxValue) ?? legacy;
+  return min !== null && max !== null && min <= max ? { min, max } : null;
+}
+
+function formatMoneyRange(range: MoneyRange | null): string | null {
+  if (!range) return null;
+  if (range.min === range.max) return `${range.min.toLocaleString('hu-HU')} Ft`;
+  return `${range.min.toLocaleString('hu-HU')}–${range.max.toLocaleString('hu-HU')} Ft`;
+}
+
 export default function AdminDashboard() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [usernameInput, setUsernameInput] = useState('');
@@ -81,17 +102,18 @@ export default function AdminDashboard() {
     return () => { if (genStepRef.current) clearInterval(genStepRef.current); };
   }, [genLoading]);
 
-  const fetchSecureData = async (pwd: string) => {
+  const fetchSecureData = async () => {
     setIsLoading(true);
     setDbError(null);
     try {
       const res = await fetch('/api/admin-data', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password: pwd })
+        body: JSON.stringify({})
       });
       const data = await res.json();
       if (data.success) {
+        setIsAuthenticated(true);
         setAppointments(data.appointments);
         setApplications(data.applications);
         setQuotes(data.quotes);
@@ -107,6 +129,12 @@ export default function AdminDashboard() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    void fetchSecureData();
+    // A böngészőben tárolt HttpOnly admin munkamenetet csak egyszer ellenőrizzük betöltéskor.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleAction = async (
     table: string,
@@ -124,7 +152,7 @@ export default function AdminDashboard() {
       const res = await fetch('/api/admin-action', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password: passwordInput, action, table, id, value, ...(extraPayload || {}) })
+        body: JSON.stringify({ action, table, id, value, ...(extraPayload || {}) })
       });
       const data = await res.json();
       if (data.success) {
@@ -274,7 +302,8 @@ export default function AdminDashboard() {
       const data = await res.json();
       if (data.success) {
         setIsAuthenticated(true);
-        await fetchSecureData(passwordInput);
+        setPasswordInput('');
+        await fetchSecureData();
       } else {
         setDbError(data.error || 'Helytelen felhasználónév vagy jelszó!');
       }
@@ -282,6 +311,21 @@ export default function AdminDashboard() {
       setDbError('Hálózati hiba a bejelentkezés során.');
     } finally {
       setIsLoginLoading(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/admin-logout', { method: 'POST' });
+    } finally {
+      setIsAuthenticated(false);
+      setPasswordInput('');
+      setUsernameInput('');
+      setAppointments([]);
+      setApplications([]);
+      setQuotes([]);
+      setPosts([]);
+      setMarketingSubscribers([]);
     }
   };
 
@@ -320,7 +364,13 @@ export default function AdminDashboard() {
     return { firstName: parts.slice(1).join(' '), lastName: parts[0] };
   };
 
-  const csvCell = (value: unknown) => `"${String(value ?? '').replace(/"/g, '""')}"`;
+  const csvCell = (value: unknown) => {
+    const raw = String(value ?? '');
+    // Prevent spreadsheet formula execution when a public form value begins
+    // with a formula sigil, whitespace control character, or tab.
+    const safe = /^[=+\-@\t\r\n]/.test(raw) ? `'${raw}` : raw;
+    return `"${safe.replace(/"/g, '""')}"`;
+  };
 
   const exportMarketingSubscribers = () => {
     const headers = [
@@ -337,7 +387,7 @@ export default function AdminDashboard() {
       'Created at',
     ];
 
-    const rows = marketingSubscribers.map((subscriber) => {
+    const rows = marketingSubscribers.filter((subscriber) => subscriber.consent_status === 'subscribed').map((subscriber) => {
       const fullName = subscriber.name || '';
       const { firstName, lastName } = getNamePartsForExport(fullName);
       return [
@@ -447,7 +497,7 @@ export default function AdminDashboard() {
           ))}
         </nav>
         <div className="p-5 border-t border-white/5 bg-black/40">
-          <button onClick={() => { setIsAuthenticated(false); setPasswordInput(''); setUsernameInput(''); setAppointments([]); setMarketingSubscribers([]); }} className="w-full flex items-center justify-center gap-2 px-4 py-3.5 text-red-400 hover:bg-red-500/10 rounded-2xl transition-all font-bold">
+          <button onClick={handleLogout} className="w-full flex items-center justify-center gap-2 px-4 py-3.5 text-red-400 hover:bg-red-500/10 rounded-2xl transition-all font-bold">
             <LogOut className="w-4 h-4" /> Kijelentkezés
           </button>
         </div>
@@ -462,7 +512,7 @@ export default function AdminDashboard() {
             <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest md:hidden">Crown Admin</p>
             <h2 className="text-lg md:text-2xl font-black text-gray-900 tracking-tight italic uppercase">{tabLabel}</h2>
           </div>
-          <button onClick={() => fetchSecureData(passwordInput)} disabled={isLoading} className="flex items-center gap-2 bg-gray-100 text-gray-600 px-4 py-2.5 rounded-full font-bold hover:bg-gray-200 transition-all text-sm">
+          <button onClick={() => fetchSecureData()} disabled={isLoading} className="flex items-center gap-2 bg-gray-100 text-gray-600 px-4 py-2.5 rounded-full font-bold hover:bg-gray-200 transition-all text-sm">
             <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
             <span className="hidden sm:inline">Frissítés</span>
           </button>
@@ -482,7 +532,7 @@ export default function AdminDashboard() {
             {/* STATS */}
             {activeTab === 'stats' ? (
               <motion.div key="stats" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
-                <StatsDashboard appointments={appointments} quotes={quotes} adminPassword={passwordInput} />
+                <StatsDashboard appointments={appointments} quotes={quotes} marketingSubscriberCount={marketingSubscribers.length} />
               </motion.div>
             ) : activeTab === 'blog' ? (
               <motion.div key="blog" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-4">
@@ -979,6 +1029,11 @@ export default function AdminDashboard() {
                 {/* QUOTES */}
                 {activeTab === 'quotes' && quotes.map(item => {
                   const quoteItems = parseItems(item.items);
+                  const crownTotalRange = getMoneyRange(item.crown_total_min, item.crown_total_max, item.new_total);
+                  const savingsRange = getMoneyRange(item.savings_min, item.savings_max, item.savings);
+                  const crownTotalLabel = formatMoneyRange(crownTotalRange);
+                  const savingsLabel = formatMoneyRange(savingsRange);
+                  const requiresManualReview = Boolean(item.requires_manual_review) || !crownTotalRange;
                   return (
                     <div key={item.id} className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
                       <button className="w-full text-left p-4 flex items-start gap-3" onClick={() => setExpandedId(expandedId === item.id ? null : item.id)}>
@@ -988,8 +1043,12 @@ export default function AdminDashboard() {
                             <span className="text-gray-400 text-xs">{formatDate(item.created_at)}</span>
                           </div>
                           <p className="font-black text-gray-900 text-base uppercase truncate">{item.name}</p>
-                          <p className="font-black text-green-600 text-lg mt-0.5">
-                            {item.savings ? `${item.savings.toLocaleString('hu-HU')} Ft megtakarítás` : '-'}
+                          <p className={`font-black text-lg mt-0.5 ${requiresManualReview ? 'text-amber-600' : savingsLabel ? 'text-green-600' : 'text-gray-500'}`}>
+                            {requiresManualReview
+                              ? 'Kézi ellenőrzés szükséges'
+                              : savingsLabel
+                                ? `${savingsLabel} becsült megtakarítás`
+                                : 'Nem állapítható meg biztos megtakarítás'}
                           </p>
                         </div>
                         <div className="flex-shrink-0 text-green-500 mt-1">
@@ -1005,7 +1064,7 @@ export default function AdminDashboard() {
                             </div>
                             <div className="bg-white rounded-xl p-3 border border-green-100 ring-2 ring-green-100 text-center">
                               <p className="text-[10px] font-black text-green-500 uppercase tracking-widest mb-1 flex items-center gap-1 justify-center"><DollarSign className="w-3 h-3" /> Crown Ár</p>
-                              <p className="text-xl font-black text-sky-700">{item.new_total?.toLocaleString('hu-HU')} Ft</p>
+                              <p className="text-xl font-black text-sky-700">{crownTotalLabel || 'Kézi ellenőrzés'}</p>
                             </div>
                           </div>
                           <div className="bg-white rounded-xl p-3 border border-green-100 space-y-2">
@@ -1027,14 +1086,20 @@ export default function AdminDashboard() {
                               <h4 className="text-xs font-black text-gray-400 mb-3 uppercase tracking-widest flex items-center gap-2"><ListOrdered className="w-4 h-4 text-green-500" /> Kezelések</h4>
                               <div className="space-y-2">
                                 {quoteItems.map((qItem: any, idx: number) => {
-                                  const diff = qItem.competitorPrice - qItem.ourPrice;
+                                  const competitorPrice = asSafeMoney(qItem.competitorPrice);
+                                  const itemRange = getMoneyRange(qItem.ourPriceMin, qItem.ourPriceMax, qItem.ourPrice);
+                                  const itemRangeLabel = formatMoneyRange(itemRange);
+                                  const itemSavingRange = competitorPrice !== null && itemRange && competitorPrice > itemRange.max
+                                    ? { min: competitorPrice - itemRange.max, max: competitorPrice - itemRange.min }
+                                    : null;
+                                  const itemSavingLabel = formatMoneyRange(itemSavingRange);
                                   return (
                                     <div key={idx} className="flex justify-between items-start gap-2 py-2 border-b border-gray-50 last:border-0">
                                       <span className="font-bold text-gray-800 text-sm flex-1">{qItem.name}</span>
                                       <div className="text-right text-xs flex-shrink-0">
-                                        <p className="text-gray-400 line-through">{qItem.competitorPrice?.toLocaleString('hu-HU')} Ft</p>
-                                        <p className="font-black text-sky-600">{qItem.ourPrice?.toLocaleString('hu-HU')} Ft</p>
-                                        {diff > 0 && <p className="font-black text-green-500">-{diff.toLocaleString('hu-HU')} Ft</p>}
+                                        <p className="text-gray-400 line-through">{competitorPrice !== null ? `${competitorPrice.toLocaleString('hu-HU')} Ft` : '-'}</p>
+                                        <p className="font-black text-sky-600">{itemRangeLabel || 'Kézi ellenőrzés'}</p>
+                                        {itemSavingLabel && <p className="font-black text-green-500">{itemSavingLabel} becsült megtakarítás</p>}
                                       </div>
                                     </div>
                                   );
@@ -1043,8 +1108,10 @@ export default function AdminDashboard() {
                                   <span className="font-black text-gray-900 text-xs uppercase tracking-wider">Összesen</span>
                                   <div className="text-right text-xs">
                                     <p className="text-gray-400 line-through">{item.original_total?.toLocaleString('hu-HU')} Ft</p>
-                                    <p className="font-black text-sky-700">{item.new_total?.toLocaleString('hu-HU')} Ft</p>
-                                    <p className="font-black text-green-600 text-sm">-{item.savings?.toLocaleString('hu-HU')} Ft</p>
+                                    <p className="font-black text-sky-700">{crownTotalLabel || 'Kézi ellenőrzés'}</p>
+                                    <p className={`font-black text-sm ${savingsLabel ? 'text-green-600' : 'text-amber-600'}`}>
+                                      {requiresManualReview ? 'Kézi ellenőrzés szükséges' : savingsLabel ? `${savingsLabel} becsült megtakarítás` : 'Nincs biztos megtakarítás'}
+                                    </p>
                                   </div>
                                 </div>
                               </div>
