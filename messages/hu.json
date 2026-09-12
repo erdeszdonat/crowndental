@@ -465,8 +465,9 @@
           { "name": "Tömések", "price": "30.000 - 35.000 Ft" },
           { "name": "Foghúzás", "price": "25.000 - 35.000 Ft" },
           { "name": "Röntgen felvétel (kisröntgen / egy fogról)", "price": "5.000 Ft" },
-          { "name": "Panoráma röntgen", "price": "6.000 Ft" },
-          { "name": "Teleröntgen", "price": "10.000 Ft", "highlight": true }
+          { "name": "Panoráma röntgen", "price": "8.000 Ft" },
+          { "name": "Teleröntgen", "price": "10.000 Ft", "highlight": true },
+          { "name": "3D CT felvétel", "price": "20.000 Ft" }
         ]
       },
       {
@@ -496,7 +497,7 @@
           { "name": "Ideiglenes korona (rövidtávú, 1-2 hétre)", "price": "6.000 Ft" },
           { "name": "Ideiglenes korona (hosszútávú, max. 1 évre)", "price": "15.000 Ft" },
           { "name": "Fémkerámia korona", "price": "42.000 Ft" },
-          { "name": "Cirkónium korona (fémmentes)", "price": "55.000 Ft", "highlight": true },
+          { "name": "Cirkónium korona (fémmentes)", "price": "65.000 Ft", "highlight": true },
           { "name": "Egyéni fogszínek készítése (foganként)", "price": "15.000 Ft" },
           { "name": "Kivehető fogsor egy állcsontra (kompozit)", "price": "110.000 Ft" },
           { "name": "Fémlemezes fogsor egy állcsontra", "price": "150.000 Ft" },
@@ -588,7 +589,7 @@
       "ctaTitle": "Tudja meg, milyen állapotban vannak fogai!",
       "ctaDesc": "Foglaljon időpontot szakorvosi konzultációra Budapesten vagy Esztergomban!",
       "faqs": [
-        { "q": "Mennyibe kerül az állapotfelmérés?", "a": "A panorámaröntgen ára 6.000 Ft, a teleröntgen ára 10.000 Ft, emellett szakorvosi konzultációt biztosítunk." },
+        { "q": "Mennyibe kerül az állapotfelmérés?", "a": "A panorámaröntgen ára 8.000 Ft, a teleröntgen ára 10.000 Ft, a 3D CT felvétel ára 20.000 Ft. Emellett szakorvosi konzultációt biztosítunk." },
         { "q": "Kell-e előkészület a vizsgálatra?", "a": "Nem szükséges előkészület. Ha vannak korábbi röntgenfelvételei, hozza magával." },
         { "q": "Mennyi ideig tart az állapotfelmérés?", "a": "Az átfogó állapotfelmérés 30-45 percet vesz igénybe." },
         { "q": "Mit tegyek, ha félek a fogorvostól?", "a": "Csapatunk türelmes és empatikus, minden lépést előre elmagyarázunk." },
@@ -978,9 +979,9 @@
       "servicesTitle": "Vizsgálati módszereink",
       "services": [
         { "title": "Átfogó Konzultáció", "desc": "Fizikális vizsgálat, a tünetek átbeszélése és a gócok feltérképezése a szájüregben.", "price": "10.000 Ft" },
-        { "title": "Panoráma Röntgen (OPG)", "desc": "Kiváló áttekintést ad az összes fogról, az állcsontokról és az arcüregek alapjáról.", "price": "6.000 Ft" },
+        { "title": "Panoráma Röntgen (OPG)", "desc": "Kiváló áttekintést ad az összes fogról, az állcsontokról és az arcüregek alapjáról.", "price": "8.000 Ft" },
         { "title": "Teleröntgen", "desc": "Oldalirányú koponyafelvétel fogszabályozási diagnosztikához és precíz kezeléstervezéshez.", "price": "10.000 Ft" },
-        { "title": "3D CBCT Felvétel", "desc": "Háromdimenziós, rendkívül pontos képalkotás, ami a legeldugottabb cisztákat és gyulladásokat is megmutatja.", "price": "Rendelőben" }
+        { "title": "3D CBCT Felvétel", "desc": "Háromdimenziós, rendkívül pontos képalkotás, ami a legeldugottabb cisztákat és gyulladásokat is megmutatja.", "price": "20.000 Ft" }
       ],
       "benefitsTitle": "Megbízható diagnózis",
       "benefitItems": [

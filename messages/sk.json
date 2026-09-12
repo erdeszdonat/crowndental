@@ -465,8 +465,9 @@
           { "name": "Výplne", "price": "30 000 – 35 000 Ft" },
           { "name": "Extrakcia zuba", "price": "25 000 – 35 000 Ft" },
           { "name": "RTG snímka (malá / jeden zub)", "price": "5 000 Ft" },
-          { "name": "Panoramatický RTG", "price": "6 000 Ft" },
-          { "name": "Teleröntgen / cefalometrický RTG", "price": "10 000 Ft", "highlight": true }
+          { "name": "Panoramatický RTG", "price": "8 000 Ft" },
+          { "name": "Teleröntgen / cefalometrický RTG", "price": "10 000 Ft", "highlight": true },
+          { "name": "3D CT snímka", "price": "20 000 Ft" }
         ]
       },
       {
@@ -496,7 +497,7 @@
           { "name": "Dočasná korunka (krátkodobá, 1–2 týždne)", "price": "6 000 Ft" },
           { "name": "Dočasná korunka (dlhodobá, max. 1 rok)", "price": "15 000 Ft" },
           { "name": "Kovo-keramická korunka", "price": "42 000 Ft" },
-          { "name": "Zirkónová korunka (bez kovu)", "price": "55 000 Ft", "highlight": true },
+          { "name": "Zirkónová korunka (bez kovu)", "price": "65 000 Ft", "highlight": true },
           { "name": "Individuálne tieňovanie (za zub)", "price": "15 000 Ft" },
           { "name": "Snímateľná protéza na jednu čeľusť (kompozitná)", "price": "110 000 Ft" },
           { "name": "Kovovová platničková protéza na jednu čeľusť", "price": "150 000 Ft" },
@@ -588,7 +589,7 @@
       "ctaTitle": "Zistite, v akom stave sú vaše zuby!",
       "ctaDesc": "Rezervujte si termín na špecialistickú konzultáciu v Budapešti alebo Ostrihome!",
       "faqs": [
-        { "q": "Koľko stojí vstupné vyšetrenie?", "a": "Panoramatický röntgen stojí 6 000 Ft, teleröntgen 10 000 Ft a súčasťou je aj špecialistická konzultácia." },
+        { "q": "Koľko stojí vstupné vyšetrenie?", "a": "Panoramatický röntgen stojí 8 000 Ft, teleröntgen 10 000 Ft a 3D CT snímka 20 000 Ft. K dispozícii je aj odborná konzultácia." },
         { "q": "Je potrebná nejaká príprava?", "a": "Žiadna príprava nie je potrebná. Ak máte predchádzajúce röntgenové snímky, prineste ich so sebou." },
         { "q": "Ako dlho trvá vyšetrenie?", "a": "Komplexné vstupné vyšetrenie trvá 30–45 minút." },
         { "q": "Čo ak sa bojím zubára?", "a": "Náš tím je trpezlivý a empatický – každý krok vopred vysvetlíme." },
@@ -978,9 +979,9 @@
       "servicesTitle": "Naše vyšetrovacie metódy",
       "services": [
         { "title": "Komplexná konzultácia", "desc": "Fyzikálne vyšetrenie, prediskutovanie príznakov a mapovanie fokusov v ústnej dutine.", "price": "10 000 Ft" },
-        { "title": "Panoramatický röntgen (OPG)", "desc": "Výborný prehľad všetkých zubov, čeľustných kostí a spodnej časti dutín.", "price": "6 000 Ft" },
+        { "title": "Panoramatický röntgen (OPG)", "desc": "Výborný prehľad všetkých zubov, čeľustných kostí a spodnej časti dutín.", "price": "8 000 Ft" },
         { "title": "Teleröntgen", "desc": "Bočný snímok lebky pre ortodontickú diagnostiku a presné plánovanie liečby.", "price": "10 000 Ft" },
-        { "title": "3D CBCT snímka", "desc": "Trojrozmerné, vysoko presné zobrazovanie, ktoré odhalí aj najskrytejšie cysty a zápaly.", "price": "V ordinácii" }
+        { "title": "3D CBCT snímka", "desc": "Trojrozmerné, vysoko presné zobrazovanie, ktoré odhalí aj najskrytejšie cysty a zápaly.", "price": "20 000 Ft" }
       ],
       "benefitsTitle": "Spoľahlivá diagnóza",
       "benefitItems": [

@@ -649,12 +649,16 @@
           },
           {
             "name": "Panoramaröntgen",
-            "price": "6.000 HUF"
+            "price": "8.000 HUF"
           },
           {
             "name": "Kephalometrisches Röntgen",
             "price": "10.000 HUF",
             "highlight": true
+          },
+          {
+            "name": "3D-DVT-Aufnahme",
+            "price": "20.000 HUF"
           }
         ]
       },
@@ -721,7 +725,7 @@
           },
           {
             "name": "Zirkonkrone (metallfrei)",
-            "price": "55.000 HUF",
+            "price": "65.000 HUF",
             "highlight": true
           },
           {
@@ -923,7 +927,7 @@
       "faqs": [
         {
           "q": "Wie viel kostet die Begutachtung?",
-          "a": "Panorama-Röntgen beträgt 6.000 HUF und kephalometrisches Röntgen beträgt 10.000 HUF; Eine Fachberatung ist im Preis inbegriffen."
+          "a": "Ein Panoramaröntgen kostet 8.000 HUF, ein kephalometrisches Röntgen 10.000 HUF und eine 3D-DVT-Aufnahme 20.000 HUF. Eine fachärztliche Beratung ist ebenfalls verfügbar."
         },
         {
           "q": "Ist eine Vorbereitung erforderlich?",
@@ -1835,7 +1839,7 @@
         {
           "title": "Panoramaröntgen (OPG)",
           "desc": "Hervorragender Überblick über alle Zähne, Kieferknochen und den Boden der Nebenhöhlen.",
-          "price": "6.000 HUF"
+          "price": "8.000 HUF"
         },
         {
           "title": "Kephalometrisches Röntgen",
@@ -1845,7 +1849,7 @@
         {
           "title": "3D-DVT-Scan",
           "desc": "Dreidimensionale, hochpräzise Bildgebung, die selbst verborgenste Zysten und Entzündungen sichtbar macht.",
-          "price": "In der Klinik"
+          "price": "20.000 HUF"
         }
       ],
       "benefitsTitle": "Zuverlässige Diagnose",

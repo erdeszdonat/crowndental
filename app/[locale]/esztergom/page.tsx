@@ -98,15 +98,17 @@ const servicesBase = [
 
 const servicesHu = [
   { title: 'Fogimplantátum', description: 'Tartós megoldás foghiányra. Alpha Bio és DIO implantátumok saját laborból, életre szóló garanciával.', price: '190.000 Ft-tól' },
-  { title: 'Cirkónium Korona', description: 'Prémium koronák és hidak 3 nap alatt a saját laborból.', price: '55.000 Ft-tól' },
+  { title: 'Cirkónium Korona', description: 'Prémium koronák és hidak 3 nap alatt a saját laborból.', price: '65.000 Ft' },
   { title: 'Fogfehérítés', description: 'Professzionális fehérítés, akár 8 árnyalattal világosabb 1 óra alatt.', price: '30.000 Ft-tól' },
   { title: 'Fogszabályozás', description: 'Láthatatlan sínek és esztétikus készülékek gyerekeknek és felnőtteknek.', price: '60.000 Ft-tól' },
   { title: 'Kivehető Fogsorok', description: 'Saját laborból, tökéletes illeszkedéssel, azonnali javítási lehetőséggel.', price: '110.000 Ft-tól' },
   { title: 'Szájsebészet', description: 'Bölcsességfog, csontpótlás, szájsebészeti beavatkozások biztos kézzel.', price: 'Egyéni árazás' },
   { title: 'Gyökérkezelés', description: 'Mikroszkópos precizitással mentjük meg fogait. Fájdalommentes eljárás.', price: '25.000 Ft-tól' },
   { title: 'Esztétikai Fogászat', description: 'Héjak, veneerek, kompozit restaurációk – álmai mosolya.', price: '40.000 Ft-tól' },
-  { title: 'Állapotfelmérés', description: 'Panoráma röntgen, 3D CT és teljes szájvizsgálat egyetlen alkalommal.', price: '10.000 Ft' },
+  { title: 'Állapotfelmérés', description: 'Részletes szájvizsgálat és személyre szabott kezelési terv.', price: '10.000 Ft' },
+  { title: 'Panoráma Röntgen', description: 'Áttekintő felvétel a teljes fogazatról és az állcsontokról.', price: '8.000 Ft' },
   { title: 'Teleröntgen', description: 'Oldalirányú koponyafelvétel fogszabályozási diagnosztikához és pontos kezeléstervezéshez.', price: '10.000 Ft' },
+  { title: '3D CT Felvétel', description: 'Részletes, háromdimenziós képalkotás a pontos diagnózishoz és tervezéshez.', price: '20.000 Ft' },
   { title: 'Góckutatás', description: '3D CBCT technológiával, rejtett gócok felkutatása és kezelése.', price: '15.000 Ft-tól' },
   { title: 'Gyermekfogászat', description: 'Barátságos, stresszmentes környezetben – hogy a kicsiknél is pozitív élmény legyen.', price: '8.000 Ft-tól' },
   { title: 'Fogtechnika', description: 'CAD/CAM tervezés, saját labor – a tökéletesség kulcsa.', price: 'Benne az árban' },
@@ -114,15 +116,17 @@ const servicesHu = [
 
 const servicesEn = [
   { title: 'Dental Implant', description: 'Permanent solution for missing teeth. Alpha Bio and DIO implants from our in-house lab, with a lifetime guarantee.', price: 'from 190,000 HUF (~€543)' },
-  { title: 'Zirconia Crown', description: 'Premium crowns and bridges ready in just 3 days from our own lab.', price: 'from 55,000 HUF (~€157)' },
+  { title: 'Zirconia Crown', description: 'Premium crowns and bridges ready in just 3 days from our own lab.', price: '65,000 HUF' },
   { title: 'Teeth Whitening', description: 'Professional whitening — up to 8 shades brighter in just 1 hour.', price: 'from 30,000 HUF (~€86)' },
   { title: 'Orthodontics', description: 'Invisible aligners and aesthetic braces for children and adults.', price: 'from 60,000 HUF (~€172)' },
   { title: 'Removable Dentures', description: 'Perfect fit from our in-house lab, with immediate adjustment options.', price: 'from 110,000 HUF (~€314)' },
   { title: 'Oral Surgery', description: 'Wisdom tooth removal, bone grafting, and surgical procedures by expert hands.', price: 'Individual pricing' },
   { title: 'Root Canal Treatment', description: 'Saving your teeth with microscopic precision. Completely painless procedure.', price: 'from 25,000 HUF (~€71)' },
   { title: 'Aesthetic Dentistry', description: 'Veneers, laminates, composite restorations — your dream smile awaits.', price: 'from 40,000 HUF (~€114)' },
-  { title: 'Dental Check-up', description: 'Panoramic X-ray, 3D CT, and full oral examination in a single visit.', price: '10,000 HUF (~€29)' },
-  { title: 'Cephalometric X-ray', description: 'A lateral skull X-ray for orthodontic diagnostics and accurate treatment planning.', price: '10,000 HUF (~€29)' },
+  { title: 'Dental Check-up', description: 'Detailed oral examination and a personalised treatment plan.', price: '10,000 HUF' },
+  { title: 'Panoramic X-ray', description: 'An overview image of the complete dentition and jaw bones.', price: '8,000 HUF' },
+  { title: 'Cephalometric X-ray', description: 'A lateral skull X-ray for orthodontic diagnostics and accurate treatment planning.', price: '10,000 HUF' },
+  { title: '3D CT Scan', description: 'Detailed three-dimensional imaging for accurate diagnosis and treatment planning.', price: '20,000 HUF' },
   { title: 'Focal Infection Screening', description: '3D CBCT technology to detect and treat hidden focal infections.', price: 'from 15,000 HUF (~€43)' },
   { title: 'Pediatric Dentistry', description: 'Friendly, stress-free environment — making dentistry a positive experience for children.', price: 'from 8,000 HUF (~€23)' },
   { title: 'Dental Lab Services', description: 'CAD/CAM design, in-house lab — the key to perfection.', price: 'Included in price' },
@@ -130,15 +134,17 @@ const servicesEn = [
 
 const servicesSk = [
   { title: 'Zubný implantát', description: 'Trvalé riešenie pre chýbajúce zuby. Implantáty Alpha Bio a DIO z vlastného laboratória, s doživotnou zárukou.', price: 'od 190 000 Ft (~€543)' },
-  { title: 'Zirkónová korunka', description: 'Prémiové korunky a mosty hotové za 3 dni z vlastného laboratória.', price: 'od 55 000 Ft (~€157)' },
+  { title: 'Zirkónová korunka', description: 'Prémiové korunky a mosty hotové za 3 dni z vlastného laboratória.', price: '65 000 Ft' },
   { title: 'Bielenie zubov', description: 'Profesionálne bielenie — až o 8 odtieňov svetlejšie za 1 hodinu.', price: 'od 30 000 Ft (~€86)' },
   { title: 'Ortodontia', description: 'Neviditeľné dlahičky a estetické aparáty pre deti aj dospelých.', price: 'od 60 000 Ft (~€172)' },
   { title: 'Snímateľná protéza', description: 'Dokonalé prispôsobenie z vlastného laboratória, okamžitá oprava na mieste.', price: 'od 110 000 Ft (~€314)' },
   { title: 'Orálna chirurgia', description: 'Extrakcia zubov múdrosti, augmentácia kosti, chirurgické zákroky v skúsených rukách.', price: 'Individuálna cena' },
   { title: 'Ošetrenie koreňových kanálikov', description: 'Záchrana vašich zubov s mikroskopickou presnosťou. Bezbolestný postup.', price: 'od 25 000 Ft (~€71)' },
   { title: 'Estetická stomatológia', description: 'Fazety, laminátové obloženie, kompozitné rekonštrukcie — váš vysnívaný úsmev.', price: 'od 40 000 Ft (~€114)' },
-  { title: 'Stomatologická prehliadka', description: 'Panoramatický RTG, 3D CT a kompletné vyšetrenie chrupu v jednej návšteve.', price: '10 000 Ft (~€29)' },
-  { title: 'Teleröntgen', description: 'Bočný snímok lebky pre ortodontickú diagnostiku a presné plánovanie liečby.', price: '10 000 Ft (~€29)' },
+  { title: 'Stomatologická prehliadka', description: 'Podrobné vyšetrenie ústnej dutiny a individuálny liečebný plán.', price: '10 000 Ft' },
+  { title: 'Panoramatický RTG', description: 'Prehľadová snímka celého chrupu a čeľustných kostí.', price: '8 000 Ft' },
+  { title: 'Teleröntgen', description: 'Bočný snímok lebky pre ortodontickú diagnostiku a presné plánovanie liečby.', price: '10 000 Ft' },
+  { title: '3D CT snímka', description: 'Podrobné trojrozmerné zobrazenie pre presnú diagnostiku a plánovanie liečby.', price: '20 000 Ft' },
   { title: 'Vyšetrenie ložísk infekcie', description: '3D CBCT technológia na odhalenie a liečbu skrytých ohnisiek infekcie.', price: 'od 15 000 Ft (~€43)' },
   { title: 'Detská stomatológia', description: 'Priateľské, bezstresové prostredie — aby bol zubár pre deti pozitívnym zážitkom.', price: 'od 8 000 Ft (~€23)' },
   { title: 'Zubná technika', description: 'CAD/CAM dizajn, vlastné laboratórium — kľúč k dokonalosti.', price: 'V cene' },
@@ -1022,4 +1028,3 @@ export default function EsztergomPage() {
     </main>
   );
 }
-

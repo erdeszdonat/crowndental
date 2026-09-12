@@ -253,7 +253,7 @@ KÖTELEZŐ MENNYISÉG:
 - TELJES CIKK: minimum 2000 szó – ha kevesebb, folytasd a bekezdéseket
 
 SZÖVEGFORMÁZÁS:
-- **félkövér** a kulcsadatokra: **55.000 Ft**, **3-5 munkanap**, **15 év tapasztalat**
+- **félkövér** a kulcsadatokra: **65.000 Ft**, **3-5 munkanap**, **15 év tapasztalat**
 - Belső linkek: [szöveg](url) formátumban a bekezdések szövegébe szőve
 - Lista elemek legyenek teljes mondatok
 - "te" megszólítás, barátságos szakmai hang
@@ -278,10 +278,10 @@ BELSŐ HIVATKOZÁSOK – 4-6 db kötelező, a paragraphs szövegekbe szőve:
 Ne linkeld a cikk fő témájának kulcsszavát.
 
 CROWN DENTAL HIVATALOS ÁRLISTA – CSAK EZEKET HASZNÁLD:
-Diagnosztika: vizsgálat 10.000 Ft | tömés 30.000-35.000 Ft | foghúzás 25.000-35.000 Ft | kisröntgen 5.000 Ft | panoráma röntgen 6.000 Ft | teleröntgen 10.000 Ft
+Diagnosztika: vizsgálat 10.000 Ft | tömés 30.000-35.000 Ft | foghúzás 25.000-35.000 Ft | kisröntgen 5.000 Ft | panoráma röntgen 8.000 Ft | teleröntgen 10.000 Ft | 3D CT felvétel 20.000 Ft
 Gyökérkezelés: egygyökerű 25.000 Ft | kétgyökerű 30.000 Ft | háromgyökerű 33.000 Ft
 Esztétika: fogkőeltávolítás 15.000 Ft/állcsont | otthoni fogfehérítés 30.000 Ft/fogív | rendelői fogfehérítés 45.000 Ft/fogív
-Koronák: fémkerámia korona 42.000 Ft | cirkónium korona 55.000 Ft | ideiglenes korona 6.000-15.000 Ft
+Koronák: fémkerámia korona 42.000 Ft | cirkónium korona 65.000 Ft | ideiglenes korona 6.000-15.000 Ft
 Fogsorok: kivehető kompozit fogsor 110.000 Ft/állcsont | fémlemezes fogsor 150.000 Ft/állcsont | fogsor alábélelés 25.000 Ft
 Sebészet: műtéti foghúzás 55.000 Ft | bölcsességfog 55.000 Ft | csontpótlás 190.000 Ft
 Implantátum: ALPHA BIO 180.000 Ft/db | DIO 240.000 Ft/db

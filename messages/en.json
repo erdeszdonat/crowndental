@@ -465,8 +465,9 @@
           { "name": "Fillings", "price": "30,000 – 35,000 HUF" },
           { "name": "Tooth extraction", "price": "25,000 – 35,000 HUF" },
           { "name": "X-ray (small / single tooth)", "price": "5,000 HUF" },
-          { "name": "Panoramic X-ray", "price": "6,000 HUF" },
-          { "name": "Cephalometric X-ray", "price": "10,000 HUF", "highlight": true }
+          { "name": "Panoramic X-ray", "price": "8,000 HUF" },
+          { "name": "Cephalometric X-ray", "price": "10,000 HUF", "highlight": true },
+          { "name": "3D CT scan", "price": "20,000 HUF" }
         ]
       },
       {
@@ -496,7 +497,7 @@
           { "name": "Temporary crown (short-term, 1–2 weeks)", "price": "6,000 HUF" },
           { "name": "Temporary crown (long-term, up to 1 year)", "price": "15,000 HUF" },
           { "name": "Metal-ceramic crown", "price": "42,000 HUF" },
-          { "name": "Zirconia crown (metal-free)", "price": "55,000 HUF", "highlight": true },
+          { "name": "Zirconia crown (metal-free)", "price": "65,000 HUF", "highlight": true },
           { "name": "Custom shade matching (per tooth)", "price": "15,000 HUF" },
           { "name": "Removable denture for one jaw (composite)", "price": "110,000 HUF" },
           { "name": "Metal-frame denture for one jaw", "price": "150,000 HUF" },
@@ -588,7 +589,7 @@
       "ctaTitle": "Find Out the State of Your Teeth!",
       "ctaDesc": "Book an appointment for a specialist consultation in Budapest or Esztergom!",
       "faqs": [
-        { "q": "How much does the assessment cost?", "a": "Panoramic X-ray is 6,000 HUF and cephalometric X-ray is 10,000 HUF; a specialist consultation is included." },
+        { "q": "How much does the assessment cost?", "a": "A panoramic X-ray costs 8,000 HUF, a cephalometric X-ray costs 10,000 HUF, and a 3D CT scan costs 20,000 HUF. Specialist consultation is also available." },
         { "q": "Is any preparation required?", "a": "No preparation is needed. If you have previous X-rays, please bring them along." },
         { "q": "How long does the assessment take?", "a": "The comprehensive assessment takes 30–45 minutes." },
         { "q": "What if I'm afraid of the dentist?", "a": "Our team is patient and empathetic — we explain every step in advance." },
@@ -978,9 +979,9 @@
       "servicesTitle": "Our Examination Methods",
       "services": [
         { "title": "Comprehensive Consultation", "desc": "Physical examination, discussion of symptoms, and mapping of foci in the oral cavity.", "price": "10,000 HUF" },
-        { "title": "Panoramic X-ray (OPG)", "desc": "Excellent overview of all teeth, jaw bones, and the floor of the sinuses.", "price": "6,000 HUF" },
+        { "title": "Panoramic X-ray (OPG)", "desc": "Excellent overview of all teeth, jaw bones, and the floor of the sinuses.", "price": "8,000 HUF" },
         { "title": "Cephalometric X-ray", "desc": "A lateral skull X-ray for orthodontic diagnostics and precise treatment planning.", "price": "10,000 HUF" },
-        { "title": "3D CBCT Scan", "desc": "Three-dimensional, highly precise imaging that reveals even the most hidden cysts and inflammations.", "price": "At clinic" }
+        { "title": "3D CBCT Scan", "desc": "Three-dimensional, highly precise imaging that reveals even the most hidden cysts and inflammations.", "price": "20,000 HUF" }
       ],
       "benefitsTitle": "Reliable Diagnosis",
       "benefitItems": [

@@ -1,6 +1,6 @@
 export const treatmentFaqs: Record<string, { q: string; a: string }[]> = {
   allapotfelmeres: [
-    { q: 'Mennyibe kerül az állapotfelmérés?', a: 'A panorámaröntgen ára 6.000 Ft, a teleröntgen ára 10.000 Ft, emellett szakorvosi konzultációt biztosítunk.' },
+    { q: 'Mennyibe kerül az állapotfelmérés?', a: 'A panorámaröntgen ára 8.000 Ft, a teleröntgen ára 10.000 Ft, a 3D CT felvétel ára pedig 20.000 Ft. Emellett szakorvosi konzultációt biztosítunk.' },
     { q: 'Kell-e előkészület a vizsgálatra?', a: 'Nem szükséges előkészület. Ha vannak korábbi röntgenfelvételei, hozza magával.' },
     { q: 'Mennyi ideig tart az állapotfelmérés?', a: 'Az átfogó állapotfelmérés 30-45 percet vesz igénybe.' },
     { q: 'Mit tegyek, ha félek a fogorvostól?', a: 'Csapatunk türelmes és empatikus, minden lépést előre elmagyarázunk.' },
