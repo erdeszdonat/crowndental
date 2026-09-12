@@ -187,6 +187,8 @@ const nextConfig = {
       // A két sérült szlovák slug olvasható, stabil kanonikus URL-re költözik.
       { source: '/sk/blog/ko-ko-stoja-umele-zuby-v-ma-arsku-v-roku-2026-kompletn-sprievodca-cenami', destination: '/sk/blog/kolko-stoja-umele-zuby-v-madarsku-2026', permanent: true },
       { source: '/sk/blog/zubn-implantat-v-ma-arsku-ko-ko-m-ete-u-etri-a-pre-o-je-crown-dental-najlep-ou-vo-bou', destination: '/sk/blog/zubny-implantat-v-madarsku-cena-a-vyhody', permanent: true },
+      { source: '/sk/blog/zubar-v-ma-arsku-pre-o-si-slovenski-pacienti-vyberaju-esztergom', destination: '/sk/blog/zubar-v-madarsku-preco-si-slovenski-pacienti-vyberaju-ostrihom', permanent: true },
+      { source: '/sk/blog/ko-ko-stoji-zubna-korunka-v-roku-2026-kompletn-sprievodca-cenami', destination: '/sk/blog/kolko-stoji-zubna-korunka-2026', permanent: true },
 
       // A nem leképezett /cpg/ URL-ek szándékosan maradnak valódi 404-ek.
       // A főoldalra irányított tömeges 307 soft-404 jelzést okozott volna.

@@ -3,15 +3,14 @@ import { buildLocalizedMetadata, normalizeLocale } from '@/lib/seo';
 import BlogClient from './BlogClient';
 import { canonicalBlogSlug, isMergedBlogSource } from '@/lib/blogConsolidation';
 
-// Blog content changes far less often than it is read. Keep a daily fallback
-// for edits made directly in Sanity; the admin publishing route revalidates
-// the affected paths immediately.
-export const revalidate = 86400;
+// Blog content changes far less often than it is read. A weekly refresh keeps
+// routine reads cheap; newly published slugs are included by the next deploy.
+export const revalidate = 604800;
 
 const blogMetadata: Record<'hu' | 'en' | 'sk' | 'de', { title: string; description: string; keywords: string[] }> = {
   hu: {
     title: "Fogászati Tudástár & Blog | Crown Dental",
-    description: "Olvassa szakértő fogorvosaink tanácsait! Cikkeink segítenek a helyes szájápolásban, a fogászati problémák megelőzésében és a kezelések megértésében.",
+    description: "Olvassa a Crown Dental közérthető cikkeit a helyes szájápolásról, a fogászati problémák megelőzéséről és a kezelések megértéséről.",
     keywords: ['fogászati blog', 'szájápolási tanácsok', 'fogbeültetés információk', 'fogszabályozás tippek', 'Crown Dental tudástár'],
   },
   en: {
@@ -52,7 +51,7 @@ async function getBlogPosts() {
       "category": coalesce(category, "professional")
     }`);
     const response = await fetch(`https://${sanityProjectId}.api.sanity.io/v2024-03-08/data/query/${dataSet}?query=${query}`, {
-      next: { revalidate: 86400 },
+      next: { revalidate },
     });
 
     if (!response.ok) return [];

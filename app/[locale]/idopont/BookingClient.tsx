@@ -2,10 +2,11 @@
 
 import React, { useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, ArrowLeft, CheckCircle2, Star } from 'lucide-react';
+import { ArrowRight, ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
 import { BUDAPEST_BOOKING_OPEN_LABELS, isBudapestBookingAvailable, isBudapestCity } from '@/lib/bookingAvailability';
+import GoogleReviewsCta from '@/components/GoogleReviewsCta';
 
 const BOOKING_SUCCESS_STORAGE_KEY = 'crown_booking_success';
 const BOOKING_SUCCESS_CONTACT_KEY = 'crown_booking_contact';
@@ -266,28 +267,6 @@ function BookingForm() {
   );
 }
 
-function ReviewsSection() {
-  const t = useTranslations('home.reviews');
-  // @ts-ignore
-  const allReviews = (t.raw('items') as Array<{name:string;text:string;date:string}>).slice(0,3);
-  const ext = [...allReviews,...allReviews,...allReviews];
-  return (
-    <section className="py-24 overflow-hidden relative">
-      <h3 className="text-4xl font-extrabold text-center mb-12 text-gray-900">{t('title')}</h3>
-      <style dangerouslySetInnerHTML={{__html:`@keyframes mrq{0%{transform:translateX(0)}100%{transform:translateX(-33.3333%)}}.amrq{display:flex;width:max-content;animation:mrq 50s linear infinite}.amrq:hover{animation-play-state:paused}`}}/>
-      <div className="amrq gap-6 px-6">
-        {ext.map((review,i) => (
-          <div key={i} className="w-[350px] p-8 bg-white rounded-3xl shadow-sm border border-gray-100 flex-shrink-0">
-            <div className="flex text-amber-400 mb-4">{[...Array(5)].map((_,j)=><Star key={j} className="w-5 h-5 fill-current"/>)}</div>
-            <p className="text-gray-600 italic mb-6">"{review.text}"</p>
-            <div className="flex justify-between border-t pt-4 font-bold text-gray-900"><span>{review.name}</span><span className="text-gray-400 text-sm font-normal">{review.date}</span></div>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
 export default function BookingClient() {
   const t = useTranslations('booking');
   return (
@@ -298,7 +277,7 @@ export default function BookingClient() {
         <p className="text-xl text-gray-700 max-w-2xl mx-auto mb-12">{t('subtitle')}</p>
         <BookingForm/>
       </main>
-      <ReviewsSection/>
+      <GoogleReviewsCta />
       <style dangerouslySetInnerHTML={{__html:`.custom-scrollbar::-webkit-scrollbar{width:6px}.custom-scrollbar::-webkit-scrollbar-thumb{background:#bae6fd;border-radius:10px}`}}/>
     </div>
   );

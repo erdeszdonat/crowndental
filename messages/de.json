@@ -84,7 +84,7 @@
           "tag": "30 Jahre Erfahrung",
           "titleTop": "Ein neues Lächeln,",
           "titleBottom": "ein neues Selbstvertrauen.",
-          "subtitle": "Mehr als 15.000 erfolgreiche Behandlungen belegen unsere Kompetenz. Vertrauen Sie uns Ihr Lächeln!",
+          "subtitle": "Seit 1994 arbeiten wir in Esztergom mit Unterstützung unseres eigenen Dentallabors. Lernen Sie unseren Ansatz kennen.",
           "primaryText": "Termin buchen"
         }
       ]
@@ -191,7 +191,7 @@
       "title": "Der Schlüssel zur Perfektion: alles aus einer Hand.",
       "features": [
         "CAD/CAM digitales Design und Fertigung",
-        "Kronen, Brücken, Zahnersatz in nur 3 Tagen",
+        "Herstellung und Anprobe abgestimmt auf den Behandlungsplan",
         "Sofortige Reparaturen und Anpassungen vor Ort",
         "Kein Zwischenhändlerzuschlag – Sie sparen direkt",
         "Premium-Materialien: Zirkonoxid, Porzellan, PEEK"
@@ -240,65 +240,14 @@
       ]
     },
     "reviews": {
-      "label": "Rezensionen",
-      "title": "Was unsere Patienten sagen",
-      "ratingCount": "(Über 320 Bewertungen)",
-      "items": [
-        {
-          "name": "Kovács Mária",
-          "text": "Ich komme seit 10 Jahren hierher – beste Entscheidung überhaupt. Meine Kinder kommen auch, wir wurden noch nie enttäuscht.",
-          "date": "März 2026"
-        },
-        {
-          "name": "Nagy József",
-          "text": "Sehr professionell, mein Implantat ist perfekt geworden. Ich musste etwas auf den Termin warten, aber es hat sich absolut gelohnt.",
-          "date": "Februar 2026"
-        },
-        {
-          "name": "Szabó Anna",
-          "text": "Dank des hauseigenen Labors war die Krone innerhalb von 3 Tagen fertig. Ich war sehr nervös, aber es war völlig schmerzlos!",
-          "date": "Januar 2026"
-        },
-        {
-          "name": "Tóth Gábor",
-          "text": "Ich gehe seit 8 Jahren ausschließlich zu ihnen. Immer freundlich, schnell und mit modernstem Equipment gearbeitet.",
-          "date": "Dezember 2025"
-        },
-        {
-          "name": "Horváth Éva",
-          "text": "Mein herausnehmbarer Zahnersatz ist wunderschön geworden, der Zahntechniker konnte die Farbe sofort korrigieren. Tolle Profis.",
-          "date": "November 2025"
-        },
-        {
-          "name": "Varga Peter",
-          "text": "Ich bin seit 5 Jahren Patient. Zum ersten Mal in meinem Leben habe ich keine Bauchschmerzen, wenn ich zum Zahnarzt gehe – sie sind so einfühlsam.",
-          "date": "Oktober 2025"
-        },
-        {
-          "name": "Kiss László",
-          "text": "Hatte eine komplexe Wurzelbehandlung, aber sie haben meinen Zahn gerettet. Präzise, ​​schnelle und gründliche Arbeit.",
-          "date": "September 2025"
-        },
-        {
-          "name": "Farkas Zita",
-          "text": "Ich bin seit 10 Jahren ihr treuer Patient. Ich kann sie jedem, der einen Zahnarzt sucht, nur empfehlen!",
-          "date": "Juli 2025"
-        },
-        {
-          "name": "Molnár Katalin",
-          "text": "Ich habe eine Zahnaufhellung durchführen lassen, das Ergebnis ist erstaunlich. Das Parken ist etwas schwierig, aber die Klinik ist hervorragend.",
-          "date": "Mai 2025"
-        },
-        {
-          "name": "Balogh Tamás",
-          "text": "Sie haben meine gesamte obere Zahnreihe durch Zirkonkronen ersetzt. Sie fühlen sich an wie meine eigenen Zähne. Fantastische Arbeit!",
-          "date": "März 2025"
-        }
-      ]
+      "label": "Unabhängige Bewertungen",
+      "title": "Google-Bewertungen",
+      "ratingCount": "Aktuelle Angaben auf Google",
+      "items": []
     },
     "cta": {
       "title": "Bereit für den ersten Schritt?",
-      "subtitle": "Vereinbaren Sie online einen Termin oder rufen Sie uns an – und erleben Sie den Crown Dental-Unterschied persönlich.",
+      "subtitle": "Vereinbaren Sie online einen Termin oder rufen Sie uns an, um den passenden nächsten Schritt zu besprechen.",
       "bookOnline": "Termin online buchen"
     },
     "faq": {
@@ -320,7 +269,7 @@
         },
         {
           "question": "Welche Implantate verwenden Sie?",
-          "answer": "Wir verwenden ausschließlich hochwertige Implantate von Weltmarken (z. B. Alpha Bio, DIO). Diese verfügen über eine lebenslange Garantie und eine hervorragende Osseointegrationsrate (über 98 %)."
+          "answer": "Wir arbeiten mit Implantatsystemen von Alpha Bio und DIO. Das geeignete System, das erwartbare Ergebnis und mögliche Garantiebedingungen hängen von Untersuchung, Behandlungsplan und schriftlichen Garantiebestimmungen ab."
         },
         {
           "question": "Wann sollte ich einen Kieferorthopäden aufsuchen?",
@@ -400,9 +349,9 @@
     "story2Part1": "Die Stärke unserer Klinik ist",
     "story2Bold": "unser eigenes Dentallabor",
     "story2Part2": ". Da wir alles intern abwickeln, sind wir schneller und kostengünstiger.",
-    "story3Part1": "Heute sind wir für das Lächeln von mehr als verantwortlich",
-    "story3Bold": "15.000 zufriedene Patienten",
-    "story3Part2": ".",
+    "story3Part1": "Unsere Arbeit beruht auf",
+    "story3Bold": "der direkten Zusammenarbeit von Zahnarzt und Zahntechniker",
+    "story3Part2": "während jeder individuellen Behandlungsplanung.",
     "storySince": "Für Ihr Lächeln, von Anfang an."
   },
   "career": {
@@ -472,7 +421,7 @@
     "badge": "Crown Dental Magazin",
     "mainTitle": "Zahnmedizinisches",
     "mainTitleHighlight": "Wissenszentrum",
-    "description1": "Willkommen im Crown Dental-Blog! Unsere erfahrenen Ärzte beantworten hier verständlich und zuverlässig häufige Fragen zur täglichen Mundpflege und zu zahnmedizinischen Behandlungen.",
+    "description1": "Willkommen im Crown Dental-Blog. Unsere Wissensdatenbank bietet verständliche, quellenbasierte Informationen zur täglichen Mundpflege und zu zahnmedizinischen Behandlungen.",
     "description2": "Ob die richtige Putztechnik, moderne Implantate oder die Vorteile schmerzfreier Behandlungen – hier finden Sie die Antwort auf jede Frage.",
     "freshPost": "Neuer Artikel",
     "readMore": "Mehr lesen",
@@ -487,28 +436,28 @@
     "statsTitle": "Unsere Ergebnisse, zu Ihren Diensten",
     "stats": [
       {
-        "end": 30,
-        "suffix": "+",
-        "text": "Jahrelange Erfahrung",
-        "desc": "In der Praxis seit 1994"
+        "end": 1994,
+        "suffix": "",
+        "text": "Gründungsjahr",
+        "desc": "Jahrzehntelange Präsenz"
       },
       {
-        "end": 15000,
-        "suffix": "+",
-        "text": "Zufriedene Patienten",
-        "desc": "Seit Generationen vertrauenswürdig"
+        "end": 1,
+        "suffix": "",
+        "text": "Eigenes Dentallabor",
+        "desc": "Technische Unterstützung vor Ort"
       },
       {
-        "end": 40,
-        "suffix": "%",
-        "text": "Ersparnisse",
-        "desc": "Dank unseres hauseigenen Labors"
+        "end": 4,
+        "suffix": "",
+        "text": "Sprachen",
+        "desc": "HU, EN, SK und DE"
       },
       {
-        "end": 3,
-        "suffix": "Tage",
-        "text": "Kronenherstellung",
-        "desc": "Ultraschnelle Prothetik"
+        "end": 7,
+        "suffix": " Tage",
+        "text": "Praxis erreichbar",
+        "desc": "Werktags und am Wochenende"
       }
     ],
     "reviewsTitle": "Unsere Patienten sagten"
@@ -554,8 +503,8 @@
       "heroTitle1": "Zahnmedizinische",
     "heroTitle2": "Behandlungen",
     "heroSubtitleStart": "Wählen Sie eine Behandlung aus den folgenden Karten oder scrollen Sie nach unten, um die vollständige Preisliste anzuzeigen. Dank unseres hauseigenen Dentallabors bieten wir Preise an",
-    "heroSavings": "bis zu 40 % niedriger",
-    "heroSubtitleEnd": "als der Marktdurchschnitt.",
+    "heroSavings": "transparente, direkt abgestimmte",
+    "heroSubtitleEnd": "Preise.",
     "cardDetails": "Details",
     "priceListTitle": "Unsere vollständige Preisliste",
     "priceListSubtitle": "Transparente Preisgestaltung, ohne versteckte Kosten.",
@@ -950,7 +899,7 @@
     "implantatum": {
       "heroBadge": "Premium-Service",
       "heroTitle": "Zahnimplantate",
-      "heroDesc": "Eine dauerhafte Lösung für fehlende Zähne – Premium-Implantate aus unserem eigenen Labor, bis zu 40 % günstiger.",
+      "heroDesc": "Eine dauerhafte Möglichkeit bei fehlenden Zähnen mit Alpha-Bio- und DIO-Systemen auf Grundlage eines individuellen Behandlungsplans.",
       "heroPriceLabel": "Preise ab",
       "heroPriceValue": "190.000 HUF",
       "quoteAnalyzerBadge": "KI-Preisrechner",
@@ -961,13 +910,13 @@
       "problemTitle": "Das Problem: Fehlende Zähne",
       "problemDesc": "Eine Lücke im Lächeln ist nicht nur ein ästhetisches Problem – benachbarte Zähne verschieben sich, Knochen bilden sich zurück. Eine herkömmliche Brücke erfordert das Abschleifen gesunder Zähne.",
       "solutionTitle": "Die Lösung: Zahnimplantate",
-      "solutionDesc": "Ein Implantat ersetzt die natürliche Zahnwurzel durch eine Titanschraube. Es ist nicht nötig, benachbarte Zähne zu berühren, und unser eigenes Labor macht es bis zu 40 % günstiger.",
+      "solutionDesc": "Ein Implantat ist eine künstliche Zahnwurzel aus Titan. Das Beschleifen benachbarter Zähne lässt sich häufig vermeiden; die Eignung wird nach Untersuchung und Bildgebung beurteilt.",
       "benefitsBadge": "Warum uns wählen?",
       "benefitsTitle": "Vorteile der Implantation",
       "benefitItems": [
         {
-          "title": "Lebenslange Garantie",
-          "desc": "Wir bieten eine lebenslange Garantie auf das Implantat und eine 5-Jahres-Garantie auf die Krone."
+          "title": "Schriftliche Garantiebedingungen",
+          "desc": "Umfang und Dauer hängen vom Implantatsystem, Zahnersatz, den Kontrollterminen und den individuellen Umständen ab."
         },
         {
           "title": "Schnelle Abwicklung",
@@ -978,8 +927,8 @@
           "desc": "Keine versteckten Kosten. Der bei der Beratung angegebene Preis ändert sich bis zum Ende der Behandlung nicht."
         },
         {
-          "title": "Schmerzlos",
-          "desc": "Mit der modernen Anästhesie ist der Eingriff schmerzlos und schnell."
+          "title": "Örtliche Betäubung",
+          "desc": "Die Betäubung soll Schmerzen während des Eingriffs reduzieren; Druck oder vorübergehende Beschwerden können auftreten."
         },
         {
           "title": "Premium-Materialien",
@@ -1257,8 +1206,8 @@
       "benefitsTitle": "Das Geheimnis einer erfolgreichen Behandlung",
       "benefitItems": [
         {
-          "title": "Schmerzfrei",
-          "desc": "Die Behandlung erfolgt unter Vollnarkose, wodurch der Eingriff völlig schmerzfrei ist."
+          "title": "Örtliche Betäubung",
+          "desc": "Die Betäubung soll Behandlungsschmerzen reduzieren; Druck oder vorübergehende Empfindlichkeit können auftreten."
         },
         {
           "title": "Retten Sie Ihren eigenen Zahn",
@@ -1305,7 +1254,7 @@
       "faqs": [
         {
           "q": "Wird eine Wurzelkanalbehandlung weh tun?",
-          "a": "Mit den heutigen modernen Anästhetika ist eine Wurzelkanalbehandlung völlig schmerzfrei. Die Beschwerden entstehen meist durch die Zahnschmerzen im Vorfeld, die durch diesen Eingriff sofort gelindert werden."
+          "a": "Wir verwenden eine örtliche Betäubung, um Schmerzen während der Behandlung zu minimieren. Druck und vorübergehende Empfindlichkeit danach können auftreten."
         },
         {
           "q": "Wie viele Besuche sind erforderlich?",
@@ -1375,7 +1324,7 @@
         },
         {
           "title": "Benutzerdefinierte Tabletts",
-          "desc": "Unser Labor garantiert, dass die Home-Schale perfekt dichtet und angenehm zu tragen ist."
+          "desc": "Unser Labor fertigt die Schiene individuell an, damit sie möglichst gut sitzt und angenehm zu tragen ist."
         }
       ],
       "processTitle": "Wie funktioniert die Aufhellung in der Klinik?",
@@ -1499,7 +1448,7 @@
         },
         {
           "title": "Eigenes Labor",
-          "desc": "Unser eigenes Dentallabor garantiert Schnelligkeit."
+          "desc": "Unser eigenes Dentallabor ermöglicht kurze Abstimmungswege."
         }
       ],
       "processTitle": "Der Weg zum perfekten Lächeln",
@@ -1588,7 +1537,7 @@
       "benefitItems": [
         {
           "title": "Schmerzfrei",
-          "desc": "Eine tiefe örtliche Betäubung garantiert, dass Sie während des Eingriffs keine Schmerzen verspüren."
+          "desc": "Die örtliche Betäubung soll Schmerzen während des Eingriffs reduzieren; die Wahrnehmung kann individuell unterschiedlich sein."
         },
         {
           "title": "Kurze Behandlungszeit",
@@ -1612,7 +1561,7 @@
         },
         {
           "title": "Anästhesie",
-          "desc": "Gründliche örtliche Betäubung der Zahnumgebung für eine völlig schmerzfreie Behandlung.",
+          "desc": "Sorgfältige örtliche Betäubung der Zahnumgebung, um Schmerzen während der Behandlung zu reduzieren.",
           "time": "5 Min"
         },
         {
@@ -1631,7 +1580,7 @@
       "faqs": [
         {
           "q": "Wird die Extraktion weh tun?",
-          "a": "Dank der örtlichen Betäubung verspüren Sie während des Eingriffs garantiert keine Schmerzen. Möglicherweise verspüren Sie einen leichten Druck oder eine leichte Anspannung."
+          "a": "Die örtliche Betäubung soll Schmerzen während des Eingriffs reduzieren. Ein leichter Druck oder eine leichte Spannung kann wahrnehmbar sein; teilen Sie Beschwerden bitte dem Zahnarzt mit."
         },
         {
           "q": "Was kann ich nach der Extraktion essen und trinken?",
@@ -1990,14 +1939,14 @@
     },
     "szajsebeszet": {
       "heroBadge": "Sicherheit und Fachwissen",
-      "heroTitle": "Oralchirurgie schmerzfrei",
+      "heroTitle": "Oralchirurgie mit moderner Betäubung",
       "heroDesc": "Weisheitszahnentfernung, komplexe Extraktionen und apikale Resektion – völlig sicher, mit modernen Anästhesietechniken.",
       "heroPriceLabel": "Extraktion",
       "heroPriceValue": "ab 25.000 HUF",
       "problemTitle": "Das Problem: Infektionen, schmerzhafte Zähne",
       "problemDesc": "Teilweise durchgebrochene Weisheitszähne, die in die falsche Richtung wachsen, impaktierte Wurzeln oder chronische Entzündungen können starke Schmerzen und fokale Infektionen verursachen. Viele Menschen verschieben die Behandlung aus Angst vor Schmerzen.",
       "solutionTitle": "Die Lösung: Fachgerechte Oralchirurgie",
-      "solutionDesc": "Moderne Anästhesietechniken garantieren einen schmerzfreien Eingriff. Unsere erfahrenen Fachärzte führen auch die komplexesten oralchirurgischen Eingriffe schonend durch.",
+      "solutionDesc": "Wir verwenden örtliche Betäubung und schonende Operationstechniken. Druck während des Eingriffs sowie Schmerzen oder Schwellungen danach können individuell auftreten.",
       "servicesBadge": "Verfahren",
       "servicesTitle": "Unsere Lösungen für die Oralchirurgie",
       "services": [
@@ -2030,7 +1979,7 @@
         },
         {
           "title": "Erfahrene Chirurgen",
-          "desc": "Unser Kieferchirurg hat Tausende erfolgreicher Eingriffe durchgeführt und garantiert so maximale Sicherheit."
+          "desc": "Die sorgfältige Planung und die Erfahrung des Behandlungsteams unterstützen einen möglichst sicheren Ablauf."
         },
         {
           "title": "Moderne 3D-CT-Diagnostik",

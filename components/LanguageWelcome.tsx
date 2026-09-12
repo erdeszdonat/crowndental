@@ -56,7 +56,7 @@ export default function LanguageWelcome() {
           aria-label="Language selection"
           aria-live="polite"
           data-nosnippet=""
-          className="pointer-events-none fixed right-2.5 top-[92px] z-[35] w-[calc(100%-1.25rem)] max-w-3xl sm:right-4 sm:top-[100px]"
+          className="pointer-events-none fixed bottom-3 left-3 right-3 z-[35] sm:bottom-auto sm:left-auto sm:right-4 sm:top-[100px] sm:w-auto sm:max-w-3xl"
         >
           <div className="pointer-events-auto overflow-hidden rounded-2xl border border-sky-100/90 bg-white/95 p-2.5 shadow-[0_16px_45px_rgba(15,23,42,0.18)] backdrop-blur-xl sm:flex sm:items-center sm:justify-between sm:gap-4 sm:rounded-full sm:px-4 sm:py-3">
             <div className="flex min-w-0 items-center gap-2.5 px-1 sm:px-0">

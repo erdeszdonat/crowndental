@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { buildFaqJsonLd } from '@/lib/faqSchema';
 import {
+  GOOGLE_BUSINESS_URL,
   SITE_URL,
   buildBreadcrumbJsonLd,
   buildLocalizedMetadata,
@@ -118,7 +119,7 @@ function buildClinicJsonLd(locale: SupportedLocale) {
       latitude: 47.79269,
       longitude: 18.74323,
     },
-    hasMap: 'https://www.google.com/maps?cid=13855060144941940295',
+    hasMap: GOOGLE_BUSINESS_URL,
     openingHoursSpecification: [
       {
         '@type': 'OpeningHoursSpecification',
@@ -144,7 +145,7 @@ function buildClinicJsonLd(locale: SupportedLocale) {
       'https://www.facebook.com/koronafogaszatesztergom/',
       'https://www.instagram.com/crown_dental93/',
       'https://www.tiktok.com/@crowndentalhungary',
-      'https://www.google.com/maps?cid=13855060144941940295',
+      GOOGLE_BUSINESS_URL,
     ],
     potentialAction: {
       '@type': 'ReserveAction',

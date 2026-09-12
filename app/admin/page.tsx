@@ -1,14 +1,13 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Calendar, Briefcase, Sparkles, BookOpen, ChevronDown, ChevronUp,
   RefreshCw, LogOut, ExternalLink, Phone, MapPin, ShieldAlert,
-  User, Lock, Edit3, Search, UserCheck, DollarSign, MessageSquare,
+  User, Lock, Edit3, Search, UserCheck, DollarSign,
   AlertTriangle, Loader2, Trash2, CheckCircle2, Clock, ListOrdered,
-  Wand2, Send, Eye, EyeOff, FileText, ImageIcon, Zap, BrainCircuit,
-  BarChart3, Globe2, Layers3, Mail, Download
+  BarChart3, Mail, Download
 } from 'lucide-react';
 import StatsDashboard from './StatsDashboard';
 import { BLOG_CATEGORIES, BLOG_LANGUAGES, normalizeBlogCategory, normalizeBlogLanguage } from '@/lib/blogConfig';
@@ -68,39 +67,6 @@ export default function AdminDashboard() {
   const [marketingSubscribers, setMarketingSubscribers] = useState<any[]>([]);
   const [appointmentConfirmModal, setAppointmentConfirmModal] = useState<AppointmentConfirmationModalState | null>(null);
   const [specialAppointmentModal, setSpecialAppointmentModal] = useState<SpecialAppointmentModalState | null>(null);
-
-  // Blog generator state
-  const [genTopic, setGenTopic] = useState('');
-  const [genKeywords, setGenKeywords] = useState('');
-  const [genLang, setGenLang] = useState('hu');
-  const [genCategory, setGenCategory] = useState('professional');
-  const [genLoading, setGenLoading] = useState(false);
-  const [genStep, setGenStep] = useState(0);
-  const [genResult, setGenResult] = useState<any>(null);
-  const [genError, setGenError] = useState('');
-  const [publishLoading, setPublishLoading] = useState(false);
-  const [publishSuccess, setPublishSuccess] = useState('');
-  const [showPreview, setShowPreview] = useState(false);
-  const genStepRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  const GEN_STEPS = [
-    { icon: BrainCircuit, label: 'AI elemzi a témát...', color: 'text-sky-400', bg: 'bg-sky-400/20' },
-    { icon: FileText,     label: 'Cikkstruktúra felépítése...', color: 'text-purple-400', bg: 'bg-purple-400/20' },
-    { icon: Zap,          label: 'SEO szöveg megírása...', color: 'text-yellow-400', bg: 'bg-yellow-400/20' },
-    { icon: ImageIcon,    label: 'Borítókép keresése...', color: 'text-pink-400', bg: 'bg-pink-400/20' },
-  ];
-
-  useEffect(() => {
-    if (genLoading) {
-      setGenStep(0);
-      genStepRef.current = setInterval(() => {
-        setGenStep(s => Math.min(s + 1, GEN_STEPS.length - 1));
-      }, 6000);
-    } else {
-      if (genStepRef.current) clearInterval(genStepRef.current);
-    }
-    return () => { if (genStepRef.current) clearInterval(genStepRef.current); };
-  }, [genLoading]);
 
   const fetchSecureData = async () => {
     setIsLoading(true);
@@ -536,201 +502,6 @@ export default function AdminDashboard() {
               </motion.div>
             ) : activeTab === 'blog' ? (
               <motion.div key="blog" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-4">
-
-                {/* AI BLOG GENERATOR */}
-                <div className="bg-gray-900 rounded-2xl p-6 text-white shadow-xl border border-white/5 space-y-4 relative overflow-hidden">
-                  <h3 className="text-lg font-black flex items-center gap-2 text-sky-400"><Wand2 className="w-5 h-5" /> AI Cikkgeneráló</h3>
-
-                  <AnimatePresence mode="wait">
-                  {genLoading ? (
-                    <motion.div
-                      key="loading"
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      transition={{ duration: 0.3 }}
-                      className="flex flex-col items-center gap-6 py-6"
-                    >
-                      {/* Pulsing glow + spinning icon */}
-                      <div className="relative flex items-center justify-center">
-                        <motion.div
-                          animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.6, 0.3] }}
-                          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-                          className="absolute w-24 h-24 rounded-full bg-sky-500/20 blur-xl"
-                        />
-                        <motion.div
-                          animate={{ rotate: 360 }}
-                          transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
-                          className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-500 to-purple-600 flex items-center justify-center shadow-2xl shadow-sky-500/30"
-                        >
-                          <Wand2 className="w-8 h-8 text-white" />
-                        </motion.div>
-                      </div>
-
-                      {/* Topic */}
-                      <div className="text-center">
-                        <p className="text-white font-black text-base">Cikk generálása...</p>
-                        <p className="text-sky-400 text-sm mt-1 font-medium max-w-xs truncate">"{genTopic}"</p>
-                      </div>
-
-                      {/* Steps */}
-                      <div className="w-full space-y-2">
-                        {GEN_STEPS.map((step, i) => {
-                          const Icon = step.icon;
-                          const done = genStep > i;
-                          const active = genStep === i;
-                          return (
-                            <motion.div
-                              key={i}
-                              initial={{ opacity: 0, x: -12 }}
-                              animate={{ opacity: i <= genStep ? 1 : 0.25, x: 0 }}
-                              transition={{ delay: i * 0.08, duration: 0.3 }}
-                              className="flex items-center gap-3"
-                            >
-                              <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 transition-all ${done ? 'bg-green-500/20' : active ? step.bg : 'bg-white/5'}`}>
-                                {done
-                                  ? <CheckCircle2 className="w-4 h-4 text-green-400" />
-                                  : active
-                                    ? <motion.div animate={{ rotate: 360 }} transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}>
-                                        <Icon className={`w-4 h-4 ${step.color}`} />
-                                      </motion.div>
-                                    : <Icon className="w-4 h-4 text-gray-600" />}
-                              </div>
-                              <span className={`text-sm font-medium ${done ? 'text-green-400' : active ? 'text-white' : 'text-gray-600'}`}>
-                                {step.label}
-                              </span>
-                            </motion.div>
-                          );
-                        })}
-                      </div>
-
-                      {/* Progress bar */}
-                      <div className="w-full bg-white/10 rounded-full h-1.5 overflow-hidden">
-                        <motion.div
-                          className="h-full rounded-full bg-gradient-to-r from-sky-400 via-purple-400 to-pink-400"
-                          animate={{ width: `${10 + (genStep / (GEN_STEPS.length - 1)) * 80}%` }}
-                          transition={{ duration: 0.6, ease: 'easeOut' }}
-                        />
-                      </div>
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      key="form"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                      className="space-y-3"
-                    >
-                    <input
-                      value={genTopic} onChange={e => { setGenTopic(e.target.value); setGenResult(null); setPublishSuccess(''); setGenError(''); }}
-                      placeholder="Téma (pl. Mennyibe kerül egy implantátum Magyarországon?)"
-                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 text-sm outline-none focus:border-sky-400"
-                    />
-                    <input
-                      value={genKeywords} onChange={e => setGenKeywords(e.target.value)}
-                      placeholder="Kulcsszavak vesszővel (pl. implantátum ár, fogászat esztergom)"
-                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 text-sm outline-none focus:border-sky-400"
-                    />
-                    <div className="grid md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)_auto] gap-3">
-                      <label className="relative">
-                        <Globe2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-sky-300" />
-                        <select value={genLang} onChange={e => setGenLang(e.target.value)} className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white text-sm outline-none focus:border-sky-400">
-                          {BLOG_LANGUAGES.map(language => (
-                            <option key={language.id} value={language.id} className="text-gray-900">{language.shortLabel} – {language.label}</option>
-                          ))}
-                        </select>
-                      </label>
-                      <label className="relative">
-                        <Layers3 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-sky-300" />
-                        <select value={genCategory} onChange={e => setGenCategory(e.target.value)} className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white text-sm outline-none focus:border-sky-400">
-                          {BLOG_CATEGORIES.map(category => (
-                            <option key={category.id} value={category.id} className="text-gray-900">{category.label}</option>
-                          ))}
-                        </select>
-                      </label>
-                      <button
-                        onClick={async () => {
-                          if (!genTopic.trim()) return;
-                          setGenLoading(true); setGenError(''); setGenResult(null); setPublishSuccess('');
-                          try {
-                            const res = await fetch('/api/generate-blog-post', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ topic: genTopic, keywords: genKeywords, language: genLang, category: genCategory }) });
-                            const data = await res.json();
-                            if (!res.ok) throw new Error(data.error);
-                            setGenResult(data); setShowPreview(true);
-                          } catch(e: any) { setGenError(e.message); }
-                          finally { setGenLoading(false); }
-                        }}
-                        disabled={!genTopic.trim()}
-                        className="flex-1 py-3 bg-sky-500 hover:bg-sky-400 text-white font-black rounded-xl flex items-center justify-center gap-2 transition-all text-sm"
-                      >
-                        <Wand2 className="w-4 h-4" /> Generálás
-                      </button>
-                    </div>
-                    </motion.div>
-                  )}
-                  </AnimatePresence>
-
-                  {!genLoading && genError && <div className="bg-red-500/20 border border-red-500/40 rounded-xl p-3 text-red-300 text-sm font-bold">{genError}</div>}
-
-                  {genResult && (
-                    <div className="border border-white/10 rounded-xl overflow-hidden">
-                      <div className="flex items-center justify-between px-4 py-3 bg-white/5">
-                        <div className="flex-1 min-w-0 mr-3">
-                          <p className="font-black text-white truncate">{genResult.title}</p>
-                          <p className="text-gray-400 text-xs mt-0.5">/{genResult.slug} · {getBlogLanguageLabel(genResult.language)} · {getBlogCategoryLabel(genResult.category)} · {genResult.content?.length ?? 0} blokk · ~{genResult.wordCount ?? '?'} szó{genResult.pexelsImage ? ' · 📷 kép kész' : ''}</p>
-                        </div>
-                        <button onClick={() => setShowPreview(v => !v)} className="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-all flex-shrink-0">
-                          {showPreview ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                        </button>
-                      </div>
-
-                      {showPreview && (
-                        <div className="p-4 bg-white/5 space-y-2 max-h-80 overflow-y-auto text-sm">
-                          {genResult.pexelsImage && (
-                            <div className="relative rounded-xl overflow-hidden mb-3">
-                              <img src={genResult.pexelsImage.url} alt="Cikk borítókép" className="w-full h-36 object-cover" />
-                              <a href={genResult.pexelsImage.creditUrl} target="_blank" rel="noopener noreferrer" className="absolute bottom-1 right-2 text-white/70 text-[10px] hover:text-white">
-                                © {genResult.pexelsImage.credit} / Pexels
-                              </a>
-                            </div>
-                          )}
-                          <p className="text-gray-300 italic text-xs">{genResult.excerpt}</p>
-                          <hr className="border-white/10" />
-                          {genResult.content?.slice(0, 8).map((block: any, i: number) => (
-                            <p key={i} className={`${block.style === 'h2' ? 'font-black text-sky-300' : block.style === 'h3' ? 'font-bold text-sky-200' : 'text-gray-300'} text-xs leading-relaxed`}>
-                              {block.children?.[0]?.text}
-                            </p>
-                          ))}
-                          {(genResult.content?.length ?? 0) > 8 && <p className="text-gray-500 text-xs italic">... és még {genResult.content.length - 8} blokk</p>}
-                        </div>
-                      )}
-
-                      <div className="px-4 py-3 bg-white/5 flex gap-3">
-                        {publishSuccess ? (
-                          <div className="flex-1 flex items-center gap-2 text-green-400 font-black text-sm"><CheckCircle2 className="w-4 h-4" /> {publishSuccess}</div>
-                        ) : (
-                          <button
-                            onClick={async () => {
-                              setPublishLoading(true);
-                              try {
-                                const res = await fetch('/api/publish-blog-post', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(genResult) });
-                                const data = await res.json();
-                                if (!res.ok) throw new Error(data.error);
-                                setPublishSuccess(`Feltöltve! → ${getBlogPostPath(data.language, data.slug)}`);
-                              } catch(e: any) { setGenError(e.message); }
-                              finally { setPublishLoading(false); }
-                            }}
-                            disabled={publishLoading}
-                            className="flex-1 py-2.5 bg-green-500 hover:bg-green-400 disabled:bg-gray-600 text-white font-black rounded-xl flex items-center justify-center gap-2 text-sm transition-all"
-                          >
-                            {publishLoading ? <><Loader2 className="w-4 h-4 animate-spin" /> Feltöltés...</> : <><Send className="w-4 h-4" /> Feltöltés Sanity-be</>}
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  )}
-                </div>
 
                 {/* STUDIO LINK */}
                 <div className="bg-gray-900 rounded-2xl p-5 text-white flex items-center justify-between gap-4 border border-white/5">

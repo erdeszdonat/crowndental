@@ -7,12 +7,13 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
   MapPin, Phone, Award, Building2, Shield, Calendar,
-  ArrowRight, CheckCircle2, Star, Heart, Upload, Search, Activity,
+  ArrowRight, CheckCircle2, Heart, Upload, Search, Activity,
   Sparkles, User, FileText, Loader2, Download, ChevronDown, Wrench,
   Pause, Play,
 } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
 import { getPreferredGreetingName } from '@/lib/names';
+import GoogleReviewsCta from '@/components/GoogleReviewsCta';
 
 export type HomeSanityImages = {
   hero: Record<'fokep' | 'fokep1' | 'fokep2', string>;
@@ -312,22 +313,35 @@ function LocationSelector({ locations }: { locations: HomeSanityImages['location
 }
 
 // ─── Stats ────────────────────────────────────────────────────────────────────
-function formatStatNumber(value: number) {
-  return String(value).replace(/\B(?=(\d{3})+(?!\d))/g, '\u00a0');
-}
-
-function AnimatedNumber({ end, suffix='', label, desc }: { end:number; suffix?:string; label:string; desc:string }) {
-  return (
-    <div className="text-center transition-transform duration-500 hover:-translate-y-1">
-      <div className="text-5xl md:text-6xl lg:text-7xl font-black text-sky-500 mb-3 tracking-tight tabular-nums whitespace-nowrap">{formatStatNumber(end)}{suffix}</div>
-      <div className="text-lg font-bold text-gray-900 mb-1">{label}</div>
-      <p className="text-gray-500 text-sm leading-relaxed max-w-[200px] mx-auto">{desc}</p>
-    </div>
-  );
-}
-
 function StatsSection() {
   const t = useTranslations('home.stats');
+  const locale = useLocale();
+  const facts = {
+    hu: [
+      { value: '1994 óta', label: 'Helyi tapasztalat', description: 'Több évtizede működő esztergomi rendelő.' },
+      { value: 'Saját labor', label: 'Közvetlen együttműködés', description: 'A fogorvos és a fogtechnikus egy csapatban dolgozik.' },
+      { value: '4 nyelv', label: 'Érthető kommunikáció', description: 'Magyar, szlovák, angol és német tájékoztatás.' },
+      { value: 'Írásban', label: 'Kezelési terv', description: 'Vizsgálat után átlátható, személyre szabott javaslat.' },
+    ],
+    en: [
+      { value: 'Since 1994', label: 'Local experience', description: 'A long-established dental clinic in Esztergom.' },
+      { value: 'In-house lab', label: 'Direct collaboration', description: 'Dentists and dental technicians work as one team.' },
+      { value: '4 languages', label: 'Clear communication', description: 'Information in Hungarian, Slovak, English and German.' },
+      { value: 'In writing', label: 'Treatment plan', description: 'A transparent, personalised proposal after examination.' },
+    ],
+    sk: [
+      { value: 'Od roku 1994', label: 'Miestne skúsenosti', description: 'Dlhodobo pôsobiaca ambulancia v Ostrihome.' },
+      { value: 'Vlastné laboratórium', label: 'Priama spolupráca', description: 'Zubári a zubní technici pracujú v jednom tíme.' },
+      { value: '4 jazyky', label: 'Zrozumiteľná komunikácia', description: 'Informácie po maďarsky, slovensky, anglicky a nemecky.' },
+      { value: 'Písomne', label: 'Liečebný plán', description: 'Prehľadný individuálny návrh po vyšetrení.' },
+    ],
+    de: [
+      { value: 'Seit 1994', label: 'Erfahrung vor Ort', description: 'Eine langjährig etablierte Praxis in Esztergom.' },
+      { value: 'Eigenes Labor', label: 'Direkte Zusammenarbeit', description: 'Zahnärzte und Zahntechniker arbeiten im selben Team.' },
+      { value: '4 Sprachen', label: 'Klare Kommunikation', description: 'Informationen auf Ungarisch, Slowakisch, Englisch und Deutsch.' },
+      { value: 'Schriftlich', label: 'Behandlungsplan', description: 'Ein transparenter, individueller Vorschlag nach der Untersuchung.' },
+    ],
+  }[locale === 'en' || locale === 'sk' || locale === 'de' ? locale : 'hu'];
   return (
     <section className="py-24 bg-gray-50 border-t border-gray-100">
       <div className="container mx-auto px-4">
@@ -339,11 +353,14 @@ function StatsSection() {
             </h2>
           </motion.div>
         </div>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 max-w-5xl mx-auto">
-          <AnimatedNumber end={30}    suffix="+"    label={t('years.label')}    desc={t('years.desc')} />
-          <AnimatedNumber end={15000} suffix="+"    label={t('patients.label')} desc={t('patients.desc')} />
-          <AnimatedNumber end={40}    suffix="%"    label={t('savings.label')}  desc={t('savings.desc')} />
-          <AnimatedNumber end={3}     suffix={t('daysSuffix')} label={t('days.label')}     desc={t('days.desc')} />
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto">
+          {facts.map((fact) => (
+            <div key={fact.value} className="rounded-3xl border border-gray-100 bg-white p-7 text-center shadow-sm transition-transform duration-300 hover:-translate-y-1">
+              <div className="mb-3 text-2xl font-black tracking-tight text-sky-600">{fact.value}</div>
+              <div className="mb-2 font-bold text-gray-900">{fact.label}</div>
+              <p className="text-sm leading-relaxed text-gray-500">{fact.description}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -938,71 +955,6 @@ function FeaturedPricesSection({ sanityImages }: { sanityImages: HomeSanityImage
   );
 }
 
-// ─── Reviews ──────────────────────────────────────────────────────────────────
-function ReviewsSection() {
-  const t = useTranslations('home.reviews');
-  const locale = useLocale();
-  const prefersReducedMotion = useReducedMotion();
-  const [isManuallyPaused, setIsManuallyPaused] = useState(false);
-  const [isInteractionPaused, setIsInteractionPaused] = useState(false);
-  const marqueePaused = Boolean(prefersReducedMotion) || isManuallyPaused || isInteractionPaused;
-  const marqueeControl = {
-    hu: { pause: 'Értékelések szüneteltetése', play: 'Értékelések folytatása' },
-    en: { pause: 'Pause reviews', play: 'Resume reviews' },
-    sk: { pause: 'Pozastaviť recenzie', play: 'Pokračovať v recenziách' },
-    de: { pause: 'Bewertungen pausieren', play: 'Bewertungen fortsetzen' },
-  }[locale === 'en' || locale === 'sk' || locale === 'de' ? locale : 'hu'];
-  // @ts-ignore
-  const reviews = t.raw('items') as Array<{ name:string; text:string; date:string }>;
-  const ext = [...reviews,...reviews,...reviews];
-  return (
-    <section
-      onMouseEnter={() => setIsInteractionPaused(true)}
-      onMouseLeave={() => setIsInteractionPaused(false)}
-      onFocusCapture={() => setIsInteractionPaused(true)}
-      onBlurCapture={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setIsInteractionPaused(false);
-      }}
-      className="py-28 bg-white border-t border-gray-100 overflow-hidden"
-    >
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <motion.div initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}>
-            <span className="text-sky-600 font-bold uppercase tracking-[0.2em] text-sm mb-4 block">{t('label')}</span>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-8">{t('title')}</h2>
-            <div className="inline-flex items-center gap-1.5 sm:gap-2 text-amber-400 bg-gray-50 px-4 sm:px-6 py-3 rounded-full shadow-sm border border-gray-100 whitespace-nowrap">
-              <div className="flex items-center">{[...Array(5)].map((_,i)=><Star key={i} className="w-5 h-5 sm:w-6 sm:h-6 fill-current"/>)}</div>
-              <span className="text-gray-900 font-bold ml-1 sm:ml-2 text-base sm:text-lg">4.8 / 5</span>
-              <span className="text-gray-500 font-medium ml-1 text-xs sm:text-base">{t('ratingCount')}</span>
-            </div>
-            {!prefersReducedMotion && <button type="button" onClick={() => setIsManuallyPaused((paused) => !paused)} aria-pressed={isManuallyPaused} className="mt-5 inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-bold text-gray-700 shadow-sm hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500">
-              {isManuallyPaused ? <Play className="h-4 w-4"/> : <Pause className="h-4 w-4"/>}
-              {isManuallyPaused ? marqueeControl.play : marqueeControl.pause}
-            </button>}
-          </motion.div>
-        </div>
-      </div>
-      <style dangerouslySetInnerHTML={{ __html:`@keyframes mhp{0%{transform:translateX(0)}100%{transform:translateX(-33.3333%)}}.amhp{display:flex;width:max-content;animation:mhp 60s linear infinite}.amhp:hover,.amhp:focus-within{animation-play-state:paused}@media(prefers-reduced-motion:reduce){.amhp{animation:none;transform:none}}` }}/>
-      <div className="relative w-full">
-        <div className="absolute left-0 top-0 bottom-0 w-20 md:w-40 bg-gradient-to-r from-white to-transparent z-10"/>
-        <div className="absolute right-0 top-0 bottom-0 w-20 md:w-40 bg-gradient-to-l from-white to-transparent z-10"/>
-        <div className="amhp gap-6 px-6" style={{ animationPlayState: marqueePaused ? 'paused' : 'running' }}>
-          {ext.map((review,i) => (
-            <div key={i} className="w-[360px] md:w-[420px] p-8 bg-gray-50 rounded-3xl shadow-sm border border-gray-100 flex-shrink-0 cursor-default hover:shadow-lg transition-shadow duration-300">
-              <div className="flex items-center gap-1 mb-5">{[...Array(5)].map((_,j)=><Star key={j} className="w-5 h-5 text-amber-400 fill-current"/>)}</div>
-              <p className="text-gray-600 mb-8 leading-relaxed min-h-[100px]">&ldquo;{review.text}&rdquo;</p>
-              <div className="flex items-center justify-between border-t border-gray-200 pt-4">
-                <span className="text-gray-900 font-bold">{review.name}</span>
-                <span className="text-gray-400 text-sm">{review.date}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 // ─── CTA Section ──────────────────────────────────────────────────────────────
 function CTASection() {
   const t = useTranslations('home.cta');
@@ -1085,7 +1037,7 @@ export default function HomeClient({ sanityImages = emptyHomeSanityImages }: { s
         <QuoteAnalyzerSection />
         <LabShowcase imageUrl={sanityImages.labImage} />
         <FeaturedPricesSection sanityImages={sanityImages.services} />
-        <ReviewsSection />
+        <GoogleReviewsCta />
         <CTASection />
         <FAQSection />
       </main>

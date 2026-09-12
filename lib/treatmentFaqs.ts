@@ -8,7 +8,7 @@ export const treatmentFaqs: Record<string, { q: string; a: string }[]> = {
   ],
   implantatum: [
     { q: 'Mennyibe kerül egy implantátum?', a: 'Az Alpha Bio és DIO implantátumok beültetése 190.000 Ft-tól indul. Pontos árat a 3D CT felvétel után tudunk adni.' },
-    { q: 'Fáj a beültetés?', a: 'Nem. Modern érzéstelenítéssel teljesen fájdalommentes, sok páciens szerint könnyebb, mint egy foghúzás.' },
+    { q: 'Fáj a beültetés?', a: 'Helyi érzéstelenítést alkalmazunk, ezért a beavatkozás közbeni fájdalmat igyekszünk minimálisra csökkenteni. Nyomásérzés és átmeneti utópanasz előfordulhat.' },
     { q: 'Meddig tart a gyógyulás?', a: 'A csontosodás általában 3-6 hónapot vesz igénybe.' },
     { q: 'Miért olcsóbb a Crown Dental?', a: 'A saját, helyben lévő laborunk miatt nem kell közvetítői díjakat fizetnie, ez Önnek megtakarítás.' },
   ],
@@ -25,7 +25,7 @@ export const treatmentFaqs: Record<string, { q: string; a: string }[]> = {
     { q: 'Mennyi ideig bírja egy korona?', a: 'Jó szájhigiénia mellett 10-15 évig, de akár élethosszig is kitarthat.' },
   ],
   gyokerkezeles: [
-    { q: 'Fájni fog a gyökérkezelés?', a: 'A mai modern érzéstelenítőkkel a gyökérkezelés teljesen fájdalommentes. A kellemetlenséget általában az otthoni fogfájás okozza, amit ez a beavatkozás azonnal megszüntet.' },
+    { q: 'Fájni fog a gyökérkezelés?', a: 'Helyi érzéstelenítést alkalmazunk, ezért a kezelés közbeni fájdalmat igyekszünk minimálisra csökkenteni. Nyomásérzés és átmeneti érzékenység előfordulhat.' },
     { q: 'Hány alkalom szükséges a teljes kezeléshez?', a: 'Ez a gyulladás mértékétől függ. Könnyebb esetekben egy alkalommal elvégezhető a végleges tömés. Erősebb gyulladásnál 2-3 alkalom szükséges.' },
     { q: 'Miért sötétedik el néha a gyökérkezelt fog?', a: 'Mivel a fog elveszíti az élő ideg- és vérellátását, az évek során hajlamos elszíneződésre. Ez esztétikai fogászattal orvosolható.' },
     { q: 'Mikor kell koronát tenni a gyökérkezelt fogra?', a: 'A gyökérkezelt fog kiszárad és törékenyebbé válik. Főleg a rágófogak esetében szinte minden esetben javasoljuk egy fogvédő korona felhelyezését.' },
@@ -45,7 +45,7 @@ export const treatmentFaqs: Record<string, { q: string; a: string }[]> = {
     { q: 'Milyen gyakran kell fogkőt eltávolíttatni?', a: 'Általában évente 1-2 alkalommal javasolt a professzionális tisztítás.' },
   ],
   foghuzas: [
-    { q: 'Fájni fog a foghúzás?', a: 'A beavatkozás alatt garantáltan nem fog fájdalmat érezni a helyi érzéstelenítésnek köszönhetően. Csupán enyhe feszítő, nyomó érzést tapasztalhat.' },
+    { q: 'Fájni fog a foghúzás?', a: 'A helyi érzéstelenítés célja a beavatkozás alatti fájdalom csökkentése. Enyhe feszítő vagy nyomó érzés előfordulhat, egyéni érzékenység esetén pedig jelezzen az orvosnak.' },
     { q: 'Mit ehetek és ihatok a foghúzás után?', a: 'A húzást követően javasolt kerülni a tejtermékeket, apró magvas, valamint forró és fűszeres ételeket.' },
     { q: 'Mikor moshatok újra fogat?', a: 'Fogat mosni már aznap este lehet és kell is, de a foghúzás helyét el kell kerülni, hogy a kialakult vérdugó ne sérüljön meg.' },
     { q: 'Mikor pótolható a kihúzott fog implantátummal?', a: 'Ha a gyulladás mértéke megengedi, az implantátum beültetése esetenként azonnal megtörténhet. Egyébként a csont regenerálódását kell megvárni, ami általában 3-4 hónap.' },
@@ -65,7 +65,7 @@ export const treatmentFaqs: Record<string, { q: string; a: string }[]> = {
   gockutatas: [
     { q: 'Mi az a fogászati gócbetegség?', a: 'Egy krónikus, nem megfelelően kezelt fogászati gyulladás (pl. gyulladt gyökércsúcs) áttételesen más szerveket is megbetegíthet, pl. ízületet, szívet, vesét.' },
     { q: 'Milyen tünetek utalhatnak fogászati gócra?', a: 'Ismeretlen eredetű fáradtság, visszatérő ízületi fájdalom, hajhullás, szívdobogás-érzés, vagy krónikus fejfájás esetén érdemes góckutatást végezni.' },
-    { q: 'Fájdalmas a góckutatás?', a: 'Nem, ez egy diagnosztikai vizsgálat (röntgen, CT, klinikai vizsgálat), amely teljesen fájdalommentes.' },
+    { q: 'Fájdalmas a góckutatás?', a: 'A klinikai vizsgálat és a képalkotás általában nem jár fájdalommal, de egy érzékeny vagy gyulladt terület vizsgálata átmeneti kellemetlenséget okozhat.' },
     { q: 'Mennyi ideig tart a vizsgálat?', a: 'A teljes góckutatás, beleértve a 3D CT felvételt és az értékelést, általában 30-60 percet vesz igénybe.' },
   ],
   gyerekfogaszat: [
@@ -75,7 +75,7 @@ export const treatmentFaqs: Record<string, { q: string; a: string }[]> = {
     { q: 'Mi az a barázdazárás?', a: 'A rágófogak mélyedéseit fogászati anyaggal zárjuk le, így a fogszú nem tud megtelepedni. Egyszerű, fájdalommentes és rendkívül hatékony megelőzés.' },
   ],
   szajsebeszet: [
-    { q: 'Fájdalmas a bölcsességfog-húzás?', a: 'Nem. Modern érzéstelenítéssel teljesen fájdalommentes. Utána 1-2 napig enyhe duzzanat és érzékenység előfordulhat, amit fájdalomcsillapítóval kezelünk.' },
+    { q: 'Fájdalmas a bölcsességfog-húzás?', a: 'A beavatkozás előtt helyi érzéstelenítést alkalmazunk. Nyomásérzés, majd a beavatkozás után fájdalom, duzzanat vagy érzékenység előfordulhat; kövesse a kezelőorvos utasításait.' },
     { q: 'Mennyi ideig tart a gyógyulás foghúzás után?', a: 'A lágyszöveti gyógyulás 7-10 nap, a teljes csontregeneráció 3-4 hónap. A mindennapi tevékenységet már másnap folytathatja.' },
     { q: 'Mikor szedhetők a varatok?', a: 'A varratszedés általában 7-10 nappal a beavatkozás után történik egy rövid kontrollvizsgálaton.' },
     { q: 'Mikor pótolhatom a kihúzott fogat?', a: 'Az implantátum beültetésére általában 3-4 hónapot kell várni a csont gyógyulásáig, de esetenként azonnal is elvégezhető.' },

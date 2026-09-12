@@ -55,9 +55,10 @@ const client = createClient({
   useCdn: false,
 });
 
-// Avoid regenerating every article every few minutes when crawlers visit it.
-// Publishing through the admin API invalidates the affected article at once.
-export const revalidate = 86400;
+// Only build slugs returned by Sanity. This prevents bots from creating an
+// unbounded number of ISR entries for arbitrary /blog/[slug] URLs.
+export const dynamicParams = false;
+export const revalidate = 604800;
 
 export async function generateStaticParams(): Promise<Array<{ locale: string; slug: string }>> {
   try {
@@ -67,7 +68,7 @@ export async function generateStaticParams(): Promise<Array<{ locale: string; sl
         "locale": coalesce(language, "hu")
       }`,
       {},
-      { next: { revalidate: 86400 } },
+      { next: { revalidate } },
     );
     const supportedLocales = new Set(['hu', 'en', 'sk', 'de']);
     const unique = new Map<string, { locale: string; slug: string }>();
@@ -107,7 +108,7 @@ const getPost = cache(async (locale: string, slug: string): Promise<BlogPost | n
   return client.fetch(
     query,
     { slug: sanityBlogSlug(slug), language: locale },
-    { next: { revalidate: 86400 } },
+    { next: { revalidate } },
   );
 });
 
@@ -133,7 +134,7 @@ async function getConsolidatedPost(locale: string, slug: string): Promise<BlogPo
 
 const getPostLanguageBySlug = cache(async (slug: string): Promise<{ language: string } | null> => {
   const query = `*[_type == "post" && slug.current == $slug][0]{"language": coalesce(language, "hu")}`;
-  return client.fetch(query, { slug }, { next: { revalidate: 86400 } });
+  return client.fetch(query, { slug }, { next: { revalidate } });
 });
 
 export async function generateMetadata(props: BlogPostPageProps): Promise<Metadata> {

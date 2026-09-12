@@ -87,7 +87,7 @@
           "tag": "30 Years of Experience",
           "titleTop": "A new smile,",
           "titleBottom": "a new confidence.",
-          "subtitle": "More than 15,000 successful treatments prove our expertise. Trust us with your smile!",
+          "subtitle": "Working in Esztergom since 1994 with in-house dental laboratory support. Discover our approach.",
           "primaryText": "Book Appointment"
         }
       ]
@@ -170,7 +170,7 @@
       "title": "The key to perfection: everything made in-house.",
       "features": [
         "CAD/CAM digital design and manufacturing",
-        "Crowns, bridges, dentures in as little as 3 days",
+        "Production and fitting coordinated with the treatment plan",
         "Instant repairs and adjustments on-site",
         "No middleman surcharge — you save directly",
         "Premium materials: zirconia, porcelain, PEEK"
@@ -195,25 +195,14 @@
       ]
     },
     "reviews": {
-      "label": "Reviews",
-      "title": "What our patients say",
-      "ratingCount": "(320+ reviews)",
-      "items": [
-        { "name": "Kovács Mária", "text": "I've been coming here for 10 years — best decision ever. My kids come too, we've never been disappointed.", "date": "March 2026" },
-        { "name": "Nagy József", "text": "Very professional, my implant turned out perfect. Had to wait a bit for an appointment but it was absolutely worth it.", "date": "February 2026" },
-        { "name": "Szabó Anna", "text": "The crown was ready in 3 days thanks to the in-house lab. I was very nervous but it was completely painless!", "date": "January 2026" },
-        { "name": "Tóth Gábor", "text": "I've been going exclusively to them for 8 years. Always friendly, fast, and they work with the most modern equipment.", "date": "December 2025" },
-        { "name": "Horváth Éva", "text": "My removable denture turned out beautifully, the technician could correct the shade right away. Great professionals.", "date": "November 2025" },
-        { "name": "Varga Péter", "text": "I've been a patient for 5 years. For the first time in my life I don't have a stomachache going to the dentist — they're so empathetic.", "date": "October 2025" },
-        { "name": "Kiss László", "text": "Had a complex root canal but they saved my tooth. Precise, fast and thorough work.", "date": "September 2025" },
-        { "name": "Farkas Zita", "text": "I've been their loyal patient for 10 years. I can only recommend them to anyone looking for a dentist!", "date": "July 2025" },
-        { "name": "Molnár Katalin", "text": "I had teeth whitening done, the result is amazing. Parking is a bit tricky but the clinic is superb.", "date": "May 2025" },
-        { "name": "Balogh Tamás", "text": "They replaced my entire upper row with zirconia crowns. They feel like my own teeth. Fantastic work!", "date": "March 2025" }
-      ]
+      "label": "Independent reviews",
+      "title": "Google reviews",
+      "ratingCount": "Current details on Google",
+      "items": []
     },
     "cta": {
       "title": "Ready to take the first step?",
-      "subtitle": "Book an appointment online, or give us a call — and experience the Crown Dental difference in person.",
+      "subtitle": "Book an appointment online or call us to discuss the most appropriate next step.",
       "bookOnline": "Book Appointment Online"
     },
     "faq": {
@@ -235,7 +224,7 @@
         },
         {
           "question": "What implants do you use?",
-          "answer": "We exclusively use premium, world-brand implants (e.g. Alpha Bio, DIO). These come with a lifetime guarantee and an excellent osseointegration rate (above 98%)."
+          "answer": "We work with Alpha Bio and DIO implant systems. The suitable system, expected outcome and any guarantee terms depend on the individual assessment, treatment plan and written guarantee policy."
         },
         {
           "question": "When should I see an orthodontist?",
@@ -317,9 +306,9 @@
     "story2Part1": "The strength of our clinic is our",
     "story2Bold": "in-house dental laboratory",
     "story2Part2": ". Since we handle everything internally, we are faster and more affordable.",
-    "story3Part1": "Today we are responsible for the smiles of more than",
-    "story3Bold": "15,000 satisfied patients",
-    "story3Part2": ".",
+    "story3Part1": "Our work is built on",
+    "story3Bold": "direct collaboration between dentist and dental technician",
+    "story3Part2": "throughout each individual treatment plan.",
     "storySince": "For your smile, since the very beginning."
   },
 
@@ -337,7 +326,7 @@
     "benefitsSubtitle": "A professional community.",
     "benefits": [
       { "title": "Outstanding benefits", "desc": "We guarantee a competitive salary above market rate and true recognition." },
-      { "title": "Doctor-Technician Synergy", "desc": "Since the practice and the lab are in one place, instant consultation is guaranteed." },
+      { "title": "Doctor-Technician Synergy", "desc": "Because the practice and lab are in one place, the team can coordinate quickly when needed." },
       { "title": "Continuous Growth", "desc": "With us, you can become a better professional day by day using the latest technologies." },
       { "title": "Supportive Atmosphere", "desc": "Everyone is equally valued here — an important link in the team." }
     ],
@@ -367,7 +356,7 @@
     "badge": "Crown Dental Magazine",
     "mainTitle": "Dental",
     "mainTitleHighlight": "Knowledge Hub",
-    "description1": "Welcome to the Crown Dental blog! Our expert doctors created this knowledge hub to provide you with clear, reliable information on everyday oral care and dental treatments.",
+    "description1": "Welcome to the Crown Dental blog. Our knowledge hub offers clear, source-backed information on everyday oral care and dental treatments.",
     "description2": "Whether it's the right brushing technique, modern implants, or the benefits of painless treatments — you'll find the answer to every question here.",
     "freshPost": "New article",
     "readMore": "Read more",
@@ -381,10 +370,10 @@
     "statsLabel": "Our Clinic in Numbers",
     "statsTitle": "Our results, at your service",
     "stats": [
-      { "end": 30, "suffix": "+", "text": "Years of Experience", "desc": "In practice since 1994" },
-      { "end": 15000, "suffix": "+", "text": "Satisfied Patients", "desc": "Trusted by generations" },
-      { "end": 40, "suffix": "%", "text": "Savings", "desc": "Thanks to our in-house lab" },
-      { "end": 3, "suffix": " days", "text": "Crown Fabrication", "desc": "Ultra-fast prosthetics" }
+      { "end": 1994, "suffix": "", "text": "Founded", "desc": "Decades of local presence" },
+      { "end": 1, "suffix": "", "text": "In-house dental lab", "desc": "On-site technical support" },
+      { "end": 4, "suffix": "", "text": "Languages", "desc": "HU, EN, SK and DE" },
+      { "end": 7, "suffix": " days", "text": "Clinic availability", "desc": "Weekdays and weekends" }
     ],
     "reviewsTitle": "Our patients said"
   },
@@ -432,8 +421,8 @@
     "heroTitle1": "Dental",
     "heroTitle2": "Treatments",
     "heroSubtitleStart": "Choose a treatment from the cards below, or scroll down for the full price list. Thanks to our in-house dental laboratory, we offer prices",
-    "heroSavings": "up to 40% lower",
-    "heroSubtitleEnd": "than the market average.",
+    "heroSavings": "transparent, directly coordinated",
+    "heroSubtitleEnd": "pricing.",
     "cardDetails": "Details",
     "priceListTitle": "Our Full Price List",
     "priceListSubtitle": "Transparent pricing, with no hidden costs.",
@@ -599,7 +588,7 @@
     "implantatum": {
       "heroBadge": "Premium Service",
       "heroTitle": "Dental Implants",
-      "heroDesc": "A permanent solution for missing teeth — premium implants from our own laboratory, up to 40% more affordable.",
+      "heroDesc": "A durable option for missing teeth using Alpha Bio and DIO implant systems, based on an individual treatment plan.",
       "heroPriceLabel": "Prices from",
       "heroPriceValue": "190,000 HUF",
       "quoteAnalyzerBadge": "AI Price Calculator",
@@ -610,14 +599,14 @@
       "problemTitle": "The Problem: Missing Teeth",
       "problemDesc": "A gap in your smile is not just an aesthetic problem — neighbouring teeth shift, bone recedes. A traditional bridge requires grinding down healthy teeth.",
       "solutionTitle": "The Solution: Dental Implants",
-      "solutionDesc": "An implant replaces the natural tooth root with a titanium screw. No need to touch neighbouring teeth, and our own laboratory makes it up to 40% cheaper.",
+      "solutionDesc": "An implant is a titanium artificial root used to replace a missing tooth. Preparing neighbouring teeth can often be avoided; suitability is decided after examination and imaging.",
       "benefitsBadge": "Why Choose Us?",
       "benefitsTitle": "Advantages of Implantation",
       "benefitItems": [
-        { "title": "Lifetime Guarantee", "desc": "We offer a lifetime guarantee on the implant and a 5-year guarantee on the crown." },
-        { "title": "Fast Turnaround", "desc": "Own lab = no waiting. The crown can be ready in as little as 3–5 days." },
-        { "title": "Transparent Pricing", "desc": "No hidden costs. The price given at consultation does not change until the end of treatment." },
-        { "title": "Painless", "desc": "With modern anaesthesia the procedure is painless and fast." },
+        { "title": "Written guarantee terms", "desc": "Coverage and duration depend on the implant system, restoration, follow-up visits and individual circumstances." },
+        { "title": "Coordinated production", "desc": "Our in-house lab allows direct coordination; timing depends on the individual treatment plan." },
+        { "title": "Transparent pricing", "desc": "After examination we provide a written treatment plan and quote; any necessary change is discussed in advance." },
+        { "title": "Local anaesthesia", "desc": "Anaesthesia is used to reduce procedural pain; pressure or temporary sensitivity may still occur." },
         { "title": "Premium Materials", "desc": "We work with high-quality Alpha Bio and DIO implants." },
         { "title": "30 Years' Experience", "desc": "Thousands of successful placements behind us. Your safety is our priority." }
       ],
@@ -632,7 +621,7 @@
       ],
       "faqs": [
         { "q": "How much does an implant cost?", "a": "Alpha Bio and DIO implant placement starts from 190,000 HUF. An exact price can be given after the 3D CT scan." },
-        { "q": "Does the placement hurt?", "a": "No. With modern anaesthesia it is completely painless — many patients say it is easier than a tooth extraction." },
+        { "q": "Does the placement hurt?", "a": "We use local anaesthesia to minimise pain during the procedure. Pressure and temporary discomfort afterwards may occur." },
         { "q": "How long does healing take?", "a": "Osseointegration generally takes 3–6 months." },
         { "q": "Why is Crown Dental cheaper?", "a": "Because our lab is on-site, you don't pay intermediary fees — that saving is passed on to you." }
       ]
@@ -733,7 +722,7 @@
       ],
       "benefitsTitle": "The Secret to Successful Treatment",
       "benefitItems": [
-        { "title": "Pain-Free", "desc": "Treatment is performed under maximum-efficacy anaesthesia, making the procedure completely painless." },
+        { "title": "Local anaesthesia", "desc": "Anaesthesia aims to reduce treatment pain; pressure or temporary sensitivity may still occur." },
         { "title": "Save Your Own Tooth", "desc": "Nothing is better than your natural tooth! Root canal treatment is the last and best chance to avoid extraction." },
         { "title": "Mechanical Canal Preparation", "desc": "We use modern rotary instruments for fast and precise canal cleaning." },
         { "title": "Lasting Result", "desc": "A disinfected and hermetically sealed tooth can serve problem-free for decades, even a lifetime." }
@@ -748,7 +737,7 @@
       "ctaTitle": "Save Your Tooth from Extraction!",
       "ctaDesc": "Severe toothache is a warning sign. Don't delay — book a specialist consultation today!",
       "faqs": [
-        { "q": "Will root canal treatment hurt?", "a": "With today's modern anaesthetics root canal treatment is completely painless. The discomfort is usually caused by the toothache beforehand, which this procedure immediately relieves." },
+        { "q": "Will root canal treatment hurt?", "a": "We use local anaesthesia to minimise pain during treatment. Pressure and temporary sensitivity after treatment may still occur." },
         { "q": "How many visits are needed?", "a": "This depends on the severity of the infection. In simpler cases the final filling can be done in one visit. Severe infections may require 2–3 visits." },
         { "q": "Why does a root-treated tooth sometimes darken?", "a": "Because the tooth loses its living nerve and blood supply, it can discolour over the years. This can be corrected with cosmetic dentistry." },
         { "q": "When does a root-treated tooth need a crown?", "a": "A root-treated tooth dries out and becomes more brittle. Especially for molars, a protective crown is almost always recommended." }
@@ -880,7 +869,7 @@
       "ctaTitle": "Put an End to Toothache!",
       "ctaDesc": "Our experienced dentists will help quickly and painlessly. Book an appointment today!",
       "faqs": [
-        { "q": "Will the extraction hurt?", "a": "You are guaranteed not to feel pain during the procedure thanks to local anaesthesia. You may feel mild pressure or tension." },
+        { "q": "Will the extraction hurt?", "a": "Local anaesthesia is intended to reduce pain during the procedure. You may feel mild pressure or tension; tell the dentist if you feel discomfort." },
         { "q": "What can I eat and drink after extraction?", "a": "It is recommended to avoid dairy products, foods with small seeds, and hot or spicy food." },
         { "q": "When can I brush my teeth again?", "a": "You can and should brush your teeth the same evening, but avoid the extraction site to protect the blood clot." },
         { "q": "When can an implant replace the extracted tooth?", "a": "If the level of infection allows, the implant can sometimes be placed immediately. Otherwise bone regeneration must be awaited, typically 3–4 months." }
@@ -1051,7 +1040,7 @@
       "problemTitle": "The Problem: Infections, Painful Teeth",
       "problemDesc": "Partially erupted wisdom teeth growing in the wrong direction, impacted roots, or chronic inflammations can cause severe pain and focal infections. Many people postpone treatment out of fear of pain.",
       "solutionTitle": "The Solution: Expert Oral Surgery",
-      "solutionDesc": "Modern anaesthetic techniques guarantee a painless procedure. Our experienced specialist surgeons perform even the most complex oral surgery gently.",
+      "solutionDesc": "We use local anaesthesia and gentle surgical techniques. Pressure during treatment, and pain or swelling afterwards, may vary between patients.",
       "servicesBadge": "Procedures",
       "servicesTitle": "Our Oral Surgery Solutions",
       "services": [

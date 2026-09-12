@@ -87,7 +87,7 @@
           "tag": "30 Év Tapasztalat",
           "titleTop": "Új mosoly,",
           "titleBottom": "új önbizalom.",
-          "subtitle": "Több mint 15.000 sikeres kezelés bizonyítja szakértelmünket. Bízza ránk mosolyát!",
+          "subtitle": "1994 óta dolgozunk Esztergomban saját fogtechnikai laborháttérrel. Ismerje meg szemléletünket!",
           "primaryText": "Időpontfoglalás"
         }
       ]
@@ -170,7 +170,7 @@
       "title": "A tökéletesség kulcsa: minden házon belül készül.",
       "features": [
         "CAD/CAM digitális tervezés és gyártás",
-        "Koronák, hidak, fogsorok akár 3 nap alatt",
+        "A kezeléshez igazított gyártás és próba",
         "Azonnali javítás és módosítás helyben",
         "Nincs közvetítői felár – közvetlenül spórol",
         "Prémium anyagok: cirkónium, porcelán, PEEK"
@@ -195,25 +195,14 @@
       ]
     },
     "reviews": {
-      "label": "Vélemények",
-      "title": "Pácienseink mondták",
-      "ratingCount": "(320+ értékelés)",
-      "items": [
-        { "name": "Kovács Mária", "text": "Már 10 éve járok ide, a legjobb döntés volt. A gyerekeim is ide járnak, sosem csalódtunk a csapatban.", "date": "2026. március" },
-        { "name": "Nagy József", "text": "Nagyon profik, az implantátumom tökéletes lett. Kicsit várni kellett az időpontra, de abszolút megérte.", "date": "2026. február" },
-        { "name": "Szabó Anna", "text": "A korona 3 nap alatt elkészült a saját labor miatt. Nagyon féltem a beavatkozástól, de teljesen fájdalommentes volt!", "date": "2026. január" },
-        { "name": "Tóth Gábor", "text": "8 éve csak hozzájuk járok. Mindig kedvesek, gyorsak és a legmodernebb, legtisztább gépekkel dolgoznak.", "date": "2025. december" },
-        { "name": "Horváth Éva", "text": "Nagyon szép lett a kivehető fogsorom, a technikus azonnal tudott korrigálni a színen. Szuper szakemberek.", "date": "2025. november" },
-        { "name": "Varga Péter", "text": "5 éve vagyok páciens. Életemben először nem gyomorgörccsel megyek fogorvoshoz, nagyon empatikusak.", "date": "2025. október" },
-        { "name": "Kiss László", "text": "Komplikált gyökérkezelésen voltam, de megmentették a fogam. Precíz, gyors és alapos munka.", "date": "2025. szeptember" },
-        { "name": "Farkas Zita", "text": "10 éve hűséges páciensük vagyok. Bárkinek, aki fogorvost keres, csak ajánlani tudom őket!", "date": "2025. július" },
-        { "name": "Molnár Katalin", "text": "Fogfehérítést csináltattam, az eredmény csodálatos. A parkolás kicsit nehézkes, de a rendelő szuper.", "date": "2025. május" },
-        { "name": "Balogh Tamás", "text": "A teljes felső fogsoromat cserélték cirkónium koronákra. Olyan, mintha sajátjaim lennének. Fantasztikus munka!", "date": "2025. március" }
-      ]
+      "label": "Független vélemények",
+      "title": "Google-értékelések",
+      "ratingCount": "Aktuális adatok a Google-on",
+      "items": []
     },
     "cta": {
       "title": "Készen áll az első lépésre?",
-      "subtitle": "Foglaljon időpontot online, vagy hívjon minket – és ismerje meg személyesen a Crown Dental különbséget.",
+      "subtitle": "Foglaljon időpontot online, vagy hívjon minket – és ismerje meg személyesen a Crown Dental szemléletét.",
       "bookOnline": "Online időpontfoglalás"
     },
     "faq": {
@@ -235,7 +224,7 @@
         },
         {
           "question": "Milyen implantátumokkal dolgoznak?",
-          "answer": "Kizárólag világmárkás, prémium minőségű implantátumokat használunk (pl. Alpha Bio, DIO). Ezek az implantátumok életre szóló garanciával és kiváló beépülési rátával (98% felett) rendelkeznek."
+          "answer": "Alpha Bio és DIO implantációs rendszerekkel dolgozunk. A választható rendszer, a várható eredmény és az esetleges garancia feltételei az egyéni vizsgálattól, a kezelési tervtől és az írásos garanciális szabályzattól függenek."
         },
         {
           "question": "Mikor érdemes fogszabályozó orvoshoz fordulni?",
@@ -317,9 +306,9 @@
     "story2Part1": "Klinikánk ereje a",
     "story2Bold": "saját fogtechnikai laboratóriumunk",
     "story2Part2": ". Mivel mindent házon belül oldunk meg, gyorsabbak és kedvezőbbek vagyunk.",
-    "story3Part1": "Ma már több mint",
-    "story3Bold": "15.000 elégedett páciens",
-    "story3Part2": "mosolyáért felelünk.",
+    "story3Part1": "Munkánk alapja a",
+    "story3Bold": "fogorvos és fogtechnikus közvetlen együttműködése",
+    "story3Part2": "az egyéni kezelési terv minden lépésében.",
     "storySince": "Óta a te mosolyodért."
   },
 
@@ -337,7 +326,7 @@
     "benefitsSubtitle": "Szakmai közösség.",
     "benefits": [
       { "title": "Kiemelkedő juttatások", "desc": "Versenyképes, a piacinál magasabb fizetést és megbecsülést garantálunk." },
-      { "title": "Orvos-Technikus Szinergia", "desc": "Mivel a praxis és a labor egy helyen van, az azonnali egyeztetés garantált." },
+      { "title": "Orvos-Technikus Szinergia", "desc": "Mivel a praxis és a labor egy helyen van, szükség esetén gyorsan egyeztethetünk." },
       { "title": "Folyamatos Fejlődés", "desc": "Nálunk napról napra jobb szakemberré válhat a modern technológiák használatával." },
       { "title": "Támogató Légkör", "desc": "Nálunk mindenki egyenrangú, fontos láncszeme a csapatnak." }
     ],
@@ -367,7 +356,7 @@
     "badge": "Crown Dental Magazin",
     "mainTitle": "Fogászati",
     "mainTitleHighlight": "Tudástár",
-    "description1": "Üdvözöljük a Crown Dental fogászati blogján! Szakértő orvosaink azért hozták létre ezt a tudástárat, hogy érthető, hiteles információkkal segítsék Önt a mindennapi szájápolásban és a fogászati kezelések megismerésében.",
+    "description1": "Üdvözöljük a Crown Dental fogászati blogján! Tudástárunk közérthető, forrásokkal alátámasztott információkkal segít a mindennapi szájápolásban és a fogászati kezelések megismerésében.",
     "description2": "Legyen szó a megfelelő fogmosási technikáról, a modern implantátumokról, vagy a fájdalommentes kezelések előnyeiről, nálunk minden kérdésére választ talál.",
     "freshPost": "Friss cikk",
     "readMore": "Olvasd tovább",
@@ -381,10 +370,10 @@
     "statsLabel": "Klinikánk Számokban",
     "statsTitle": "Eredményeink az Önök szolgálatában",
     "stats": [
-      { "end": 30, "suffix": "+", "text": "Év Tapasztalat", "desc": "1994 óta a pályán" },
-      { "end": 15000, "suffix": "+", "text": "Elégedett Páciens", "desc": "Generációk bizalma" },
-      { "end": 40, "suffix": "%", "text": "Megtakarítás", "desc": "Saját laborunk miatt" },
-      { "end": 3, "suffix": " nap", "text": "Korona Elkészítés", "desc": "Villámgyors fogpótlás" }
+      { "end": 1994, "suffix": "", "text": "Alapítás éve", "desc": "Több évtizedes jelenlét" },
+      { "end": 1, "suffix": "", "text": "Saját fogtechnikai labor", "desc": "Helyben működő háttér" },
+      { "end": 4, "suffix": "", "text": "Nyelv", "desc": "HU, EN, SK és DE" },
+      { "end": 7, "suffix": " nap", "text": "Elérhető rendelő", "desc": "Hétköznap és hétvégén" }
     ],
     "reviewsTitle": "Pácienseink mondták"
   },
@@ -432,7 +421,7 @@
     "heroTitle1": "Fogászati",
     "heroTitle2": "Kezeléseink",
     "heroSubtitleStart": "Válassza ki a kezelést az alábbi kártyákból, vagy görgessen lejjebb a teljes árlistáért. Saját fogtechnikai laborunknak köszönhetően",
-    "heroSavings": "akár 40%-kal kedvezőbb",
+    "heroSavings": "átlátható, közvetlenül egyeztetett",
     "heroSubtitleEnd": "árakat biztosítunk.",
     "cardDetails": "Részletek",
     "priceListTitle": "Teljes Árlistánk",
@@ -599,7 +588,7 @@
     "implantatum": {
       "heroBadge": "Prémium Szolgáltatás",
       "heroTitle": "Implantátum",
-      "heroDesc": "Tartós megoldás foghiányra – Prémium implantátumok saját laborból, akár 40%-kal kedvezőbb áron.",
+      "heroDesc": "Tartós megoldás foghiányra Alpha Bio és DIO implantációs rendszerekkel, egyéni kezelési terv alapján.",
       "heroPriceLabel": "Árak már",
       "heroPriceValue": "190.000 Ft-tól",
       "quoteAnalyzerBadge": "AI Ár-kalkulátor",
@@ -610,14 +599,14 @@
       "problemTitle": "A Probléma: Hiányzó fogak",
       "problemDesc": "A lyukas mosoly nemcsak esztétikai probléma – a szomszédos fogak elmozdulnak, a csont visszahúzódik. A hagyományos híd pedig az ép fogak lecsiszolásával jár.",
       "solutionTitle": "A Megoldás: Implantátum",
-      "solutionDesc": "Az implantátum a természetes foggyökér pótlása titán csavarral. Nem kell hozzá a szomszédos fogakat bántani, saját laborunkkal pedig akár 40%-kal olcsóbb.",
+      "solutionDesc": "Az implantátum a hiányzó fog gyökerének pótlására szolgáló titán műgyökér. A szomszédos fogak lecsiszolása sok esetben elkerülhető; az alkalmasságot vizsgálat és képalkotás alapján döntjük el.",
       "benefitsBadge": "Miért minket válasszon?",
       "benefitsTitle": "Az implantáció előnyei",
       "benefitItems": [
-        { "title": "Életre szóló garancia", "desc": "A beültetésre életre szóló, a koronára 5 év garanciát vállalunk." },
-        { "title": "Gyors elkészülés", "desc": "Saját labor = nincs várakozás. A korona akár 3-5 nap alatt elkészül." },
-        { "title": "Átlátható árazás", "desc": "Nincs rejtett költség. A konzultáción kapott ár a kezelés végéig nem változik." },
-        { "title": "Fájdalommentes", "desc": "Modern érzéstelenítéssel a beavatkozás fájdalommentes és gyors." },
+        { "title": "Írásos garanciális feltételek", "desc": "A garancia köre és időtartama az implantációs rendszertől, a pótlástól, a kontrolloktól és az egyéni körülményektől függ." },
+        { "title": "Összehangolt elkészítés", "desc": "A saját labor közvetlen egyeztetést tesz lehetővé; az ütemezés az egyéni kezelési tervtől függ." },
+        { "title": "Átlátható árazás", "desc": "A vizsgálat után írásos kezelési tervet és árajánlatot adunk; változás esetén előzetesen egyeztetünk." },
+        { "title": "Helyi érzéstelenítés", "desc": "Az érzéstelenítés célja a beavatkozás közbeni fájdalom csökkentése; nyomásérzés vagy utóérzékenység előfordulhat." },
         { "title": "Prémium anyagok", "desc": "Kiváló minőségű Alpha Bio és DIO implantátumokkal dolgozunk." },
         { "title": "30 év tapasztalat", "desc": "Több ezer sikeres beültetés áll mögöttünk. Az Ön biztonsága az első." }
       ],
@@ -632,7 +621,7 @@
       ],
       "faqs": [
         { "q": "Mennyibe kerül egy implantátum?", "a": "Az Alpha Bio és DIO implantátumok beültetése 190.000 Ft-tól indul. Pontos árat a 3D CT felvétel után tudunk adni." },
-        { "q": "Fáj a beültetés?", "a": "Nem. Modern érzéstelenítéssel teljesen fájdalommentes, sok páciens szerint könnyebb, mint egy foghúzás." },
+        { "q": "Fáj a beültetés?", "a": "Helyi érzéstelenítést alkalmazunk, ezért a beavatkozás közbeni fájdalmat igyekszünk minimálisra csökkenteni. Nyomásérzés és átmeneti utópanasz előfordulhat." },
         { "q": "Meddig tart a gyógyulás?", "a": "A csontosodás általában 3-6 hónapot vesz igénybe." },
         { "q": "Miért olcsóbb a Crown Dental?", "a": "A saját, helyben lévő laborunk miatt nem kell közvetítői díjakat fizetnie, ez Önnek megtakarítás." }
       ]
@@ -733,7 +722,7 @@
       ],
       "benefitsTitle": "A sikeres kezelés titka",
       "benefitItems": [
-        { "title": "Fájdalommentesség", "desc": "A kezelést maximális hatékonyságú érzéstelenítésben végezzük, így az eljárás teljesen fájdalommentes." },
+        { "title": "Helyi érzéstelenítés", "desc": "Az érzéstelenítés célja a kezelési fájdalom csökkentése; nyomásérzés vagy átmeneti érzékenység előfordulhat." },
         { "title": "Saját fog megmentése", "desc": "Nincs jobb implantátum a saját fognál! A gyökérkezelés az utolsó és legjobb esély a foghúzás elkerülésére." },
         { "title": "Gépi csatornatágítás", "desc": "Modern gépi eszközöket alkalmazunk a gyökércsatornák gyors és precíz tisztításához." },
         { "title": "Tartós eredmény", "desc": "A fertőtlenített és légmentesen lezárt fog hosszú évtizedekig, akár élethosszig problémamentesen szolgálhat." }
@@ -748,7 +737,7 @@
       "ctaTitle": "Mentse meg fogát a húzástól!",
       "ctaDesc": "Az erős fogfájás intő jel. Ne halogassa a kezelést, foglaljon időpontot szakorvosi konzultációra!",
       "faqs": [
-        { "q": "Fájni fog a gyökérkezelés?", "a": "A mai modern érzéstelenítőkkel a gyökérkezelés teljesen fájdalommentes. A kellemetlenséget általában az otthoni fogfájás okozza, amit ez a beavatkozás azonnal megszüntet." },
+        { "q": "Fájni fog a gyökérkezelés?", "a": "Helyi érzéstelenítést alkalmazunk, ezért a kezelés közbeni fájdalmat igyekszünk minimálisra csökkenteni. Nyomásérzés, illetve a kezelés után átmeneti érzékenység előfordulhat." },
         { "q": "Hány alkalom szükséges a teljes kezeléshez?", "a": "Ez a gyulladás mértékétől függ. Könnyebb esetekben egy alkalommal elvégezhető a végleges tömés. Erősebb gyulladásnál 2-3 alkalom szükséges." },
         { "q": "Miért sötétedik el néha a gyökérkezelt fog?", "a": "Mivel a fog elveszíti az élő ideg- és vérellátását, az évek során hajlamos elszíneződésre. Ez esztétikai fogászattal orvosolható." },
         { "q": "Mikor kell koronát tenni a gyökérkezelt fogra?", "a": "A gyökérkezelt fog kiszárad és törékenyebbé válik. Főleg a rágófogak esetében szinte minden esetben javasoljuk egy fogvédő korona felhelyezését." }
@@ -880,7 +869,7 @@
       "ctaTitle": "Vessen véget a fogfájásnak!",
       "ctaDesc": "Tapasztalt orvosaink gyorsan és fájdalommentesen segítenek a problémán. Foglaljon időpontot még ma!",
       "faqs": [
-        { "q": "Fájni fog a foghúzás?", "a": "A beavatkozás alatt garantáltan nem fog fájdalmat érezni a helyi érzéstelenítésnek köszönhetően. Csupán enyhe feszítő, nyomó érzést tapasztalhat." },
+        { "q": "Fájni fog a foghúzás?", "a": "A helyi érzéstelenítés célja a beavatkozás alatti fájdalom csökkentése. Enyhe feszítő vagy nyomó érzés előfordulhat; ha kellemetlenséget érez, jelezze az orvosnak." },
         { "q": "Mit ehetek és ihatok a foghúzás után?", "a": "A húzást követően javasolt kerülni a tejtermékeket, apró magvas, valamint forró és fűszeres ételeket." },
         { "q": "Mikor moshatok újra fogat?", "a": "Fogat mosni már aznap este lehet és kell is, de a foghúzás helyét el kell kerülni, hogy a kialakult vérdugó ne sérüljön meg." },
         { "q": "Mikor pótolható a kihúzott fog implantátummal?", "a": "Ha a gyulladás mértéke megengedi, az implantátum beültetése esetenként azonnal megtörténhet. Egyébként a csont regenerálódását kell megvárni, ami általában 3-4 hónap." }
@@ -1051,7 +1040,7 @@
       "problemTitle": "A Probléma: Gyulladások, fájó fogak",
       "problemDesc": "A félig kibújt, rossz irányba növő bölcsességfogak, a betört gyökerek vagy a krónikus gyulladások komoly fájdalmat és gócbetegségeket okozhatnak. Sokan halogatják a beavatkozást a fájdalomtól való félelem miatt.",
       "solutionTitle": "A Megoldás: Szakszerű Szájsebészet",
-      "solutionDesc": "Modern érzéstelenítési technikákkal garantáljuk a fájdalommentes beavatkozást. Tapasztalt szakorvosaink a legkomplexebb szájsebészeti műtéteket is kíméletesen végzik el.",
+      "solutionDesc": "Helyi érzéstelenítést és kíméletes műtéti technikákat alkalmazunk. A beavatkozás közben nyomásérzés, utána pedig fájdalom vagy duzzanat egyénenként előfordulhat.",
       "servicesBadge": "Beavatkozások",
       "servicesTitle": "Szájsebészeti megoldásaink",
       "services": [

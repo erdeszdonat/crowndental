@@ -4,10 +4,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useLocale } from 'next-intl';
-import { motion, AnimatePresence, useScroll, useTransform, useInView } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { createClient } from 'next-sanity';
 import { dataset, projectId } from '@/sanity/env';
 import locationGerman from '@/messages/location-de.json';
+import { GOOGLE_BUSINESS_URL } from '@/lib/seo';
+import GoogleReviewsCta from '@/components/GoogleReviewsCta';
+import { translateLocationGerman } from '@/lib/locationGermanFallback';
 import {
   MapPin,
   Phone,
@@ -69,7 +72,7 @@ function useTreatmentImage(slug: string) {
 const germanText = locationGerman.esztergom as Record<string, string>;
 
 function de(value: string) {
-  return germanText[value] ?? value;
+  return germanText[value] ?? translateLocationGerman(value);
 }
 
 function t(locale: string, hu: string, en: string, sk: string) {
@@ -99,55 +102,55 @@ const servicesBase = [
 ];
 
 const servicesHu = [
-  { title: 'Fogimplantátum', description: 'Tartós megoldás foghiányra. Alpha Bio és DIO implantátumok saját laborból, életre szóló garanciával.', price: '190.000 Ft-tól' },
-  { title: 'Cirkónium Korona', description: 'Prémium koronák és hidak 3 nap alatt a saját laborból.', price: '65.000 Ft' },
-  { title: 'Fogfehérítés', description: 'Professzionális fehérítés, akár 8 árnyalattal világosabb 1 óra alatt.', price: '30.000 Ft-tól' },
+  { title: 'Fogimplantátum', description: 'Tartós megoldás foghiányra. Alpha Bio és DIO implantátumok, írásos garanciális feltételekkel.', price: '190.000 Ft-tól' },
+  { title: 'Cirkónium Korona', description: 'Fémmentes koronák és hidak saját fogtechnikai laborunk közreműködésével.', price: '65.000 Ft' },
+  { title: 'Fogfehérítés', description: 'Professzionális fogfehérítés állapotfelmérés és egyéni konzultáció alapján.', price: '30.000 Ft-tól' },
   { title: 'Fogszabályozás', description: 'Láthatatlan sínek és esztétikus készülékek gyerekeknek és felnőtteknek.', price: '60.000 Ft-tól' },
-  { title: 'Kivehető Fogsorok', description: 'Saját laborból, tökéletes illeszkedéssel, azonnali javítási lehetőséggel.', price: '110.000 Ft-tól' },
+  { title: 'Kivehető Fogsorok', description: 'Egyénre szabott megoldások saját laborháttérrel és helyi korrekciós lehetőséggel.', price: '110.000 Ft-tól' },
   { title: 'Szájsebészet', description: 'Bölcsességfog, csontpótlás, szájsebészeti beavatkozások biztos kézzel.', price: 'Egyéni árazás' },
-  { title: 'Gyökérkezelés', description: 'Mikroszkópos precizitással mentjük meg fogait. Fájdalommentes eljárás.', price: '25.000 Ft-tól' },
+  { title: 'Gyökérkezelés', description: 'A fog megtartását célzó kezelés helyi érzéstelenítésben, egyéni kezelési terv alapján.', price: '25.000 Ft-tól' },
   { title: 'Esztétikai Fogászat', description: 'Héjak, veneerek, kompozit restaurációk – álmai mosolya.', price: '40.000 Ft-tól' },
   { title: 'Állapotfelmérés', description: 'Részletes szájvizsgálat és személyre szabott kezelési terv.', price: '10.000 Ft' },
   { title: 'Panoráma Röntgen', description: 'Áttekintő felvétel a teljes fogazatról és az állcsontokról.', price: '8.000 Ft' },
   { title: 'Teleröntgen', description: 'Oldalirányú koponyafelvétel fogszabályozási diagnosztikához és pontos kezeléstervezéshez.', price: '10.000 Ft' },
   { title: '3D CT Felvétel', description: 'Részletes, háromdimenziós képalkotás a pontos diagnózishoz és tervezéshez.', price: '20.000 Ft' },
-  { title: 'Góckutatás', description: '3D CBCT technológiával, rejtett gócok felkutatása és kezelése.', price: '15.000 Ft-tól' },
+  { title: 'Góckutatás', description: 'Fogászati vizsgálat és az indokolt képalkotás a lehetséges gyulladásforrások felmérésére.', price: '15.000 Ft-tól' },
   { title: 'Gyermekfogászat', description: 'Barátságos, stresszmentes környezetben – hogy a kicsiknél is pozitív élmény legyen.', price: '8.000 Ft-tól' },
   { title: 'Fogtechnika', description: 'CAD/CAM tervezés, saját labor – a tökéletesség kulcsa.', price: 'Benne az árban' },
 ];
 
 const servicesEn = [
-  { title: 'Dental Implant', description: 'Permanent solution for missing teeth. Alpha Bio and DIO implants from our in-house lab, with a lifetime guarantee.', price: 'from 190,000 HUF (~€543)' },
-  { title: 'Zirconia Crown', description: 'Premium crowns and bridges ready in just 3 days from our own lab.', price: '65,000 HUF' },
-  { title: 'Teeth Whitening', description: 'Professional whitening — up to 8 shades brighter in just 1 hour.', price: 'from 30,000 HUF (~€86)' },
+  { title: 'Dental Implant', description: 'A durable option for missing teeth using Alpha Bio and DIO systems, subject to written guarantee terms.', price: 'from 190,000 HUF (~€543)' },
+  { title: 'Zirconia Crown', description: 'Metal-free crowns and bridges made with support from our in-house dental laboratory.', price: '65,000 HUF' },
+  { title: 'Teeth Whitening', description: 'Professional whitening planned after an oral assessment and individual consultation.', price: 'from 30,000 HUF (~€86)' },
   { title: 'Orthodontics', description: 'Invisible aligners and aesthetic braces for children and adults.', price: 'from 60,000 HUF (~€172)' },
-  { title: 'Removable Dentures', description: 'Perfect fit from our in-house lab, with immediate adjustment options.', price: 'from 110,000 HUF (~€314)' },
+  { title: 'Removable Dentures', description: 'Individually planned dentures with in-house laboratory support and local adjustment options.', price: 'from 110,000 HUF (~€314)' },
   { title: 'Oral Surgery', description: 'Wisdom tooth removal, bone grafting, and surgical procedures by expert hands.', price: 'Individual pricing' },
-  { title: 'Root Canal Treatment', description: 'Saving your teeth with microscopic precision. Completely painless procedure.', price: 'from 25,000 HUF (~€71)' },
+  { title: 'Root Canal Treatment', description: 'Treatment aimed at retaining the tooth, performed with local anaesthesia and an individual plan.', price: 'from 25,000 HUF (~€71)' },
   { title: 'Aesthetic Dentistry', description: 'Veneers, laminates, composite restorations — your dream smile awaits.', price: 'from 40,000 HUF (~€114)' },
   { title: 'Dental Check-up', description: 'Detailed oral examination and a personalised treatment plan.', price: '10,000 HUF' },
   { title: 'Panoramic X-ray', description: 'An overview image of the complete dentition and jaw bones.', price: '8,000 HUF' },
   { title: 'Cephalometric X-ray', description: 'A lateral skull X-ray for orthodontic diagnostics and accurate treatment planning.', price: '10,000 HUF' },
   { title: '3D CT Scan', description: 'Detailed three-dimensional imaging for accurate diagnosis and treatment planning.', price: '20,000 HUF' },
-  { title: 'Focal Infection Screening', description: '3D CBCT technology to detect and treat hidden focal infections.', price: 'from 15,000 HUF (~€43)' },
+  { title: 'Focal Infection Screening', description: 'Dental examination with clinically indicated imaging to assess possible sources of inflammation.', price: 'from 15,000 HUF (~€43)' },
   { title: 'Pediatric Dentistry', description: 'Friendly, stress-free environment — making dentistry a positive experience for children.', price: 'from 8,000 HUF (~€23)' },
   { title: 'Dental Lab Services', description: 'CAD/CAM design, in-house lab — the key to perfection.', price: 'Included in price' },
 ];
 
 const servicesSk = [
-  { title: 'Zubný implantát', description: 'Trvalé riešenie pre chýbajúce zuby. Implantáty Alpha Bio a DIO z vlastného laboratória, s doživotnou zárukou.', price: 'od 190 000 Ft (~€543)' },
-  { title: 'Zirkónová korunka', description: 'Prémiové korunky a mosty hotové za 3 dni z vlastného laboratória.', price: '65 000 Ft' },
-  { title: 'Bielenie zubov', description: 'Profesionálne bielenie — až o 8 odtieňov svetlejšie za 1 hodinu.', price: 'od 30 000 Ft (~€86)' },
+  { title: 'Zubný implantát', description: 'Trvalé riešenie chýbajúcich zubov so systémami Alpha Bio a DIO podľa písomných záručných podmienok.', price: 'od 190 000 Ft (~€543)' },
+  { title: 'Zirkónová korunka', description: 'Bezkovové korunky a mostíky s podporou nášho vlastného zubnotechnického laboratória.', price: '65 000 Ft' },
+  { title: 'Bielenie zubov', description: 'Profesionálne bielenie naplánované po vyšetrení a individuálnej konzultácii.', price: 'od 30 000 Ft (~€86)' },
   { title: 'Ortodontia', description: 'Neviditeľné dlahičky a estetické aparáty pre deti aj dospelých.', price: 'od 60 000 Ft (~€172)' },
-  { title: 'Snímateľná protéza', description: 'Dokonalé prispôsobenie z vlastného laboratória, okamžitá oprava na mieste.', price: 'od 110 000 Ft (~€314)' },
+  { title: 'Snímateľná protéza', description: 'Individuálne plánované náhrady s podporou vlastného laboratória a možnosťou miestnej úpravy.', price: 'od 110 000 Ft (~€314)' },
   { title: 'Orálna chirurgia', description: 'Extrakcia zubov múdrosti, augmentácia kosti, chirurgické zákroky v skúsených rukách.', price: 'Individuálna cena' },
-  { title: 'Ošetrenie koreňových kanálikov', description: 'Záchrana vašich zubov s mikroskopickou presnosťou. Bezbolestný postup.', price: 'od 25 000 Ft (~€71)' },
+  { title: 'Ošetrenie koreňových kanálikov', description: 'Ošetrenie zamerané na zachovanie zuba v lokálnej anestézii podľa individuálneho plánu.', price: 'od 25 000 Ft (~€71)' },
   { title: 'Estetická stomatológia', description: 'Fazety, laminátové obloženie, kompozitné rekonštrukcie — váš vysnívaný úsmev.', price: 'od 40 000 Ft (~€114)' },
   { title: 'Stomatologická prehliadka', description: 'Podrobné vyšetrenie ústnej dutiny a individuálny liečebný plán.', price: '10 000 Ft' },
   { title: 'Panoramatický RTG', description: 'Prehľadová snímka celého chrupu a čeľustných kostí.', price: '8 000 Ft' },
   { title: 'Teleröntgen', description: 'Bočný snímok lebky pre ortodontickú diagnostiku a presné plánovanie liečby.', price: '10 000 Ft' },
   { title: '3D CT snímka', description: 'Podrobné trojrozmerné zobrazenie pre presnú diagnostiku a plánovanie liečby.', price: '20 000 Ft' },
-  { title: 'Vyšetrenie ložísk infekcie', description: '3D CBCT technológia na odhalenie a liečbu skrytých ohnisiek infekcie.', price: 'od 15 000 Ft (~€43)' },
+  { title: 'Vyšetrenie ložísk infekcie', description: 'Zubné vyšetrenie a podľa potreby zobrazovanie na posúdenie možných zdrojov zápalu.', price: 'od 15 000 Ft (~€43)' },
   { title: 'Detská stomatológia', description: 'Priateľské, bezstresové prostredie — aby bol zubár pre deti pozitívnym zážitkom.', price: 'od 8 000 Ft (~€23)' },
   { title: 'Zubná technika', description: 'CAD/CAM dizajn, vlastné laboratórium — kľúč k dokonalosti.', price: 'V cene' },
 ];
@@ -164,68 +167,27 @@ function getServices(locale: string) {
   return text.map((s, i) => ({ ...s, ...servicesBase[i] }));
 }
 
-// ─── REVIEWS ──────────────────────────────────────────────────────────────
-const reviewsHu = [
-  { name: 'Kovács Mária', rating: 5, text: 'Már 10 éve járok ide, a legjobb döntés volt. A gyerekeim is ide járnak, sosem csalódtunk a csapatban.', date: '2026. február' },
-  { name: 'Nagy József', rating: 4, text: 'Nagyon profik, az implantátumom tökéletes lett. Kicsit várni kellett az időpontra, de abszolút megérte.', date: '2026. január' },
-  { name: 'Szabó Anna', rating: 5, text: 'A korona 3 nap alatt elkészült a saját labor miatt. Nagyon féltem a beavatkozástól, de teljesen fájdalommentes volt!', date: '2025. december' },
-  { name: 'Tóth Gábor', rating: 5, text: '8 éve csak hozzájuk járok. Mindig kedvesek, gyorsak és a legmodernebb, legtisztább gépekkel dolgoznak.', date: '2025. november' },
-  { name: 'Horváth Éva', rating: 4, text: 'Nagyon szép lett a kivehető fogsorom, a technikus azonnal tudott korrigálni a színen. Szuper szakemberek.', date: '2025. október' },
-  { name: 'Varga Péter', rating: 5, text: '5 éve vagyok páciens. Életemben először nem gyomorgörccsel megyek fogorvoshoz, nagyon empatikusak.', date: '2025. szeptember' },
-  { name: 'Kiss László', rating: 5, text: 'Komplikált gyökérkezelésen voltam, de megmentették a fogam. Precíz, gyors és alapos munka.', date: '2025. július' },
-  { name: 'Farkas Zita', rating: 5, text: '10 éve hűséges páciensük vagyok. Bárkinek, aki Esztergomban keres fogorvost, csak ajánlani tudom őket!', date: '2025. május' },
-];
-
-const reviewsEn = [
-  { name: 'Mary Kovacs', rating: 5, text: 'I\'ve been coming here for 10 years — best decision ever. My children come here too, and we\'ve never been disappointed by the team.', date: 'February 2026' },
-  { name: 'Joseph Nagy', rating: 4, text: 'Very professional, my implant turned out perfect. The wait for an appointment was a bit long, but absolutely worth it.', date: 'January 2026' },
-  { name: 'Anna Szabo', rating: 5, text: 'My crown was ready in 3 days thanks to the in-house lab. I was very nervous about the procedure, but it was completely painless!', date: 'December 2025' },
-  { name: 'Gabriel Toth', rating: 5, text: 'I\'ve been coming here for 8 years. Always friendly, fast, and working with the most modern, cleanest equipment.', date: 'November 2025' },
-  { name: 'Eva Horvath', rating: 4, text: 'My removable denture turned out beautifully — the technician immediately adjusted the colour. Superb professionals.', date: 'October 2025' },
-  { name: 'Peter Varga', rating: 5, text: 'I\'ve been a patient for 5 years. For the first time in my life, I don\'t go to the dentist with a stomach ache — they\'re very empathetic.', date: 'September 2025' },
-  { name: 'Ladislaus Kiss', rating: 5, text: 'I had a complex root canal treatment, but they saved my tooth. Precise, fast and thorough work.', date: 'July 2025' },
-  { name: 'Zita Farkas', rating: 5, text: 'I\'ve been a loyal patient for 10 years. For anyone looking for a dentist in Esztergom, I can only recommend them!', date: 'May 2025' },
-];
-
-const reviewsSk = [
-  { name: 'Mária Kováčová', rating: 5, text: 'Chodím sem 10 rokov — najlepšie rozhodnutie. Chodia sem aj moje deti a nikdy sme neboli sklamaní.', date: 'Február 2026' },
-  { name: 'Jozef Novák', rating: 4, text: 'Veľmi profesionáli, môj implantát vyšiel perfektne. Na termín sa čakalo trochu dlhšie, ale oplatilo sa.', date: 'Január 2026' },
-  { name: 'Anna Szabóová', rating: 5, text: 'Korunka bola hotová za 3 dni vďaka vlastnému laboratóriu. Veľmi som sa bála zákroku, ale bol úplne bez bolesti!', date: 'December 2025' },
-  { name: 'Gábor Tóth', rating: 5, text: 'Chodím sem 8 rokov. Vždy priateľskí, rýchli a pracujú s najmodernejšími, najčistejšími prístrojmi.', date: 'November 2025' },
-  { name: 'Eva Horváthová', rating: 4, text: 'Moja snímateľná protéza dopadla nádher — technik hneď upravil farbu. Skvelí odborníci.', date: 'Október 2025' },
-  { name: 'Peter Varga', rating: 5, text: 'Som pacient 5 rokov. Po prvýkrát v živote nechodím k zubárovi so zvieraním v žalúdku — sú veľmi empatickí.', date: 'September 2025' },
-  { name: 'Ladislav Kis', rating: 5, text: 'Absolvoval som komplikované ošetrenie koreňových kanálikov, ale zub mi zachránili. Presná, rýchla a dôkladná práca.', date: 'Júl 2025' },
-  { name: 'Zita Farkaš', rating: 5, text: 'Som verný pacient 10 rokov. Každému, kto hľadá zubára v Ostrihome, ich len odporúčam!', date: 'Máj 2025' },
-];
-
-function getReviews(locale: string) {
-  if (locale === 'de') return reviewsEn.map((review) => ({ ...review, text: de(review.text), date: de(review.date) }));
-  if (locale === 'en') return reviewsEn;
-  if (locale === 'sk') return reviewsSk;
-  return reviewsHu;
-}
-
 // ─── FAQs ─────────────────────────────────────────────────────────────────
 function getFaqs(locale: string): Array<{ question: string; answer: string }> {
   if (locale === 'de') return getFaqs('en').map((faq) => ({ question: de(faq.question), answer: de(faq.answer) }));
   if (locale === 'en') return [
     { question: 'Where can I park near the Esztergom clinic?', answer: 'Paid street parking is available on Petőfi Sándor Street and surrounding streets. As a convenient alternative, the nearby Bástya shopping centre car park or parking spaces around Hősök tere are just a one-to-two-minute walk away.' },
     { question: 'Is the clinic accessible for people with mobility impairments?', answer: 'Yes, the entire clinic is fully accessible. Our ground-floor entrance is easily reachable by wheelchair and pushchair, with no steps or thresholds. There is also a spacious, compliant accessible bathroom available for patients.' },
-    { question: 'Are dental prosthetics made on-site?', answer: 'Yes! Our own modern dental laboratory operates in the same building as our Esztergom clinic. This means crowns, bridges, and denture repairs are completed in record time at much more affordable prices.' },
+    { question: 'Are dental prosthetics made on-site?', answer: 'Yes. Our dental laboratory operates in the same building as the Esztergom clinic, allowing the dentist and dental technician to coordinate production and adjustments directly. Timing and final cost depend on the individual treatment plan.' },
     { question: 'Is the clinic open on weekends in Esztergom?', answer: 'Yes, for the convenience of our patients we hold weekend surgeries on Saturday and Sunday from 08:00 to 20:00, so you can count on us even in the event of sudden pain at the weekend.' },
     { question: 'What payment options are available?', answer: 'You can pay by cash or bank card. We have agreements with almost all major Hungarian health insurance funds, so we can also issue invoices to health fund cards.' },
   ];
   if (locale === 'sk') return [
     { question: 'Kde môžem parkovať pri ordinácii v Ostrihome?', answer: 'Na ulici Petőfi Sándor a okolitých uliciach je spoplatnené parkovanie. Ako pohodlná alternatíva je parkovisko neďalekého nákupného centra Bástya alebo parkovacie miesta pri Hősök tere, ktoré sú len jednu-dve minúty pešo.' },
     { question: 'Je ordinácia prístupná pre pohybovo postihnutých?', answer: 'Áno, celá ordinácia je plne bezbariérová. Náš prízemný vchod je ľahko dostupný pre vozíčkarov aj kočíky, bez schodov a prahov. Pre pacientov je k dispozícii aj priestranná bezbariérová toaleta.' },
-    { question: 'Vyrábajú sa zubné náhrady priamo na mieste?', answer: 'Áno! Naše vlastné moderné zubnotechnické laboratórium sa nachádza v tej istej budove ako naša ordinácia v Ostrihome. Korunky, mosty a opravy protéz sú hotové rekordne rýchlo a za oveľa dostupnejšie ceny.' },
+    { question: 'Vyrábajú sa zubné náhrady priamo na mieste?', answer: 'Áno. Naše zubnotechnické laboratórium je v rovnakej budove ako ambulancia v Ostrihome, takže zubár a technik môžu výrobu aj úpravy koordinovať priamo. Čas a konečná cena závisia od individuálneho plánu.' },
     { question: 'Je ordinácia otvorená aj cez víkend?', answer: 'Áno, pre pohodlie našich pacientov máme cez víkend otvorené v sobotu aj v nedeľu od 08:00 do 20:00, takže pri náhlej bolesti sa môžete na nás spoľahnúť aj cez víkend.' },
     { question: 'Aké možnosti platby sú k dispozícii?', answer: 'Platiť môžete v hotovosti aj platobnou kartou. Máme zmluvy takmer so všetkými väčšími maďarskými zdravotnými poisťovňami, takže môžeme vystaviť faktúru aj na zdravotnú kartu.' },
   ];
   return [
     { question: 'Hol tudok parkolni az esztergomi rendelőnél?', answer: 'A Petőfi Sándor utcában és a környező utcákban fizetős utcai parkolás áll rendelkezésre. Kényelmes alternatívaként érdemes a közeli Bástya áruház parkolóját, vagy a Hősök tere körüli parkolóhelyeket igénybe venni, amik csak egy-két perc sétára vannak.' },
     { question: 'Mozgáskorlátozottak számára is megközelíthető a rendelő?', answer: 'Igen, a teljes rendelő akadálymentesített. Földszinti bejáratunk kerekesszékkel és babakocsival is könnyedén, küszöbök nélkül megközelíthető. Ezen felül tágas, szabványnak megfelelő akadálymentesített mosdó (rokkant WC) is pácienseink rendelkezésére áll.' },
-    { question: 'Helyben készülnek a fogpótlások?', answer: 'Igen! Az esztergomi rendelőnkkel egy épületben működik a saját, modern gépekkel felszerelt fogtechnikai laborunk. Emiatt a fogpótlásokat (koronák, hidak) és a kivehető fogsor javításokat rekordidő alatt, sokkal kedvezőbb áron tudjuk elkészíteni.' },
+    { question: 'Helyben készülnek a fogpótlások?', answer: 'Igen. Fogtechnikai laborunk az esztergomi rendelővel egy épületben működik, így a fogorvos és a fogtechnikus közvetlenül tudja összehangolni a gyártást és a módosításokat. Az elkészítési idő és a végleges ár az egyéni kezelési tervtől függ.' },
     { question: 'Hétvégén is van rendelés Esztergomban?', answer: 'Igen, a pácienseink kényelme érdekében szombaton és vasárnap is tartunk ügyeletet 08:00 és 20:00 óra között, így hirtelen fellépő fájdalom esetén hétvégén is számíthat ránk.' },
     { question: 'Milyen fizetési lehetőségek vannak?', answer: 'Rendelőnkben készpénzzel és bankkártyával is fizethet. Ezen felül szerződésben állunk Magyarország szinte összes nagyobb egészségpénztárával, így EP kártyára is tudunk számlát kiállítani.' },
   ];
@@ -328,7 +290,7 @@ function HeroSection() {
 
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9, duration: 0.6 }} className="flex flex-wrap gap-2 sm:gap-3 mt-6 sm:mt-10">
             {[
-              { icon: <Zap className="w-4 h-4" />, text: t(locale, 'Korona 3 nap alatt', 'Crown in 3 days', 'Korunka za 3 dni') },
+              { icon: <Zap className="w-4 h-4" />, text: t(locale, 'Saját fogtechnikai labor', 'In-house dental laboratory', 'Vlastné zubnotechnické laboratórium') },
               { icon: <Shield className="w-4 h-4" />, text: t(locale, '30 év tapasztalat', '30 years experience', '30 rokov skúseností') },
               { icon: <Clock className="w-4 h-4" />, text: t(locale, 'Hétvégén is 08:00–20:00', 'Weekends 08:00–20:00', 'Víkendy 08:00–20:00') },
             ].map((chip, i) => (
@@ -615,44 +577,21 @@ function ServicesSection() {
   );
 }
 
-function AnimatedNumber({ end, suffix = '', label, desc }: { end: number; suffix?: string; label: string; desc: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
-  const [count, setCount] = useState(0);
-  useEffect(() => {
-    if (!isInView) return;
-    let start = 0;
-    const step = end / (2000 / 16);
-    const timer = setInterval(() => {
-      start += step;
-      if (start >= end) { setCount(end); clearInterval(timer); } else { setCount(Math.ceil(start)); }
-    }, 16);
-    return () => clearInterval(timer);
-  }, [isInView, end]);
-  return (
-    <div ref={ref} className="text-center">
-      <div className="text-5xl md:text-6xl lg:text-7xl font-black text-sky-500 mb-3 tracking-tight tabular-nums">{count.toLocaleString('hu-HU')}{suffix}</div>
-      <div className="text-lg font-bold text-gray-900 mb-1">{label}</div>
-      <p className="text-gray-500 text-sm leading-relaxed max-w-[200px] mx-auto">{desc}</p>
-    </div>
-  );
-}
-
 function WhyUsSection() {
   const locale = useLocale();
   const p = locale === 'hu' ? '' : `/${locale}`;
   const laborImage = useTreatmentImage('fokep1');
-  const stats = [
-    { end: 30, suffix: '+', label: t(locale, 'év tapasztalat', 'years experience', 'rokov skúseností'), desc: t(locale, '1994 óta működünk, generációk bizalmával.', 'Operating since 1994, trusted by generations.', 'Fungujeme od roku 1994, dôvera generácií.') },
-    { end: 10000, suffix: '+', label: t(locale, 'elégedett páciens', 'satisfied patients', 'spokojných pacientov'), desc: t(locale, 'Fiatalok és idősek egyaránt.', 'Young and old alike.', 'Mladí aj starší.') },
-    { end: 40, suffix: '%', label: t(locale, 'megtakarítás', 'savings', 'úspora'), desc: t(locale, 'Saját labor = nincs közvetítő díj.', 'Own lab = no middleman fee.', 'Vlastné lab = žiadny sprostredkovateľský poplatok.') },
-    { end: 3, suffix: t(locale, ' nap', ' days', ' dni'), label: t(locale, 'korona elkészítés', 'crown turnaround', 'zhotovenie korunky'), desc: t(locale, 'Nem hetek, hanem 3 nap alatt kész.', 'Not weeks — ready in just 3 days.', 'Nie týždne — hotové za 3 dni.') },
+  const facts = [
+    { value: t(locale, '1994 óta', 'Since 1994', 'Od roku 1994'), label: t(locale, 'helyi tapasztalat', 'local experience', 'miestne skúsenosti'), desc: t(locale, 'Régóta működő esztergomi rendelő.', 'A long-established clinic in Esztergom.', 'Dlhodobo pôsobiaca ambulancia v Ostrihome.') },
+    { value: t(locale, 'Saját labor', 'In-house lab', 'Vlastné laboratórium'), label: t(locale, 'közvetlen együttműködés', 'direct collaboration', 'priama spolupráca'), desc: t(locale, 'A fogorvos és a fogtechnikus egy csapatban dolgozik.', 'Dentists and dental technicians work as one team.', 'Zubári a zubní technici pracujú v jednom tíme.') },
+    { value: t(locale, '4 nyelv', '4 languages', '4 jazyky'), label: t(locale, 'érthető tájékoztatás', 'clear information', 'zrozumiteľné informácie'), desc: t(locale, 'Magyar, szlovák, angol és német kommunikáció.', 'Communication in Hungarian, Slovak, English and German.', 'Komunikácia po maďarsky, slovensky, anglicky a nemecky.') },
+    { value: t(locale, 'Írásban', 'In writing', 'Písomne'), label: t(locale, 'kezelési terv', 'treatment plan', 'liečebný plán'), desc: t(locale, 'Vizsgálat után átlátható, személyre szabott javaslat.', 'A transparent, personalised proposal after examination.', 'Prehľadný individuálny návrh po vyšetrení.') },
   ];
   const labFeatures = [
     t(locale, 'CAD/CAM digitális tervezés és gyártás', 'CAD/CAM digital design and manufacturing', 'CAD/CAM digitálny dizajn a výroba'),
-    t(locale, 'Koronák, hidak, fogsorok akár 3 nap alatt', 'Crowns, bridges, dentures in as little as 3 days', 'Korunky, mosty, protézy za 3 dni'),
-    t(locale, 'Azonnali javítás és módosítás helyben', 'Immediate repairs and adjustments on-site', 'Okamžitá oprava a úprava na mieste'),
-    t(locale, 'Nincs közvetítői felár – közvetlenül spórol', 'No middleman markup — direct savings for you', 'Žiadna sprostredkovateľská prirážka — priame úspory pre vás'),
+    t(locale, 'A kezeléshez igazított gyártás és próba', 'Production and fitting coordinated with the treatment plan', 'Výroba a skúšky koordinované s liečebným plánom'),
+    t(locale, 'Helyi javítási és módosítási lehetőség az adott esettől függően', 'Local repairs and adjustments where clinically applicable', 'Miestne opravy a úpravy podľa konkrétneho prípadu'),
+    t(locale, 'Közvetlen kommunikáció a fogorvos és a fogtechnikus között', 'Direct communication between dentist and dental technician', 'Priama komunikácia medzi zubárom a zubným technikom'),
     t(locale, 'Prémium anyagok: cirkónium, porcelán, PEEK', 'Premium materials: zirconia, porcelain, PEEK', 'Prémiové materiály: zirkón, porcelán, PEEK'),
   ];
   return (
@@ -660,12 +599,18 @@ function WhyUsSection() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-20">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <span className="text-sky-600 font-bold uppercase tracking-[0.2em] text-sm mb-4 block">{t(locale, 'Tények és Számok', 'Facts & Numbers', 'Fakty a čísla')}</span>
+            <span className="text-sky-600 font-bold uppercase tracking-[0.2em] text-sm mb-4 block">{t(locale, 'Ami számít', 'What matters', 'Na čom záleží')}</span>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-6">{t(locale, 'Miért a Crown Dental?', 'Why Crown Dental?', 'Prečo Crown Dental?')}</h2>
           </motion.div>
         </div>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 max-w-5xl mx-auto mb-20">
-          {stats.map((s, i) => <AnimatedNumber key={i} end={s.end} suffix={s.suffix} label={s.label} desc={s.desc} />)}
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto mb-20">
+          {facts.map((fact) => (
+            <div key={fact.value} className="rounded-3xl border border-gray-100 bg-white p-7 text-center shadow-sm">
+              <div className="mb-3 text-2xl font-black tracking-tight text-sky-600">{fact.value}</div>
+              <div className="mb-2 font-bold text-gray-900">{fact.label}</div>
+              <p className="text-sm leading-relaxed text-gray-500">{fact.desc}</p>
+            </div>
+          ))}
         </div>
         <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-6xl mx-auto">
           <div className="relative rounded-[2rem] overflow-hidden bg-gray-900 shadow-2xl">
@@ -680,7 +625,7 @@ function WhyUsSection() {
                   {t(locale, 'Saját fogtechnikai labor', 'In-house dental lab', 'Vlastné zubnotechnické laboratórium')}
                 </div>
                 <h3 className="text-3xl md:text-4xl font-black text-white mb-6 leading-tight">
-                  {t(locale, 'A tökéletesség kulcsa: minden házon belül készül.', 'The key to perfection: everything made in-house.', 'Kľúč k dokonalosti: všetko vyrábame vo vlastnej réžii.')}
+                  {t(locale, 'A fogorvos és a fogtechnikus közvetlenül együtt dolgozik.', 'Dentists and dental technicians collaborate directly.', 'Zubári a zubní technici spolupracujú priamo.')}
                 </h3>
                 <ul className="space-y-4 mb-8">
                   {labFeatures.map((item, i) => (
@@ -745,52 +690,12 @@ function BeforeAfterBanner() {
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 bg-sky-50 rounded-xl flex items-center justify-center"><Heart className="w-6 h-6 text-sky-600" /></div>
                 <div>
-                  <div className="font-bold text-gray-900 text-lg">4.8 / 5</div>
-                  <div className="text-gray-500 text-sm">{t(locale, 'páciens elégedettség', 'patient satisfaction', 'spokojnosť pacientov')}</div>
+                  <div className="font-bold text-gray-900 text-lg">{t(locale, 'Saját labor', 'In-house lab', 'Vlastné laboratórium')}</div>
+                  <div className="text-gray-500 text-sm">{t(locale, 'közvetlen csapatmunka', 'direct teamwork', 'priama tímová práca')}</div>
                 </div>
               </div>
             </div>
           </motion.div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function ReviewsSection() {
-  const locale = useLocale();
-  const reviews = getReviews(locale);
-  const extendedReviews = [...reviews, ...reviews, ...reviews];
-  return (
-    <section className="py-28 bg-gray-50 border-t border-gray-100 overflow-hidden">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <span className="text-sky-600 font-bold uppercase tracking-[0.2em] text-sm mb-4 block">{t(locale, 'Vélemények', 'Reviews', 'Hodnotenia')}</span>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-8">{t(locale, 'Pácienseink mondták', 'What our patients say', 'Čo hovoria naši pacienti')}</h2>
-            <div className="inline-flex items-center gap-2 bg-white px-6 py-3 rounded-full shadow-sm border border-gray-100">
-              {[...Array(5)].map((_, i) => <Star key={i} className="w-6 h-6 text-amber-400 fill-current" />)}
-              <span className="text-gray-900 font-bold ml-2 text-lg">4.8 / 5</span>
-              <span className="text-gray-500 font-medium ml-1">{t(locale, '(320+ értékelés)', '(320+ reviews)', '(320+ hodnotení)')}</span>
-            </div>
-          </motion.div>
-        </div>
-      </div>
-      <style dangerouslySetInnerHTML={{ __html: `@keyframes marquee-eszt { 0% { transform: translateX(0); } 100% { transform: translateX(-33.3333%); } } .animate-marquee-eszt { display: flex; width: max-content; animation: marquee-eszt 60s linear infinite; } .animate-marquee-eszt:hover { animation-play-state: paused; }` }} />
-      <div className="relative w-full">
-        <div className="absolute left-0 top-0 bottom-0 w-20 md:w-40 bg-gradient-to-r from-gray-50 to-transparent z-10" />
-        <div className="absolute right-0 top-0 bottom-0 w-20 md:w-40 bg-gradient-to-l from-gray-50 to-transparent z-10" />
-        <div className="animate-marquee-eszt gap-6 px-6">
-          {extendedReviews.map((review, i) => (
-            <div key={i} className="w-[360px] md:w-[420px] p-8 bg-white rounded-3xl shadow-sm border border-gray-100 flex-shrink-0 cursor-default hover:shadow-lg transition-shadow duration-300">
-              <div className="flex items-center gap-1 mb-5">{[...Array(5)].map((_, j) => <Star key={j} className={`w-5 h-5 ${j < review.rating ? 'text-amber-400 fill-current' : 'text-gray-200'}`} />)}</div>
-              <p className="text-gray-600 mb-8 leading-relaxed min-h-[100px]">&ldquo;{review.text}&rdquo;</p>
-              <div className="flex items-center justify-between border-t border-gray-50 pt-4">
-                <span className="text-gray-900 font-bold">{review.name}</span>
-                <span className="text-gray-400 text-sm">{review.date}</span>
-              </div>
-            </div>
-          ))}
         </div>
       </div>
     </section>
@@ -925,7 +830,7 @@ function FAQSection() {
 function ContactAndMap() {
   const locale = useLocale();
   const p = locale === 'hu' ? '' : `/${locale}`;
-  const mapsUrl = 'https://maps.app.goo.gl/Xq9V8Z7yymT5nirb9';
+  const mapsUrl = GOOGLE_BUSINESS_URL;
   return (
     <section className="py-28 bg-gray-50 border-t border-gray-100">
       <div className="container mx-auto px-4">
@@ -1022,7 +927,7 @@ export default function EsztergomPage() {
       <ServicesSection />
       <WhyUsSection />
       <BeforeAfterBanner />
-      <ReviewsSection />
+      <GoogleReviewsCta />
       <InlineCalculatorCTA />
       <CTASection />
       <FAQSection />

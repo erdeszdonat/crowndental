@@ -5,6 +5,7 @@ import skMessages from '@/messages/sk.json';
 import deMessages from '@/messages/de.json';
 
 export const SITE_URL = 'https://www.crowndental.hu';
+export const GOOGLE_BUSINESS_URL = 'https://maps.app.goo.gl/Xq9V8Z7yymT5nirb9';
 export const SUPPORTED_LOCALES = ['hu', 'en', 'sk', 'de'] as const;
 
 export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];

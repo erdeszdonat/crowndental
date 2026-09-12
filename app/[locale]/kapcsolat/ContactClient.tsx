@@ -17,6 +17,7 @@ import {
   ShieldCheck,
   Sparkles,
 } from 'lucide-react';
+import { GOOGLE_BUSINESS_URL } from '@/lib/seo';
 
 const copyByLocale = {
   hu: {
@@ -128,7 +129,7 @@ const copyByLocale = {
 const address = '2500 Esztergom, Petőfi Sándor utca 11.';
 const phone = '+36 70 564 6837';
 const email = 'info@crowndental.hu';
-const mapHref = 'https://share.google/UV0bxLOGoyQdgH826';
+const mapHref = GOOGLE_BUSINESS_URL;
 
 function ContactAnimation() {
   return (

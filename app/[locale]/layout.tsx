@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import '../globals.css';
 import ClientLayout from "./ClientLayout";
 import ConsentScripts from '@/components/ConsentScripts';
-import { SITE_URL, normalizeLocale, safeJsonLd } from '@/lib/seo';
+import { GOOGLE_BUSINESS_URL, SITE_URL, normalizeLocale, safeJsonLd } from '@/lib/seo';
 
 const locales = ['hu', 'en', 'sk', 'de'];
 
@@ -87,7 +87,7 @@ const organizationJsonLd = {
         'https://www.facebook.com/koronafogaszatesztergom/',
         'https://www.instagram.com/crown_dental93/',
         'https://www.tiktok.com/@crowndentalhungary',
-        'https://www.google.com/maps?cid=13855060144941940295',
+        GOOGLE_BUSINESS_URL,
       ],
     },
     {

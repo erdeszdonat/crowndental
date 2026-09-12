@@ -6,6 +6,7 @@ import { MapPin, Phone, Mail, ChevronRight, Facebook, Instagram, Settings } from
 import Link from 'next/link';
 import { useTranslations, useLocale } from 'next-intl';
 import { INTERNATIONAL_PATIENT_PATHS } from '@/lib/internationalPaths';
+import { GOOGLE_BUSINESS_URL } from '@/lib/seo';
 
 export default function Footer() {
   const t = useTranslations('footer');
@@ -151,7 +152,7 @@ export default function Footer() {
                   <Link href={`${prefix}/esztergom`} className="block text-white font-bold mb-1 hover:text-sky-400 transition-colors">
                     {t('esztergomClinic')}
                   </Link>
-                  <a href="https://share.google/UV0bxLOGoyQdgH826" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors leading-relaxed block">
+                  <a href={GOOGLE_BUSINESS_URL} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors leading-relaxed block">
                     2500 Esztergom,<br /> Petőfi Sándor utca 11.
                   </a>
                 </div>

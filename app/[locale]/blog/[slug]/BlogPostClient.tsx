@@ -1,13 +1,10 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
 import {
   ArrowLeft,
   Clock,
   Sparkles,
-  Star,
-  Building2,
   ArrowRight
 } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
@@ -15,6 +12,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { INTERNATIONAL_PATIENT_PATHS } from '@/lib/internationalPaths';
 import { sanityImageLoader } from '@/lib/sanityImage';
+import GoogleReviewsCta from '@/components/GoogleReviewsCta';
 
 function relatedTreatmentSlug(post: any): string {
   const haystack = `${post?.title ?? ''} ${post?.excerpt ?? ''} ${post?.slug ?? ''}`.toLocaleLowerCase();
@@ -24,7 +22,8 @@ function relatedTreatmentSlug(post: any): string {
   if (/ortodon|braces|zahnspang|fogszab/.test(haystack)) return 'fogszabalyozas';
   if (/whiten|bleach|bielen|feh[eé]r[ií]t/.test(haystack)) return 'fogfeherites';
   if (/root canal|wurzel|gy[oö]k[eé]r|endodon/.test(haystack)) return 'gyokerkezeles';
-  if (/extract|h[uú]z[aá]s|entfern|extrak/.test(haystack)) return 'foghuzas';
+  if (/g[oó]c|focal|ohnisk/.test(haystack)) return 'gockutatas';
+  if (/extract|elt[aá]vol|h[uú]z[aá]s|entfern|extrak/.test(haystack)) return 'foghuzas';
   return 'allapotfelmeres';
 }
 
@@ -34,78 +33,6 @@ const articleLinkCopy = {
   en: { heading: 'Useful next steps', treatment: 'Related treatment', all: 'Treatments and prices', international: 'Dental treatment in Hungary' },
   de: { heading: 'Passende nächste Schritte', treatment: 'Passende Behandlung', all: 'Behandlungen und Preise', international: 'Zahnbehandlung in Ungarn' },
 } as const;
-
-function formatStatNumber(value: number) {
-  return String(value).replace(/\B(?=(\d{3})+(?!\d))/g, '\u00a0');
-}
-
-function AnimatedCounter({ end, suffix = "", text, desc }: { end: number, suffix?: string, text: string, desc: string }) {
-  return (
-    <div className="text-center p-8 bg-white rounded-3xl shadow-sm border border-gray-50 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1">
-      <div className="text-5xl font-extrabold text-sky-600 mb-4 tracking-tight">
-        {formatStatNumber(end)}{suffix}
-      </div>
-      <div className="text-lg font-bold text-gray-900 mb-2">{text}</div>
-      <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
-    </div>
-  );
-}
-
-function StatsSection() {
-  const t = useTranslations('blog');
-  // @ts-ignore
-  const stats = t.raw('stats') as Array<{ end: number; suffix: string; text: string; desc: string }>;
-  return (
-    <section className="py-20 bg-gray-50 border-y border-gray-100">
-      <div className="container mx-auto px-4 text-center">
-        <div className="inline-flex items-center gap-2 px-4 py-2 bg-sky-100/50 rounded-full text-sky-700 text-sm font-bold uppercase mb-6">
-          <Building2 className="w-4 h-4" /> {t('statsLabel')}
-        </div>
-        <h3 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-12 tracking-tight">{t('statsTitle')}</h3>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
-          {stats.map((s, i) => (
-            <AnimatedCounter key={i} end={s.end} suffix={s.suffix} text={s.text} desc={s.desc} />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function ReviewsSection() {
-  const t = useTranslations('home.reviews');
-  // @ts-ignore
-  const allReviews = (t.raw('items') as Array<{ name: string; text: string; date: string }>).slice(0, 5);
-  const extendedReviews = [...allReviews, ...allReviews, ...allReviews];
-  const blogT = useTranslations('blog');
-
-  return (
-    <section className="py-24 bg-white overflow-hidden">
-      <div className="container mx-auto px-4 text-center mb-12">
-        <h3 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">{blogT('reviewsTitle')}</h3>
-      </div>
-      <style dangerouslySetInnerHTML={{__html: `
-        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        .animate-marquee { display: flex; width: max-content; animation: marquee 50s linear infinite; }
-        .animate-marquee:hover { animation-play-state: paused; }
-      `}} />
-      <div className="animate-marquee gap-6 px-6">
-        {extendedReviews.map((review, i) => (
-          <div key={i} className="w-[350px] p-8 bg-gray-50 rounded-[2rem] shadow-sm border border-gray-100 flex-shrink-0">
-            <div className="flex items-center gap-1 mb-4 text-amber-400">
-              {[...Array(5)].map((_, j) => <Star key={j} className="w-5 h-5 fill-current" />)}
-            </div>
-            <p className="text-gray-600 mb-6 italic leading-relaxed">"{review.text}"</p>
-            <div className="flex justify-between items-center text-sm pt-4 border-t border-gray-200">
-              <span className="font-bold text-gray-900">{review.name}</span>
-              <span className="text-gray-400">{review.date}</span>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
 
 export default function BlogPostClient({ post }: { post: any }) {
   const t = useTranslations('blog');
@@ -277,8 +204,7 @@ export default function BlogPostClient({ post }: { post: any }) {
         </div>
       </article>
 
-      <StatsSection />
-      <ReviewsSection />
+      <GoogleReviewsCta />
     </main>
   );
 }

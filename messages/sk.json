@@ -87,7 +87,7 @@
           "tag": "30 rokov skúseností",
           "titleTop": "Nový úsmev,",
           "titleBottom": "nová sebadôvera.",
-          "subtitle": "Viac ako 15 000 úspešných ošetrení dokazuje naše odborné znalosti. Zvertesvoj úsmev do našich rúk!",
+          "subtitle": "V Ostrihome pôsobíme od roku 1994 s podporou vlastného zubnotechnického laboratória. Spoznajte náš prístup.",
           "primaryText": "Objednať sa"
         }
       ]
@@ -195,25 +195,14 @@
       ]
     },
     "reviews": {
-      "label": "Hodnotenia",
-      "title": "Čo hovoria naši pacienti",
-      "ratingCount": "(320+ hodnotení)",
-      "items": [
-        { "name": "Kovács Mária", "text": "Chodím sem už 10 rokov — najlepšie rozhodnutie. Aj moje deti sem chodia, nikdy sme neboli sklamaní.", "date": "Marec 2026" },
-        { "name": "Nagy József", "text": "Veľmi profesionálni, implantát mi vyšiel dokonale. Čakal som chvíľu na termín, ale absolútne to stálo za to.", "date": "Február 2026" },
-        { "name": "Szabó Anna", "text": "Korunka bola hotová za 3 dni vďaka vlastnému laboratóriu. Veľmi som sa bála, ale bolo to úplne bezbolestné!", "date": "Január 2026" },
-        { "name": "Tóth Gábor", "text": "Chodím výhradne k nim 8 rokov. Vždy milí, rýchli a pracujú s najmodernejším vybavením.", "date": "December 2025" },
-        { "name": "Horváth Éva", "text": "Moja snímateľná protéza vyšla krásne, technik vedel okamžite korigovať odtieň. Skvelí odborníci.", "date": "November 2025" },
-        { "name": "Varga Péter", "text": "Som pacient 5 rokov. Prvýkrát v živote nejdem k zubárovi s bolesťou brucha — sú veľmi empatickí.", "date": "Október 2025" },
-        { "name": "Kiss László", "text": "Mal som zložitú koreňovú liečbu, ale zachránili mi zub. Presná, rýchla a dôkladná práca.", "date": "September 2025" },
-        { "name": "Farkas Zita", "text": "Som ich verný pacient 10 rokov. Každému, kto hľadá zubára, ich môžem len odporučiť!", "date": "Júl 2025" },
-        { "name": "Molnár Katalin", "text": "Dala som si urobiť bielenie zubov, výsledok je úžasný. Parkovanie je trochu náročné, ale ambulancia je skvelá.", "date": "Máj 2025" },
-        { "name": "Balogh Tamás", "text": "Vymenili mi celý horný rad za zirkónové korunky. Pôsobia ako vlastné zuby. Fantastická práca!", "date": "Marec 2025" }
-      ]
+      "label": "Nezávislé hodnotenia",
+      "title": "Hodnotenia Google",
+      "ratingCount": "Aktuálne údaje na Google",
+      "items": []
     },
     "cta": {
       "title": "Ste pripravení urobiť prvý krok?",
-      "subtitle": "Objednajte sa online alebo nám zavolajte – a spoznajte osobne Crown Dental rozdiel.",
+      "subtitle": "Objednajte sa online alebo nám zavolajte a dohodnite si vhodný ďalší krok.",
       "bookOnline": "Online objednanie"
     },
     "faq": {
@@ -235,7 +224,7 @@
         },
         {
           "question": "Aké implantáty používate?",
-          "answer": "Používame výhradne prémiové implantáty svetových značiek (napr. Alpha Bio, DIO). Tieto implantáty majú doživotnú záruku a vynikajúcu mieru oseointegrálnosti (nad 98 %)."
+          "answer": "Pracujeme s implantačnými systémami Alpha Bio a DIO. Vhodný systém, očakávaný výsledok a prípadné záručné podmienky závisia od individuálneho vyšetrenia, liečebného plánu a písomných záručných pravidiel."
         },
         {
           "question": "Kedy je vhodné navštíviť ortodontistu?",
@@ -317,9 +306,9 @@
     "story2Part1": "Silou našej kliniky je",
     "story2Bold": "vlastné zubnotechnické laboratórium",
     "story2Part2": ". Keďže všetko riešime interne, sme rýchlejší a cenovo dostupnejší.",
-    "story3Part1": "Dnes sme zodpovední za úsmevy viac ako",
-    "story3Bold": "15 000 spokojných pacientov",
-    "story3Part2": ".",
+    "story3Part1": "Naša práca je založená na",
+    "story3Bold": "priamej spolupráci zubára a zubného technika",
+    "story3Part2": "počas každého individuálneho liečebného plánu.",
     "storySince": "Pre váš úsmev od samého začiatku."
   },
 
@@ -337,7 +326,7 @@
     "benefitsSubtitle": "Odborná komunita.",
     "benefits": [
       { "title": "Vynikajúce benefity", "desc": "Garantujeme konkurencieschopný plat nad trhovou úrovňou a skutočné ocenenie." },
-      { "title": "Synergia lekár-technik", "desc": "Keďže ambulancia a laboratórium sú na jednom mieste, okamžitá konzultácia je zaručená." },
+      { "title": "Synergia lekár-technik", "desc": "Keďže ambulancia a laboratórium sú na jednom mieste, tím sa môže v prípade potreby rýchlo poradiť." },
       { "title": "Neustály rozvoj", "desc": "U nás sa môžete každý deň stávať lepším odborníkom vďaka najnovším technológiám." },
       { "title": "Podporná atmosféra", "desc": "U nás je každý rovnocenný — dôležitý článok v tíme." }
     ],
@@ -367,7 +356,7 @@
     "badge": "Crown Dental Magazín",
     "mainTitle": "Stomatologická",
     "mainTitleHighlight": "znalostná báza",
-    "description1": "Vitajte na stomatologickom blogu Crown Dental! Naši odborní lekári vytvorili túto znalostná bázu, aby vám poskytli zrozumiteľné a spoľahlivé informácie o každodennej ústnej hygiene a zubných ošetreniach.",
+    "description1": "Vitajte na blogu Crown Dental. Naša znalostná báza ponúka zrozumiteľné informácie podložené zdrojmi o každodennej ústnej hygiene a zubných ošetreniach.",
     "description2": "Či už ide o správnu techniku čistenia zubov, moderné implantáty alebo výhody bezbolestných ošetrení — u nás nájdete odpoveď na každú otázku.",
     "freshPost": "Nový článok",
     "readMore": "Čítať viac",
@@ -381,10 +370,10 @@
     "statsLabel": "Naša klinika v číslach",
     "statsTitle": "Naše výsledky, vo vašich službách",
     "stats": [
-      { "end": 30, "suffix": "+", "text": "Rokov skúseností", "desc": "V praxi od roku 1994" },
-      { "end": 15000, "suffix": "+", "text": "Spokojných pacientov", "desc": "Dôvera generácií" },
-      { "end": 40, "suffix": "%", "text": "Úspora", "desc": "Vďaka vlastnému laboratóriu" },
-      { "end": 3, "suffix": " dni", "text": "Výroba korunky", "desc": "Bleskurýchla protetika" }
+      { "end": 1994, "suffix": "", "text": "Rok založenia", "desc": "Desaťročia miestnej praxe" },
+      { "end": 1, "suffix": "", "text": "Vlastné zubné laboratórium", "desc": "Technické zázemie na mieste" },
+      { "end": 4, "suffix": "", "text": "Jazyky", "desc": "HU, EN, SK a DE" },
+      { "end": 7, "suffix": " dní", "text": "Dostupnosť kliniky", "desc": "Cez týždeň aj cez víkend" }
     ],
     "reviewsTitle": "Povedali naši pacienti"
   },
@@ -432,8 +421,8 @@
     "heroTitle1": "Stomatologické",
     "heroTitle2": "ošetrenia",
     "heroSubtitleStart": "Vyberte si ošetrenie z kariet nižšie, alebo sa posuňte nadol pre celý cenník. Vďaka vlastnému zubnotechnickému laboratóriu ponúkame ceny",
-    "heroSavings": "až o 40 % nižšie",
-    "heroSubtitleEnd": "ako je priemer trhu.",
+    "heroSavings": "transparentné a priamo koordinované",
+    "heroSubtitleEnd": "ceny.",
     "cardDetails": "Podrobnosti",
     "priceListTitle": "Náš kompletný cenník",
     "priceListSubtitle": "Transparentné ceny, bez skrytých poplatkov.",
@@ -599,7 +588,7 @@
     "implantatum": {
       "heroBadge": "Prémiová služba",
       "heroTitle": "Zubné implantáty",
-      "heroDesc": "Trvalé riešenie chýbajúcich zubov – prémiové implantáty z vlastného laboratória, až o 40 % cenovo dostupnejšie.",
+      "heroDesc": "Trvalé riešenie chýbajúcich zubov so systémami Alpha Bio a DIO podľa individuálneho liečebného plánu.",
       "heroPriceLabel": "Ceny od",
       "heroPriceValue": "190 000 Ft",
       "quoteAnalyzerBadge": "AI kalkulačka cien",
@@ -610,14 +599,14 @@
       "problemTitle": "Problém: Chýbajúce zuby",
       "problemDesc": "Medzera v úsmeve nie je len estetický problém – susedné zuby sa posúvajú, kosť ustupuje. Tradičný mostík vyžaduje obrúsenie zdravých zubov.",
       "solutionTitle": "Riešenie: Zubné implantáty",
-      "solutionDesc": "Implantát nahrádza prirodzený koreň zuba titánovým skrutkou. Nie je potrebné zasahovať do susedných zubov a vlastné laboratórium ho robí až o 40 % lacnejším.",
+      "solutionDesc": "Implantát je titánový umelý koreň na náhradu chýbajúceho zuba. Brúseniu susedných zubov sa často dá vyhnúť; vhodnosť určí vyšetrenie a zobrazovanie.",
       "benefitsBadge": "Prečo si vybrať nás?",
       "benefitsTitle": "Výhody implantácie",
       "benefitItems": [
-        { "title": "Doživotná záruka", "desc": "Na implantát poskytujeme doživotnú záruku a na korunku 5-ročnú záruku." },
+        { "title": "Písomné záručné podmienky", "desc": "Rozsah a trvanie závisia od systému, náhrady, kontrol a individuálnych okolností." },
         { "title": "Rýchle zhotovenie", "desc": "Vlastné laboratórium = žiadne čakanie. Korunka môže byť hotová za 3–5 dní." },
         { "title": "Transparentné ceny", "desc": "Žiadne skryté náklady. Cena dohodnutá pri konzultácii sa do konca liečby nemení." },
-        { "title": "Bezbolestné", "desc": "S modernou anestézou je zákrok bezbolestný a rýchly." },
+        { "title": "Lokálna anestézia", "desc": "Anestézia znižuje bolesť pri zákroku; tlak alebo prechodná citlivosť sa môžu objaviť." },
         { "title": "Prémiové materiály", "desc": "Pracujeme s kvalitnými implantátmi Alpha Bio a DIO." },
         { "title": "30 rokov skúseností", "desc": "Tisíce úspešných implantácií za nami. Vaša bezpečnosť je pre nás prioritou." }
       ],
@@ -632,7 +621,7 @@
       ],
       "faqs": [
         { "q": "Koľko stojí implantát?", "a": "Zavedenie implantátov Alpha Bio a DIO začína od 190 000 Ft. Presnú cenu môžeme stanoviť po 3D CT snímke." },
-        { "q": "Bolí zavedenie?", "a": "Nie. S modernou anestézou je úplne bezbolestné – mnohí pacienti hovoria, že je to ľahšie ako trhanie zuba." },
+        { "q": "Bolí zavedenie?", "a": "Používame lokálnu anestéziu na minimalizáciu bolesti počas zákroku. Tlak a prechodné ťažkosti po zákroku sa môžu objaviť." },
         { "q": "Ako dlho trvá hojenie?", "a": "Oseointegrácia zvyčajne trvá 3–6 mesiacov." },
         { "q": "Prečo je Crown Dental lacnejší?", "a": "Pretože naše laboratórium je priamo v ordinácii, neplatíte sprostredkovateľské poplatky – táto úspora sa prenáša na vás." }
       ]
@@ -733,7 +722,7 @@
       ],
       "benefitsTitle": "Tajomstvo úspešnej liečby",
       "benefitItems": [
-        { "title": "Bezbolestnosť", "desc": "Ošetrenie vykonávame v maximálne účinnej anestéze, takže postup je úplne bezbolestný." },
+        { "title": "Lokálna anestézia", "desc": "Anestézia znižuje bolesť pri ošetrení; tlak alebo prechodná citlivosť sa môžu objaviť." },
         { "title": "Zachovanie vlastného zuba", "desc": "Nič nie je lepšie ako vlastný zub! Endodontické ošetrenie je posledná a najlepšia šanca zabrániť extrakcii." },
         { "title": "Strojové rozšírenie kanálikov", "desc": "Používame moderné rotačné nástroje pre rýchle a presné čistenie kanálikov." },
         { "title": "Trvalý výsledok", "desc": "Dezinfikovaný a hermeticky uzatvorený zub môže slúžiť bez problémov desaťročia, dokonca celý život." }
@@ -748,7 +737,7 @@
       "ctaTitle": "Zachráňte zub pred extrakciou!",
       "ctaDesc": "Silná bolesť zubov je varovný signál. Neodkladajte – rezervujte si špecialistickú konzultáciu ešte dnes!",
       "faqs": [
-        { "q": "Bude endodontické ošetrenie bolieť?", "a": "S dnešnými modernými anestetikami je endodontické ošetrenie úplne bezbolestné. Nepríjemnosť zvyčajne spôsobuje predchádzajúca bolesť zubov, ktorú tento zákrok okamžite odstráni." },
+        { "q": "Bude endodontické ošetrenie bolieť?", "a": "Používame lokálnu anestéziu na minimalizáciu bolesti počas ošetrenia. Tlak a prechodná citlivosť po ošetrení sa môžu objaviť." },
         { "q": "Koľko návštev je potrebných?", "a": "Záleží to od závažnosti infekcie. V jednoduchších prípadoch je možné definitívnu výplň urobiť pri jednej návšteve. Pri silnom zápale sú potrebné 2–3 návštevy." },
         { "q": "Prečo endodonticky ošetrený zub niekedy stmavne?", "a": "Keďže zub stráca živé nervy a zásobovanie krvou, môže časom zmeniť farbu. Toto možno napraviť estetickou stomatológiou." },
         { "q": "Kedy potrebuje endodonticky ošetrený zub korunku?", "a": "Endodonticky ošetrený zub vysychá a stáva sa krehkejším. Najmä pri stoličkách sa takmer vždy odporúča ochranná korunka." }
@@ -865,7 +854,7 @@
       ],
       "benefitsTitle": "Bezpečná extrakcia zuba",
       "benefitItems": [
-        { "title": "Bezbolestnosť", "desc": "Hlboká lokálna anestéza zaručuje, že počas zákroku neucítite žiadnu bolesť." },
+        { "title": "Lokálna anestéza", "desc": "Lokálna anestéza je určená na zníženie bolesti počas zákroku; vnímanie sa môže individuálne líšiť." },
         { "title": "Krátky čas ošetrenia", "desc": "Skúsenosti našich lekárov znamenajú, že odstránenie je rýchle a záťaž pre pacienta minimálna." },
         { "title": "Šetrná technika", "desc": "Starostlivo chránime kosti a mäkké tkanivá, aby budúca implantácia prebehla hladko." },
         { "title": "Presná diagnostika", "desc": "Pred extrakciou sa vždy robí digitálny röntgen na zmapovanie polohy koreňov." }
@@ -1051,7 +1040,7 @@
       "problemTitle": "Problém: Zápaly, bolestivé zuby",
       "problemDesc": "Čiastočne prederastené zuby múdrosti rastúce nesprávnym smerom, zaklinené korene alebo chronické zápaly môžu spôsobovať silnú bolesť a fokusové infekcie. Mnohí odkladajú zákrok zo strachu z bolesti.",
       "solutionTitle": "Riešenie: Odborná orálna chirurgia",
-      "solutionDesc": "Moderné anestetiká zaručujú bezbolestný zákrok. Naši skúsení špecialisti chirurgovia vykonávajú aj tie najzložitejšie orálne chirurgické operácie šetrne.",
+      "solutionDesc": "Používame lokálnu anestéziu a šetrné chirurgické techniky. Tlak počas zákroku a bolesť či opuch po ňom sa môžu u jednotlivých pacientov líšiť.",
       "servicesBadge": "Zákroky",
       "servicesTitle": "Naše orálno-chirurgické riešenia",
       "services": [
@@ -1078,7 +1067,7 @@
       "ctaTitle": "Ste pripravení na bezbolestné riešenie?",
       "ctaDesc": "Netrpte ďalej bolestivými zubmi! Rezervujte si špecialistickú konzultáciu a zverejte sa našim skúseným chirurgom.",
       "faqs": [
-        { "q": "Ako veľmi bolí extrakcia alebo orálna chirurgia?", "a": "Vôbec! Používame najmodernejšie lokálne anestetiká, takže počas zákroku ucítite len mierny tlak alebo napätie." },
+        { "q": "Ako veľmi bolí extrakcia alebo orálna chirurgia?", "a": "Lokálna anestéza je určená na zníženie bolesti počas zákroku. Môžete cítiť mierny tlak alebo napätie; nepríjemný pocit oznámte lekárovi." },
         { "q": "Ako dlho trvá zotavenie po operácii zuba múdrosti?", "a": "Rana sa zvyčajne zahojí za niekoľko dní; stehy sa vyberajú týždeň po operácii." },
         { "q": "Čo môžem jesť po extrakcii?", "a": "V dňoch po zákroku sa vyhýbajte horúcim, korenistým jedlám s malými semienkami a mliečnym výrobkom." },
         { "q": "Prečo je 3D CT potrebné pre orálnu chirurgiu?", "a": "3D CT nám umožňuje vidieť korene zubov, dutiny a hlavné nervové dráhy s milimetrovou presnosťou." }

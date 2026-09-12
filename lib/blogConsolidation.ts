@@ -3,6 +3,10 @@ export const BLOG_SLUG_MIGRATIONS: Readonly<Record<string, string>> = {
     'kolko-stoja-umele-zuby-v-madarsku-2026',
   'zubn-implantat-v-ma-arsku-ko-ko-m-ete-u-etri-a-pre-o-je-crown-dental-najlep-ou-vo-bou':
     'zubny-implantat-v-madarsku-cena-a-vyhody',
+  'zubar-v-ma-arsku-pre-o-si-slovenski-pacienti-vyberaju-esztergom':
+    'zubar-v-madarsku-preco-si-slovenski-pacienti-vyberaju-ostrihom',
+  'ko-ko-stoji-zubna-korunka-v-roku-2026-kompletn-sprievodca-cenami':
+    'kolko-stoji-zubna-korunka-2026',
 };
 
 export const BLOG_MERGE_TARGETS: Readonly<Record<string, string>> = {

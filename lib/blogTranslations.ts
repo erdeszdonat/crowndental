@@ -125,7 +125,7 @@ export const BLOG_TRANSLATION_GROUPS: readonly BlogTranslationGroup[] = [
   },
   {
     hu: 'fogorvos-esztergomban-miert-valasztjak-crown-dentalt-szlovak-paciensek',
-    sk: 'zubar-v-ma-arsku-pre-o-si-slovenski-pacienti-vyberaju-esztergom',
+    sk: 'zubar-v-madarsku-preco-si-slovenski-pacienti-vyberaju-ostrihom',
     en: 'dentist-hungary-why-international-patients-choose-esztergom',
     de: 'zahnarzt-ungarn-warum-patienten-esztergom-waehlen',
   },
@@ -149,7 +149,7 @@ export const BLOG_TRANSLATION_GROUPS: readonly BlogTranslationGroup[] = [
   },
   {
     hu: 'mennyibe-kerul-egy-fogkorona-2026-ban-teljes-arutmutato',
-    sk: 'ko-ko-stoji-zubna-korunka-v-roku-2026-kompletn-sprievodca-cenami',
+    sk: 'kolko-stoji-zubna-korunka-2026',
     en: 'dental-crown-cost-2026-complete-price-guide',
     de: 'zahnkrone-kosten-2026-vollstaendiger-preisratgeber',
   },

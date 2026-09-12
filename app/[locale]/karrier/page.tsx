@@ -29,7 +29,7 @@ async function getCareerHeroImageUrl(): Promise<string | null> {
     const result = await client.fetch<{ url?: string } | null>(
       careerHeroImageQuery,
       {},
-      { next: { revalidate: 86400 } },
+      { next: { revalidate } },
     );
 
     if (!result?.url) return null;
@@ -42,7 +42,7 @@ async function getCareerHeroImageUrl(): Promise<string | null> {
   }
 }
 
-export const revalidate = 86400;
+export const revalidate = 604800;
 
 const metadataByLocale: Record<SupportedLocale, { title: string; description: string }> = {
   hu: {
