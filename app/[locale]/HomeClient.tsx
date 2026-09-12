@@ -314,53 +314,126 @@ function LocationSelector({ locations }: { locations: HomeSanityImages['location
 
 // ─── Stats ────────────────────────────────────────────────────────────────────
 function StatsSection() {
-  const t = useTranslations('home.stats');
   const locale = useLocale();
-  const facts = {
-    hu: [
-      { value: '1994 óta', label: 'Helyi tapasztalat', description: 'Több évtizede működő esztergomi rendelő.' },
-      { value: 'Saját labor', label: 'Közvetlen együttműködés', description: 'A fogorvos és a fogtechnikus egy csapatban dolgozik.' },
-      { value: '4 nyelv', label: 'Érthető kommunikáció', description: 'Magyar, szlovák, angol és német tájékoztatás.' },
-      { value: 'Írásban', label: 'Kezelési terv', description: 'Vizsgálat után átlátható, személyre szabott javaslat.' },
-    ],
-    en: [
-      { value: 'Since 1994', label: 'Local experience', description: 'A long-established dental clinic in Esztergom.' },
-      { value: 'In-house lab', label: 'Direct collaboration', description: 'Dentists and dental technicians work as one team.' },
-      { value: '4 languages', label: 'Clear communication', description: 'Information in Hungarian, Slovak, English and German.' },
-      { value: 'In writing', label: 'Treatment plan', description: 'A transparent, personalised proposal after examination.' },
-    ],
-    sk: [
-      { value: 'Od roku 1994', label: 'Miestne skúsenosti', description: 'Dlhodobo pôsobiaca ambulancia v Ostrihome.' },
-      { value: 'Vlastné laboratórium', label: 'Priama spolupráca', description: 'Zubári a zubní technici pracujú v jednom tíme.' },
-      { value: '4 jazyky', label: 'Zrozumiteľná komunikácia', description: 'Informácie po maďarsky, slovensky, anglicky a nemecky.' },
-      { value: 'Písomne', label: 'Liečebný plán', description: 'Prehľadný individuálny návrh po vyšetrení.' },
-    ],
-    de: [
-      { value: 'Seit 1994', label: 'Erfahrung vor Ort', description: 'Eine langjährig etablierte Praxis in Esztergom.' },
-      { value: 'Eigenes Labor', label: 'Direkte Zusammenarbeit', description: 'Zahnärzte und Zahntechniker arbeiten im selben Team.' },
-      { value: '4 Sprachen', label: 'Klare Kommunikation', description: 'Informationen auf Ungarisch, Slowakisch, Englisch und Deutsch.' },
-      { value: 'Schriftlich', label: 'Behandlungsplan', description: 'Ein transparenter, individueller Vorschlag nach der Untersuchung.' },
-    ],
+  const copy = {
+    hu: {
+      eyebrow: 'Tények és számok',
+      title: 'A bizalom számokban.',
+      subtitle: 'Több mint három évtized fogászati tapasztalata Esztergomban.',
+      patientMetric: '15 000+',
+      patientLabel: 'elégedett páciens',
+      patientDescription: '1994 óta páciensek ezrei bízták ránk mosolyukat.',
+      facts: [
+        { value: '30+ év', label: 'tapasztalat' },
+        { value: 'Saját labor', label: 'közvetlen együttműködés' },
+        { value: '4 nyelv', label: 'kommunikáció', detail: 'HU · EN · DE · SK' },
+        { value: 'Helyben', label: 'CBCT + digitális diagnosztika' },
+      ],
+    },
+    en: {
+      eyebrow: 'Facts and figures',
+      title: 'Trust in numbers.',
+      subtitle: 'More than three decades of dental experience in Esztergom.',
+      patientMetric: '15,000+',
+      patientLabel: 'satisfied patients',
+      patientDescription: 'Since 1994, thousands of patients have entrusted us with their smiles.',
+      facts: [
+        { value: '30+ years', label: 'of experience' },
+        { value: 'In-house lab', label: 'direct collaboration' },
+        { value: '4 languages', label: 'communication', detail: 'HU · EN · DE · SK' },
+        { value: 'On site', label: 'CBCT + digital diagnostics' },
+      ],
+    },
+    sk: {
+      eyebrow: 'Fakty a čísla',
+      title: 'Dôvera v číslach.',
+      subtitle: 'Viac ako tri desaťročia stomatologických skúseností v Ostrihome.',
+      patientMetric: '15 000+',
+      patientLabel: 'spokojných pacientov',
+      patientDescription: 'Od roku 1994 nám tisíce pacientov zverili svoj úsmev.',
+      facts: [
+        { value: '30+ rokov', label: 'skúseností' },
+        { value: 'Vlastné laboratórium', label: 'priama spolupráca' },
+        { value: '4 jazyky', label: 'komunikácia', detail: 'HU · EN · DE · SK' },
+        { value: 'Na mieste', label: 'CBCT + digitálna diagnostika' },
+      ],
+    },
+    de: {
+      eyebrow: 'Fakten und Zahlen',
+      title: 'Vertrauen in Zahlen.',
+      subtitle: 'Mehr als drei Jahrzehnte zahnmedizinische Erfahrung in Esztergom.',
+      patientMetric: '15.000+',
+      patientLabel: 'zufriedene Patienten',
+      patientDescription: 'Seit 1994 haben uns Tausende Patienten ihr Lächeln anvertraut.',
+      facts: [
+        { value: '30+ Jahre', label: 'Erfahrung' },
+        { value: 'Eigenes Labor', label: 'direkte Zusammenarbeit' },
+        { value: '4 Sprachen', label: 'Kommunikation', detail: 'HU · EN · DE · SK' },
+        { value: 'Vor Ort', label: 'CBCT + digitale Diagnostik' },
+      ],
+    },
   }[locale === 'en' || locale === 'sk' || locale === 'de' ? locale : 'hu'];
+
   return (
-    <section className="py-24 bg-gray-50 border-t border-gray-100">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <motion.div initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}>
-            <span className="text-sky-600 font-bold uppercase tracking-[0.2em] text-sm mb-4 block">{t('label')}</span>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-6 leading-tight">
-              {t('title')}{' '}<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-cyan-500">{t('titleHighlight')}</span>
-            </h2>
-          </motion.div>
-        </div>
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto">
-          {facts.map((fact) => (
-            <div key={fact.value} className="rounded-3xl border border-gray-100 bg-white p-7 text-center shadow-sm transition-transform duration-300 hover:-translate-y-1">
-              <div className="mb-3 text-2xl font-black tracking-tight text-sky-600">{fact.value}</div>
-              <div className="mb-2 font-bold text-gray-900">{fact.label}</div>
-              <p className="text-sm leading-relaxed text-gray-500">{fact.description}</p>
+    <section className="relative overflow-hidden border-t border-slate-800 bg-slate-950 py-24 text-white md:py-32">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(14,165,233,0.16),transparent_38%),radial-gradient(circle_at_bottom_right,rgba(6,182,212,0.1),transparent_32%)]" />
+      <div className="container relative mx-auto px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mx-auto mb-12 max-w-3xl text-center md:mb-16"
+        >
+          <span className="mb-5 block text-xs font-bold uppercase tracking-[0.36em] text-sky-400 sm:text-sm">
+            {copy.eyebrow}
+          </span>
+          <h2 className="text-4xl font-black leading-tight tracking-tight sm:text-5xl md:text-6xl">
+            {copy.title}
+          </h2>
+          <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-slate-300 sm:text-lg">
+            {copy.subtitle}
+          </p>
+        </motion.div>
+
+        <div className="mx-auto max-w-6xl">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.98 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="relative mb-5 overflow-hidden rounded-[2rem] border border-sky-400/30 bg-white/[0.06] px-6 py-12 text-center shadow-2xl shadow-sky-950/40 backdrop-blur-sm sm:px-10 md:py-16"
+          >
+            <div className="absolute inset-x-16 top-0 h-px bg-gradient-to-r from-transparent via-sky-400 to-transparent" />
+            <div className="text-6xl font-black tracking-[-0.06em] text-white sm:text-7xl md:text-8xl">
+              {copy.patientMetric}
             </div>
-          ))}
+            <div className="mt-3 text-xl font-bold text-sky-300 sm:text-2xl">
+              {copy.patientLabel}
+            </div>
+            <p className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-slate-300 sm:text-base">
+              {copy.patientDescription}
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {copy.facts.map((fact, index) => (
+              <motion.div
+                key={fact.value}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.06 }}
+                className="flex min-h-48 flex-col items-center justify-center rounded-3xl border border-white/10 bg-white/[0.04] p-7 text-center transition-colors duration-300 hover:border-sky-400/40 hover:bg-white/[0.07]"
+              >
+                <div className="text-xl font-black uppercase tracking-tight text-white sm:text-2xl">
+                  {fact.value}
+                </div>
+                <div className="mt-3 text-sm font-semibold text-sky-300">{fact.label}</div>
+                {fact.detail && (
+                  <div className="mt-4 text-xs font-bold tracking-[0.2em] text-slate-400">{fact.detail}</div>
+                )}
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
