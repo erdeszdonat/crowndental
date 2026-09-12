@@ -2,7 +2,9 @@ import HomeClient, { type HomeSanityImages } from './HomeClient';
 import type { Metadata } from 'next';
 import { buildHomeMetadata } from '@/lib/seo';
 
-export const revalidate = 3600;
+// Sanity-managed marketing images rarely change. A daily fallback prevents
+// traffic and crawlers from rewriting every locale's ISR entry each hour.
+export const revalidate = 86400;
 
 export async function generateMetadata(props: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const params = await props.params;

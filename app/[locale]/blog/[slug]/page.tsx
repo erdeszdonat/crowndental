@@ -55,7 +55,9 @@ const client = createClient({
   useCdn: false,
 });
 
-export const revalidate = 300;
+// Avoid regenerating every article every few minutes when crawlers visit it.
+// Publishing through the admin API invalidates the affected article at once.
+export const revalidate = 86400;
 
 export async function generateStaticParams(): Promise<Array<{ locale: string; slug: string }>> {
   try {
@@ -65,7 +67,7 @@ export async function generateStaticParams(): Promise<Array<{ locale: string; sl
         "locale": coalesce(language, "hu")
       }`,
       {},
-      { next: { revalidate: 300 } },
+      { next: { revalidate: 86400 } },
     );
     const supportedLocales = new Set(['hu', 'en', 'sk', 'de']);
     const unique = new Map<string, { locale: string; slug: string }>();
@@ -105,7 +107,7 @@ const getPost = cache(async (locale: string, slug: string): Promise<BlogPost | n
   return client.fetch(
     query,
     { slug: sanityBlogSlug(slug), language: locale },
-    { next: { revalidate: 300 } },
+    { next: { revalidate: 86400 } },
   );
 });
 
@@ -131,7 +133,7 @@ async function getConsolidatedPost(locale: string, slug: string): Promise<BlogPo
 
 const getPostLanguageBySlug = cache(async (slug: string): Promise<{ language: string } | null> => {
   const query = `*[_type == "post" && slug.current == $slug][0]{"language": coalesce(language, "hu")}`;
-  return client.fetch(query, { slug }, { next: { revalidate: 300 } });
+  return client.fetch(query, { slug }, { next: { revalidate: 86400 } });
 });
 
 export async function generateMetadata(props: BlogPostPageProps): Promise<Metadata> {

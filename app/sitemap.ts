@@ -25,7 +25,7 @@ const fetchSanityPosts = async (): Promise<SanityPost[]> => {
   const url = `https://${projectId}.api.sanity.io/v2024-03-08/data/query/${dataset}?query=${query}`;
 
   try {
-    const response = await fetch(url, { next: { revalidate: 3600 } });
+    const response = await fetch(url, { next: { revalidate: 86400 } });
     if (!response.ok) return [];
     const data = await response.json();
     return data.result || [];
@@ -109,4 +109,4 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 }
 
 export const dynamic = 'force-static';
-export const revalidate = 3600;
+export const revalidate = 86400;

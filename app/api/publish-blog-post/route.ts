@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { createClient } from '@sanity/client';
 import { normalizeBlogCategory, normalizeBlogLanguage } from '@/lib/blogConfig';
 import { submitToIndexNow } from '@/lib/indexNow';
@@ -122,6 +123,14 @@ export async function POST(req: Request) {
     }
 
     const created = await client.create(doc);
+
+    // next-intl rewrites the unprefixed Hungarian URL to /hu internally.
+    // Revalidate the actual route paths because Proxy is not executed during
+    // on-demand ISR. Only the changed locale and article are invalidated.
+    const internalBlogPath = `/${normalizedLanguage}/blog`;
+    revalidatePath(internalBlogPath);
+    revalidatePath(`${internalBlogPath}/${slug}`);
+    revalidatePath('/sitemap.xml');
 
     try {
       await submitToIndexNow([

@@ -3,7 +3,10 @@ import { buildLocalizedMetadata, normalizeLocale } from '@/lib/seo';
 import BlogClient from './BlogClient';
 import { canonicalBlogSlug, isMergedBlogSource } from '@/lib/blogConsolidation';
 
-export const revalidate = 60;
+// Blog content changes far less often than it is read. Keep a daily fallback
+// for edits made directly in Sanity; the admin publishing route revalidates
+// the affected paths immediately.
+export const revalidate = 86400;
 
 const blogMetadata: Record<'hu' | 'en' | 'sk' | 'de', { title: string; description: string; keywords: string[] }> = {
   hu: {
@@ -49,7 +52,7 @@ async function getBlogPosts() {
       "category": coalesce(category, "professional")
     }`);
     const response = await fetch(`https://${sanityProjectId}.api.sanity.io/v2024-03-08/data/query/${dataSet}?query=${query}`, {
-      next: { revalidate: 60 },
+      next: { revalidate: 86400 },
     });
 
     if (!response.ok) return [];
