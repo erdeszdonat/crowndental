@@ -21,7 +21,7 @@ const PRICE_LIST: Record<string, string> = {
   'Gyökértömés (három gyökerű)': '33 000 Ft', 'Gyökértömés eltávolítása': '20 000 Ft', 'Gyökérkezelés alkalmanként': '10 000 Ft',
   'Fogkőeltávolítás (állcsontonként)': '15 000 Ft', 'Fogfehérítés otthoni (fogívenként)': '30 000 Ft',
   'Fogfehérítés rendelői lámpás (fogívenként)': '45 000 Ft', 'Ideiglenes korona (rövidtávú)': '6 000 Ft',
-  'Ideiglenes korona (hosszútávú)': '15 000 Ft', 'Fémkerámia korona': '42 000 Ft', 'Cirkónium korona (fémmentes)': '65 000 Ft',
+  'Ideiglenes korona (hosszútávú)': '15 000 Ft', 'Fémkerámia korona': '55 000 Ft', 'Cirkónium korona (fémmentes)': '65 000 Ft',
   'Egyéni fogszínek készítése (foganként)': '15 000 Ft', 'Kivehető fogsor (kompozit)': '110 000 Ft', 'Fémlemezes fogsor': '150 000 Ft',
   'Régi híd eltávolítása (pillérenként)': '12 000 Ft', 'Fogsor alábélelés': '25 000 Ft', 'Foghúzás műtéttel': '55 000 Ft',
   'Bölcsességfog eltávolítása': '55 000 Ft', 'Gyökércsúcs rezekció': '55 000 Ft', 'DIO Implantátum': '240 000 Ft',

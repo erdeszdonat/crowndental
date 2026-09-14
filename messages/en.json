@@ -189,7 +189,7 @@
         { "title": "Diagnostics & Basics", "subtitle": "Check-ups, X-rays, fillings", "price": "From 10,000 HUF" },
         { "title": "Root Canal Treatment", "subtitle": "Painless tooth preservation", "price": "From 10,000 HUF" },
         { "title": "Aesthetics & Prevention", "subtitle": "Scaling, teeth whitening", "price": "From 15,000 HUF" },
-        { "title": "Prosthetics & Crowns", "subtitle": "Zirconia, metal-ceramic, dentures", "price": "From 42,000 HUF" },
+        { "title": "Prosthetics & Crowns", "subtitle": "Zirconia, metal-ceramic, dentures", "price": "From 55,000 HUF" },
         { "title": "Surgery & Implants", "subtitle": "Extractions, premium implants", "price": "From 55,000 HUF" },
         { "title": "Children & Orthodontics", "subtitle": "Fixed and removable appliances", "price": "From 15,000 HUF" }
       ]
@@ -485,7 +485,7 @@
         "items": [
           { "name": "Temporary crown (short-term, 1–2 weeks)", "price": "6,000 HUF" },
           { "name": "Temporary crown (long-term, up to 1 year)", "price": "15,000 HUF" },
-          { "name": "Metal-ceramic crown", "price": "42,000 HUF" },
+          { "name": "Metal-ceramic crown", "price": "55,000 HUF" },
           { "name": "Zirconia crown (metal-free)", "price": "65,000 HUF", "highlight": true },
           { "name": "Custom shade matching (per tooth)", "price": "15,000 HUF" },
           { "name": "Removable denture for one jaw (composite)", "price": "110,000 HUF" },
@@ -672,7 +672,7 @@
       "heroTitle": "Zirconia and Ceramic Crowns",
       "heroDesc": "Durable and aesthetic crowns and bridges for missing teeth. Thanks to our own laboratory — lightning fast, without compromise.",
       "heroPriceLabel": "Premium Crowns",
-      "heroPriceValue": "from 42,000 HUF",
+      "heroPriceValue": "from 55,000 HUF",
       "problemTitle": "The Problem: Damaged or Missing Teeth",
       "problemDesc": "Heavily decayed or broken teeth lose their structural integrity. Missing teeth make chewing difficult and can cause neighbouring teeth to drift.",
       "solutionTitle": "The Solution: Crowns and Bridges",

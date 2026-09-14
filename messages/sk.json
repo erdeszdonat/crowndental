@@ -189,7 +189,7 @@
         { "title": "Diagnostika & Základy", "subtitle": "Prehliadky, RTG, plomby", "price": "Od 10 000 HUF" },
         { "title": "Koreňová liečba", "subtitle": "Bezbolestná záchrana zuba", "price": "Od 10 000 HUF" },
         { "title": "Estetika & Prevencia", "subtitle": "Čistenie zubného kameňa, bielenie", "price": "Od 15 000 HUF" },
-        { "title": "Protetika & Korunky", "subtitle": "Zirkón, keramika, protézy", "price": "Od 42 000 HUF" },
+        { "title": "Protetika & Korunky", "subtitle": "Zirkón, keramika, protézy", "price": "Od 55 000 HUF" },
         { "title": "Chirurgia & Implantáty", "subtitle": "Extrakcie, prémiové implantáty", "price": "Od 55 000 HUF" },
         { "title": "Deti & Ortodontia", "subtitle": "Fixné a snímateľné aparáty", "price": "Od 15 000 HUF" }
       ]
@@ -485,7 +485,7 @@
         "items": [
           { "name": "Dočasná korunka (krátkodobá, 1–2 týždne)", "price": "6 000 Ft" },
           { "name": "Dočasná korunka (dlhodobá, max. 1 rok)", "price": "15 000 Ft" },
-          { "name": "Kovo-keramická korunka", "price": "42 000 Ft" },
+          { "name": "Kovo-keramická korunka", "price": "55 000 Ft" },
           { "name": "Zirkónová korunka (bez kovu)", "price": "65 000 Ft", "highlight": true },
           { "name": "Individuálne tieňovanie (za zub)", "price": "15 000 Ft" },
           { "name": "Snímateľná protéza na jednu čeľusť (kompozitná)", "price": "110 000 Ft" },
@@ -672,7 +672,7 @@
       "heroTitle": "Zirkónové a keramické korunky",
       "heroDesc": "Trvanlivé a estetické korunky a mostíky pri chýbajúcich zuboch. Vďaka vlastnému laboratóriu – bleskovo rýchlo, bez kompromisov.",
       "heroPriceLabel": "Prémiové korunky",
-      "heroPriceValue": "od 42 000 Ft",
+      "heroPriceValue": "od 55 000 Ft",
       "problemTitle": "Problém: Poškodené alebo chýbajúce zuby",
       "problemDesc": "Silne zhryznuté alebo zlomené zuby strácajú svoju štrukturálnu integritu. Chýbajúce zuby sťažujú žuvanie a môžu spôsobiť posúvanie susedných zubov.",
       "solutionTitle": "Riešenie: Korunky a mostíky",

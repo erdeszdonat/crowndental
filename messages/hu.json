@@ -189,7 +189,7 @@
         { "title": "Diagnosztika & Alap", "subtitle": "Vizsgálat, röntgen, tömések", "price": "10.000 Ft-tól" },
         { "title": "Gyökérkezelés", "subtitle": "Fájdalommentes fogmegmentés", "price": "10.000 Ft-tól" },
         { "title": "Esztétika & Prevenció", "subtitle": "Fogkőeltávolítás, fogfehérítés", "price": "15.000 Ft-tól" },
-        { "title": "Fogpótlás & Koronák", "subtitle": "Cirkónium, fémkerámia, fogsorok", "price": "42.000 Ft-tól" },
+        { "title": "Fogpótlás & Koronák", "subtitle": "Cirkónium, fémkerámia, fogsorok", "price": "55.000 Ft-tól" },
         { "title": "Sebészet & Implantáció", "subtitle": "Húzások, prémium implantátumok", "price": "55.000 Ft-tól" },
         { "title": "Gyermek & Fogszabályozás", "subtitle": "Rögzített és kivehető készülékek", "price": "15.000 Ft-tól" }
       ]
@@ -485,7 +485,7 @@
         "items": [
           { "name": "Ideiglenes korona (rövidtávú, 1-2 hétre)", "price": "6.000 Ft" },
           { "name": "Ideiglenes korona (hosszútávú, max. 1 évre)", "price": "15.000 Ft" },
-          { "name": "Fémkerámia korona", "price": "42.000 Ft" },
+          { "name": "Fémkerámia korona", "price": "55.000 Ft" },
           { "name": "Cirkónium korona (fémmentes)", "price": "65.000 Ft", "highlight": true },
           { "name": "Egyéni fogszínek készítése (foganként)", "price": "15.000 Ft" },
           { "name": "Kivehető fogsor egy állcsontra (kompozit)", "price": "110.000 Ft" },
@@ -672,7 +672,7 @@
       "heroTitle": "Cirkónium és Kerámia Koronák",
       "heroDesc": "Tartós és esztétikus koronák, hidak foghiány esetén. Saját laborunknak köszönhetően villámgyorsan, kompromisszumok nélkül.",
       "heroPriceLabel": "Prémium Koronák",
-      "heroPriceValue": "42.000 Ft-tól",
+      "heroPriceValue": "55.000 Ft-tól",
       "problemTitle": "A Probléma: Sérült vagy hiányzó fogak",
       "problemDesc": "A nagymértékben szuvasodott vagy letört fogak szerkezete meggyengül. A hiányzó fogak nehezítik a rágást és a szomszédos fogak bedőlését okozhatják.",
       "solutionTitle": "A Megoldás: Koronák és Hidak",

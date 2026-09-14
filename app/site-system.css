@@ -24,7 +24,10 @@
 .crown-page :is(h2,h3)[class*="text-4xl"], .crown-page :is(h2,h3)[class*="text-5xl"] { font-size: clamp(2rem, 3.5vw, 3.35rem); line-height: 1.13; }
 .crown-page p { text-wrap: pretty; }
 .crown-page main > section:not(.crown-home-hero):not(.crown-clinical-hero),
-main.crown-page > section:not(.crown-clinical-hero) { padding-block: clamp(3.5rem, 7vw, 6rem); }
+main.crown-page > section:not(.crown-clinical-hero),
+.crown-home-sections > section { padding-block: clamp(3.5rem, 7vw, 6rem); }
+/* Keep the restored banner outside crown-page typography/card overrides. */
+.crown-home-banner { font-family: Arial, Helvetica, sans-serif; }
 .crown-page :is(.rounded-3xl, .rounded-2xl) { border-radius: var(--crown-radius); }
 .crown-page .shadow-2xl { box-shadow: 0 16px 45px -24px rgb(16 43 64 / 25%); }
 .crown-page .shadow-xl { box-shadow: 0 10px 32px -20px rgb(16 43 64 / 20%); }
