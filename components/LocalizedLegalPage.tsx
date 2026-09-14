@@ -40,7 +40,7 @@ const documents: Record<InformationalLegalLocale, Record<LegalDocument, LegalCon
             'Registered office and Esztergom clinic: Petőfi Sándor utca 11, 2500 Esztergom, Hungary.',
             'Budapest clinic: Királyok útja 55, 1039 Budapest, Hungary.',
             'Company registration number: 11-09-026431. Tax number: 26537353-2-11.',
-            'Contact: info@crowndental.hu, +36 70 564 6837.',
+            'Contact: info@crowndental.hu, 06 30 589 2468.',
           ],
           paragraphs: ['These terms cover appointment requests, dental services and the public functions of crowndental.hu. Mandatory patient and consumer rights under applicable law remain unaffected.'],
         },
@@ -90,7 +90,7 @@ const documents: Record<InformationalLegalLocale, Record<LegalDocument, LegalCon
             'Crown Dental Praxis és Labor Fogászati Kft.',
             'Registered office: Petőfi Sándor utca 11, 2500 Esztergom, Hungary.',
             'Company registration number: 11-09-026431. Tax number: 26537353-2-11.',
-            'Privacy contact: info@crowndental.hu, +36 70 564 6837.',
+            'Privacy contact: info@crowndental.hu, 06 30 589 2468.',
           ],
         },
         {
@@ -205,7 +205,7 @@ const documents: Record<InformationalLegalLocale, Record<LegalDocument, LegalCon
             'Budapest clinic: Királyok útja 55, 1039 Budapest, Hungary.',
             'Company registration number: 11-09-026431.',
             'Tax number: 26537353-2-11.',
-            'Email: info@crowndental.hu. Telephone: +36 70 564 6837.',
+            'Email: info@crowndental.hu. Telephone: 06 30 589 2468.',
           ],
         },
         {
@@ -241,7 +241,7 @@ const documents: Record<InformationalLegalLocale, Record<LegalDocument, LegalCon
             'Sídlo a ambulancia v Ostrihome: Petőfi Sándor utca 11, 2500 Esztergom, Maďarsko.',
             'Ambulancia v Budapešti: Királyok útja 55, 1039 Budapest, Maďarsko.',
             'Registračné číslo spoločnosti: 11-09-026431. Daňové číslo: 26537353-2-11.',
-            'Kontakt: info@crowndental.hu, +36 70 564 6837.',
+            'Kontakt: info@crowndental.hu, 06 30 589 2468.',
           ],
           paragraphs: ['Tieto podmienky sa vzťahujú na žiadosti o termín, zubné služby a verejné funkcie stránky crowndental.hu. Povinné práva pacientov a spotrebiteľov podľa platných právnych predpisov zostávajú nedotknuté.'],
         },
@@ -291,7 +291,7 @@ const documents: Record<InformationalLegalLocale, Record<LegalDocument, LegalCon
             'Crown Dental Praxis és Labor Fogászati Kft.',
             'Sídlo: Petőfi Sándor utca 11, 2500 Esztergom, Maďarsko.',
             'Registračné číslo spoločnosti: 11-09-026431. Daňové číslo: 26537353-2-11.',
-            'Kontakt pre ochranu údajov: info@crowndental.hu, +36 70 564 6837.',
+            'Kontakt pre ochranu údajov: info@crowndental.hu, 06 30 589 2468.',
           ],
         },
         {
@@ -406,7 +406,7 @@ const documents: Record<InformationalLegalLocale, Record<LegalDocument, LegalCon
             'Ambulancia v Budapešti: Királyok útja 55, 1039 Budapest, Maďarsko.',
             'Registračné číslo spoločnosti: 11-09-026431.',
             'Daňové číslo: 26537353-2-11.',
-            'E-mail: info@crowndental.hu. Telefón: +36 70 564 6837.',
+            'E-mail: info@crowndental.hu. Telefón: 06 30 589 2468.',
           ],
         },
         {

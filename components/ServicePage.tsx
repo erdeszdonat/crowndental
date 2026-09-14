@@ -366,11 +366,11 @@ export default function ServicePage({
                 Időpontfoglalás
               </Link>
               <a
-                href="tel:+36301234567"
+                href="tel:+36305892468"
                 className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-medium rounded-xl border border-white/20 transition-all"
               >
                 <Phone className="w-5 h-5" />
-                +36 30 123 4567
+                06 30 589 2468
               </a>
             </motion.div>
 

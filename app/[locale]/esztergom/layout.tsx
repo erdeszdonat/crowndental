@@ -98,7 +98,7 @@ function buildClinicJsonLd(locale: SupportedLocale) {
     url: pageUrl,
     mainEntityOfPage: { '@id': pageUrl },
     parentOrganization: { '@id': `${SITE_URL}/#organization` },
-    telephone: '+36705646837',
+    telephone: '+36305892468',
     email: 'info@crowndental.hu',
     foundingDate: '1994',
     image: [`${SITE_URL}/og-esztergom.jpg`, `${SITE_URL}/logo.webp`],

@@ -94,7 +94,7 @@ function buildPDF(result: QuoteAnalysisResult, name: string, phone: string, emai
     ? range(result.savingsMin, result.savingsMax)
     : result.requiresManualReview ? copy.manual : copy.noSaving;
 
-  return `<!doctype html><html lang="${locale}"><head><meta charset="utf-8"><title>${copy.title}</title><style>@page{size:A4;margin:16mm 18mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#0f172a;margin:0}.header{display:flex;justify-content:space-between;border-bottom:3px solid #0284c7;padding-bottom:14px}.brand{font-size:26px;font-weight:900;color:#0369a1}.meta{font-size:11px;color:#64748b;text-align:right}h1{font-size:22px;margin:24px 0 6px}.patient{font-size:12px;color:#64748b}.summary{background:#f0f9ff;border:1px solid #bae6fd;border-radius:12px;padding:18px;text-align:center;margin:22px 0}.summary strong{display:block;font-size:22px;color:#0369a1;margin-top:5px}table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:10px;border-bottom:1px solid #e2e8f0;text-align:left}.number{text-align:right}.crown{color:#0369a1;font-weight:800}tfoot td{border-top:2px solid #0284c7;font-weight:900}.notice{margin-top:24px;padding:14px;border:1px solid #fbbf24;background:#fffbeb;border-radius:10px;font-size:11px;line-height:1.55;color:#78350f}</style></head><body><div class="header"><div><div class="brand">CROWN DENTAL</div><div class="meta">Praxis és Labor · Esztergom · Budapest</div></div><div class="meta">${date}<br>+36 70 564 6837</div></div><h1>${copy.title}</h1><div class="patient">${patientLine}</div><div class="summary">${copy.difference}<strong>${summary}</strong></div><table><thead><tr><th>${copy.treatment}</th><th class="number">${copy.other}</th><th class="number">${copy.crown}</th></tr></thead><tbody>${rows}</tbody><tfoot><tr><td>${copy.total}</td><td class="number">${money(result.competitorTotal)}</td><td class="number crown">${range(result.ourTotalMin, result.ourTotalMax)}</td></tr></tfoot></table><div class="notice">${copy.notice}</div></body></html>`;
+  return `<!doctype html><html lang="${locale}"><head><meta charset="utf-8"><title>${copy.title}</title><style>@page{size:A4;margin:16mm 18mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#0f172a;margin:0}.header{display:flex;justify-content:space-between;border-bottom:3px solid #0284c7;padding-bottom:14px}.brand{font-size:26px;font-weight:900;color:#0369a1}.meta{font-size:11px;color:#64748b;text-align:right}h1{font-size:22px;margin:24px 0 6px}.patient{font-size:12px;color:#64748b}.summary{background:#f0f9ff;border:1px solid #bae6fd;border-radius:12px;padding:18px;text-align:center;margin:22px 0}.summary strong{display:block;font-size:22px;color:#0369a1;margin-top:5px}table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:10px;border-bottom:1px solid #e2e8f0;text-align:left}.number{text-align:right}.crown{color:#0369a1;font-weight:800}tfoot td{border-top:2px solid #0284c7;font-weight:900}.notice{margin-top:24px;padding:14px;border:1px solid #fbbf24;background:#fffbeb;border-radius:10px;font-size:11px;line-height:1.55;color:#78350f}</style></head><body><div class="header"><div><div class="brand">CROWN DENTAL</div><div class="meta">Praxis és Labor · Esztergom · Budapest</div></div><div class="meta">${date}<br>06 30 589 2468</div></div><h1>${copy.title}</h1><div class="patient">${patientLine}</div><div class="summary">${copy.difference}<strong>${summary}</strong></div><table><thead><tr><th>${copy.treatment}</th><th class="number">${copy.other}</th><th class="number">${copy.crown}</th></tr></thead><tbody>${rows}</tbody><tfoot><tr><td>${copy.total}</td><td class="number">${money(result.competitorTotal)}</td><td class="number crown">${range(result.ourTotalMin, result.ourTotalMax)}</td></tr></tfoot></table><div class="notice">${copy.notice}</div></body></html>`;
 }
 
 // ─── Lebegő CTA ───────────────────────────────────────────────────────────────
@@ -111,7 +111,7 @@ function FloatingCTA() {
 
   return (
     <motion.div initial={{ opacity: 0, y: 24, scale: 0.94 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ type:'spring', damping:20, stiffness:300, delay:0.15 }} className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 items-end">
-      <a href="tel:+36705646837" className="flex items-center gap-2 bg-white text-sky-700 pl-4 pr-5 py-3 rounded-full shadow-2xl border border-sky-100 hover:bg-sky-50 transition-all">
+      <a href="tel:+36305892468" className="flex items-center gap-2 bg-white text-sky-700 pl-4 pr-5 py-3 rounded-full shadow-2xl border border-sky-100 hover:bg-sky-50 transition-all">
         <Phone className="w-5 h-5" /><span className="font-bold text-sm hidden sm:inline">{t('callNow')}</span>
       </a>
       <Link
@@ -216,8 +216,8 @@ function HeroSlider({ images }: { images: HomeSanityImages['hero'] }) {
                 <motion.a href={staticSlides[current].href} whileHover={prefersReducedMotion ? undefined : { scale:1.03 }} whileTap={prefersReducedMotion ? undefined : { scale:0.97 }} className="group flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-5 bg-sky-500 hover:bg-sky-400 text-white text-lg font-bold rounded-2xl shadow-[0_0_60px_rgba(14,165,233,0.4)] transition-all">
                   {staticSlides[current].icon} {slideData[current]?.primaryText} <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </motion.a>
-                <motion.a href="tel:+36705646837" whileHover={prefersReducedMotion ? undefined : { scale:1.03 }} whileTap={prefersReducedMotion ? undefined : { scale:0.97 }} className="flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-5 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white text-lg font-bold rounded-2xl transition-all border border-white/20">
-                  <Phone className="w-5 h-5" /> +36 70 564 6837
+                <motion.a href="tel:+36305892468" whileHover={prefersReducedMotion ? undefined : { scale:1.03 }} whileTap={prefersReducedMotion ? undefined : { scale:0.97 }} className="flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-5 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white text-lg font-bold rounded-2xl transition-all border border-white/20">
+                  <Phone className="w-5 h-5" /> 06 30 589 2468
                 </motion.a>
               </div>
             </motion.div>
@@ -1045,8 +1045,8 @@ function CTASection() {
             <motion.a href={`${p}/idopont`} whileHover={{ scale:1.03 }} whileTap={{ scale:0.97 }} className="flex items-center justify-center gap-3 px-10 py-5 bg-white text-sky-700 font-bold text-lg rounded-2xl shadow-2xl hover:bg-sky-50 transition-all">
               <Calendar className="w-6 h-6"/> {t('bookOnline')}
             </motion.a>
-            <motion.a href="tel:+36705646837" whileHover={{ scale:1.03 }} whileTap={{ scale:0.97 }} className="flex items-center justify-center gap-3 px-10 py-5 bg-sky-800 hover:bg-sky-900 text-white font-bold text-lg rounded-2xl transition-all border border-sky-500/30">
-              <Phone className="w-5 h-5"/> +36 70 564 6837
+            <motion.a href="tel:+36305892468" whileHover={{ scale:1.03 }} whileTap={{ scale:0.97 }} className="flex items-center justify-center gap-3 px-10 py-5 bg-sky-800 hover:bg-sky-900 text-white font-bold text-lg rounded-2xl transition-all border border-sky-500/30">
+              <Phone className="w-5 h-5"/> 06 30 589 2468
             </motion.a>
           </div>
         </motion.div>

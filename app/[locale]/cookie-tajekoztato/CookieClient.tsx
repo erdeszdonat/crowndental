@@ -195,7 +195,7 @@ function CookieContent() {
                   <ul className="space-y-2 text-sm sm:text-base">
                     <li><strong>Crown Dental Praxis és Labor Fogászati Kft.</strong></li>
                     <li>2500 Esztergom, Petőfi Sándor utca 11.</li>
-                    <li><a href="mailto:info@crowndental.hu">info@crowndental.hu</a> · <a href="tel:+36705646837">+36 70 564 6837</a></li>
+                    <li><a href="mailto:info@crowndental.hu">info@crowndental.hu</a> · <a href="tel:+36305892468">06 30 589 2468</a></li>
                   </ul>
                 </div>
                 <p>A személyes adatok kezeléséről, az érintetti jogokról és a jogorvoslatról az <Link href="/adatkezeles">Adatkezelési tájékoztatóban</Link> olvashat részletesen.</p>

@@ -136,7 +136,7 @@ function PrivacyContent() {
                     <li><strong className="text-slate-900">Budapesti Telephely:</strong> 1039 Budapest, Királyok útja 55.</li>
                     <li><strong className="text-slate-900">Cégjegyzékszám:</strong> 11-09-026431</li>
                     <li><strong className="text-slate-900">Adószám:</strong> 26537353-2-11</li>
-                    <li><strong className="text-slate-900">Telefon:</strong> +36 70 564 6837</li>
+                    <li><strong className="text-slate-900">Telefon:</strong> 06 30 589 2468</li>
                     <li><strong className="text-slate-900">E-mail:</strong> <a href="mailto:info@crowndental.hu">info@crowndental.hu</a></li>
                     <li><strong className="text-slate-900">Adatvédelmi tisztviselő elérhetősége:</strong> info@crowndental.hu</li>
                   </ul>

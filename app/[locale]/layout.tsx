@@ -65,7 +65,7 @@ const organizationJsonLd = {
       url: SITE_URL,
       logo: { '@type': 'ImageObject', url: `${SITE_URL}/logo.webp` },
       image: `${SITE_URL}/og-image.jpg`,
-      telephone: '+36705646837',
+      telephone: '+36305892468',
       email: 'info@crowndental.hu',
       foundingDate: '1994',
       address: {
@@ -78,7 +78,7 @@ const organizationJsonLd = {
       },
       contactPoint: {
         '@type': 'ContactPoint',
-        telephone: '+36705646837',
+        telephone: '+36305892468',
         contactType: 'appointments',
         availableLanguage: ['hu', 'sk', 'en', 'de'],
         areaServed: ['HU', 'SK'],

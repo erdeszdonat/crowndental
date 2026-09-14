@@ -54,7 +54,7 @@ const documents: Record<GermanLegalDocument, { eyebrow: string; title: string; l
     sections: [
       {
         title: '1. Verantwortlicher',
-        paragraphs: ['Crown Dental Praxis és Labor Fogászati Kft., Petőfi Sándor utca 11, 2500 Esztergom, Ungarn. Kontakt: info@crowndental.hu, +36 70 564 6837.'],
+        paragraphs: ['Crown Dental Praxis és Labor Fogászati Kft., Petőfi Sándor utca 11, 2500 Esztergom, Ungarn. Kontakt: info@crowndental.hu, 06 30 589 2468.'],
       },
       {
         title: '2. Verarbeitete Daten und Zwecke',
@@ -118,7 +118,7 @@ const documents: Record<GermanLegalDocument, { eyebrow: string; title: string; l
     sections: [
       {
         title: '1. Websitebetreiber',
-        items: ['Unternehmen: Crown Dental Praxis és Labor Fogászati Kft.', 'Sitz: Petőfi Sándor utca 11, 2500 Esztergom, Ungarn', 'Steuernummer: 26537353-2-11', 'E-Mail: info@crowndental.hu', 'Telefon: +36 70 564 6837'],
+        items: ['Unternehmen: Crown Dental Praxis és Labor Fogászati Kft.', 'Sitz: Petőfi Sándor utca 11, 2500 Esztergom, Ungarn', 'Steuernummer: 26537353-2-11', 'E-Mail: info@crowndental.hu', 'Telefon: 06 30 589 2468'],
       },
       {
         title: '2. Hosting',
