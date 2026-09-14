@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { getTreatmentImages } from '@/lib/treatmentImages';
 import FogszabalyozasClient from './FogszabalyozasClient';
 import TreatmentSeoScripts from '@/components/TreatmentSeoScripts';
 import { buildTreatmentMetadata } from '@/lib/seo';
@@ -19,7 +20,7 @@ export default async function FogszabalyozasPage(props: TreatmentPageProps) {
   return (
     <>
       <TreatmentSeoScripts locale={params.locale} slug={slug} />
-      <FogszabalyozasClient />
+      <FogszabalyozasClient imageUrl={(await getTreatmentImages())[slug] ?? ''} />
     </>
   );
 }

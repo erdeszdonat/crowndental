@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { getTreatmentImages } from '@/lib/treatmentImages';
 import GyokerkezelesClient from './GyokerkezelesClient';
 import TreatmentSeoScripts from '@/components/TreatmentSeoScripts';
 import { buildTreatmentMetadata } from '@/lib/seo';
@@ -19,7 +20,7 @@ export default async function GyokerkezelesPage(props: TreatmentPageProps) {
   return (
     <>
       <TreatmentSeoScripts locale={params.locale} slug={slug} />
-      <GyokerkezelesClient />
+      <GyokerkezelesClient imageUrl={(await getTreatmentImages())[slug] ?? ''} />
     </>
   );
 }

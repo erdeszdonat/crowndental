@@ -293,7 +293,7 @@ export default function Navigation() {
   }
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-sm py-0' : 'bg-transparent py-2'}`}>
+    <header className={`crown-navigation fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'shadow-sm' : ''}`}>
       <nav className="container mx-auto px-4 flex items-center justify-between h-20">
         {/* Logo */}
         <a href={homeHref} className="flex items-center relative h-full py-2 z-50">
@@ -332,7 +332,7 @@ export default function Navigation() {
           {/* Időpontfoglalás gomb */}
           <a
             href={`${prefix}/idopont`}
-            className="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 bg-sky-600 text-white font-bold rounded-full transition-all shadow-md hover:shadow-xl hover:bg-sky-700 transform hover:-translate-y-0.5 text-sm md:text-base ring-4 ring-sky-50"
+            className="crown-button hidden sm:inline-flex"
           >
             <Calendar className="w-4 h-4 md:w-5 md:h-5" /> {t('bookAppointment')}
           </a>

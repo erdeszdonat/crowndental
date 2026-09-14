@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { getTreatmentImages } from '@/lib/treatmentImages';
 import KoronakHidakClient from './KoronakHidakClient';
 import TreatmentSeoScripts from '@/components/TreatmentSeoScripts';
 import { buildTreatmentMetadata } from '@/lib/seo';
@@ -19,7 +20,7 @@ export default async function KoronakHidakPage(props: TreatmentPageProps) {
   return (
     <>
       <TreatmentSeoScripts locale={params.locale} slug={slug} />
-      <KoronakHidakClient />
+      <KoronakHidakClient imageUrl={(await getTreatmentImages())[slug] ?? ''} />
     </>
   );
 }

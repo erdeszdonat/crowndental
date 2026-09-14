@@ -1,8 +1,10 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, ArrowLeft, CheckCircle2 } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
+import { getSiteCopy } from '@/lib/siteCopy';
+import { ANALYTICS_READY_EVENT, trackSiteEvent } from '@/lib/siteAnalytics';
+import { ArrowRight, ArrowLeft, Phone, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
 import { BUDAPEST_BOOKING_OPEN_LABELS, isBudapestBookingAvailable, isBudapestCity } from '@/lib/bookingAvailability';
@@ -74,7 +76,14 @@ function BookingForm() {
   const safeLocale = normalizeLocale(locale);
   const router = useRouter();
   const p = safeLocale === 'hu' ? '' : `/${safeLocale}`;
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState<1 | 2>(1);
+  const copy = getSiteCopy(safeLocale);
+  const busyRef = useRef(false);
+  const startedRef = useRef(false);
+  const viewedRef = useRef(false);
+  const measuredStepRef = useRef<number | null>(null);
+  const previousStepRef = useRef(step);
+  const headingRef = useRef<HTMLHeadingElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [formData, setFormData] = useState({ city:'Esztergom', name:'', nickname:'', email:'', phone:'', treatment:'' });
@@ -97,6 +106,25 @@ function BookingForm() {
   const isOther = formData.treatment === otherLabel;
 
 
+  useEffect(() => {
+    const measure = () => {
+      if (!viewedRef.current) viewedRef.current = trackSiteEvent('booking_form_view', safeLocale, { step });
+      if (measuredStepRef.current !== step && trackSiteEvent('booking_step_view', safeLocale, { step })) measuredStepRef.current = step;
+    };
+    measure();
+    window.addEventListener(ANALYTICS_READY_EVENT, measure);
+    if (previousStepRef.current !== step) {
+      headingRef.current?.focus({ preventScroll: true });
+      headingRef.current?.closest('.crown-booking-panel')?.scrollIntoView({ block: 'start', behavior: 'auto' });
+      previousStepRef.current = step;
+    }
+    return () => window.removeEventListener(ANALYTICS_READY_EVENT, measure);
+  }, [safeLocale, step]);
+
+  const markStarted = () => {
+    if (!startedRef.current) startedRef.current = trackSiteEvent('booking_start', safeLocale, { step });
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     idempotencyKeyRef.current = null;
     setSubmitError(null);
@@ -106,12 +134,18 @@ function BookingForm() {
   const handleNext = (e: React.FormEvent) => {
     e.preventDefault();
     if (isBudapestCity(formData.city) && !isBudapestOpen) return;
-    if (formData.name && formData.phone && formData.email) { setStep(2); window.scrollTo({ top:0, behavior:'smooth' }); }
+    if (formData.name.trim() && formData.phone.trim() && formData.email.trim()) {
+      trackSiteEvent('booking_step_complete', safeLocale, { step: 1 });
+      setStep(2);
+    } else { setSubmitError(feedback.invalid); }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.treatment) return;
+    if (!formData.treatment || busyRef.current) return;
+    busyRef.current = true;
+    trackSiteEvent('booking_step_complete', safeLocale, { step: 2 });
+    trackSiteEvent('booking_submit', safeLocale, { step: 2 });
     setSubmitError(null);
     setIsSubmitting(true);
     try {
@@ -136,6 +170,7 @@ function BookingForm() {
       });
       const data = await res.json().catch(() => ({})) as BookingResponse;
       if (!res.ok || data.success !== true) {
+        trackSiteEvent('booking_error', safeLocale, { step: 2, error: res.status === 429 ? 'rate_limited' : res.status >= 500 ? 'service' : res.status === 400 || res.status === 422 ? 'validation' : 'unknown' });
         if (res.status === 400 || res.status === 422) setSubmitError(feedback.invalid);
         else if (res.status === 429) setSubmitError(feedback.rateLimited);
         else if (res.status >= 500) setSubmitError(feedback.unavailable);
@@ -152,133 +187,129 @@ function BookingForm() {
       } catch {
         // The booking is already saved; storage is only used to enhance the success page.
       }
+      trackSiteEvent('booking_success', safeLocale, { step: 2 });
       router.push(`${p}/idopont/sikeres`);
     } catch {
+      trackSiteEvent('booking_error', safeLocale, { step: 2, error: 'network' });
       setSubmitError(feedback.network);
     }
-    finally { setIsSubmitting(false); }
+    finally { busyRef.current = false; setIsSubmitting(false); }
   };
 
   return (
-    <div className="max-w-3xl mx-auto text-left">
-      {/* Progress */}
-      <div className="flex items-center justify-center mb-12">
-        <div className={`flex items-center justify-center w-12 h-12 rounded-full font-bold ${step>=1?'bg-sky-600 text-white shadow-lg':'bg-gray-200 text-gray-400'}`}>1</div>
-        <div className="w-16 sm:w-24 h-1 mx-4 rounded-full bg-gray-200 overflow-hidden">
-          <div className={`h-full bg-sky-600 transition-all duration-500 ${step===2?'w-full':'w-0'}`}/>
-        </div>
-        <div className={`flex items-center justify-center w-12 h-12 rounded-full font-bold ${step===2?'bg-sky-600 text-white shadow-lg':'bg-gray-200 text-gray-400'}`}>2</div>
-      </div>
-
-      <div className="bg-white rounded-[2rem] shadow-2xl border border-gray-100 p-6 md:p-12 backdrop-blur-sm bg-white/95">
-        <AnimatePresence mode="wait">
-          {step===1&&(
-            <motion.form key="step1" initial={{ opacity:0, x:-20 }} animate={{ opacity:1, x:0 }} exit={{ opacity:0, x:20 }} onSubmit={handleNext} className="space-y-6">
-              <h2 className="text-2xl font-extrabold text-gray-900 mb-6">{t('step1Title')}</h2>
-              <div className="grid sm:grid-cols-2 gap-4 mb-8">
-                <label className={`relative cursor-pointer rounded-2xl border-2 p-6 transition-all ${formData.city==='Esztergom'?'border-sky-600 bg-sky-50':'border-gray-200 bg-white hover:border-sky-200'}`}>
-                  <input type="radio" name="city" value="Esztergom" checked={formData.city==='Esztergom'} onChange={handleChange} className="sr-only"/>
-                  <div className="flex items-center justify-between font-bold text-lg text-gray-900">Esztergom{formData.city==='Esztergom'&&<CheckCircle2 className="w-5 h-5 text-sky-600"/>}</div>
-                  <p className="text-sm text-sky-600 font-medium mt-1">Petőfi Sándor utca 11.</p>
-                </label>
-                <label className={`relative rounded-2xl border-2 p-6 transition-all ${isBudapestOpen ? 'cursor-pointer select-auto' : 'cursor-not-allowed select-none opacity-70 grayscale border-gray-200 bg-gray-100'} ${isBudapestOpen ? (formData.city==='Budapest'?'border-sky-600 bg-sky-50':'border-gray-200 bg-gray-50 hover:border-sky-200') : ''}`}>
-                  <input type="radio" name="city" value="Budapest" checked={formData.city==='Budapest'} disabled={!isBudapestOpen} onChange={handleChange} className="sr-only"/>
-                  <div className={`flex items-center justify-between font-bold text-lg ${isBudapestOpen?'text-gray-900':'text-gray-400'}`}>Budapest{formData.city==='Budapest'?<CheckCircle2 className="w-5 h-5 text-sky-600"/>:<span className={`text-xs font-semibold text-white px-2 py-1 rounded-full whitespace-nowrap ${isBudapestOpen ? 'bg-sky-400' : 'bg-gray-400'}`}>{budapestOpenLabel}</span>}</div>
-                  <p className={`text-sm font-medium mt-1 ${isBudapestOpen?'text-sky-600':'text-gray-400'}`}>Királyok útja 55.</p>
-                </label>
+    <div className="crown-booking-panel">
+      <ol className="crown-booking-progress" aria-label={t('title')}>
+        {copy.steps.map((label, i) => <li key={label} aria-current={step === i + 1 ? 'step' : undefined}><span>{i + 1}</span>{label}</li>)}
+      </ol>
+      <h2 ref={headingRef} tabIndex={-1} style={{ scrollMarginTop: '7rem' }}>{t(step === 1 ? 'step1Title' : 'step2Title')}</h2>
+      <p className="crown-booking-note mb-6">{copy.required}</p>
+      <form key={step} onSubmit={step === 1 ? handleNext : handleSubmit} onChange={markStarted}
+        onInvalidCapture={() => trackSiteEvent('booking_validation_error', safeLocale, { step, error: 'validation' })}
+        aria-busy={isSubmitting}>
+        <fieldset disabled={isSubmitting} className="space-y-5">
+          {step === 1 ? (
+            <>
+              <fieldset>
+                <legend className="crown-field-label">{copy.location}</legend>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  {['Esztergom', 'Budapest'].map(city => {
+                    const unavailable = city === 'Budapest' && !isBudapestOpen;
+                    return (
+                      <label key={city} className={`flex gap-3 items-start rounded-xl border p-4 ${unavailable ? 'bg-gray-50 text-gray-500' : 'cursor-pointer'} ${formData.city === city ? 'border-sky-600 bg-sky-50' : 'border-gray-200'}`}>
+                        <input type="radio" name="city" value={city} checked={formData.city === city} disabled={unavailable} onChange={handleChange} className="mt-1 h-4 w-4 accent-sky-700 shrink-0" />
+                        <span className="min-w-0">
+                          <strong className="block text-sm">{city}</strong>
+                          <span className="mt-1 block text-xs leading-relaxed">{city === 'Esztergom' ? 'Petőfi Sándor utca 11.' : 'Királyok útja 55.'}</span>
+                          {unavailable && <span className="mt-2 block text-xs">{budapestOpenLabel}</span>}
+                        </span>
+                      </label>
+                    );
+                  })}
+                </div>
+              </fieldset>
+              <div>
+                <label htmlFor="booking-name" className="crown-field-label">{t('fullName')} *</label>
+                <input id="booking-name" required maxLength={120} autoComplete="name" name="name" value={formData.name} onChange={handleChange} className="crown-input" />
               </div>
-              <div className="space-y-4">
-                <label htmlFor="booking-name" className="sr-only">{t('fullName')}</label>
-                <input id="booking-name" required autoComplete="name" name="name" value={formData.name} onChange={handleChange} placeholder={`${t('fullName')} *`} className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-600"/>
-                <label htmlFor="booking-phone" className="sr-only">{t('phone')}</label>
-                <input id="booking-phone" required autoComplete="tel" inputMode="tel" type="tel" name="phone" value={formData.phone} onChange={handleChange} placeholder={`${t('phone')} *`} className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-600"/>
-                <label htmlFor="booking-email" className="sr-only">{t('email')}</label>
-                <input id="booking-email" required autoComplete="email" name="email" type="email" value={formData.email} onChange={handleChange} placeholder={`${t('email')} *`} className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-600"/>
+              <div>
+                <label htmlFor="booking-phone" className="crown-field-label">{t('phone')} *</label>
+                <input id="booking-phone" required maxLength={40} autoComplete="tel" inputMode="tel" type="tel" name="phone" value={formData.phone} onChange={handleChange} className="crown-input" />
               </div>
-              <button type="submit" className="w-full py-4 bg-gray-900 text-white font-bold rounded-full hover:bg-sky-600 transition-colors shadow-lg mt-4 flex items-center justify-center gap-2">
-                {t('nextStep')} <ArrowRight className="w-5 h-5"/>
-              </button>
-            </motion.form>
-          )}
-
-          {step===2&&(
-            <motion.form key="step2" initial={{ opacity:0, x:20 }} animate={{ opacity:1, x:0 }} exit={{ opacity:0, x:-20 }} onSubmit={handleSubmit} className="space-y-6">
-              <h2 className="text-2xl font-extrabold text-gray-900">{t('step2Title')}</h2>
-              <div className="space-y-3 max-h-[420px] overflow-y-auto pr-2">
-                {treatments.map((treatment) => (
-                  <React.Fragment key={treatment}>
-                    <label className={`flex items-center justify-between p-4 rounded-xl border-2 cursor-pointer transition-all ${formData.treatment===treatment?'border-sky-600 bg-sky-50':'border-gray-100 hover:border-sky-200'}`}>
-                      <span className="font-bold text-gray-700">{treatment}</span>
-                      <input type="radio" name="treatment" value={treatment} onChange={handleChange} className="sr-only" required/>
-                      <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${formData.treatment===treatment?'border-sky-600 bg-sky-600':'border-gray-300'}`}>
-                        {formData.treatment===treatment&&<div className="w-2 h-2 bg-white rounded-full"/>}
-                      </div>
-                    </label>
-                    {formData.treatment===treatment && treatment===otherLabel && (
-                      <textarea
-                        value={otherNote}
-                        onChange={e => {
-                          idempotencyKeyRef.current = null;
-                          setSubmitError(null);
-                          setOtherNote(e.target.value);
-                        }}
-                        placeholder={otherNotePlaceholder}
-                        rows={3}
-                        className="w-full p-4 bg-gray-50 border-2 border-sky-300 rounded-xl outline-none focus:ring-2 focus:ring-sky-500 resize-none text-sm text-gray-700"
-                      />
-                    )}
-                  </React.Fragment>
-                ))}
+              <div>
+                <label htmlFor="booking-email" className="crown-field-label">{t('email')} *</label>
+                <input id="booking-email" required maxLength={254} autoComplete="email" name="email" type="email" value={formData.email} onChange={handleChange} className="crown-input" />
               </div>
-              <label className="flex cursor-pointer items-start gap-3 rounded-2xl border border-sky-100 bg-sky-50/70 p-4 text-left transition-colors hover:border-sky-200">
-                <input
-                  type="checkbox"
-                  checked={marketingConsent}
-                  onChange={(event) => {
-                    idempotencyKeyRef.current = null;
-                    setSubmitError(null);
-                    setMarketingConsent(event.target.checked);
-                  }}
-                  className="mt-1 h-5 w-5 flex-shrink-0 rounded border-sky-300 text-sky-600 focus:ring-sky-500"
-                />
+            </>
+          ) : (
+            <>
+              <div>
+                <label htmlFor="booking-treatment" className="crown-field-label">{t('step2Title')} *</label>
+                <select id="booking-treatment" name="treatment" value={formData.treatment} onChange={handleChange} required className="crown-input">
+                  <option value="" disabled>— {t('step2Title')} —</option>
+                  {treatments.map(treatment => <option key={treatment} value={treatment}>{treatment}</option>)}
+                </select>
+              </div>
+              {isOther && <div>
+                <label htmlFor="booking-note" className="crown-field-label">{copy.optional}</label>
+                <textarea id="booking-note" value={otherNote} rows={4} maxLength={Math.max(0, 280 - formData.treatment.length - 2)} className="crown-input" placeholder={otherNotePlaceholder}
+                  onChange={event => { idempotencyKeyRef.current = null; setSubmitError(null); setOtherNote(event.target.value); }} />
+              </div>}
+              <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-gray-200 bg-gray-50 p-4">
+                <input type="checkbox" checked={marketingConsent} className="mt-1 h-5 w-5 shrink-0 accent-sky-700"
+                  onChange={event => { idempotencyKeyRef.current = null; setSubmitError(null); setMarketingConsent(event.target.checked); }} />
                 <span>
-                  <span className="block text-sm font-black text-gray-900">{t('marketingOptInTitle')}</span>
-                  <span className="mt-1 block text-xs leading-relaxed text-gray-500">{t('marketingOptInText')}</span>
+                  <span className="block text-sm font-semibold text-gray-900">{t('marketingOptInTitle')}</span>
+                  <span className="mt-1 block text-xs leading-relaxed text-gray-600">{t('marketingOptInText')}</span>
                 </span>
               </label>
-              {submitError && (
-                <p role="alert" aria-live="assertive" className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-bold text-red-700">
-                  {submitError}
-                </p>
-              )}
-              <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t">
-                <button type="button" onClick={()=>setStep(1)} className="flex items-center justify-center gap-2 px-6 py-4 text-gray-500 font-bold hover:text-gray-900">
-                  <ArrowLeft className="w-5 h-5"/> {t('prevStep')}
-                </button>
-                <button type="submit" disabled={isSubmitting||!formData.treatment} className="flex-1 py-4 bg-sky-600 text-white font-bold rounded-full hover:bg-sky-700 shadow-lg disabled:bg-gray-300">
-                  {isSubmitting ? t('submitting') : t('submit')}
-                </button>
-              </div>
-            </motion.form>
+              <p className="crown-booking-note">{copy.note}</p>
+            </>
           )}
-        </AnimatePresence>
-      </div>
+          {submitError && <div role="alert" className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+            <p>{submitError}</p>
+            <a href="tel:+36305892468" className="inline-flex min-h-11 items-center gap-2 underline"><Phone size={16} />06 30 589 2468</a>
+          </div>}
+          <div className="flex flex-col-reverse sm:flex-row gap-3 pt-3">
+            {step === 2 && <button type="button" onClick={() => { setSubmitError(null); setStep(1); }} className="crown-button crown-button-secondary"><ArrowLeft size={18} />{t('prevStep')}</button>}
+            <button type="submit" className="crown-button flex-1" disabled={isSubmitting}>
+              {isSubmitting ? <><Loader2 size={18} className="animate-spin" aria-hidden="true" />{t('submitting')}</> : <>{t(step === 1 ? 'nextStep' : 'submit')}<ArrowRight size={18} aria-hidden="true" /></>}
+            </button>
+          </div>
+        </fieldset>
+      </form>
+      <p className="crown-booking-note mt-6"><Link href={`${p}/adatkezeles`} className="underline underline-offset-4">{copy.privacy}</Link></p>
     </div>
   );
 }
 
 export default function BookingClient() {
   const t = useTranslations('booking');
+  const locale = useLocale();
+  const copy = getSiteCopy(locale);
   return (
-    <div className="min-h-screen pt-24 md:pt-32 bg-gray-50 overflow-hidden font-sans">
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-sky-200/40 rounded-full blur-[120px] -z-10"/>
-      <main className="container mx-auto px-4 py-12 text-center relative z-10">
-        <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 mb-4 tracking-tight">{t('title')}</h1>
-        <p className="text-xl text-gray-700 max-w-2xl mx-auto mb-12">{t('subtitle')}</p>
-        <BookingForm/>
+    <div className="crown-page">
+      <main className="crown-booking">
+        <div className="crown-container">
+          <header className="crown-booking-header">
+            <p className="crown-eyebrow">{copy.bookingEyebrow}</p>
+            <h1>{t('title')}</h1>
+            <p className="crown-lead">{copy.bookingIntro}</p>
+          </header>
+          <div className="crown-booking-layout">
+            <BookingForm />
+            <aside className="crown-booking-help">
+              <h2>{copy.nextTitle}</h2>
+              <ol>{copy.next.map(item => <li key={item}>{item}</li>)}</ol>
+              <p className="crown-booking-note">{copy.note}</p>
+              <div className="crown-booking-contact">
+                <p className="crown-booking-note">{copy.help}</p>
+                <a href="tel:+36305892468"><Phone size={20} aria-hidden="true" />06 30 589 2468</a>
+              </div>
+            </aside>
+          </div>
+        </div>
       </main>
       <GoogleReviewsCta />
-      <style dangerouslySetInnerHTML={{__html:`.custom-scrollbar::-webkit-scrollbar{width:6px}.custom-scrollbar::-webkit-scrollbar-thumb{background:#bae6fd;border-radius:10px}`}}/>
     </div>
   );
 }

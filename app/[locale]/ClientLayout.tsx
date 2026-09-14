@@ -6,7 +6,11 @@ import { usePathname } from 'next/navigation';
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
 import CookieBanner from "@/components/CookieBanner";
-import LanguageWelcome from '@/components/LanguageWelcome';
+import { MotionConfig } from 'framer-motion';
+import MobileContactBar from '@/components/MobileContactBar';
+import SiteAnalytics from '@/components/SiteAnalytics';
+import { getSiteCopy } from '@/lib/siteCopy';
+import '@/app/site-system.css';
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -17,6 +21,9 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   }, [locale]);
 
   const isStudio = pathname?.includes('/studio') || pathname?.includes('/admin');
+  const basePath = pathname.replace(/^\/(hu|en|sk|de)(?=\/|$)/, '') || '/';
+  const hasContactBar = basePath === '/' || basePath.startsWith('/kezelesek');
+  const copy = getSiteCopy(locale);
 
   if (isStudio) {
     return (
@@ -27,14 +34,18 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   }
 
   return (
-    <>
+    <MotionConfig reducedMotion="user">
+    <div className={`crown-site ${hasContactBar ? 'crown-has-mobile-contact' : ''}`}>
+      <a href="#crown-content" className="crown-skip">{copy.skip}</a>
       <Navigation />
-      <LanguageWelcome />
-      <main className="flex-1">
+      <div id="crown-content" tabIndex={-1} className="flex-1">
         {children}
-      </main>
+      </div>
       <Footer />
+      {hasContactBar && <MobileContactBar />}
+      <SiteAnalytics />
       <CookieBanner />
-    </>
+    </div>
+    </MotionConfig>
   );
 }

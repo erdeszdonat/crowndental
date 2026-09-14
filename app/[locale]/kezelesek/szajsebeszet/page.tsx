@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { getTreatmentImages } from '@/lib/treatmentImages';
 import SzajsebeszetClient from './SzajsebeszetClient';
 import TreatmentSeoScripts from '@/components/TreatmentSeoScripts';
 import { buildTreatmentMetadata } from '@/lib/seo';
@@ -19,7 +20,7 @@ export default async function SzajsebeszetPage(props: TreatmentPageProps) {
   return (
     <>
       <TreatmentSeoScripts locale={params.locale} slug={slug} />
-      <SzajsebeszetClient />
+      <SzajsebeszetClient imageUrl={(await getTreatmentImages())[slug] ?? ''} />
     </>
   );
 }

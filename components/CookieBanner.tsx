@@ -5,29 +5,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { Cookie, X, Check, ShieldCheck, Settings, Info } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
-import {
-  CONSENT_EVENT,
-  CONSENT_STORAGE_KEY,
-  createConsentRecord,
-  parseStoredConsent,
-  type ConsentPreferences,
-  type StoredConsent,
-} from '@/lib/cookieConsent';
+import { ensureGtag, isProductionSite, setAnalyticsConsent } from '@/lib/siteAnalytics';
+import { CONSENT_EVENT, CONSENT_STORAGE_KEY, createConsentRecord, parseStoredConsent, type ConsentPreferences, type StoredConsent } from '@/lib/cookieConsent';
 
-type ConsentWindow = Window & {
-  dataLayer?: unknown[];
-  gtag?: (...args: unknown[]) => void;
-};
 
 function applyGoogleConsent(settings: ConsentPreferences) {
   if (typeof window === 'undefined') return;
 
-  const win = window as ConsentWindow;
-  win.dataLayer = win.dataLayer || [];
-  win.gtag = win.gtag || ((...args: unknown[]) => {
-    win.dataLayer?.push(args);
-  });
-  win.gtag('consent', 'update', {
+  if (!isProductionSite()) return;
+  ensureGtag()('consent', 'update', {
     analytics_storage: settings.analytics ? 'granted' : 'denied',
     ad_storage: settings.marketing ? 'granted' : 'denied',
     ad_user_data: settings.marketing ? 'granted' : 'denied',
@@ -90,6 +76,7 @@ export default function CookieBanner() {
       // current page can still honour the explicit in-session decision.
     }
     applyGoogleConsent(storedConsent);
+    setAnalyticsConsent(storedConsent);
     window.dispatchEvent(new CustomEvent<StoredConsent>(CONSENT_EVENT, { detail: storedConsent }));
     setIsVisible(false);
     setShowDetails(false);
@@ -106,6 +93,7 @@ export default function CookieBanner() {
       {isVisible && (
         <motion.div
           key="cookie-modal"
+          data-cookie-banner=""
           initial={{ y: 150, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 150, opacity: 0 }}

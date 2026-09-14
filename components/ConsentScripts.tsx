@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Script from 'next/script';
+import { ANALYTICS_READY_EVENT, GOOGLE_TAG_ID, ensureGtag, isProductionSite, setAnalyticsConsent } from '@/lib/siteAnalytics';
 import {
   CONSENT_EVENT,
   CONSENT_STORAGE_KEY,
@@ -18,19 +19,11 @@ declare global {
     dataLayer?: unknown[];
     gtag?: GtagFunction;
     fbq?: FbqFunction;
+    'ga-disable-G-9BS3P1DC4T'?: boolean;
   }
 }
 
-const GOOGLE_TAG_ID = 'G-9BS3P1DC4T';
 const GOOGLE_ADS_ID = 'AW-16510822421';
-
-function ensureGtag(): GtagFunction {
-  window.dataLayer = window.dataLayer ?? [];
-  window.gtag = window.gtag ?? ((...args: unknown[]) => {
-    window.dataLayer?.push(args);
-  });
-  return window.gtag;
-}
 
 export default function ConsentScripts() {
   const [consent, setConsent] = useState<StoredConsent | null>(null);
@@ -40,7 +33,9 @@ export default function ConsentScripts() {
     let consentEventReceived = false;
     const frame = window.requestAnimationFrame(() => {
       if (!consentEventReceived) {
-        setConsent(parseStoredConsent(window.localStorage.getItem(CONSENT_STORAGE_KEY)).consent);
+        try {
+          setConsent(parseStoredConsent(window.localStorage.getItem(CONSENT_STORAGE_KEY)).consent);
+        } catch { setConsent(null); }
       }
     });
 
@@ -51,42 +46,51 @@ export default function ConsentScripts() {
     };
 
     window.addEventListener(CONSENT_EVENT, handleConsent);
+    const handleStorage = (event: StorageEvent) => {
+      if (event.key === CONSENT_STORAGE_KEY || event.key === null) {
+        setConsent(parseStoredConsent(event.newValue).consent);
+      }
+    };
+    window.addEventListener('storage', handleStorage);
     return () => {
       window.cancelAnimationFrame(frame);
       window.removeEventListener(CONSENT_EVENT, handleConsent);
+      window.removeEventListener('storage', handleStorage);
     };
   }, []);
 
   useEffect(() => {
-    if (!consent) return;
+    setAnalyticsConsent(consent);
+    if (!isProductionSite()) return;
 
     const gtag = ensureGtag();
     gtag('consent', 'update', {
-      analytics_storage: consent.analytics ? 'granted' : 'denied',
-      ad_storage: consent.marketing ? 'granted' : 'denied',
-      ad_user_data: consent.marketing ? 'granted' : 'denied',
-      ad_personalization: consent.marketing ? 'granted' : 'denied',
+      analytics_storage: consent?.analytics ? 'granted' : 'denied',
+      ad_storage: consent?.marketing ? 'granted' : 'denied',
+      ad_user_data: consent?.marketing ? 'granted' : 'denied',
+      ad_personalization: consent?.marketing ? 'granted' : 'denied',
     });
 
-    if (consent.analytics && !configuredGoogle.current.analytics) {
+    if (consent?.analytics && !configuredGoogle.current.analytics) {
       gtag('js', new Date());
       gtag('config', GOOGLE_TAG_ID);
       configuredGoogle.current.analytics = true;
     }
 
-    if (consent.marketing && !configuredGoogle.current.marketing) {
+    if (consent?.marketing && !configuredGoogle.current.marketing) {
       gtag('js', new Date());
       gtag('config', GOOGLE_ADS_ID);
       configuredGoogle.current.marketing = true;
     }
 
     if (window.fbq) {
-      window.fbq('consent', consent.marketing ? 'grant' : 'revoke');
-      if (consent.marketing) window.fbq('track', 'PageView');
+      window.fbq('consent', consent?.marketing ? 'grant' : 'revoke');
+      if (consent?.marketing) window.fbq('track', 'PageView');
     }
+    if (consent?.analytics) window.dispatchEvent(new Event(ANALYTICS_READY_EVENT));
   }, [consent]);
 
-  if (!consent) return null;
+  if (!consent || !isProductionSite()) return null;
 
   const googleEnabled = consent.analytics || consent.marketing;
 

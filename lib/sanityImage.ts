@@ -23,3 +23,16 @@ export function sanityImageLoader({ src, width, quality }: ImageLoaderProps): st
     return src;
   }
 }
+
+/** Sanity may already supply transformation parameters; never append a second '?'. */
+export function sanityImageUrl(source: string, width: number) {
+  if (!source) return '';
+  try {
+    const url = new URL(source);
+    if (url.hostname !== 'cdn.sanity.io') return source;
+    url.searchParams.set('auto', 'format');
+    url.searchParams.set('w', String(width));
+    url.searchParams.set('q', '80');
+    return url.toString();
+  } catch { return source; }
+}

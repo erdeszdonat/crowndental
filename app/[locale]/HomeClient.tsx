@@ -1,19 +1,17 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useReducedMotion, useScroll, useTransform } from 'framer-motion';
+import React, { useState, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import {
-  MapPin, Phone, Award, Building2, Shield, Calendar,
-  ArrowRight, CheckCircle2, Heart, Upload, Search, Activity,
-  Sparkles, User, FileText, Loader2, Download, ChevronDown, Wrench,
-  Pause, Play,
-} from 'lucide-react';
+
+import { MapPin, Phone, Award, Building2, Shield, Calendar, ArrowRight, CheckCircle2, Heart, Upload, Sparkles, User, FileText, Loader2, Download, ChevronDown, Wrench } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
 import { getPreferredGreetingName } from '@/lib/names';
 import GoogleReviewsCta from '@/components/GoogleReviewsCta';
+import TreatmentCard from '@/components/TreatmentCard';
+import { getSiteCopy } from '@/lib/siteCopy';
+import { ArrowUpRight } from 'lucide-react';
 
 export type HomeSanityImages = {
   hero: Record<'fokep' | 'fokep1' | 'fokep2', string>;
@@ -97,143 +95,38 @@ function buildPDF(result: QuoteAnalysisResult, name: string, phone: string, emai
   return `<!doctype html><html lang="${locale}"><head><meta charset="utf-8"><title>${copy.title}</title><style>@page{size:A4;margin:16mm 18mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#0f172a;margin:0}.header{display:flex;justify-content:space-between;border-bottom:3px solid #0284c7;padding-bottom:14px}.brand{font-size:26px;font-weight:900;color:#0369a1}.meta{font-size:11px;color:#64748b;text-align:right}h1{font-size:22px;margin:24px 0 6px}.patient{font-size:12px;color:#64748b}.summary{background:#f0f9ff;border:1px solid #bae6fd;border-radius:12px;padding:18px;text-align:center;margin:22px 0}.summary strong{display:block;font-size:22px;color:#0369a1;margin-top:5px}table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:10px;border-bottom:1px solid #e2e8f0;text-align:left}.number{text-align:right}.crown{color:#0369a1;font-weight:800}tfoot td{border-top:2px solid #0284c7;font-weight:900}.notice{margin-top:24px;padding:14px;border:1px solid #fbbf24;background:#fffbeb;border-radius:10px;font-size:11px;line-height:1.55;color:#78350f}</style></head><body><div class="header"><div><div class="brand">CROWN DENTAL</div><div class="meta">Praxis és Labor · Esztergom · Budapest</div></div><div class="meta">${date}<br>06 30 589 2468</div></div><h1>${copy.title}</h1><div class="patient">${patientLine}</div><div class="summary">${copy.difference}<strong>${summary}</strong></div><table><thead><tr><th>${copy.treatment}</th><th class="number">${copy.other}</th><th class="number">${copy.crown}</th></tr></thead><tbody>${rows}</tbody><tfoot><tr><td>${copy.total}</td><td class="number">${money(result.competitorTotal)}</td><td class="number crown">${range(result.ourTotalMin, result.ourTotalMax)}</td></tr></tfoot></table><div class="notice">${copy.notice}</div></body></html>`;
 }
 
-// ─── Lebegő CTA ───────────────────────────────────────────────────────────────
-function FloatingCTA() {
-  const t = useTranslations('home.floatingCta');
-  const locale = useLocale();
-  const router = useRouter();
-  const p = locale === 'hu' ? '' : `/${locale}`;
-  const bookingHref = `${p}/idopont`;
-
-  useEffect(() => {
-    router.prefetch(bookingHref);
-  }, [bookingHref, router]);
-
-  return (
-    <motion.div initial={{ opacity: 0, y: 24, scale: 0.94 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ type:'spring', damping:20, stiffness:300, delay:0.15 }} className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 items-end">
-      <a href="tel:+36305892468" className="flex items-center gap-2 bg-white text-sky-700 pl-4 pr-5 py-3 rounded-full shadow-2xl border border-sky-100 hover:bg-sky-50 transition-all">
-        <Phone className="w-5 h-5" /><span className="font-bold text-sm hidden sm:inline">{t('callNow')}</span>
-      </a>
-      <Link
-        href={bookingHref}
-        prefetch
-        onMouseEnter={() => router.prefetch(bookingHref)}
-        onTouchStart={() => router.prefetch(bookingHref)}
-        className="flex items-center gap-3 bg-gradient-to-r from-sky-600 to-sky-500 text-white px-6 py-4 rounded-full shadow-[0_8px_40px_rgba(2,132,199,0.4)] hover:scale-105 hover:shadow-[0_8px_50px_rgba(2,132,199,0.6)] active:scale-95 transition-all"
-      >
-        <Calendar className="w-5 h-5" /><span className="font-bold">{t('bookAppointment')}</span><ArrowRight className="w-4 h-4" />
-      </Link>
-    </motion.div>
-  );
-}
-
-// ─── Hero Slider ──────────────────────────────────────────────────────────────
-function HeroSlider({ images }: { images: HomeSanityImages['hero'] }) {
-  const tSlides = useTranslations('home.hero');
-  const tCommon = useTranslations('common');
+// ─── The primary action stays visible: no auto-advancing promotional slides. ───
+function HomeHero({ images }: { images: HomeSanityImages }) {
   const locale = useLocale();
   const p = locale === 'hu' ? '' : `/${locale}`;
-  const [current, setCurrent] = useState(0);
-  const [isManuallyPaused, setIsManuallyPaused] = useState(false);
-  const [isInteractionPaused, setIsInteractionPaused] = useState(false);
-  const prefersReducedMotion = useReducedMotion();
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset:['start start','end start'] });
-  const imgY = useTransform(scrollYProgress, [0,1], ['0%','20%']);
-  const textY = useTransform(scrollYProgress, [0,1], ['0%','40%']);
-  const opacity = useTransform(scrollYProgress, [0,0.5], [1,0]);
-  const carouselPaused = Boolean(prefersReducedMotion) || isManuallyPaused || isInteractionPaused;
-  const carouselControl = {
-    hu: { pause: 'Diavetítés szüneteltetése', play: 'Diavetítés folytatása' },
-    en: { pause: 'Pause slideshow', play: 'Resume slideshow' },
-    sk: { pause: 'Pozastaviť prezentáciu', play: 'Pokračovať v prezentácii' },
-    de: { pause: 'Diashow pausieren', play: 'Diashow fortsetzen' },
-  }[locale === 'en' || locale === 'sk' || locale === 'de' ? locale : 'hu'];
-
-  const slideData = tSlides.raw('slides') as Array<{ tag:string; titleTop:string; titleBottom:string; subtitle:string; primaryText:string }>;
-
-  const staticSlides = [
-    { image: images.fokep,  href: '#arajanlat-elemzo', icon: <Upload className="w-6 h-6" /> },
-    { image: images.fokep1, href: `${p}/idopont`,       icon: <Calendar className="w-6 h-6" /> },
-    { image: images.fokep2, href: `${p}/idopont`,       icon: <Calendar className="w-6 h-6" /> },
-  ];
-
-  useEffect(() => {
-    if (carouselPaused) return;
-    const t = setInterval(() => setCurrent(c => (c+1)%3), 10000);
-    return () => clearInterval(t);
-  }, [carouselPaused]);
-
+  const copy = getSiteCopy(locale);
+  const imageUrl = images.locations.esztergom?.imageUrl || images.hero.fokep1;
   return (
-    <section
-      ref={ref}
-      onMouseEnter={() => setIsInteractionPaused(true)}
-      onMouseLeave={() => setIsInteractionPaused(false)}
-      onFocusCapture={() => setIsInteractionPaused(true)}
-      onBlurCapture={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setIsInteractionPaused(false);
-      }}
-      className="relative mt-24 h-[90svh] min-h-[700px] w-full overflow-hidden flex items-center justify-center bg-gray-950"
-    >
-      <motion.div style={prefersReducedMotion ? undefined : { y:imgY }} className="absolute inset-0 z-0 will-change-transform">
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div key={current} initial={prefersReducedMotion ? false : { opacity:0, scale:1.03 }} animate={{ opacity:1, scale:1 }} exit={{ opacity:0 }} transition={{ duration:prefersReducedMotion ? 0 : 0.65, ease:'easeInOut' }} className="absolute inset-0">
-            {staticSlides[current].image
-              ? (
-                <div className="absolute inset-x-0 top-0 h-[120%]">
-                  <Image
-                    src={staticSlides[current].image}
-                    alt="Crown Dental"
-                    fill
-                    priority={current === 0}
-                    sizes="100vw"
-                    className="object-cover"
-                  />
-                </div>
-              )
-              : <div className="w-full h-full bg-slate-800 animate-pulse" />}
-            <div className="absolute inset-0 bg-gradient-to-r from-gray-950/80 via-gray-950/50 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-t from-gray-950/70 via-transparent to-gray-950/30" />
-          </motion.div>
-        </AnimatePresence>
-      </motion.div>
-      <div className="absolute bottom-0 left-0 right-0 h-56 bg-gradient-to-t from-white to-transparent z-10" />
-      <div className="absolute inset-0 z-[1] opacity-[0.03]" style={{ backgroundImage:'linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px)', backgroundSize:'80px 80px' }} />
-
-      <motion.div style={prefersReducedMotion ? undefined : { y:textY, opacity }} className="relative z-20 container mx-auto px-4 md:px-8">
-        <div className="max-w-3xl">
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.div key={current} initial={prefersReducedMotion ? false : { opacity:0, y:24 }} animate={{ opacity:1, y:0 }} exit={{ opacity:0, y:-24 }} transition={{ duration:prefersReducedMotion ? 0 : 0.45 }}>
-              <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/10 border border-white/20 backdrop-blur-xl rounded-full text-sky-300 text-xs sm:text-sm font-bold tracking-wider uppercase mb-8">
-                <Sparkles className="w-4 h-4" /> {slideData[current]?.tag}
-              </div>
-              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white mb-8 leading-[0.95] tracking-tight">
-                {slideData[current]?.titleTop}{' '}<br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-cyan-300">{slideData[current]?.titleBottom}</span>
-              </h1>
-              <p className="text-lg sm:text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed max-w-2xl font-light">{slideData[current]?.subtitle}</p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <motion.a href={staticSlides[current].href} whileHover={prefersReducedMotion ? undefined : { scale:1.03 }} whileTap={prefersReducedMotion ? undefined : { scale:0.97 }} className="group flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-5 bg-sky-500 hover:bg-sky-400 text-white text-lg font-bold rounded-2xl shadow-[0_0_60px_rgba(14,165,233,0.4)] transition-all">
-                  {staticSlides[current].icon} {slideData[current]?.primaryText} <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </motion.a>
-                <motion.a href="tel:+36305892468" whileHover={prefersReducedMotion ? undefined : { scale:1.03 }} whileTap={prefersReducedMotion ? undefined : { scale:0.97 }} className="flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-5 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white text-lg font-bold rounded-2xl transition-all border border-white/20">
-                  <Phone className="w-5 h-5" /> 06 30 589 2468
-                </motion.a>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-          <div className="flex items-center gap-2 mt-10">
-            {[0,1,2].map(i => <button key={i} onClick={() => setCurrent(i)} className={`h-1.5 rounded-full transition-all ${i===current?'w-10 bg-sky-400':'w-5 bg-white/30 hover:bg-white/50'}`} aria-label={`Slide ${i+1}`} />)}
-            {!prefersReducedMotion && <button type="button" onClick={() => setIsManuallyPaused((paused) => !paused)} aria-pressed={isManuallyPaused} aria-label={isManuallyPaused ? carouselControl.play : carouselControl.pause} className="ml-2 rounded-full border border-white/20 bg-white/10 p-2 text-white/80 hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
-              {isManuallyPaused ? <Play className="h-4 w-4"/> : <Pause className="h-4 w-4"/>}
-            </button>}
+    <section className="crown-home-hero" data-cta-location="home_hero">
+      <div className="crown-container crown-hero-grid">
+        <div className="crown-hero-copy">
+          <p className="crown-eyebrow">{copy.eyebrow}</p>
+          <h1>{copy.title}<span>{copy.highlight}</span></h1>
+          <p className="crown-lead">{copy.intro}</p>
+          <div className="crown-actions">
+            <Link href={`${p}/idopont`} className="crown-button">{copy.book}<ArrowUpRight size={19} aria-hidden="true" /></Link>
+            <Link href={`${p}/kezelesek`} className="crown-button crown-button-secondary">{copy.treatments}</Link>
+          </div>
+          <div className="crown-hero-meta">
+            <span><Building2 size={16} aria-hidden="true" />{copy.lab}</span>
+            <span>{copy.languages}</span>
           </div>
         </div>
-      </motion.div>
-      <motion.div initial={{ opacity:0 }} animate={{ opacity:1 }} transition={{ delay:1.2 }} className="absolute bottom-28 left-1/2 -translate-x-1/2 z-20 hidden md:flex flex-col items-center gap-2 text-white/40">
-        <span className="text-xs tracking-widest uppercase">{tCommon('scrollDown')}</span>
-        <motion.div animate={prefersReducedMotion ? undefined : { y:[0,8,0] }} transition={prefersReducedMotion ? undefined : { duration:1.5, repeat:Infinity }}><ChevronDown className="w-5 h-5" /></motion.div>
-      </motion.div>
+        <div className="crown-hero-visual">
+          <div className="crown-hero-photo crown-home-photo">
+            {imageUrl && <Image src={imageUrl} alt={copy.clinic} fill priority sizes="(max-width: 767px) 100vw, 48vw" />}
+          </div>
+          <div className="crown-image-caption">
+            <MapPin size={20} aria-hidden="true" />
+            <div><strong>{copy.clinic}</strong>{copy.address}</div>
+          </div>
+        </div>
+      </div>
     </section>
   );
 }
@@ -414,7 +307,7 @@ function StatsSection() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4 crown-facts-grid">
             {copy.facts.map((fact, index) => (
               <motion.div
                 key={fact.value}
@@ -969,59 +862,26 @@ function LabShowcase({ imageUrl }: { imageUrl: string }) {
 }
 
 // ─── Featured Services (Flip Cards) ──────────────────────────────────────────
-function FeaturedPricesSection({ sanityImages }: { sanityImages: HomeSanityImages['services'] }) {
+function FeaturedPricesSection({ sanityImages }: { sanityImages: Record<string, string> }) {
   const t = useTranslations('home.services');
   const locale = useLocale();
   const p = locale === 'hu' ? '' : `/${locale}`;
-  const slugs = ['allapotfelmeres','gyokerkezeles','esztetikai-fogaszat','koronak-hidak','implantatum','gyerekfogaszat'];
-  const icons = [<Search className="w-6 h-6"/>,<Activity className="w-6 h-6"/>,<Sparkles className="w-6 h-6"/>,<CheckCircle2 className="w-6 h-6"/>,<Shield className="w-6 h-6"/>,<Heart className="w-6 h-6"/>];
-  // @ts-ignore
-  const cards = t.raw('cards') as Array<{ title:string; subtitle:string; price:string }>;
+  const copy = getSiteCopy(locale);
+  const slugs = ['allapotfelmeres', 'gyokerkezeles', 'esztetikai-fogaszat', 'koronak-hidak', 'implantatum', 'gyerekfogaszat'];
+  const cards = t.raw('cards') as Array<{ title: string; subtitle: string; price: string }>;
   return (
-    <section className="py-28 bg-gray-50 border-t border-gray-100">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <motion.div initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}>
-            <span className="text-sky-600 font-bold uppercase tracking-[0.2em] text-sm mb-4 block">{t('label')}</span>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-6 leading-tight">
-              {t('title')}{' '}<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-cyan-500">{t('titleHighlight')}</span>
-            </h2>
-            <p className="text-xl text-gray-500 max-w-2xl mx-auto font-light">{t('subtitle')}</p>
-          </motion.div>
+    <section className="bg-gray-50 border-t border-gray-100">
+      <div className="crown-container">
+        <div className="crown-section-heading">
+          <p className="crown-eyebrow">{t('label')}</p>
+          <h2>{t('title')} {t('titleHighlight')}</h2>
+          <p className="crown-lead">{t('subtitle')}</p>
         </div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          {cards.map((card, idx) => (
-            <div key={idx} className="group [perspective:1000px] h-[400px] w-full cursor-pointer focus:outline-none" tabIndex={0}>
-              <div className="relative w-full h-full duration-700 transition-transform [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] group-focus:[transform:rotateY(180deg)] focus-within:[transform:rotateY(180deg)]">
-                <div className="absolute inset-0 [backface-visibility:hidden] bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100 flex flex-col overflow-hidden group/front">
-                  <div className="relative h-[55%] w-full overflow-hidden bg-slate-800">
-                    {sanityImages[slugs[idx]]?<img src={sanityImages[slugs[idx]]} loading="lazy" alt={card.title} className="w-full h-full object-cover transition-transform duration-700 group-hover/front:scale-110"/>:<div className="w-full h-full bg-slate-800"/>}
-                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/20 to-transparent"/>
-                    <div className="absolute bottom-4 left-6 right-4 flex items-center gap-3">
-                      <div className="w-10 h-10 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center text-white shadow-sm">{icons[idx]}</div>
-                      <h3 className="text-xl font-bold text-white">{card.title}</h3>
-                    </div>
-                  </div>
-                  <div className="p-6 flex flex-col flex-1 text-center justify-center">
-                    <p className="text-gray-500 mb-3">{card.subtitle}</p>
-                    <div className="mt-auto"><span className="text-2xl font-extrabold text-sky-600">{card.price}</span></div>
-                  </div>
-                </div>
-                <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] bg-gradient-to-br from-sky-600 to-sky-800 rounded-3xl p-8 shadow-2xl flex items-center justify-center">
-                  <a href={`${p}/idopont`} className="flex flex-col items-center justify-center w-full h-full text-white group/link">
-                    <Calendar className="w-16 h-16 mb-6 opacity-80 group-hover/link:scale-110 group-hover/link:opacity-100 transition-all duration-300"/>
-                    <span className="text-2xl font-bold text-center mb-2">{t('bookConsultation')}</span>
-                    <span className="text-sky-200 text-sm font-medium">{t('clickForAppointment')}</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-          ))}
+        <div className="crown-cards-grid">
+          {cards.map((card, idx) => <TreatmentCard key={slugs[idx]} href={`${p}/kezelesek/${slugs[idx]}`} title={card.title} description={card.subtitle} price={card.price} imageUrl={sanityImages[slugs[idx]]} linkLabel={copy.details} />)}
         </div>
-        <div className="text-center mt-16">
-          <a href={`${p}/kezelesek`} className="inline-flex items-center gap-2 px-8 py-4 bg-gray-900 hover:bg-gray-800 text-white font-bold rounded-2xl transition-all shadow-lg">
-            {t('viewAllPrices')}<ArrowRight className="w-4 h-4"/>
-          </a>
+        <div className="text-center mt-10">
+          <Link href={`${p}/kezelesek`} className="crown-button">{t('viewAllPrices')}<ArrowRight size={18} aria-hidden="true" /></Link>
         </div>
       </div>
     </section>
@@ -1100,16 +960,15 @@ function FAQSection() {
 // ─── Főoldal export ───────────────────────────────────────────────────────────
 export default function HomeClient({ sanityImages = emptyHomeSanityImages }: { sanityImages?: HomeSanityImages }) {
   return (
-    <div className="bg-white min-h-screen selection:bg-sky-200 selection:text-sky-900">
-      <FloatingCTA />
+    <div className="crown-page bg-white min-h-screen selection:bg-sky-200 selection:text-sky-900">
       <main>
-        <HeroSlider images={sanityImages.hero} />
+        <HomeHero images={sanityImages} />
         <TrustBadges />
+        <FeaturedPricesSection sanityImages={sanityImages.services} />
         <LocationSelector locations={sanityImages.locations} />
         <StatsSection />
-        <QuoteAnalyzerSection />
         <LabShowcase imageUrl={sanityImages.labImage} />
-        <FeaturedPricesSection sanityImages={sanityImages.services} />
+        <QuoteAnalyzerSection />
         <GoogleReviewsCta />
         <CTASection />
         <FAQSection />

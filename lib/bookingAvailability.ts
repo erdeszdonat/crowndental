@@ -1,9 +1,9 @@
 export const BUDAPEST_BOOKING_AVAILABLE = false;
 
 export const BUDAPEST_BOOKING_OPEN_LABELS = {
-  hu: 'Coming soon...',
+  hu: 'Hamarosan nyitunk',
   en: 'Coming soon...',
-  sk: 'Coming soon...',
+  sk: 'Čoskoro otvárame',
   de: 'Demnächst verfügbar...',
 } as const;
 
