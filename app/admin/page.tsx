@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Calendar, Briefcase, Sparkles, BookOpen, ChevronDown, ChevronUp,
@@ -478,10 +479,13 @@ export default function AdminDashboard() {
             <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest md:hidden">Crown Admin</p>
             <h2 className="text-lg md:text-2xl font-black text-gray-900 tracking-tight italic uppercase">{tabLabel}</h2>
           </div>
+          <div className="flex items-center gap-2">
+          <Link href="/admin/hidfutas" className="rounded-full bg-sky-800 px-4 py-2.5 text-sm font-bold text-white">Hídfutás</Link>
           <button onClick={() => fetchSecureData()} disabled={isLoading} className="flex items-center gap-2 bg-gray-100 text-gray-600 px-4 py-2.5 rounded-full font-bold hover:bg-gray-200 transition-all text-sm">
             <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
             <span className="hidden sm:inline">Frissítés</span>
           </button>
+          </div>
         </header>
 
         {/* Content */}
