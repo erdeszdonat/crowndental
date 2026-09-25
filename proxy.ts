@@ -31,6 +31,10 @@ const exactLegacyRedirects = new Map<string, string>([
 ]);
 
 export default function proxy(request: NextRequest) {
+  // This temporary Hungarian event uses its own root layout and compact UI.
+  if (request.nextUrl.pathname === '/hidfutas' || request.nextUrl.pathname.startsWith('/hidfutas/')) {
+    return NextResponse.next();
+  }
   // Browsers keep non-ASCII path segments percent encoded. Decode only for
   // this exact legacy URL and keep the original query string when redirecting.
   let decodedPathname = request.nextUrl.pathname;
