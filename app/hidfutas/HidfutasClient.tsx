@@ -102,12 +102,12 @@ export default function HidfutasClient() {
           <div id="hidfutas-wheel" className={`${styles.wheelArea} ${spinning ? styles.spinning : ''}`}>
             <div className={styles.pointer} aria-hidden="true" />
             <div className={styles.wheelRim}>
-              <svg className={styles.wheel} viewBox="0 0 400 400" style={{ transform: `rotate(${rotation}deg)` }} aria-label="Szerencsekerék: 20% fogfehérítő csík, 40% fogfehérítő por, 20% fogselyem, 20% nincs azonnali nyeremény" role="img">
+              <svg className={styles.wheel} viewBox="0 0 400 400" style={{ transform: `rotate(${rotation}deg)` }} aria-label="Szerencsekerék: 20% fogfehérítő csík, 40% fogfehérítő por, 20% fogselyem, 20% szónikus fogkefe" role="img">
                 {WHEEL_SECTORS.map((sector, i) => <g key={i}>
                   <path d={wedge(i)} fill={sector.color} stroke="#fff" strokeWidth="2" />
                   <g transform={`rotate(${i * 72} 200 200)`} fill={sector.ink}>
                     <text x="200" y="72" textAnchor="middle" fontSize="14" fontWeight="700"><tspan x="200">{sector.short[0]}</tspan><tspan x="200" dy="19">{sector.short[1]}</tspan></text>
-                    <text x="200" y="123" textAnchor="middle" fontSize="23" aria-hidden="true">{sector.prize === 'none' ? '♡' : '✧'}</text>
+                    <text x="200" y="123" textAnchor="middle" fontSize="23" aria-hidden="true">✧</text>
                   </g>
                 </g>)}
               </svg>
@@ -115,19 +115,19 @@ export default function HidfutasClient() {
             </div>
             <span className={styles.wheelAccent} aria-hidden="true">✦</span>
           </div>
-          <p className={styles.wheelCaption} aria-live="polite">{spinning ? 'Pörög a kerék…' : '80% esély egy azonnali ajándékra.'}</p>
+          <p className={styles.wheelCaption} aria-live="polite">{spinning ? 'Pörög a kerék…' : 'Minden pörgetés nyer. Az ajándékod garantált.'}</p>
         </section>
 
         <section className={styles.formCard} aria-labelledby="entry-title">
           <div className={styles.cardTop}><span>01 / PÖRGESS ÉS NEVEZZ</span><Gift size={20} /></div>
           {receipt && revealed ? (
             <div className={styles.result} ref={resultRef} tabIndex={-1}>
-              <div className={styles.resultIcon}>{receipt.prize === 'none' ? <Sparkles size={32} /> : <Gift size={32} />}</div>
+              <div className={styles.resultIcon}><Gift size={32} /></div>
               <span className={styles.eyebrow}>SIKERES NEVEZÉS</span>
-              <h2 id="entry-title">{receipt.prize === 'none' ? 'Hétfőn még rád mosolyoghat a szerencse!' : 'Ez most a te ajándékod!'}</h2>
-              {receipt.prize !== 'none' && <p className={styles.prizeName}>{WHEEL_SECTORS[receipt.sector].label}</p>}
-              <p>{receipt.prize === 'none' ? 'Most nem nyertél azonnali ajándékot, de részt veszel a rendelői fogfehérítés hétfői sorsolásán.' : 'Mutasd meg ezt a kódot a Crown Dental sátránál, és vedd át az ajándékodat szombaton 13:00-ig.'}</p>
-              <div className={styles.receipt}><span>{receipt.prize === 'none' ? 'Nevezési azonosítód' : 'Ajándékátvételi és nevezési kódod'}</span><strong>{receipt.code}</strong><small>Mentsd el vagy készíts képernyőképet róla.</small></div>
+              <h2 id="entry-title">Ez most a te ajándékod!</h2>
+              <p className={styles.prizeName}>{WHEEL_SECTORS[receipt.sector].label}</p>
+              <p>Mutasd meg ezt a kódot a Crown Dental sátránál, és vedd át az ajándékodat szombaton 13:00-ig.</p>
+              <div className={styles.receipt}><span>Ajándékátvételi és nevezési kódod</span><strong>{receipt.code}</strong><small>Mentsd el vagy készíts képernyőképet róla.</small></div>
               <div className={styles.successNote}><CheckCircle2 size={20} /><p>Benne vagy a szeptember 28-i főnyeremény-sorsolásban!</p></div>
               {receipt.marketing !== 'no' && <p className={styles.small}>{receipt.marketing === 'synced' ? 'A hírlevélre is feliratkoztál. Bármikor leiratkozhatsz.' : 'A hírlevél-feliratkozási kérésedet rögzítettük, feldolgozása folyamatban van.'}</p>}
               <a className={styles.textLink} href={HIDFUTAS.facebook} target="_blank" rel="noopener noreferrer">Eredményhirdetés a Facebook-oldalunkon <ArrowRight size={16} /></a>

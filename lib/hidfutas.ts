@@ -1,6 +1,6 @@
 export const HIDFUTAS = {
   id: 'hidfutas-2026',
-  rulesVersion: '2026-09-25-v1',
+  rulesVersion: '2026-09-25-v2',
   startsAt: '2026-09-26T09:00:00+02:00',
   closesAt: '2026-09-26T13:00:00+02:00',
   drawAt: '2026-09-28T00:00:00+02:00',
@@ -12,7 +12,7 @@ export const WHEEL_SECTORS = [
   { prize: 'strip', label: 'Fogfehérítő csík', short: ['Fogfehérítő', 'csík'], color: '#096b8e', ink: '#fff' },
   { prize: 'powder', label: 'Fogfehérítő por', short: ['Fogfehérítő', 'por'], color: '#cdebf3', ink: '#123548' },
   { prize: 'floss', label: 'Fogselyem', short: ['Fog-', 'selyem'], color: '#123548', ink: '#fff' },
-  { prize: 'none', label: 'Most nincs azonnali nyeremény', short: ['Hétfőn még', 'nyerhetsz!'], color: '#f2f6f7', ink: '#123548' },
+  { prize: 'toothbrush', label: 'Szónikus fogkefe', short: ['Szónikus', 'fogkefe'], color: '#f2f6f7', ink: '#123548' },
   { prize: 'powder', label: 'Fogfehérítő por', short: ['Fogfehérítő', 'por'], color: '#58bad3', ink: '#123548' },
 ] as const;
 

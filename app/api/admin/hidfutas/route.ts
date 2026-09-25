@@ -47,9 +47,9 @@ export async function POST(request: Request) {
       if (typeof body.code !== 'string' || !/^HF-[A-F0-9]{12}$/.test(body.code)) return noStoreJson({ error: 'Érvénytelen kód.' }, { status: 400 });
       if (Date.now() < Date.parse(HIDFUTAS.startsAt) || Date.now() >= Date.parse(HIDFUTAS.closesAt)) return noStoreJson({ error: 'Az ajándékátvételi időszak 2026. szeptember 26., 9:00–13:00.' }, { status: 409 });
       const { data, error } = await db.from('hidfutas_entries').update({ redeemed_at: new Date().toISOString() })
-        .eq('campaign_id', HIDFUTAS.id).eq('code', body.code).neq('prize', 'none').is('redeemed_at', null).select('id').maybeSingle();
+        .eq('campaign_id', HIDFUTAS.id).eq('code', body.code).is('redeemed_at', null).select('id').maybeSingle();
       if (error) throw error;
-      if (!data) return noStoreJson({ error: 'A kód nem található, nem nyert ajándékot, vagy már beváltották.' }, { status: 409 });
+      if (!data) return noStoreJson({ error: 'A kód nem található, vagy már beváltották.' }, { status: 409 });
       return noStoreJson({ success: true });
     }
     if (body.action === 'draw') {

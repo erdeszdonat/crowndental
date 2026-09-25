@@ -25,9 +25,9 @@ test('campaign opens at 9 and rejects entries from 13:00 Budapest time', () => {
   assert.equal(config.campaignPhase(Date.parse('2026-09-26T10:59:59Z')), 'open');
   assert.equal(config.campaignPhase(Date.parse('2026-09-26T11:00:00Z')), 'closed');
 });
-test('five equal sectors implement requested 20/40/20/20 distribution', () => {
-  const counts = Object.fromEntries(['strip', 'powder', 'floss', 'none'].map(prize => [prize, config.WHEEL_SECTORS.filter(s => s.prize === prize).length * 20]));
-  assert.deepEqual(counts, { strip: 20, powder: 40, floss: 20, none: 20 });
+test('every spin wins with 20% strip, 40% powder, 20% floss and 20% sonic toothbrush', () => {
+  const counts = Object.fromEntries(['strip', 'powder', 'floss', 'toothbrush'].map(prize => [prize, config.WHEEL_SECTORS.filter(s => s.prize === prize).length * 20]));
+  assert.deepEqual(counts, { strip: 20, powder: 40, floss: 20, toothbrush: 20 });
 });
 test('same phone cannot bypass uniqueness with Hungarian or international formatting', () => {
   for (const value of ['+36 30 123 4567', '06-30-123-4567', '0036 30 123 4567', '36301234567']) assert.equal(phone(value), '+36301234567');
