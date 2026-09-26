@@ -1,6 +1,6 @@
 import { randomInt } from 'node:crypto';
 import { after } from 'next/server';
-import { HIDFUTAS } from '@/lib/hidfutas';
+import { HIDFUTAS, WHEEL_SECTORS } from '@/lib/hidfutas';
 import { hidfutasDatabase, normalizeHidfutasPhone, syncHidfutasMarketing } from '@/lib/hidfutasServer';
 import { enforceRateLimit, isValidEmail, noStoreJson, rejectUntrustedMutation } from '@/lib/serverSecurity';
 
@@ -22,7 +22,8 @@ export async function POST(request: Request) {
   if (body.website || name.length < 3 || name.length > 120 || /[\u0000-\u001f<>]/.test(name) || !isValidEmail(email) || !phone) {
     return noStoreJson({ error: 'Kérjük, ellenőrizd a neved, az e-mail-címed és a nemzetközi formátumú telefonszámod.' }, { status: 400 });
   }
-  if (body.rules !== true || typeof body.marketing !== 'boolean' || body.rulesVersion !== HIDFUTAS.rulesVersion) {
+  if (body.rulesVersion !== HIDFUTAS.rulesVersion) return noStoreJson({ error: 'Frissült a játékszabályzat és a kerék. Frissítsd az oldalt, majd nevezz újra.' }, { status: 400 });
+  if (body.rules !== true || typeof body.marketing !== 'boolean') {
     return noStoreJson({ error: 'A nevezéshez fogadd el a játékszabályzatot és a nagykorúsági nyilatkozatot.' }, { status: 400 });
   }
   if (typeof body.requestId !== 'string' || !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(body.requestId)) {
@@ -35,7 +36,7 @@ export async function POST(request: Request) {
     const db = hidfutasDatabase();
     const { data, error } = await db.rpc('register_hidfutas_entry', {
       p_request_id: body.requestId, p_name: name, p_email: email, p_phone: phone,
-      p_rules_version: body.rulesVersion, p_marketing: body.marketing, p_sector: randomInt(5),
+      p_rules_version: body.rulesVersion, p_marketing: body.marketing, p_sector: randomInt(WHEEL_SECTORS.length),
     });
     if (error || !data) throw new Error('registration_failed');
     const messages: Record<string, string> = {

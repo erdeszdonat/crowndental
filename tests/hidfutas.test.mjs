@@ -25,9 +25,9 @@ test('campaign opens at 9 and rejects entries from 13:00 Budapest time', () => {
   assert.equal(config.campaignPhase(Date.parse('2026-09-26T10:59:59Z')), 'open');
   assert.equal(config.campaignPhase(Date.parse('2026-09-26T11:00:00Z')), 'closed');
 });
-test('every spin wins with 20% strip, 40% powder, 20% floss and 20% sonic toothbrush', () => {
-  const counts = Object.fromEntries(['strip', 'powder', 'floss', 'toothbrush'].map(prize => [prize, config.WHEEL_SECTORS.filter(s => s.prize === prize).length * 20]));
-  assert.deepEqual(counts, { strip: 20, powder: 40, floss: 20, toothbrush: 20 });
+test('every spin wins with 25% for each of the four prizes', () => {
+  const counts = Object.fromEntries(['strip', 'powder', 'floss', 'toothbrush'].map(prize => [prize, config.WHEEL_SECTORS.filter(s => s.prize === prize).length * 25]));
+  assert.deepEqual(counts, { strip: 25, powder: 25, floss: 25, toothbrush: 25 });
 });
 test('same phone cannot bypass uniqueness with Hungarian or international formatting', () => {
   for (const value of ['+36 30 123 4567', '06-30-123-4567', '0036 30 123 4567', '36301234567']) assert.equal(phone(value), '+36301234567');
@@ -40,12 +40,12 @@ function environment({ result, dbError = null, originError = false, rateError = 
   const calls = []; const afters = [];
   const json = (data, init) => Response.json(data, init);
   const api = load('app/api/hidfutas/route.ts', {
-    'node:crypto': { randomInt: () => 4 },
+    'node:crypto': { randomInt: max => { assert.equal(max, 4); return 1; } },
     'next/server': { after: callback => afters.push(callback) },
     '@/lib/hidfutas': config,
     '@/lib/hidfutasServer': {
       normalizeHidfutasPhone: phone,
-      hidfutasDatabase: () => ({ rpc: async (name, args) => { calls.push({ name, args }); return { data: result || { created: true, id: 'test-entry', receipt: { code: 'HF-ABCDEF123456', sector: 4, prize: 'powder', marketing: 'no' } }, error: dbError }; } }),
+      hidfutasDatabase: () => ({ rpc: async (name, args) => { calls.push({ name, args }); return { data: result || { created: true, id: 'test-entry', receipt: { code: 'HF-ABCDEF123456', sector: 1, prize: 'powder', marketing: 'no' } }, error: dbError }; } }),
       syncHidfutasMarketing: async id => calls.push({ sync: id }),
     },
     '@/lib/serverSecurity': {
@@ -65,7 +65,7 @@ test('entry works without marketing; draw sector is chosen on the server', async
   assert.equal((await response.json()).receipt.prize, 'powder');
   assert.equal(env.calls[0].args.p_email, 'test@example.invalid');
   assert.equal(env.calls[0].args.p_phone, '+36301234567');
-  assert.equal(env.calls[0].args.p_sector, 4);
+  assert.equal(env.calls[0].args.p_sector, 1);
   assert.equal(env.calls[0].args.p_marketing, false);
   assert.equal(env.afters.length, 0);
 });
@@ -90,4 +90,14 @@ test('database outage, untrusted origins and rate limit fail closed', async () =
   assert.equal((await environment({ dbError: { message: 'internal' } }).submit()).status, 503);
   const origin = environment({ originError: true }); assert.equal((await origin.submit()).status, 403); assert.equal(origin.calls.length, 0);
   const rate = environment({ rateError: true }); assert.equal((await rate.submit()).status, 429); assert.equal(rate.calls.length, 0);
+});
+
+test('legacy fifth-sector receipts retain their prize and code on the four-sector wheel', () => {
+  const saved = { code: 'HF-ABCDEF123456', sector: 4, prize: 'powder', marketing: 'no' };
+  const restored = config.restoreReceipt(saved);
+  assert.equal(restored.code, saved.code);
+  assert.equal(restored.prize, 'powder');
+  assert.equal(restored.sector, 1);
+  assert.equal(config.restoreReceipt({ ...saved, prize: 'toothbrush' }), null);
+  assert.equal(config.restoreReceipt(null), null);
 });

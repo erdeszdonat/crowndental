@@ -4,15 +4,16 @@ import { useEffect, useRef, useState, type FormEvent } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, Check, CheckCircle2, Gift, LoaderCircle, MapPin, Sparkles, Trophy } from 'lucide-react';
-import { campaignPhase, HIDFUTAS, WHEEL_SECTORS, type EntryReceipt } from '@/lib/hidfutas';
+import { campaignPhase, HIDFUTAS, WHEEL_SECTORS, restoreReceipt, type EntryReceipt } from '@/lib/hidfutas';
 import styles from './hidfutas.module.css';
 
 const RECEIPT_KEY = 'crown-hidfutas-2026-receipt';
 const REQUEST_KEY = 'crown-hidfutas-2026-request';
+const SECTOR_ANGLE = 360 / WHEEL_SECTORS.length;
 
 function wedge(index: number) {
-  const a = (index * 72 - 126) * Math.PI / 180;
-  const b = (index * 72 - 54) * Math.PI / 180;
+  const a = (index * SECTOR_ANGLE - 90 - SECTOR_ANGLE / 2) * Math.PI / 180;
+  const b = (index * SECTOR_ANGLE - 90 + SECTOR_ANGLE / 2) * Math.PI / 180;
   return `M200 200 L${200 + 188 * Math.cos(a)} ${200 + 188 * Math.sin(a)} A188 188 0 0 1 ${200 + 188 * Math.cos(b)} ${200 + 188 * Math.sin(b)} Z`;
 }
 
@@ -37,9 +38,9 @@ export default function HidfutasClient() {
     try {
       requestId.current = localStorage.getItem(REQUEST_KEY) || crypto.randomUUID();
       localStorage.setItem(REQUEST_KEY, requestId.current);
-      const saved = JSON.parse(localStorage.getItem(RECEIPT_KEY) || 'null') as EntryReceipt | null;
-      if (saved && /^HF-[A-F0-9]{12}$/.test(saved.code) && Number.isInteger(saved.sector) && saved.sector >= 0 && saved.sector < 5 && WHEEL_SECTORS[saved.sector].prize === saved.prize) {
-        setReceipt(saved); setRevealed(true); setRotation((360 - saved.sector * 72) % 360);
+      const saved = restoreReceipt(JSON.parse(localStorage.getItem(RECEIPT_KEY) || 'null') as EntryReceipt | null);
+      if (saved) {
+        setReceipt(saved); setRevealed(true); setRotation((360 - saved.sector * SECTOR_ANGLE) % 360);
       }
     } catch { requestId.current ||= crypto.randomUUID(); }
     });
@@ -78,7 +79,7 @@ export default function HidfutasClient() {
       try { localStorage.setItem(RECEIPT_KEY, JSON.stringify(next)); } catch { /* Receipt stays visible without browser storage. */ }
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       setSpinning(true);
-      setRotation(1800 + (360 - next.sector * 72) % 360);
+      setRotation(1800 + (360 - next.sector * SECTOR_ANGLE) % 360);
       document.getElementById('hidfutas-wheel')?.scrollIntoView({ behavior: reduced ? 'instant' : 'smooth', block: 'center' });
       timer.current = setTimeout(() => { setSpinning(false); setRevealed(true); }, reduced ? 50 : 5200);
     } catch (failure) {
@@ -102,10 +103,10 @@ export default function HidfutasClient() {
           <div id="hidfutas-wheel" className={`${styles.wheelArea} ${spinning ? styles.spinning : ''}`}>
             <div className={styles.pointer} aria-hidden="true" />
             <div className={styles.wheelRim}>
-              <svg className={styles.wheel} viewBox="0 0 400 400" style={{ transform: `rotate(${rotation}deg)` }} aria-label="Szerencsekerék: 20% fogfehérítő csík, 40% fogfehérítő por, 20% fogselyem, 20% szónikus fogkefe" role="img">
+              <svg className={styles.wheel} viewBox="0 0 400 400" style={{ transform: `rotate(${rotation}deg)` }} aria-label="Szerencsekerék: 25% fogfehérítő csík, 25% fogfehérítő por, 25% fogselyem, 25% szónikus fogkefe" role="img">
                 {WHEEL_SECTORS.map((sector, i) => <g key={i}>
                   <path d={wedge(i)} fill={sector.color} stroke="#fff" strokeWidth="2" />
-                  <g transform={`rotate(${i * 72} 200 200)`} fill={sector.ink}>
+                  <g transform={`rotate(${i * SECTOR_ANGLE} 200 200)`} fill={sector.ink}>
                     <text x="200" y="72" textAnchor="middle" fontSize="14" fontWeight="700"><tspan x="200">{sector.short[0]}</tspan><tspan x="200" dy="19">{sector.short[1]}</tspan></text>
                     <text x="200" y="123" textAnchor="middle" fontSize="23" aria-hidden="true">✧</text>
                   </g>
