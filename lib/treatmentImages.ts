@@ -5,7 +5,7 @@ import { cache } from 'react';
 export const getTreatmentImages = cache(async (): Promise<Record<string, string>> => {
   const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'h68mmabs';
   const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
-  const query = `*[_type == "treatment" && !(_id in path("drafts.**"))] {
+  const query = `*[_type == "treatment" && defined(slug.current) && !(_id in path("drafts.**"))] {
     "slug": slug.current,
     "url": coalesce(mainImage.asset->url, heroImage.asset->url)
   }`;

@@ -38,7 +38,9 @@ export default async function VeneerPage({ slug }: { slug: VeneerSlug }) {
   const now = new Date().toISOString();
   const offer = getVeneerOffer(slug, now);
   const images = await getTreatmentImages();
-  const imageUrl = images['esztetikai-fogaszat'] || images['fogfeherites'] || '';
+  const directImage = images['direkt-hej'] || images['hollywood-mosoly'];
+  const imageUrl = (slug === 'direkt-hej' ? directImage : images[slug]) || images['esztetikai-fogaszat'] || images['fogfeherites'] || '';
+  const imageAlt = slug === 'direkt-hej' && directImage ? 'Mosoly a direkt héjkezelés előtt és után – Hollywood smile Esztergomban' : '';
   const faqs = content.faqs.map((faq) => slug === 'direkt-hej' && !offer.isPromotion && faq.question === 'Mikor kérhetek időpontot?'
     ? { ...faq, answer: 'Az időpontkérő űrlap bármikor elküldhető. Kollégánk egyezteti a részleteket és visszaigazolja a rendelkezésre álló időpontot.' }
     : faq);
@@ -60,7 +62,7 @@ export default async function VeneerPage({ slug }: { slug: VeneerSlug }) {
                 </div>
               </div>
               <div className="crown-hero-visual">
-                <div className="crown-hero-photo">{imageUrl && <VeneerImage src={imageUrl} />}</div>
+                <div className="crown-hero-photo">{imageUrl && <VeneerImage src={imageUrl} alt={imageAlt} />}</div>
                 <div className="crown-price-note"><VeneerOffer slug={slug} initialOffer={offer} compact /></div>
               </div>
             </div>
