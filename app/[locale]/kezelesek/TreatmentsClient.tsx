@@ -32,16 +32,16 @@ function HeroSection() {
   );
 }
 
-function TreatmentCard({ card, imageUrl }: { card: { id: string; title: string; description: string; href?: string }; index: number; imageUrl?: string }) {
+function TreatmentCard({ card, imageUrl, imageIsBeforeAfter }: { card: { id: string; title: string; description: string; href?: string }; index: number; imageUrl?: string; imageIsBeforeAfter?: boolean }) {
   const locale = useLocale();
   const p = locale === 'hu' ? '' : `/${locale}`;
-  const isHollywood = card.id === 'hollywood-mosoly';
-  return <SharedTreatmentCard href={card.href || `${p}/kezelesek/${card.id}`} title={card.title} description={card.description} imageUrl={imageUrl} imageAlt={isHollywood ? 'Mosoly a kezelés előtt és után – Hollywood smile' : undefined} imageFit={isHollywood ? 'contain' : undefined} linkLabel={getSiteCopy(locale).details} />;
+  return <SharedTreatmentCard href={card.href || `${p}/kezelesek/${card.id}`} title={card.title} description={card.description} imageUrl={imageUrl} imageAlt={imageIsBeforeAfter ? 'Mosoly a direkt héjkezelés előtt és után – Hollywood smile' : undefined} imageFit={imageIsBeforeAfter ? 'contain' : undefined} linkLabel={getSiteCopy(locale).details} />;
 }
 
 function TreatmentCardsSection({ sanityImages }: { sanityImages: Record<string, string> }) {
   const t = useTranslations('treatments');
   const cards = t.raw('cards') as Array<{ id: string; title: string; description: string; href?: string }>;
+  const directImage = sanityImages['direkt-hej'] || sanityImages['hollywood-mosoly'];
   return (
     <section className="py-12 sm:py-16 bg-white">
       <div className="container mx-auto px-4">
@@ -51,7 +51,8 @@ function TreatmentCardsSection({ sanityImages }: { sanityImages: Record<string, 
               key={card.id}
               card={card}
               index={index}
-              imageUrl={sanityImages[card.id] || (['direkt-hej', 'indirekt-hej'].includes(card.id) ? sanityImages['esztetikai-fogaszat'] : undefined)}
+              imageUrl={(card.id === 'direkt-hej' ? directImage : sanityImages[card.id]) || (['direkt-hej', 'indirekt-hej'].includes(card.id) ? sanityImages['esztetikai-fogaszat'] : undefined)}
+              imageIsBeforeAfter={Boolean(card.id === 'direkt-hej' ? directImage : card.id === 'hollywood-mosoly' && sanityImages[card.id])}
             />
           ))}
         </div>
