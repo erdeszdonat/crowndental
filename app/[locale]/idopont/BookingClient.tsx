@@ -279,7 +279,7 @@ function BookingForm({ directOffer: initialDirectOffer }: { directOffer: VeneerO
                 <p className="crown-booking-note">{directOffer.availabilityCopy} Ár: {directOffer.formattedPrice}/fog{directOffer.isPromotion ? `, ${directOffer.formattedRegularPrice} helyett` : ''}. A pontos időpontot és a kezelési tervet munkatársunk egyezteti Önnel.</p>
               )}
               {safeLocale === 'hu' && formData.treatment === veneerBookingLabels['indirekt-hej'] && (
-                <p className="crown-booking-note">Saját laborban készülő indirekt porcelán héj: már most 99.000 Ft/fog, 120.000 Ft helyett. A pontos időpontot és a kezelési tervet munkatársunk egyezteti Önnel.</p>
+                <p className="crown-booking-note">Saját laborban készülő indirekt porcelán héj: már most 99.000 Ft/fog, 120.000 Ft helyett. {getVeneerOffer('indirekt-hej').availabilityCopy} A pontos időpontot és a kezelési tervet munkatársunk egyezteti Önnel.</p>
               )}
               {isOther && <div>
                 <label htmlFor="booking-note" className="crown-field-label">{copy.optional}</label>
