@@ -1,8 +1,9 @@
 import HomeClient, { type HomeSanityImages } from './HomeClient';
 import type { Metadata } from 'next';
 import { buildHomeMetadata } from '@/lib/seo';
+import { getTreatmentImages } from '@/lib/treatmentImages';
 
-// Sanity-managed marketing images rarely change. A daily fallback prevents
+// Sanity-managed marketing images rarely change. A weekly fallback prevents
 // traffic and crawlers from rewriting every locale's ISR entry each hour.
 export const revalidate = 604800;
 
@@ -50,9 +51,7 @@ async function getHomeSanityImages(): Promise<HomeSanityImages> {
     fetchSanityData<{ url?: string }>(
       `*[_type=="treatment"&&slug.current=="fogtechnika"][0]{"url":coalesce(mainImage.asset->url,heroImage.asset->url)}`
     ),
-    fetchSanityData<Array<{ slug?: string; imageUrl?: string }>>(
-      `*[_type=="treatment"]{"slug":slug.current,"imageUrl":coalesce(mainImage.asset->url,heroImage.asset->url)}`
-    ),
+    getTreatmentImages(),
   ]);
 
   const hero = { ...emptyHomeSanityImages.hero };
@@ -72,11 +71,9 @@ async function getHomeSanityImages(): Promise<HomeSanityImages> {
   });
 
   const services: HomeSanityImages['services'] = {};
-  treatmentResults?.forEach((item) => {
-    if (item.slug && item.imageUrl) {
-      services[item.slug] = optimizeSanityImage(item.imageUrl, 600, 400);
-    }
-  });
+  for (const [slug, imageUrl] of Object.entries(treatmentResults)) {
+    services[slug] = optimizeSanityImage(imageUrl, 600, 400);
+  }
 
   return {
     hero,

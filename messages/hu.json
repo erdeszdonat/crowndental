@@ -443,6 +443,7 @@
       { "id": "szajsebeszet", "title": "Szájsebészet", "description": "Bölcsességfog eltávolítás és gyökércsúcs rezekció szakértelemmel." },
       { "id": "allapotfelmeres", "title": "Állapotfelmérés", "description": "Részletes konzultáció, panoráma röntgen és személyre szabott kezelési terv." },
       { "id": "esztetikai-fogaszat", "title": "Esztétikai Fogászat", "description": "Kerámia héjak és láthatatlan tömések a tökéletes mosolyért." },
+      { "id": "hollywood-mosoly", "title": "Hollywood smile – hollywoodi mosoly", "description": "Személyre szabott mosolytervezés: ismerje meg a direkt és porcelán héjak lehetőségeit, a különbségeket és az árakat.", "href": "/hollywood-mosoly" },
       { "id": "direkt-hej", "title": "Direkt héj", "description": "A rendelőben formázott kompozit héj, személyre szabott fogszínnel és formával. Árak, kezelési lépések és időpontkérés." },
       { "id": "indirekt-hej", "title": "Indirekt porcelán héj", "description": "Prémium kerámiahéj saját laborból. Már most 99.000 Ft/fog, 120.000 Ft helyett." },
       { "id": "foghuzas", "title": "Foghúzás", "description": "Kíméletes fogeltávolítás gyors gyógyulással." },

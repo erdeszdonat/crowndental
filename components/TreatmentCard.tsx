@@ -7,16 +7,18 @@ type Props = {
   title: string;
   description: string;
   imageUrl?: string;
+  imageAlt?: string;
+  imageFit?: 'cover' | 'contain';
   price?: string;
   linkLabel: string;
 };
 
 /** The whole card is one visible, keyboard-accessible link on every device. */
-export default function TreatmentCard({ href, title, description, imageUrl, price, linkLabel }: Props) {
+export default function TreatmentCard({ href, title, description, imageUrl, imageAlt = '', imageFit, price, linkLabel }: Props) {
   return (
     <Link prefetch={false} href={href} className="crown-treatment-card" data-cta-location="treatment_card">
       <div className="crown-treatment-image">
-        {imageUrl && <img src={sanityImageUrl(imageUrl, 720)} alt="" loading="lazy" width={720} height={480} />}
+        {imageUrl && <img src={sanityImageUrl(imageUrl, 720)} alt={imageAlt} style={imageFit ? { objectFit: imageFit } : undefined} loading="lazy" width={720} height={480} />}
         <span className="crown-card-arrow"><ArrowUpRight size={20} aria-hidden="true" /></span>
       </div>
       <div className="crown-treatment-body">
