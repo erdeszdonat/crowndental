@@ -27,7 +27,7 @@ export default async function HollywoodMosolyPage({ params }: Props) {
   const direct = getVeneerOffer('direkt-hej', now);
   const indirect = getVeneerOffer('indirekt-hej', now);
   const images = await getTreatmentImages();
-  const imageUrl = images['esztetikai-fogaszat'] || images['fogfeherites'] || '';
+  const imageUrl = images['hollywood-mosoly'] || images['esztetikai-fogaszat'] || images['fogfeherites'] || '';
   return (
     <>
       <VeneerSeo name="Hollywood smile – hollywoodi mosoly" path="/hollywood-mosoly" faqs={hollywoodFaqs} />
@@ -45,7 +45,7 @@ export default async function HollywoodMosolyPage({ params }: Props) {
                   <a href="tel:+36305892468" className="crown-button crown-button-secondary"><Phone size={18} aria-hidden="true" />06 30 589 2468</a>
                 </div>
               </div>
-              <div className="crown-hero-visual"><div className="crown-hero-photo">{imageUrl && <VeneerImage src={imageUrl} />}</div>
+              <div className="crown-hero-visual"><div className="crown-hero-photo">{imageUrl && <VeneerImage src={imageUrl} alt={images['hollywood-mosoly'] ? 'Mosoly a kezelés előtt és után – Hollywood smile Esztergomban' : ''} />}</div>
                 <div className="crown-price-note"><span>Direkt kompozit és indirekt porcelán héj</span><strong>Személyes mosolyterv</strong></div>
               </div>
             </div>

@@ -32,15 +32,16 @@ function HeroSection() {
   );
 }
 
-function TreatmentCard({ card, imageUrl }: { card: { id: string; title: string; description: string }; index: number; imageUrl?: string }) {
+function TreatmentCard({ card, imageUrl }: { card: { id: string; title: string; description: string; href?: string }; index: number; imageUrl?: string }) {
   const locale = useLocale();
   const p = locale === 'hu' ? '' : `/${locale}`;
-  return <SharedTreatmentCard href={`${p}/kezelesek/${card.id}`} title={card.title} description={card.description} imageUrl={imageUrl} linkLabel={getSiteCopy(locale).details} />;
+  const isHollywood = card.id === 'hollywood-mosoly';
+  return <SharedTreatmentCard href={card.href || `${p}/kezelesek/${card.id}`} title={card.title} description={card.description} imageUrl={imageUrl} imageAlt={isHollywood ? 'Mosoly a kezelés előtt és után – Hollywood smile' : undefined} imageFit={isHollywood ? 'contain' : undefined} linkLabel={getSiteCopy(locale).details} />;
 }
 
 function TreatmentCardsSection({ sanityImages }: { sanityImages: Record<string, string> }) {
   const t = useTranslations('treatments');
-  const cards = t.raw('cards') as Array<{ id: string; title: string; description: string }>;
+  const cards = t.raw('cards') as Array<{ id: string; title: string; description: string; href?: string }>;
   return (
     <section className="py-12 sm:py-16 bg-white">
       <div className="container mx-auto px-4">
