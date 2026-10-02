@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
+import { sanityImageLoader } from '@/lib/sanityImage';
 import Link from 'next/link';
 
 import { MapPin, Phone, Award, Building2, Shield, Calendar, ArrowRight, CheckCircle2, Heart, Upload, Sparkles, User, FileText, Loader2, Download, ChevronDown, Wrench } from 'lucide-react';
@@ -151,6 +152,7 @@ function HeroSlider({ images }: { images: HomeSanityImages['hero'] }) {
               ? (
                 <div className="absolute inset-x-0 top-0 h-[120%]">
                   <Image
+                    loader={sanityImageLoader}
                     src={staticSlides[current].image}
                     alt="Crown Dental"
                     fill

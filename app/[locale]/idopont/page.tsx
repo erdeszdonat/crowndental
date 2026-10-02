@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
 import BookingClient from './BookingClient';
+import { getVeneerOffer } from '@/lib/veneers.mjs';
+
+export const revalidate = 3600;
 import {
   buildLocalizedMetadata,
   localizedUrl,
@@ -69,7 +72,7 @@ export default async function BookingPage(props: BookingPageProps) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
-      <BookingClient />
+      <BookingClient directOffer={getVeneerOffer('direkt-hej')} />
     </>
   );
 }

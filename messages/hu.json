@@ -273,6 +273,8 @@
       "Fogszabályozás",
       "Fogszabályozás konzultáció",
       "Fogfehérítés",
+      "Direkt kompozit héj",
+      "Indirekt porcelán héj",
       "Fogkő eltávolítás",
       "Panoráma röntgen",
       "CBCT (3D) felvétel",
@@ -441,6 +443,8 @@
       { "id": "szajsebeszet", "title": "Szájsebészet", "description": "Bölcsességfog eltávolítás és gyökércsúcs rezekció szakértelemmel." },
       { "id": "allapotfelmeres", "title": "Állapotfelmérés", "description": "Részletes konzultáció, panoráma röntgen és személyre szabott kezelési terv." },
       { "id": "esztetikai-fogaszat", "title": "Esztétikai Fogászat", "description": "Kerámia héjak és láthatatlan tömések a tökéletes mosolyért." },
+      { "id": "direkt-hej", "title": "Direkt héj", "description": "A rendelőben formázott kompozit héj, személyre szabott fogszínnel és formával. Árak, kezelési lépések és időpontkérés." },
+      { "id": "indirekt-hej", "title": "Indirekt porcelán héj", "description": "Prémium kerámiahéj saját laborból. Már most 99.000 Ft/fog, 120.000 Ft helyett." },
       { "id": "foghuzas", "title": "Foghúzás", "description": "Kíméletes fogeltávolítás gyors gyógyulással." },
       { "id": "gockutatas", "title": "Góckutatás", "description": "Rejtett gyulladások és gócok felderítése modern 3D CT-vel." },
       { "id": "gyerekfogaszat", "title": "Gyermekfogászat", "description": "Tejfog kezelések és barázdazárás barátságos, türelmes környezetben." }
@@ -802,10 +806,10 @@
       "servicesTitle": "Esztétikai megoldások",
       "services": [
         { "title": "Professzionális Fogfehérítés", "desc": "Akár 8 árnyalattal világosabb fogak egyetlen kezelés után.", "price": "35.000 Ft-tól" },
-        { "title": "Porcelán Héjak (Veneer)", "desc": "Ultravékony porcelán héjak – tökéletes forma és szín.", "price": "120.000 Ft-tól" },
+        { "title": "Indirekt porcelán héj", "desc": "Prémium kerámiahéj saját fogtechnikai laborunkból, személyre szabott formával és színnel.", "price": "99.000 Ft / fog – 120.000 Ft helyett", "href": "/kezelesek/indirekt-hej" },
         { "title": "Fogkő Eltávolítás", "desc": "Ultrahangos depuráció és polírozás az egészséges ínyért.", "price": "15.000 Ft-tól" },
         { "title": "Esztétikus Tömések", "desc": "Fog színű kompozit tömések, amelyek szinte láthatatlanok.", "price": "25.000 Ft-tól" },
-        { "title": "Mosoly Makeover", "desc": "Komplex mosolyátalakítás: fehérítés, héjak, fogformázás.", "price": "Egyéni árajánlat" },
+        { "title": "Hollywood smile – hollywoodi mosoly", "desc": "Ismerje meg a direkt és indirekt héj közötti különbséget és a személyre szabott mosolytervezés lehetőségeit.", "price": "Kezelések és árak", "href": "/hollywood-mosoly" },
         { "title": "Ínykorrekció", "desc": "Az ínyvonal esztétikai korrekciója a harmonikus mosolyért.", "price": "45.000 Ft-tól" }
       ],
       "benefitsTitle": "A szépség részletekben rejlik",
@@ -830,7 +834,7 @@
       "faqs": [
         { "q": "Mennyi ideig tart a fogfehérítés hatása?", "a": "A professzionális fehérítés eredménye 1-3 évig tart, az életmódtól függően." },
         { "q": "Fájdalmas a fogfehérítés?", "a": "A modern technikák általában fájdalommentesek. Átmeneti érzékenység előfordulhat." },
-        { "q": "Mennyibe kerül egy porcelán héj?", "a": "A porcelán héjak ára 120.000 Ft-tól indul foganként." },
+        { "q": "Mennyibe kerül egy porcelán héj?", "a": "Az indirekt porcelán héj ára most 99.000 Ft foganként, 120.000 Ft helyett. A saját laborunkban készülő héjhoz személyre szabott kezelési tervet készítünk." },
         { "q": "Természetesen néz ki a végeredmény?", "a": "Célunk a természetes, harmonikus megjelenés az Ön arcvonásaihoz igazítva." },
         { "q": "Milyen gyakran kell fogkőt eltávolíttatni?", "a": "Általában évente 1-2 alkalommal javasolt a professzionális tisztítás." }
       ]

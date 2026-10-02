@@ -92,17 +92,22 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-bold text-lg mb-6 uppercase tracking-wider">{t('treatments')}</h4>
             <ul className="space-y-3 text-sm">
-              <li><Link href={`${prefix}/kezelesek/implantatum`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('treatmentLinks.implant')}</Link></li>
-              <li><Link href={`${prefix}/kezelesek/koronak-hidak`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('treatmentLinks.crowns')}</Link></li>
-              <li><Link href={`${prefix}/kezelesek/fogszabalyozas`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('treatmentLinks.orthodontics')}</Link></li>
-              <li><Link href={`${prefix}/kezelesek/fogfeherites`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('treatmentLinks.whitening')}</Link></li>
-              <li><Link href={`${prefix}/kezelesek/fogsor`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('treatmentLinks.dentures')}</Link></li>
-              <li><Link href={`${prefix}/kezelesek/szajsebeszet`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('treatmentLinks.surgery')}</Link></li>
-              <li><Link href={`${prefix}/kezelesek/gyokerkezeles`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('treatmentLinks.rootCanal')}</Link></li>
-              <li><Link href={`${prefix}/kezelesek/esztetikai-fogaszat`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('treatmentLinks.aesthetic')}</Link></li>
-              <li><Link href={`${prefix}/kezelesek/allapotfelmeres`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('treatmentLinks.assessment')}</Link></li>
-              <li><Link href={`${prefix}/kezelesek/gockutatas`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('treatmentLinks.focal')}</Link></li>
-              <li><Link href={`${prefix}/kezelesek/fogtechnikai-megoldasok`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('treatmentLinks.labTech')}</Link></li>
+              <li><Link prefetch={false} href={`${prefix}/kezelesek/implantatum`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('treatmentLinks.implant')}</Link></li>
+              <li><Link prefetch={false} href={`${prefix}/kezelesek/koronak-hidak`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('treatmentLinks.crowns')}</Link></li>
+              <li><Link prefetch={false} href={`${prefix}/kezelesek/fogszabalyozas`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('treatmentLinks.orthodontics')}</Link></li>
+              <li><Link prefetch={false} href={`${prefix}/kezelesek/fogfeherites`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('treatmentLinks.whitening')}</Link></li>
+              <li><Link prefetch={false} href={`${prefix}/kezelesek/fogsor`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('treatmentLinks.dentures')}</Link></li>
+              <li><Link prefetch={false} href={`${prefix}/kezelesek/szajsebeszet`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('treatmentLinks.surgery')}</Link></li>
+              <li><Link prefetch={false} href={`${prefix}/kezelesek/gyokerkezeles`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('treatmentLinks.rootCanal')}</Link></li>
+              <li><Link prefetch={false} href={`${prefix}/kezelesek/esztetikai-fogaszat`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('treatmentLinks.aesthetic')}</Link></li>
+              {locale === 'hu' && <>
+                <li><Link prefetch={false} href="/kezelesek/direkt-hej" className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> Direkt héj</Link></li>
+                <li><Link prefetch={false} href="/kezelesek/indirekt-hej" className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> Indirekt porcelán héj</Link></li>
+                <li><Link prefetch={false} href="/hollywood-mosoly" className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> Hollywood Smile</Link></li>
+              </>}
+              <li><Link prefetch={false} href={`${prefix}/kezelesek/allapotfelmeres`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('treatmentLinks.assessment')}</Link></li>
+              <li><Link prefetch={false} href={`${prefix}/kezelesek/gockutatas`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('treatmentLinks.focal')}</Link></li>
+              <li><Link prefetch={false} href={`${prefix}/kezelesek/fogtechnikai-megoldasok`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('treatmentLinks.labTech')}</Link></li>
             </ul>
           </div>
 
@@ -110,24 +115,24 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-bold text-lg mb-6 uppercase tracking-wider">{t('usefulLinks')}</h4>
             <ul className="space-y-3 text-sm mb-10">
-              <li><Link href={`${prefix}/kezelesek`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('fullPriceList')}</Link></li>
-              <li><Link href={`${prefix}/idopont`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('bookingLink')}</Link></li>
-              <li><Link href={`${prefix}/rolunk`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('aboutLink')}</Link></li>
-              <li><Link href={`${prefix}/kapcsolat`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('contactLink')}</Link></li>
-              <li><Link href={`${prefix}/blog`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('blogLink')}</Link></li>
+              <li><Link prefetch={false} href={`${prefix}/kezelesek`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('fullPriceList')}</Link></li>
+              <li><Link prefetch={false} href={`${prefix}/idopont`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('bookingLink')}</Link></li>
+              <li><Link prefetch={false} href={`${prefix}/rolunk`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('aboutLink')}</Link></li>
+              <li><Link prefetch={false} href={`${prefix}/kapcsolat`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('contactLink')}</Link></li>
+              <li><Link prefetch={false} href={`${prefix}/blog`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('blogLink')}</Link></li>
               {locale !== 'hu' && (
-                <li><Link href={`${prefix}/${INTERNATIONAL_PATIENT_PATHS[locale as keyof typeof INTERNATIONAL_PATIENT_PATHS] ?? INTERNATIONAL_PATIENT_PATHS.hu}`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {internationalPatientLabel[locale] ?? internationalPatientLabel.hu}</Link></li>
+                <li><Link prefetch={false} href={`${prefix}/${INTERNATIONAL_PATIENT_PATHS[locale as keyof typeof INTERNATIONAL_PATIENT_PATHS] ?? INTERNATIONAL_PATIENT_PATHS.hu}`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {internationalPatientLabel[locale] ?? internationalPatientLabel.hu}</Link></li>
               )}
-              <li><Link href={`${prefix}/utazas-szallas`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {travelLinkLabel[locale] ?? travelLinkLabel.hu}</Link></li>
-              <li><Link href={`${prefix}/karrier`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('careerLink')}</Link></li>
+              <li><Link prefetch={false} href={`${prefix}/utazas-szallas`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {travelLinkLabel[locale] ?? travelLinkLabel.hu}</Link></li>
+              <li><Link prefetch={false} href={`${prefix}/karrier`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('careerLink')}</Link></li>
             </ul>
 
             <h4 className="text-white font-bold text-lg mb-6 uppercase tracking-wider">{t('legalInfo')}</h4>
             <ul className="space-y-3 text-sm">
-              <li><Link href={`${prefix}/aszf`} className="text-gray-400 hover:text-white transition-colors">{t('aszf')}</Link></li>
-              <li><Link href={`${prefix}/adatkezeles`} className="text-gray-400 hover:text-white transition-colors">{t('privacy')}</Link></li>
-              <li><Link href={`${prefix}/cookie-tajekoztato`} className="text-gray-400 hover:text-white transition-colors">{t('cookie')}</Link></li>
-              <li><Link href={`${prefix}/impresszum`} className="text-gray-400 hover:text-white transition-colors">{t('imprint')}</Link></li>
+              <li><Link prefetch={false} href={`${prefix}/aszf`} className="text-gray-400 hover:text-white transition-colors">{t('aszf')}</Link></li>
+              <li><Link prefetch={false} href={`${prefix}/adatkezeles`} className="text-gray-400 hover:text-white transition-colors">{t('privacy')}</Link></li>
+              <li><Link prefetch={false} href={`${prefix}/cookie-tajekoztato`} className="text-gray-400 hover:text-white transition-colors">{t('cookie')}</Link></li>
+              <li><Link prefetch={false} href={`${prefix}/impresszum`} className="text-gray-400 hover:text-white transition-colors">{t('imprint')}</Link></li>
               <li className="pt-2">
                 <button
                   type="button"
@@ -149,7 +154,7 @@ export default function Footer() {
                   <MapPin className="w-5 h-5 text-sky-500" />
                 </div>
                 <div>
-                  <Link href={`${prefix}/esztergom`} className="block text-white font-bold mb-1 hover:text-sky-400 transition-colors">
+                  <Link prefetch={false} href={`${prefix}/esztergom`} className="block text-white font-bold mb-1 hover:text-sky-400 transition-colors">
                     {t('esztergomClinic')}
                   </Link>
                   <a href={GOOGLE_BUSINESS_URL} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors leading-relaxed block">
@@ -163,7 +168,7 @@ export default function Footer() {
                     <MapPin className="w-5 h-5 text-amber-500" />
                   </div>
                   <div>
-                    <Link href={`${prefix}/budapest`} className="block text-white font-bold mb-1 hover:text-amber-400 transition-colors">
+                    <Link prefetch={false} href={`${prefix}/budapest`} className="block text-white font-bold mb-1 hover:text-amber-400 transition-colors">
                       {t('budapestClinic')} · {locale === 'sk' ? 'čoskoro' : locale === 'en' ? 'coming soon' : locale === 'de' ? 'demnächst' : 'hamarosan'}
                     </Link>
                     <a href="https://maps.google.com/?q=1039+Budapest+Királyok+útja+55" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors leading-relaxed block">

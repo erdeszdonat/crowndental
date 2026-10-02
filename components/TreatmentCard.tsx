@@ -14,7 +14,7 @@ type Props = {
 /** The whole card is one visible, keyboard-accessible link on every device. */
 export default function TreatmentCard({ href, title, description, imageUrl, price, linkLabel }: Props) {
   return (
-    <Link href={href} className="crown-treatment-card" data-cta-location="treatment_card">
+    <Link prefetch={false} href={href} className="crown-treatment-card" data-cta-location="treatment_card">
       <div className="crown-treatment-image">
         {imageUrl && <img src={sanityImageUrl(imageUrl, 720)} alt="" loading="lazy" width={720} height={480} />}
         <span className="crown-card-arrow"><ArrowUpRight size={20} aria-hidden="true" /></span>

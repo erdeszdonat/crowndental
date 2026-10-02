@@ -41,6 +41,11 @@ function localeFallbackPath(pathname: string, newLocale: LocaleCode): string {
     return localizedPath(newLocale, 'blog');
   }
 
+  // These new treatment guides are currently published in Hungarian only.
+  if (newLocale !== 'hu' && /^\/(hollywood-mosoly|kezelesek\/(direkt-hej|indirekt-hej))\/?$/.test(pathWithoutLocale)) {
+    return localizedPath(newLocale, 'kezelesek/esztetikai-fogaszat');
+  }
+
   return localizedPath(newLocale, pathWithoutLocale);
 }
 
@@ -299,6 +304,7 @@ export default function Navigation() {
         <a href={homeHref} className="flex items-center relative h-full py-2 z-50">
           <Image
             src="/logo.webp"
+            unoptimized
             alt="Crown Dental Logo"
             width={140}
             height={84}

@@ -1,14 +1,18 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { getSiteCopy } from '@/lib/siteCopy';
 import { ANALYTICS_READY_EVENT, trackSiteEvent } from '@/lib/siteAnalytics';
 import { ArrowRight, ArrowLeft, Phone, Loader2 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
 import { BUDAPEST_BOOKING_OPEN_LABELS, isBudapestBookingAvailable, isBudapestCity } from '@/lib/bookingAvailability';
 import GoogleReviewsCta from '@/components/GoogleReviewsCta';
+import { getVeneerOffer, VENEERS } from '@/lib/veneers.mjs';
+import { useVeneerOffer } from '@/components/VeneerOffer';
+
+type VeneerOffer = ReturnType<typeof getVeneerOffer>;
 
 const BOOKING_SUCCESS_STORAGE_KEY = 'crown_booking_success';
 const BOOKING_SUCCESS_CONTACT_KEY = 'crown_booking_contact';
@@ -70,7 +74,24 @@ function createIdempotencyKey(prefix: string) {
   return `${prefix}-${value}`;
 }
 
-function BookingForm() {
+const veneerBookingLabels: Record<string, string> = {
+  'direkt-hej': VENEERS['direkt-hej'].name,
+  'indirekt-hej': VENEERS['indirekt-hej'].name,
+};
+
+// Only this invisible helper reads URL data; the complete form stays prerendered.
+function TreatmentPrefill({ onSelect }: { onSelect: (treatment: string) => void }) {
+  const searchParams = useSearchParams();
+  const slug = searchParams.get('kezeles');
+  const treatment = slug === 'direkt-hej' || slug === 'indirekt-hej' ? veneerBookingLabels[slug] : undefined;
+  useEffect(() => {
+    if (treatment) onSelect(treatment);
+  }, [treatment, onSelect]);
+  return null;
+}
+
+function BookingForm({ directOffer: initialDirectOffer }: { directOffer: VeneerOffer }) {
+  const directOffer = useVeneerOffer('direkt-hej', initialDirectOffer);
   const t = useTranslations('booking');
   const locale = useLocale();
   const safeLocale = normalizeLocale(locale);
@@ -90,6 +111,10 @@ function BookingForm() {
   const [otherNote, setOtherNote] = useState('');
   const [marketingConsent, setMarketingConsent] = useState(false);
   const idempotencyKeyRef = useRef<string | null>(null);
+  const prefillTreatment = useCallback((treatment: string) => {
+    setFormData(previous => ({ ...previous, treatment }));
+    idempotencyKeyRef.current = null;
+  }, []);
   const isBudapestOpen = isBudapestBookingAvailable();
   const budapestOpenLabel = BUDAPEST_BOOKING_OPEN_LABELS[safeLocale] ?? BUDAPEST_BOOKING_OPEN_LABELS.hu;
   const otherNotePlaceholders: Record<string, string> = {
@@ -198,6 +223,7 @@ function BookingForm() {
 
   return (
     <div className="crown-booking-panel">
+      {safeLocale === 'hu' && <Suspense fallback={null}><TreatmentPrefill onSelect={prefillTreatment} /></Suspense>}
       <ol className="crown-booking-progress" aria-label={t('title')}>
         {copy.steps.map((label, i) => <li key={label} aria-current={step === i + 1 ? 'step' : undefined}><span>{i + 1}</span>{label}</li>)}
       </ol>
@@ -249,6 +275,12 @@ function BookingForm() {
                   {treatments.map(treatment => <option key={treatment} value={treatment}>{treatment}</option>)}
                 </select>
               </div>
+              {safeLocale === 'hu' && formData.treatment === veneerBookingLabels['direkt-hej'] && (
+                <p className="crown-booking-note">{directOffer.availabilityCopy} Ár: {directOffer.formattedPrice}/fog{directOffer.isPromotion ? `, ${directOffer.formattedRegularPrice} helyett` : ''}. A pontos időpontot és a kezelési tervet munkatársunk egyezteti Önnel.</p>
+              )}
+              {safeLocale === 'hu' && formData.treatment === veneerBookingLabels['indirekt-hej'] && (
+                <p className="crown-booking-note">Saját laborban készülő indirekt porcelán héj: már most 99.000 Ft/fog, 120.000 Ft helyett. {getVeneerOffer('indirekt-hej').availabilityCopy} A pontos időpontot és a kezelési tervet munkatársunk egyezteti Önnel.</p>
+              )}
               {isOther && <div>
                 <label htmlFor="booking-note" className="crown-field-label">{copy.optional}</label>
                 <textarea id="booking-note" value={otherNote} rows={4} maxLength={Math.max(0, 280 - formData.treatment.length - 2)} className="crown-input" placeholder={otherNotePlaceholder}
@@ -282,7 +314,7 @@ function BookingForm() {
   );
 }
 
-export default function BookingClient() {
+export default function BookingClient({ directOffer }: { directOffer: VeneerOffer }) {
   const t = useTranslations('booking');
   const locale = useLocale();
   const copy = getSiteCopy(locale);
@@ -296,7 +328,7 @@ export default function BookingClient() {
             <p className="crown-lead">{copy.bookingIntro}</p>
           </header>
           <div className="crown-booking-layout">
-            <BookingForm />
+            <BookingForm directOffer={directOffer} />
             <aside className="crown-booking-help">
               <h2>{copy.nextTitle}</h2>
               <ol>{copy.next.map(item => <li key={item}>{item}</li>)}</ol>

@@ -1,6 +1,10 @@
 'use client';
 import SharedTreatmentCard from '@/components/TreatmentCard';
 import { getSiteCopy } from '@/lib/siteCopy';
+import { getVeneerOffer } from '@/lib/veneers.mjs';
+import { useVeneerOffer } from '@/components/VeneerOffer';
+
+type VeneerOffer = ReturnType<typeof getVeneerOffer>;
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -46,7 +50,7 @@ function TreatmentCardsSection({ sanityImages }: { sanityImages: Record<string, 
               key={card.id}
               card={card}
               index={index}
-              imageUrl={sanityImages[card.id]}
+              imageUrl={sanityImages[card.id] || (['direkt-hej', 'indirekt-hej'].includes(card.id) ? sanityImages['esztetikai-fogaszat'] : undefined)}
             />
           ))}
         </div>
@@ -71,12 +75,17 @@ function hufToEur(priceStr: string): string {
   return !isNaN(num) && num > 0 ? `~€${Math.ceil(num / EUR_RATE)}` : '';
 }
 
-function PriceListSection() {
+function PriceListSection({ directOffer: initialDirectOffer }: { directOffer: VeneerOffer }) {
+  const directOffer = useVeneerOffer('direkt-hej', initialDirectOffer);
   const t = useTranslations('treatments');
   const locale = useLocale();
   const showEur = locale === 'en' || locale === 'sk' || locale === 'de';
   // @ts-ignore
   const priceCategories = t.raw('priceCategories') as Array<{ id: string; title: string; items: Array<{ name: string; price: string; highlight?: boolean }> }>;
+  const veneerOffers = [
+    { slug: 'direkt-hej', title: 'Direkt kompozit héj', offer: directOffer },
+    { slug: 'indirekt-hej', title: 'Indirekt porcelán héj', offer: getVeneerOffer('indirekt-hej') },
+  ];
   return (
     <section id="arlista" className="py-16 sm:py-24 bg-gray-50 relative overflow-hidden">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-sky-100/50 rounded-full blur-[100px]" />
@@ -91,6 +100,28 @@ function PriceListSection() {
         </div>
 
         <div className="max-w-4xl mx-auto space-y-8 sm:space-y-12">
+          {locale === 'hu' && (
+            <div className="bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl shadow-gray-200/50 border border-gray-100">
+              <div className="bg-gradient-to-r from-gray-800 to-gray-900 px-6 sm:px-8 py-5 sm:py-6">
+                <h3 className="text-xl sm:text-2xl font-bold text-white">Fogászati héjak – Hollywood smile</h3>
+              </div>
+              <div className="divide-y divide-gray-100">
+                {veneerOffers.map(({ slug, title, offer }) => (
+                  <div key={slug} className="flex flex-col sm:flex-row sm:items-center justify-between px-6 sm:px-8 py-4 sm:py-5 bg-sky-50">
+                    <div className="pr-4 mb-2 sm:mb-0">
+                      <Link href={`/kezelesek/${slug}`} prefetch={false} className="text-base sm:text-lg font-semibold text-gray-900 underline underline-offset-4">{title}</Link>
+                      <p className="text-sm text-gray-600 mt-1">{offer.availabilityCopy}</p>
+                    </div>
+                    <div className="flex flex-col items-end shrink-0">
+                      <strong className="text-lg sm:text-xl text-sky-700 whitespace-nowrap">{offer.formattedPrice} / fog</strong>
+                      {offer.isPromotion && <span className="text-sm text-gray-600"><s>{offer.formattedRegularPrice}</s> helyett</span>}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <p className="px-6 sm:px-8 py-4 text-sm text-gray-600"><Link href="/hollywood-mosoly" prefetch={false} className="underline underline-offset-4">Direkt vagy indirekt héj? A lehetőségek összehasonlítása.</Link> A végleges kezelési tervet és az esetleg szükséges további ellátás költségét konzultáción egyeztetjük.</p>
+            </div>
+          )}
           {priceCategories.map((category, catIndex) => (
             <motion.div key={category.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ delay: catIndex * 0.1 }} className="bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl shadow-gray-200/50 border border-gray-100">
               <div className="bg-gradient-to-r from-gray-800 to-gray-900 px-6 sm:px-8 py-5 sm:py-6">
@@ -159,12 +190,12 @@ function CTASection() {
   );
 }
 
-export default function TreatmentsClient({ images }: { images: Record<string, string> }) {
+export default function TreatmentsClient({ images, directOffer }: { images: Record<string, string>; directOffer: VeneerOffer }) {
   return (
     <main className="crown-page min-h-screen bg-white">
       <HeroSection />
       <TreatmentCardsSection sanityImages={images} />
-      <PriceListSection />
+      <PriceListSection directOffer={directOffer} />
       <CTASection />
     </main>
   );
