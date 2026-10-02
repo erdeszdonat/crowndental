@@ -3,6 +3,9 @@ import { getTreatmentImages } from '@/lib/treatmentImages';
 import EsztetikaiFogaszatClient from './EsztetikaiFogaszatClient';
 import TreatmentSeoScripts from '@/components/TreatmentSeoScripts';
 import { buildTreatmentMetadata } from '@/lib/seo';
+import { getVeneerOffer } from '@/lib/veneers.mjs';
+
+export const revalidate = 3600;
 
 const slug = 'esztetikai-fogaszat' as const;
 
@@ -20,7 +23,7 @@ export default async function EsztetikaiFogaszatPage(props: TreatmentPageProps) 
   return (
     <>
       <TreatmentSeoScripts locale={params.locale} slug={slug} />
-      <EsztetikaiFogaszatClient imageUrl={(await getTreatmentImages())[slug] ?? ''} />
+      <EsztetikaiFogaszatClient imageUrl={(await getTreatmentImages())[slug] ?? ''} directOffer={getVeneerOffer('direkt-hej')} />
     </>
   );
 }

@@ -1,5 +1,9 @@
 'use client';
 import TreatmentHero from '@/components/TreatmentHero';
+import { getVeneerOffer } from '@/lib/veneers.mjs';
+import { useVeneerOffer } from '@/components/VeneerOffer';
+
+type VeneerOffer = ReturnType<typeof getVeneerOffer>;
 
 import React, { useState } from 'react';
 import Link from 'next/link';
@@ -34,10 +38,18 @@ function ProblemSolution() {
   );
 }
 
-function ServicesSection() {
+function ServicesSection({ directOffer: initialDirectOffer }: { directOffer: VeneerOffer }) {
+  const directOffer = useVeneerOffer('direkt-hej', initialDirectOffer);
   const t = useTranslations('treatmentPages.esztetikai-fogaszat');
+  const locale = useLocale();
   const icons = [<Sparkles className="w-8 h-8" />, <Gem className="w-8 h-8" />, <Zap className="w-8 h-8" />, <Palette className="w-8 h-8" />, <Award className="w-8 h-8" />, <Smile className="w-8 h-8" />];
-  const services = t.raw('services') as Array<{ title: string; desc: string; price: string }>;
+  const existingServices = t.raw('services') as Array<{ title: string; desc: string; price: string; href?: string }>;
+  const services = locale === 'hu' ? [...existingServices, {
+    title: 'Direkt kompozit héj',
+    desc: `Rendelőben formázott kompozit héj, egyénre szabott fogszínnel és formával. ${directOffer.availabilityCopy}`,
+    price: `${directOffer.formattedPrice} / fog${directOffer.isPromotion ? ` – ${directOffer.formattedRegularPrice} helyett` : ''}`,
+    href: '/kezelesek/direkt-hej',
+  }] : existingServices;
   return (
     <section className="py-24 bg-gray-50 border-t border-gray-100">
       <div className="container mx-auto px-4">
@@ -49,10 +61,11 @@ function ServicesSection() {
           {services.map((s, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
               className="p-8 bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-lg transition-all hover:-translate-y-1 flex flex-col">
-              <div className="w-16 h-16 bg-sky-50 text-sky-600 rounded-2xl flex items-center justify-center mb-6">{icons[i]}</div>
+              <div className="w-16 h-16 bg-sky-50 text-sky-600 rounded-2xl flex items-center justify-center mb-6">{icons[i] ?? <Smile className="w-8 h-8" />}</div>
               <h4 className="text-xl font-bold text-gray-900 mb-3">{s.title}</h4>
               <p className="text-slate-600 leading-relaxed mb-6 flex-1">{s.desc}</p>
               <div className="text-sky-600 font-bold text-lg">{s.price}</div>
+              {s.href && <Link href={s.href} prefetch={false} className="inline-flex items-center gap-2 mt-4 text-sky-700 font-semibold underline underline-offset-4">Részletek <ArrowRight className="w-4 h-4" aria-hidden="true" /></Link>}
             </motion.div>
           ))}
         </div>
@@ -179,13 +192,13 @@ function FAQSection() {
   );
 }
 
-export default function EsztetikaiFogaszatClient({ imageUrl }: { imageUrl: string }) {
+export default function EsztetikaiFogaszatClient({ imageUrl, directOffer }: { imageUrl: string; directOffer: VeneerOffer }) {
   return (
     <div className="crown-page bg-white min-h-screen selection:bg-sky-200 selection:text-sky-900">
       <main>
         <ServiceHero imageUrl={imageUrl} />
         <ProblemSolution />
-        <ServicesSection />
+        <ServicesSection directOffer={directOffer} />
         <Benefits />
         <ProcessSection />
         <AppointmentCTASection />

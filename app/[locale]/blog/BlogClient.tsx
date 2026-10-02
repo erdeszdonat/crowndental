@@ -375,7 +375,7 @@ export default function BlogClient({ initialPosts = EMPTY_BLOG_POSTS }: { initia
         ) : filteredPosts.length > 0 ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredPosts.map((post) => (
-              <Link href={getPostPath(post.language, post.slug)} key={post._id} className="group flex flex-col bg-white rounded-[2rem] overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-gray-100">
+              <Link prefetch={false} href={getPostPath(post.language, post.slug)} key={post._id} className="group flex flex-col bg-white rounded-[2rem] overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-gray-100">
                 <div className="relative h-56 w-full overflow-hidden bg-gray-100">
                   {post.imageUrl && (
                     <Image

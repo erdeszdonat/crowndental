@@ -195,11 +195,18 @@ const nextConfig = {
     ];
   },
   async rewrites() {
-    return [
-      { source: '/esztergom/:path*', destination: '/lokacio/esztergom/:path*' },
-      { source: '/budapest/:path*', destination: '/lokacio/budapest/:path*' },
-
-    ];
+    // The locale is encoded in the URL; public pages do not need a Node.js
+    // proxy invocation merely to add the default locale. Keep root applications
+    // and assets outside the rewrite, including their nested paths.
+    return {
+      beforeFiles: [
+        { source: '/', destination: '/hu' },
+        {
+          source: '/:path((?!hu(?:/|$)|en(?:/|$)|sk(?:/|$)|de(?:/|$)|api(?:/|$)|studio(?:/|$)|admin(?:/|$)|hidfutas(?:/|$)|_next(?:/|$)|_vercel(?:/|$)|.*\\..*).+)',
+          destination: '/hu/:path',
+        },
+      ],
+    };
   },
 };
 

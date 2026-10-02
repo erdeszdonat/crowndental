@@ -802,7 +802,7 @@
       "servicesTitle": "Estetické riešenia",
       "services": [
         { "title": "Profesionálne bielenie zubov", "desc": "Zuby až o 8 odtieňov svetlejšie po jednom ošetrení.", "price": "od 35 000 Ft" },
-        { "title": "Porcelánové fazety (Veneer)", "desc": "Ultratenkí porcelánové fazety – dokonalý tvar a farba.", "price": "od 120 000 Ft" },
+        { "title": "Porcelánové fazety (Veneer)", "desc": "Ultratenkí porcelánové fazety – dokonalý tvar a farba.", "price": "99 000 Ft / zub (pôvodne 120 000 Ft)" },
         { "title": "Odstránenie zubného kameňa", "desc": "Ultrazvukový scaling a leštenie pre zdravé ďasná.", "price": "od 15 000 Ft" },
         { "title": "Farebne zhodné výplne", "desc": "Kompozitné výplne zodpovedajúce farbe zuba – prakticky neviditeľné.", "price": "od 25 000 Ft" },
         { "title": "Kompletná premena úsmevu", "desc": "Komplexná premena úsmevu: bielenie, fazety, tvarovanie zubov.", "price": "Individuálna ponuka" },
@@ -830,7 +830,7 @@
       "faqs": [
         { "q": "Ako dlho trvá účinok bielenia?", "a": "Výsledky profesionálneho bielenia trvajú 1–3 roky v závislosti od životného štýlu." },
         { "q": "Je bielenie bolestivé?", "a": "Moderné techniky sú spravidla bezbolestné. Môže sa vyskytnúť prechodná citlivosť." },
-        { "q": "Koľko stojí porcelánová fazeta?", "a": "Porcelánové fazety začínajú od 120 000 Ft za kus." },
+        { "q": "Koľko stojí porcelánová fazeta?", "a": "Porcelánová fazeta teraz stojí 99 000 Ft za zub namiesto 120 000 Ft a vyrába sa v našom vlastnom zubnom laboratóriu." },
         { "q": "Bude výsledok vyzerať prirodzene?", "a": "Naším cieľom je prirodzený, harmonický vzhľad prispôsobený rysám vašej tváre." },
         { "q": "Ako často treba odstrániť zubný kameň?", "a": "Profesionálne čistenie sa odporúča 1–2-krát ročne." }
       ]

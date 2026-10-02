@@ -802,7 +802,7 @@
       "servicesTitle": "Aesthetic Solutions",
       "services": [
         { "title": "Professional Teeth Whitening", "desc": "Up to 8 shades lighter teeth after a single treatment.", "price": "from 35,000 HUF" },
-        { "title": "Porcelain Veneers", "desc": "Ultra-thin porcelain veneers — perfect shape and colour.", "price": "from 120,000 HUF" },
+        { "title": "Porcelain Veneers", "desc": "Ultra-thin porcelain veneers — perfect shape and colour.", "price": "99,000 HUF / tooth (was 120,000 HUF)" },
         { "title": "Scale & Polish", "desc": "Ultrasonic descaling and polishing for healthy gums.", "price": "from 15,000 HUF" },
         { "title": "Tooth-Coloured Fillings", "desc": "Composite fillings matching the tooth colour — virtually invisible.", "price": "from 25,000 HUF" },
         { "title": "Smile Makeover", "desc": "Comprehensive smile transformation: whitening, veneers, tooth reshaping.", "price": "Individual quote" },
@@ -830,7 +830,7 @@
       "faqs": [
         { "q": "How long does the whitening effect last?", "a": "Professional whitening results last 1–3 years depending on lifestyle." },
         { "q": "Is whitening painful?", "a": "Modern techniques are generally painless. Transient sensitivity may occur." },
-        { "q": "How much does a porcelain veneer cost?", "a": "Porcelain veneers start from 120,000 HUF per tooth." },
+        { "q": "How much does a porcelain veneer cost?", "a": "Porcelain veneers now cost 99,000 HUF per tooth instead of 120,000 HUF and are made in our own dental laboratory." },
         { "q": "Will the result look natural?", "a": "Our goal is a natural, harmonious appearance matched to your facial features." },
         { "q": "How often should tartar be removed?", "a": "Professional cleaning is recommended 1–2 times per year." }
       ]

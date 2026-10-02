@@ -40,7 +40,7 @@ export const treatmentFaqs: Record<string, { q: string; a: string }[]> = {
   'esztetikai-fogaszat': [
     { q: 'Mennyi ideig tart a fogfehérítés hatása?', a: 'A professzionális fehérítés eredménye 1-3 évig tart, az életmódtól függően.' },
     { q: 'Fájdalmas a fogfehérítés?', a: 'A modern technikák általában fájdalommentesek. Átmeneti érzékenység előfordulhat.' },
-    { q: 'Mennyibe kerül egy porcelán héj?', a: 'A porcelán héjak ára 120.000 Ft-tól indul foganként.' },
+    { q: 'Mennyibe kerül egy porcelán héj?', a: 'Az indirekt porcelán héj ára most 99.000 Ft foganként, 120.000 Ft helyett; saját fogtechnikai laborunkban készül.' },
     { q: 'Természetesen néz ki a végeredmény?', a: 'Célunk a természetes, harmonikus megjelenés az Ön arcvonásaihoz igazítva.' },
     { q: 'Milyen gyakran kell fogkőt eltávolíttatni?', a: 'Általában évente 1-2 alkalommal javasolt a professzionális tisztítás.' },
   ],

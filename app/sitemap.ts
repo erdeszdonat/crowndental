@@ -105,7 +105,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       };
     });
 
-  return [...staticRoutes, ...legalRoutes, ...internationalPatientRoutes, ...dynamicBlogRoutes];
+  // Hungarian-only guides must not advertise untranslated hreflang URLs.
+  const veneerRoutes: MetadataRoute.Sitemap = ['kezelesek/direkt-hej', 'kezelesek/indirekt-hej', 'hollywood-mosoly'].map(path => ({
+    url: localizedUrl('hu', path),
+    changeFrequency: 'monthly',
+    priority: 0.9,
+  }));
+  return [...staticRoutes, ...veneerRoutes, ...legalRoutes, ...internationalPatientRoutes, ...dynamicBlogRoutes];
 }
 
 export const dynamic = 'force-static';

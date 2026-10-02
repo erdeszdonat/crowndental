@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useLocale } from 'next-intl';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { createClient } from 'next-sanity';
@@ -236,13 +235,8 @@ function OpeningSoonBanner() {
 
 function FloatingCTA() {
   const locale = useLocale();
-  const router = useRouter();
   const p = locale === 'hu' ? '' : `/${locale}`;
   const bookingHref = `${p}/idopont`;
-
-  useEffect(() => {
-    router.prefetch(bookingHref);
-  }, [bookingHref, router]);
 
   return (
     <motion.div initial={{ opacity: 0, y: 24, scale: 0.94 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ type: 'spring', damping: 20, stiffness: 300, delay: 0.15 }} className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 items-end">
@@ -252,9 +246,6 @@ function FloatingCTA() {
       </a>
       <Link
         href={bookingHref}
-        prefetch
-        onMouseEnter={() => router.prefetch(bookingHref)}
-        onTouchStart={() => router.prefetch(bookingHref)}
         className="flex items-center gap-3 bg-gradient-to-r from-sky-600 to-sky-500 text-white px-6 py-4 rounded-full shadow-[0_8px_40px_rgba(2,132,199,0.4)] hover:scale-105 hover:shadow-[0_8px_50px_rgba(2,132,199,0.6)] active:scale-95 transition-all"
       >
         <Calendar className="w-5 h-5" />

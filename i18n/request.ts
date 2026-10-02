@@ -1,12 +1,12 @@
 import { getRequestConfig } from 'next-intl/server';
-import { notFound } from 'next/navigation';
 
 const locales = ['hu', 'en', 'sk', 'de'];
 
 export default getRequestConfig(async ({ requestLocale }) => {
-  const locale = await requestLocale;
-
-  if (!locale || !locales.includes(locale)) notFound();
+  const requestedLocale = await requestLocale;
+  // LocaleLayout validates the route and calls setRequestLocale. A fallback is
+  // needed for unmatched routes, whose 404 can render outside that layout.
+  const locale = requestedLocale && locales.includes(requestedLocale) ? requestedLocale : 'hu';
 
   return {
     locale,
