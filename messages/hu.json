@@ -58,7 +58,10 @@
       "aesthetic": "Esztétikai fogászat",
       "assessment": "Állapotfelmérés",
       "focal": "Góckutatás",
-      "labTech": "Fogtechnika"
+      "labTech": "Fogtechnika",
+      "directVeneer": "Direkt héj",
+      "indirectVeneer": "Indirekt porcelán héj",
+      "hollywoodSmile": "Hollywood Smile"
     }
   },
 
@@ -433,6 +436,10 @@
     "ctaTitle": "Kérdése van az árakkal kapcsolatban?",
     "ctaSubtitle": "Foglaljon időpontot egy személyes állapotfelmérésre, ahol részletes kezelési tervet adunk.",
     "ctaBtn": "Szakorvosi Konzultáció",
+    "veneerPricesTitle": "Fogászati héjak – Hollywood smile",
+    "veneerComparison": "Direkt vagy indirekt héj? A lehetőségek összehasonlítása.",
+    "veneerPriceNote": "A végleges kezelési tervet és az esetleg szükséges további ellátás költségét konzultáción egyeztetjük.",
+    "veneerBeforeAfterAlt": "Mosoly a direkt héjkezelés előtt és után – Hollywood smile",
     "cards": [
       { "id": "implantatum", "title": "Implantátum", "description": "Élethű fogpótlás titánium implantátummal, akár egy nap alatt." },
       { "id": "fogszabalyozas", "title": "Fogszabályozás", "description": "Rögzített és kivehető készülékek gyerekeknek és felnőtteknek." },

@@ -41,11 +41,6 @@ function localeFallbackPath(pathname: string, newLocale: LocaleCode): string {
     return localizedPath(newLocale, 'blog');
   }
 
-  // These new treatment guides are currently published in Hungarian only.
-  if (newLocale !== 'hu' && /^\/(hollywood-mosoly|kezelesek\/(direkt-hej|indirekt-hej))\/?$/.test(pathWithoutLocale)) {
-    return localizedPath(newLocale, 'kezelesek/esztetikai-fogaszat');
-  }
-
   return localizedPath(newLocale, pathWithoutLocale);
 }
 

@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useLocale } from 'next-intl';
 import { rememberBookingSource, trackSiteEvent, type EventOptions } from '@/lib/siteAnalytics';
 
-const placements = new Set(['home_hero', 'treatment_hero', 'mobile_bar', 'treatment_card']);
+const placements = new Set(['home_hero', 'treatment_hero', 'mobile_bar', 'treatment_card', 'landing_hero', 'landing_offer', 'landing_form']);
 
 /** Delegation covers existing links as well as newly shared components. */
 export default function SiteAnalytics() {
@@ -19,7 +19,10 @@ export default function SiteAnalytics() {
         : link.closest('header') ? 'navigation' : link.closest('footer') ? 'footer' : 'content';
       if (link.protocol === 'tel:') {
         trackSiteEvent('phone_click', locale, { placement });
-      } else if (link.origin === window.location.origin && /^\/(?:hu\/|en\/|de\/|sk\/)?idopont\/?$/.test(link.pathname)) {
+      } else if (link.origin === window.location.origin && (
+        /^\/(?:hu\/|en\/|de\/|sk\/)?idopont\/?$/.test(link.pathname)
+        || (link.hasAttribute('data-booking-cta') && link.pathname === window.location.pathname && link.hash === '#konzultacio')
+      )) {
         rememberBookingSource(window.location.pathname);
         trackSiteEvent('booking_cta_click', locale, { placement });
       }

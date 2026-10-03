@@ -58,7 +58,10 @@
       "aesthetic": "Aesthetic Dentistry",
       "assessment": "Dental Assessment",
       "focal": "Focal Infection Check",
-      "labTech": "Dental Lab Services"
+      "labTech": "Dental Lab Services",
+      "directVeneer": "Direct composite veneers",
+      "indirectVeneer": "Indirect porcelain veneers",
+      "hollywoodSmile": "Hollywood Smile"
     }
   },
 
@@ -431,6 +434,10 @@
     "ctaTitle": "Have questions about our prices?",
     "ctaSubtitle": "Book an appointment for a personal assessment, where we provide a detailed treatment plan.",
     "ctaBtn": "Book Specialist Consultation",
+    "veneerPricesTitle": "Dental veneers – Hollywood Smile",
+    "veneerComparison": "Composite or porcelain veneers? Compare your options.",
+    "veneerPriceNote": "The final treatment plan and the cost of any additional care are agreed during your consultation. Prices are in Hungarian forints (HUF).",
+    "veneerBeforeAfterAlt": "Smile before and after direct composite veneer treatment – Hollywood Smile",
     "cards": [
       { "id": "implantatum", "title": "Dental Implants", "description": "Lifelike tooth replacement with titanium implants, in as little as one day." },
       { "id": "fogszabalyozas", "title": "Orthodontics", "description": "Fixed and removable braces for children and adults." },
@@ -441,6 +448,9 @@
       { "id": "szajsebeszet", "title": "Oral Surgery", "description": "Wisdom tooth extraction and apical resection performed with expertise." },
       { "id": "allapotfelmeres", "title": "Dental Assessment", "description": "Detailed consultation, panoramic X-ray and personalised treatment plan." },
       { "id": "esztetikai-fogaszat", "title": "Aesthetic Dentistry", "description": "Ceramic veneers and invisible fillings for a perfect smile." },
+      { "id": "hollywood-mosoly", "title": "Hollywood Smile – your smile makeover", "description": "Personalised smile design: explore composite and porcelain veneers, compare your options and request a consultation.", "href": "/hollywood-mosoly" },
+      { "id": "direkt-hej", "title": "Direct composite veneers", "description": "Composite veneers shaped in the clinic with an individual shade and shape. Prices, treatment steps and appointment requests." },
+      { "id": "indirekt-hej", "title": "Indirect porcelain veneers", "description": "Premium ceramic veneers from our in-house laboratory. Now HUF 99,000 per tooth instead of HUF 120,000." },
       { "id": "foghuzas", "title": "Tooth Extraction", "description": "Gentle tooth removal with rapid recovery." },
       { "id": "gockutatas", "title": "Focal Infection Search", "description": "Detection of hidden inflammations and focal infections with modern 3D CT." },
       { "id": "gyerekfogaszat", "title": "Paediatric Dentistry", "description": "Baby tooth treatments and fissure sealing in a friendly, patient environment." }

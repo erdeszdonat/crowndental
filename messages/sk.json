@@ -58,7 +58,10 @@
       "aesthetic": "Estetická stomatológia",
       "assessment": "Stomatologické vyšetrenie",
       "focal": "Fokálna infekcia",
-      "labTech": "Zubnotechnické služby"
+      "labTech": "Zubnotechnické služby",
+      "directVeneer": "Priame kompozitné fazety",
+      "indirectVeneer": "Nepriame keramické fazety",
+      "hollywoodSmile": "Hollywood Smile"
     }
   },
 
@@ -431,6 +434,10 @@
     "ctaTitle": "Máte otázky ohľadom cien?",
     "ctaSubtitle": "Objednajte sa na osobné vyšetrenie, kde vám poskytneme podrobný liečebný plán.",
     "ctaBtn": "Objednať sa na konzultáciu",
+    "veneerPricesTitle": "Zubné fazety – Hollywood Smile",
+    "veneerComparison": "Kompozitné alebo keramické fazety? Porovnajte možnosti.",
+    "veneerPriceNote": "Konečný liečebný plán a cenu prípadných ďalších ošetrení dohodneme počas konzultácie. Ceny sú uvedené v maďarských forintoch (HUF).",
+    "veneerBeforeAfterAlt": "Úsmev pred ošetrením priamymi kompozitnými fazetami a po ňom – Hollywood Smile",
     "cards": [
       { "id": "implantatum", "title": "Zubné implantáty", "description": "Prirodzená náhrada zubu titánovým implantátom, niekedy za jediný deň." },
       { "id": "fogszabalyozas", "title": "Ortodontia", "description": "Fixné a snímateľné aparáty pre deti aj dospelých." },
@@ -441,6 +448,9 @@
       { "id": "szajsebeszet", "title": "Orálna chirurgia", "description": "Extrakcia múdrosti a resekcia koreňového hrotu s odbornou starostlivosťou." },
       { "id": "allapotfelmeres", "title": "Vstupné vyšetrenie", "description": "Podrobná konzultácia, panoramatický RTG a individuálny liečebný plán." },
       { "id": "esztetikai-fogaszat", "title": "Estetická stomatológia", "description": "Keramické fazety a neviditeľné výplne pre dokonalý úsmev." },
+      { "id": "hollywood-mosoly", "title": "Hollywood Smile – hollywoodsky úsmev", "description": "Individuálny návrh úsmevu: spoznajte kompozitné a keramické fazety, porovnajte možnosti a objednajte sa na konzultáciu.", "href": "/hollywood-mosoly" },
+      { "id": "direkt-hej", "title": "Priame kompozitné fazety", "description": "Kompozitné fazety modelované priamo v ambulancii s individuálnym odtieňom a tvarom. Ceny, priebeh ošetrenia a objednanie." },
+      { "id": "indirekt-hej", "title": "Nepriame keramické fazety", "description": "Prémiové keramické fazety z vlastného laboratória. Už teraz 99 000 HUF za zub namiesto 120 000 HUF." },
       { "id": "foghuzas", "title": "Extrakcia zuba", "description": "Šetrné odstránenie zuba s rýchlym hojením." },
       { "id": "gockutatas", "title": "Hľadanie ložísk nákazy", "description": "Odhalenie skrytých zápalov moderným 3D CT." },
       { "id": "gyerekfogaszat", "title": "Detská stomatológia", "description": "Ošetrenia mliečnych zubov a zapečatenie v priateľskom, trpezlivom prostredí." }

@@ -1,0 +1,62 @@
+.landing { background: white; }
+.hero.hero { padding-top: 8rem; padding-bottom: 2rem; }
+.hero h1 { font-size: clamp(2.4rem, 4.5vw, 3.8rem); max-width: 13ch; }
+.accent { display: block; color: var(--crown-blue); }
+.textLink { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 44px; color: var(--crown-blue); font-size: .88rem; font-weight: 650; text-decoration: underline; text-underline-offset: 4px; }
+.reassurance { margin-top: 1rem; font-size: .78rem; line-height: 1.65; color: var(--crown-muted); max-width: 29rem; }
+.photo.photo { aspect-ratio: 1179 / 1054; max-height: none; }
+.photo.photo img { object-fit: contain; }
+.caption { display: grid; gap: .25rem; padding-top: .9rem; font-size: .75rem; line-height: 1.6; color: var(--crown-muted); }
+.caption strong { font-size: .82rem; color: var(--crown-ink); }
+.facts { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; border-top: 1px solid var(--crown-line); padding-top: 1.5rem; margin-top: 2.5rem; }
+.facts li { display: flex; align-items: center; gap: .65rem; color: var(--crown-muted); font-size: .82rem; }
+.facts svg, .features svg { color: var(--crown-blue); flex-shrink: 0; }
+.offers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
+.offer { display: flex; flex-direction: column; align-items: stretch; padding: clamp(1.5rem, 3vw, 2.5rem); border: 1px solid var(--crown-line); border-radius: var(--crown-radius); background: white; }
+.offer:last-child { background: var(--crown-surface); }
+.offer h3 { font-size: clamp(1.4rem, 2.4vw, 1.85rem); line-height: 1.2; margin-bottom: 1rem; }
+.offerDescription { min-height: 5rem; line-height: 1.75; color: var(--crown-muted); font-size: .95rem; }
+.price { padding-block: 1.5rem; margin-top: 1.5rem; border-top: 1px solid var(--crown-line); border-bottom: 1px solid var(--crown-line); }
+.features { display: grid; gap: .7rem; margin-block: 1.5rem 2rem; font-size: .87rem; color: var(--crown-muted); line-height: 1.6; }
+.features li { display: flex; align-items: start; gap: .65rem; }
+.features svg { margin-top: .2rem; }
+.offerActions { display: grid; gap: .65rem; margin-top: auto; }
+.costNote { max-width: 61rem; margin: 1.5rem auto 0; font-size: .82rem; line-height: 1.8; color: var(--crown-muted); }
+.process { background: var(--crown-surface); border-block: 1px solid var(--crown-line); }
+.steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2.5rem; }
+.stepNumber { display: grid; place-items: center; width: 3rem; height: 3rem; border: 1px solid #bad2dd; border-radius: 50%; color: var(--crown-blue); font-size: .8rem; font-weight: 700; margin-bottom: 1.4rem; }
+.steps h3 { font-size: 1.3rem; line-height: 1.3; margin-bottom: .9rem; }
+.steps p { color: var(--crown-muted); line-height: 1.75; font-size: .94rem; }
+.booking { background: #e9f2f5; }
+.bookingGrid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); column-gap: clamp(2rem, 5vw, 5rem); row-gap: 2rem; align-items: start; grid-template-areas: "intro form" "help form"; grid-template-rows: auto 1fr; }
+.bookingCopy { grid-area: intro; }
+.bookingDetails { grid-area: help; }
+.bookingForm { grid-area: form; scroll-margin-top: 6rem; }
+.bookingCopy h2 { font-size: clamp(2rem, 3.5vw, 3rem); line-height: 1.13; margin-bottom: 1.5rem; }
+.bookingDetails h3 { font-size: 1.1rem; margin-bottom: 1.2rem; }
+.next { display: grid; gap: 1rem; font-size: .88rem; color: var(--crown-muted); line-height: 1.7; }
+.next li { display: flex; align-items: start; gap: .8rem; }
+.next span { color: var(--crown-blue); font-weight: 750; }
+.contact { border-top: 1px solid #c8dde5; margin-top: 2rem; padding-top: 1.5rem; font-size: .85rem; color: var(--crown-muted); }
+.contact > a:first-of-type { display: inline-flex; align-items: center; gap: .7rem; font-size: 1.4rem; font-weight: 650; color: var(--crown-ink); min-height: 48px; }
+.address { display: flex; align-items: start; gap: .7rem; margin-block: 1.3rem .6rem; line-height: 1.7; }
+.address svg { margin-top: .2rem; flex-shrink: 0; }
+.faqs { max-width: 49rem; margin-inline: auto; }
+.faqs details { padding: 1.35rem 0; border-bottom: 1px solid var(--crown-line); }
+.faqs details:first-child { border-top: 1px solid var(--crown-line); }
+.faqs summary { cursor: pointer; font-size: 1rem; font-weight: 650; line-height: 1.6; }
+.faqs details p { color: var(--crown-muted); padding-top: 1rem; line-height: 1.8; font-size: .94rem; }
+@media (max-width: 1023px) {
+  .bookingGrid { grid-template-columns: 1fr; grid-template-areas: "intro" "form" "help"; grid-template-rows: auto; max-width: 46rem; }
+  .bookingCopy { max-width: 37rem; }
+}
+@media (max-width: 767px) {
+  .hero.hero { padding-top: 6.5rem; }
+  .hero h1 { max-width: 16ch; }
+  .offers, .steps { grid-template-columns: 1fr; }
+  .facts { gap: .85rem; margin-top: 1.6rem; }
+  .facts li { width: 100%; }
+  .offerDescription { min-height: auto; }
+  .steps { gap: 2rem; }
+  .stepNumber { margin-bottom: 1rem; }
+}

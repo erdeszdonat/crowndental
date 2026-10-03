@@ -1,6 +1,8 @@
 'use client';
 
 import { useSyncExternalStore } from 'react';
+import { useLocale } from 'next-intl';
+import { getVeneerOfferCopy } from '@/lib/veneerI18n';
 import { getVeneerOffer, VENEER_CAMPAIGN } from '@/lib/veneers.mjs';
 
 export type VeneerSlug = 'direkt-hej' | 'indirekt-hej';
@@ -33,23 +35,26 @@ export function useVeneerOffer(slug: VeneerSlug, initialOffer: VeneerOfferState)
     : initialOffer;
 }
 
-export default function VeneerOffer({ slug, initialOffer, compact = false }: {
+export default function VeneerOffer({ slug, initialOffer, compact = false, locale }: {
   slug: VeneerSlug;
   initialOffer: VeneerOfferState;
   compact?: boolean;
+  locale?: string;
 }) {
+  const contextLocale = useLocale();
   const offer = useVeneerOffer(slug, initialOffer);
+  const copy = getVeneerOfferCopy(locale || contextLocale, slug, offer);
   return (
     <div>
-      <p className="mb-2 text-sm text-slate-600">{offer.isPromotion ? 'Kedvezményes ár / fog' : 'Ár / fog'}</p>
+      <p className="mb-2 text-sm text-slate-600">{copy.priceLabel}</p>
       <p className={compact ? 'text-xl font-bold text-sky-700' : 'text-3xl font-bold text-sky-700'}>
-        {offer.formattedPrice}<span className="text-sm font-normal"> / fog</span>
+        {copy.formattedPrice}<span className="text-sm font-normal"> / {copy.perTooth}</span>
       </p>
-      {offer.isPromotion && <p className="mt-1 text-sm text-slate-600"><s>{offer.formattedRegularPrice}</s> helyett</p>}
+      {offer.isPromotion && <p className="mt-1 text-sm text-slate-600">{copy.insteadPrefix}<s>{copy.formattedRegularPrice}</s>{copy.insteadSuffix}</p>}
       {offer.validThrough && <p className="mt-3 text-sm leading-relaxed text-slate-600">
-        Akciós kezelési időszak: {VENEER_CAMPAIGN.periodLabel}
+        {copy.periodLabel} {copy.period}
       </p>}
-      {!compact && <p className="mt-3 text-sm leading-relaxed text-slate-600">{offer.availabilityCopy}</p>}
+      {!compact && <p className="mt-3 text-sm leading-relaxed text-slate-600">{copy.availabilityCopy}</p>}
     </div>
   );
 }
