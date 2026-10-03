@@ -3,6 +3,7 @@ import SharedTreatmentCard from '@/components/TreatmentCard';
 import { getSiteCopy } from '@/lib/siteCopy';
 import { getVeneerOffer } from '@/lib/veneers.mjs';
 import { useVeneerOffer } from '@/components/VeneerOffer';
+import { getVeneerLabels, getVeneerOfferCopy, veneerPath } from '@/lib/veneerI18n';
 
 type VeneerOffer = ReturnType<typeof getVeneerOffer>;
 
@@ -34,8 +35,8 @@ function HeroSection() {
 
 function TreatmentCard({ card, imageUrl, imageIsBeforeAfter }: { card: { id: string; title: string; description: string; href?: string }; index: number; imageUrl?: string; imageIsBeforeAfter?: boolean }) {
   const locale = useLocale();
-  const p = locale === 'hu' ? '' : `/${locale}`;
-  return <SharedTreatmentCard href={card.href || `${p}/kezelesek/${card.id}`} title={card.title} description={card.description} imageUrl={imageUrl} imageAlt={imageIsBeforeAfter ? 'Mosoly a direkt héjkezelés előtt és után – Hollywood smile' : undefined} imageFit={imageIsBeforeAfter ? 'contain' : undefined} linkLabel={getSiteCopy(locale).details} />;
+  const t = useTranslations('treatments');
+  return <SharedTreatmentCard href={veneerPath(locale, card.href || `/kezelesek/${card.id}`)} title={card.title} description={card.description} imageUrl={imageUrl} imageAlt={imageIsBeforeAfter ? t('veneerBeforeAfterAlt') : undefined} imageFit={imageIsBeforeAfter ? 'contain' : undefined} linkLabel={getSiteCopy(locale).details} />;
 }
 
 function TreatmentCardsSection({ sanityImages }: { sanityImages: Record<string, string> }) {
@@ -84,10 +85,11 @@ function PriceListSection({ directOffer: initialDirectOffer }: { directOffer: Ve
   const showEur = locale === 'en' || locale === 'sk' || locale === 'de';
   // @ts-ignore
   const priceCategories = t.raw('priceCategories') as Array<{ id: string; title: string; items: Array<{ name: string; price: string; highlight?: boolean }> }>;
+  const labels = getVeneerLabels(locale);
   const veneerOffers = [
-    { slug: 'direkt-hej', title: 'Direkt kompozit héj', offer: directOffer },
-    { slug: 'indirekt-hej', title: 'Indirekt porcelán héj', offer: getVeneerOffer('indirekt-hej') },
-  ];
+    { slug: 'direkt-hej' as const, title: labels.directName, offer: directOffer },
+    { slug: 'indirekt-hej' as const, title: labels.indirectName, offer: getVeneerOffer('indirekt-hej') },
+  ].map((item) => ({ ...item, copy: getVeneerOfferCopy(locale, item.slug, item.offer) }));
   return (
     <section id="arlista" className="py-16 sm:py-24 bg-gray-50 relative overflow-hidden">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-sky-100/50 rounded-full blur-[100px]" />
@@ -102,28 +104,26 @@ function PriceListSection({ directOffer: initialDirectOffer }: { directOffer: Ve
         </div>
 
         <div className="max-w-4xl mx-auto space-y-8 sm:space-y-12">
-          {locale === 'hu' && (
-            <div className="bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl shadow-gray-200/50 border border-gray-100">
-              <div className="bg-gradient-to-r from-gray-800 to-gray-900 px-6 sm:px-8 py-5 sm:py-6">
-                <h3 className="text-xl sm:text-2xl font-bold text-white">Fogászati héjak – Hollywood smile</h3>
-              </div>
-              <div className="divide-y divide-gray-100">
-                {veneerOffers.map(({ slug, title, offer }) => (
-                  <div key={slug} className="flex flex-col sm:flex-row sm:items-center justify-between px-6 sm:px-8 py-4 sm:py-5 bg-sky-50">
-                    <div className="pr-4 mb-2 sm:mb-0">
-                      <Link href={`/kezelesek/${slug}`} prefetch={false} className="text-base sm:text-lg font-semibold text-gray-900 underline underline-offset-4">{title}</Link>
-                      <p className="text-sm text-gray-600 mt-1">{offer.availabilityCopy}</p>
-                    </div>
-                    <div className="flex flex-col items-end shrink-0">
-                      <strong className="text-lg sm:text-xl text-sky-700 whitespace-nowrap">{offer.formattedPrice} / fog</strong>
-                      {offer.isPromotion && <span className="text-sm text-gray-600"><s>{offer.formattedRegularPrice}</s> helyett</span>}
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <p className="px-6 sm:px-8 py-4 text-sm text-gray-600"><Link href="/hollywood-mosoly" prefetch={false} className="underline underline-offset-4">Direkt vagy indirekt héj? A lehetőségek összehasonlítása.</Link> A végleges kezelési tervet és az esetleg szükséges további ellátás költségét konzultáción egyeztetjük.</p>
+          <div className="bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl shadow-gray-200/50 border border-gray-100">
+            <div className="bg-gradient-to-r from-gray-800 to-gray-900 px-6 sm:px-8 py-5 sm:py-6">
+              <h3 className="text-xl sm:text-2xl font-bold text-white">{t('veneerPricesTitle')}</h3>
             </div>
-          )}
+            <div className="divide-y divide-gray-100">
+              {veneerOffers.map(({ slug, title, offer, copy }) => (
+                <div key={slug} className="flex flex-col sm:flex-row sm:items-center justify-between px-6 sm:px-8 py-4 sm:py-5 bg-sky-50">
+                  <div className="pr-4 mb-2 sm:mb-0">
+                    <Link href={veneerPath(locale, `/kezelesek/${slug}`)} prefetch={false} className="text-base sm:text-lg font-semibold text-gray-900 underline underline-offset-4">{title}</Link>
+                    <p className="text-sm text-gray-600 mt-1">{copy.availabilityCopy}</p>
+                  </div>
+                  <div className="flex flex-col items-end shrink-0">
+                    <strong className="text-lg sm:text-xl text-sky-700 whitespace-nowrap">{copy.formattedPrice} / {copy.perTooth}</strong>
+                    {offer.isPromotion && <span className="text-sm text-gray-600">{copy.insteadPrefix}<s>{copy.formattedRegularPrice}</s>{copy.insteadSuffix}</span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <p className="px-6 sm:px-8 py-4 text-sm text-gray-600"><Link href={veneerPath(locale, "/hollywood-mosoly")} prefetch={false} className="underline underline-offset-4">{t('veneerComparison')}</Link> {t('veneerPriceNote')}</p>
+          </div>
           {priceCategories.map((category, catIndex) => (
             <motion.div key={category.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ delay: catIndex * 0.1 }} className="bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl shadow-gray-200/50 border border-gray-100">
               <div className="bg-gradient-to-r from-gray-800 to-gray-900 px-6 sm:px-8 py-5 sm:py-6">

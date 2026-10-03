@@ -3,16 +3,18 @@
 import React, { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { getSiteCopy } from '@/lib/siteCopy';
-import { ANALYTICS_READY_EVENT, trackSiteEvent } from '@/lib/siteAnalytics';
+import { ANALYTICS_READY_EVENT, rememberBookingSource, trackSiteEvent } from '@/lib/siteAnalytics';
 import { ArrowRight, ArrowLeft, Phone, Loader2 } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
 import { BUDAPEST_BOOKING_OPEN_LABELS, isBudapestBookingAvailable, isBudapestCity } from '@/lib/bookingAvailability';
 import GoogleReviewsCta from '@/components/GoogleReviewsCta';
-import { getVeneerOffer, VENEERS } from '@/lib/veneers.mjs';
-import { useVeneerOffer } from '@/components/VeneerOffer';
+import { getVeneerOffer } from '@/lib/veneers.mjs';
+import { getVeneerLabels } from '@/lib/veneerI18n';
+import VeneerOfferCard from '@/components/VeneerOffer';
 
 type VeneerOffer = ReturnType<typeof getVeneerOffer>;
+type BookingTreatmentSlug = 'direkt-hej' | 'indirekt-hej' | 'hollywood-mosoly';
 
 const BOOKING_SUCCESS_STORAGE_KEY = 'crown_booking_success';
 const BOOKING_SUCCESS_CONTACT_KEY = 'crown_booking_contact';
@@ -74,27 +76,54 @@ function createIdempotencyKey(prefix: string) {
   return `${prefix}-${value}`;
 }
 
-const veneerBookingLabels: Record<string, string> = {
-  'direkt-hej': VENEERS['direkt-hej'].name,
-  'indirekt-hej': VENEERS['indirekt-hej'].name,
+function veneerBookingLabels(locale: string): Record<BookingTreatmentSlug, string> {
+  const labels = getVeneerLabels(locale);
+  return {
+    'direkt-hej': labels.directName,
+    'indirekt-hej': labels.indirectName,
+    'hollywood-mosoly': labels.hollywoodName,
+  };
+}
+
+const veneerBookingNotes: Record<SupportedLocale, { confirmation: string; consultation: string }> = {
+  hu: {
+    confirmation: 'A pontos időpontot és a személyre szabott kezelési tervet munkatársunk egyezteti Önnel.',
+    consultation: 'A konzultáción átbeszéljük a mosollyal kapcsolatos elképzeléseit, és megvizsgáljuk, hogy a direkt vagy a porcelán héj megfelelő-e Önnek.',
+  },
+  en: {
+    confirmation: 'Our team will confirm your appointment and discuss your personalised treatment plan with you.',
+    consultation: 'At your consultation, we will discuss your smile goals and assess whether composite or porcelain veneers are suitable for you.',
+  },
+  de: {
+    confirmation: 'Unser Team stimmt den genauen Termin und Ihren individuellen Behandlungsplan mit Ihnen ab.',
+    consultation: 'Bei der Beratung besprechen wir Ihre Wünsche für Ihr Lächeln und prüfen, ob Komposit- oder Keramik-Veneers für Sie geeignet sind.',
+  },
+  sk: {
+    confirmation: 'Náš tím s vami dohodne presný termín a individuálny plán ošetrenia.',
+    consultation: 'Na konzultácii preberieme vaše predstavy o úsmeve a posúdime, či sú pre vás vhodné kompozitné alebo keramické fazety.',
+  },
 };
 
 // Only this invisible helper reads URL data; the complete form stays prerendered.
-function TreatmentPrefill({ onSelect }: { onSelect: (treatment: string) => void }) {
+function TreatmentPrefill({ locale, onSelect }: { locale: string; onSelect: (treatment: string) => void }) {
   const searchParams = useSearchParams();
   const slug = searchParams.get('kezeles');
-  const treatment = slug === 'direkt-hej' || slug === 'indirekt-hej' ? veneerBookingLabels[slug] : undefined;
+  const treatment = slug === 'direkt-hej' || slug === 'indirekt-hej' || slug === 'hollywood-mosoly'
+    ? veneerBookingLabels(locale)[slug] : undefined;
   useEffect(() => {
     if (treatment) onSelect(treatment);
   }, [treatment, onSelect]);
   return null;
 }
 
-function BookingForm({ directOffer: initialDirectOffer }: { directOffer: VeneerOffer }) {
-  const directOffer = useVeneerOffer('direkt-hej', initialDirectOffer);
+export function BookingForm({ directOffer, initialTreatmentSlug }: {
+  directOffer: VeneerOffer;
+  initialTreatmentSlug?: BookingTreatmentSlug;
+}) {
   const t = useTranslations('booking');
   const locale = useLocale();
   const safeLocale = normalizeLocale(locale);
+  const veneerLabels = veneerBookingLabels(safeLocale);
   const router = useRouter();
   const p = safeLocale === 'hu' ? '' : `/${safeLocale}`;
   const [step, setStep] = useState<1 | 2>(1);
@@ -102,12 +131,14 @@ function BookingForm({ directOffer: initialDirectOffer }: { directOffer: VeneerO
   const busyRef = useRef(false);
   const startedRef = useRef(false);
   const viewedRef = useRef(false);
+  const formVisibleRef = useRef(false);
+  const panelRef = useRef<HTMLDivElement>(null);
   const measuredStepRef = useRef<number | null>(null);
   const previousStepRef = useRef(step);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [formData, setFormData] = useState({ city:'Esztergom', name:'', nickname:'', email:'', phone:'', treatment:'' });
+  const [formData, setFormData] = useState({ city:'Esztergom', name:'', nickname:'', email:'', phone:'', treatment: initialTreatmentSlug ? veneerLabels[initialTreatmentSlug] : '' });
   const [otherNote, setOtherNote] = useState('');
   const [marketingConsent, setMarketingConsent] = useState(false);
   const idempotencyKeyRef = useRef<string | null>(null);
@@ -126,16 +157,27 @@ function BookingForm({ directOffer: initialDirectOffer }: { directOffer: VeneerO
   const otherNotePlaceholder = otherNotePlaceholders[safeLocale] ?? otherNotePlaceholders.hu;
   const feedback = bookingFeedback[safeLocale];
 
-  const treatments = t.raw('treatments') as string[];
-  const otherLabel = treatments[treatments.length - 1];
+  const translatedTreatments = t.raw('treatments') as string[];
+  const otherLabel = translatedTreatments[translatedTreatments.length - 1];
+  const existingTreatments = translatedTreatments.slice(0, -1)
+    .map(treatment => treatment === 'Direkt kompozit héj' ? veneerLabels['direkt-hej'] : treatment);
+  const treatments = [...new Set([...existingTreatments, ...Object.values(veneerLabels)]), otherLabel];
   const isOther = formData.treatment === otherLabel;
 
 
   useEffect(() => {
     const measure = () => {
+      if (!formVisibleRef.current) return;
+      rememberBookingSource(window.location.pathname);
       if (!viewedRef.current) viewedRef.current = trackSiteEvent('booking_form_view', safeLocale, { step });
       if (measuredStepRef.current !== step && trackSiteEvent('booking_step_view', safeLocale, { step })) measuredStepRef.current = step;
     };
+    const observer = typeof IntersectionObserver === 'undefined' ? null : new IntersectionObserver(entries => {
+      formVisibleRef.current = entries.some(entry => entry.isIntersecting);
+      measure();
+    });
+    if (observer && panelRef.current) observer.observe(panelRef.current);
+    else formVisibleRef.current = true;
     measure();
     window.addEventListener(ANALYTICS_READY_EVENT, measure);
     if (previousStepRef.current !== step) {
@@ -143,11 +185,17 @@ function BookingForm({ directOffer: initialDirectOffer }: { directOffer: VeneerO
       headingRef.current?.closest('.crown-booking-panel')?.scrollIntoView({ block: 'start', behavior: 'auto' });
       previousStepRef.current = step;
     }
-    return () => window.removeEventListener(ANALYTICS_READY_EVENT, measure);
+    return () => {
+      observer?.disconnect();
+      window.removeEventListener(ANALYTICS_READY_EVENT, measure);
+    };
   }, [safeLocale, step]);
 
   const markStarted = () => {
-    if (!startedRef.current) startedRef.current = trackSiteEvent('booking_start', safeLocale, { step });
+    if (!startedRef.current) {
+      rememberBookingSource(window.location.pathname);
+      startedRef.current = trackSiteEvent('booking_start', safeLocale, { step });
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -222,8 +270,8 @@ function BookingForm({ directOffer: initialDirectOffer }: { directOffer: VeneerO
   };
 
   return (
-    <div className="crown-booking-panel">
-      {safeLocale === 'hu' && <Suspense fallback={null}><TreatmentPrefill onSelect={prefillTreatment} /></Suspense>}
+    <div ref={panelRef} className="crown-booking-panel">
+      <Suspense fallback={null}><TreatmentPrefill locale={safeLocale} onSelect={prefillTreatment} /></Suspense>
       <ol className="crown-booking-progress" aria-label={t('title')}>
         {copy.steps.map((label, i) => <li key={label} aria-current={step === i + 1 ? 'step' : undefined}><span>{i + 1}</span>{label}</li>)}
       </ol>
@@ -275,11 +323,14 @@ function BookingForm({ directOffer: initialDirectOffer }: { directOffer: VeneerO
                   {treatments.map(treatment => <option key={treatment} value={treatment}>{treatment}</option>)}
                 </select>
               </div>
-              {safeLocale === 'hu' && formData.treatment === veneerBookingLabels['direkt-hej'] && (
-                <p className="crown-booking-note">{directOffer.availabilityCopy} Ár: {directOffer.formattedPrice}/fog{directOffer.isPromotion ? `, ${directOffer.formattedRegularPrice} helyett` : ''}. A pontos időpontot és a kezelési tervet munkatársunk egyezteti Önnel.</p>
-              )}
-              {safeLocale === 'hu' && formData.treatment === veneerBookingLabels['indirekt-hej'] && (
-                <p className="crown-booking-note">Saját laborban készülő indirekt porcelán héj: már most 99.000 Ft/fog, 120.000 Ft helyett. {getVeneerOffer('indirekt-hej').availabilityCopy} A pontos időpontot és a kezelési tervet munkatársunk egyezteti Önnel.</p>
+              {(['direkt-hej', 'indirekt-hej'] as const).map(slug => formData.treatment === veneerLabels[slug] && (
+                <div key={slug} className="space-y-3 rounded-xl border border-sky-100 bg-sky-50 p-4">
+                  <VeneerOfferCard slug={slug} initialOffer={slug === 'direkt-hej' ? directOffer : getVeneerOffer(slug)} locale={safeLocale} compact />
+                  <p className="crown-booking-note">{veneerBookingNotes[safeLocale].confirmation}</p>
+                </div>
+              ))}
+              {formData.treatment === veneerLabels['hollywood-mosoly'] && (
+                <p className="crown-booking-note">{veneerBookingNotes[safeLocale].consultation} {veneerBookingNotes[safeLocale].confirmation}</p>
               )}
               {isOther && <div>
                 <label htmlFor="booking-note" className="crown-field-label">{copy.optional}</label>

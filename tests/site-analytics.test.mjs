@@ -106,6 +106,38 @@ test('unknown paths and IDs cannot leak through route parameters', () => {
   assert.equal(analytics.measurementPage('/sk/blog/anything-sensitive?x=private'), 'blog');
 });
 
+test('veneer campaigns retain their public page attribution in all four locales', () => {
+  for (const locale of ['hu', 'en', 'de', 'sk']) {
+    for (const page of ['hollywood-mosoly', 'kezelesek/direkt-hej', 'kezelesek/indirekt-hej']) {
+      const e = environment(); e.grant();
+      const pathname = `${locale === 'hu' ? '' : `/${locale}`}/${page}`;
+      assert.equal(e.analytics.measurementPage(pathname), page);
+      e.window.location.pathname = pathname;
+      e.analytics.rememberBookingSource(`${pathname}?utm_campaign=private-value#konzultacio`);
+      e.analytics.trackSiteEvent('booking_cta_click', locale, { placement: 'landing_hero' });
+      const click = e.window.dataLayer[0][2];
+      assert.equal(click.source_page, page);
+      assert.equal(click.booking_source, page);
+      assert.equal(click.cta_location, 'landing_hero');
+      // The embedded form attributes a view to its landing page.
+      e.analytics.rememberBookingSource(e.window.location.pathname);
+      e.analytics.trackSiteEvent('booking_form_view', locale, { step: 1 });
+      assert.equal(e.window.dataLayer.at(-1)[2].source_page, page);
+      assert.equal(e.window.dataLayer.at(-1)[2].booking_source, page);
+      // The standalone form also calls rememberBookingSource on view/start;
+      // that call must preserve the originating treatment or campaign page.
+      e.window.location.pathname = `${locale === 'hu' ? '' : `/${locale}`}/idopont`;
+      e.analytics.rememberBookingSource(e.window.location.pathname);
+      e.analytics.trackSiteEvent('booking_form_view', locale, { step: 1 });
+      assert.equal(e.window.dataLayer.at(-1)[2].source_page, 'booking');
+      assert.equal(e.window.dataLayer.at(-1)[2].booking_source, page);
+      e.analytics.trackSiteEvent('booking_success', locale, { step: 2 });
+      assert.equal(e.window.dataLayer.at(-1)[2].booking_source, page);
+      assert.equal(JSON.stringify([...e.data.values()]).includes('private'), false);
+    }
+  }
+});
+
 test('attribution expires after thirty minutes', () => {
   const e = environment(); e.grant();
   e.storage.setItem('crown_booking_source_v1', JSON.stringify({ page: 'home', at: Date.now() - 1800001 }));

@@ -56,7 +56,10 @@
       "aesthetic": "Ästhetische Zahnheilkunde",
       "assessment": "Zahnärztliche Beurteilung",
       "focal": "Zahnärztliche Herdsuche",
-      "labTech": "Dentallabor-Leistungen"
+      "labTech": "Dentallabor-Leistungen",
+      "directVeneer": "Direkte Komposit-Veneers",
+      "indirectVeneer": "Indirekte Keramik-Veneers",
+      "hollywoodSmile": "Hollywood Smile"
     }
   },
   "home": {
@@ -560,6 +563,22 @@
         "description": "Keramikveneers und unsichtbare Füllungen für ein perfektes Lächeln."
       },
       {
+        "id": "hollywood-mosoly",
+        "title": "Hollywood Smile – Ihr neues Lächeln",
+        "description": "Individuelle Lächelplanung: Entdecken Sie Komposit- und Keramik-Veneers, vergleichen Sie Ihre Möglichkeiten und vereinbaren Sie eine Beratung.",
+        "href": "/hollywood-mosoly"
+      },
+      {
+        "id": "direkt-hej",
+        "title": "Direkte Komposit-Veneers",
+        "description": "Direkt in der Praxis modellierte Komposit-Veneers mit individueller Zahnfarbe und Form. Preise, Behandlungsschritte und Terminanfrage."
+      },
+      {
+        "id": "indirekt-hej",
+        "title": "Indirekte Keramik-Veneers",
+        "description": "Hochwertige Keramik-Veneers aus unserem eigenen Labor. Jetzt 99.000 HUF pro Zahn statt 120.000 HUF."
+      },
+      {
         "id": "foghuzas",
         "title": "Zahnextraktion",
         "description": "Sanfte Zahnentfernung mit schneller Genesung."
@@ -761,7 +780,11 @@
           }
         ]
       }
-    ]
+    ],
+    "veneerPricesTitle": "Zahnveneers – Hollywood Smile",
+    "veneerComparison": "Komposit- oder Keramik-Veneers? Vergleichen Sie Ihre Möglichkeiten.",
+    "veneerPriceNote": "Den endgültigen Behandlungsplan und die Kosten möglicher weiterer Behandlungen besprechen wir bei der Beratung. Die Preise sind in ungarischen Forint (HUF) angegeben.",
+    "veneerBeforeAfterAlt": "Lächeln vor und nach der Behandlung mit direkten Komposit-Veneers – Hollywood Smile"
   },
   "langSwitch": {
     "hu": "Magyar",

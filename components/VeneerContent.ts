@@ -1,3 +1,5 @@
+import { normalizeVeneerLocale, type VeneerLocale } from '@/lib/veneerI18n';
+
 export type VeneerSlug = 'direkt-hej' | 'indirekt-hej';
 export type VeneerFaq = { question: string; answer: string };
 
@@ -70,3 +72,274 @@ export const hollywoodFaqs: VeneerFaq[] = [
   { question: 'Kötelező minden látható fogra héjat tenni?', answer: 'Nem kezelési csomagból indulunk ki. A konzultáció célja annak tisztázása, hogy Ön milyen változást szeretne, és ehhez milyen kezelés indokolt.' },
   { question: 'Hogyan kérhetek időpontot?', answer: 'Válassza ki a direkt vagy a porcelán héjat, és küldje el a hozzá tartozó időpontkérő űrlapot. Ha még nem döntött, kérjen általános konzultációt. Kollégánk egyezteti a részleteket.' },
 ];
+
+type VeneerTreatmentContent = Omit<(typeof veneerContent)['direkt-hej'], 'otherSlug'> & { otherSlug: VeneerSlug };
+
+const translatedVeneerContent: Record<Exclude<VeneerLocale, 'hu'>, Record<VeneerSlug, VeneerTreatmentContent>> = {
+  en: {
+    'direkt-hej': {
+      title: 'Composite veneers in Esztergom – prices | Crown Dental',
+      description: 'Direct composite veneers in Esztergom: prices, treatment steps and consultation requests. Compare composite veneers with porcelain veneers from our own laboratory.',
+      h1: 'Direct composite veneers in Esztergom',
+      eyebrow: 'Composite veneers · Crown Dental',
+      lead: 'Would you like to change the colour or shape of your smile? Direct composite veneers are shaped on the tooth, with the shade and contour planned around your goals. Start with a personal consultation.',
+      introTitle: 'What is a direct composite veneer?',
+      intro: '“Direct” describes how the veneer is made: the dentist shapes the composite material directly on the tooth. Its shade and contour are matched to the surrounding teeth and your preferences. A porcelain veneer, by contrast, is made separately in a dental laboratory.',
+      considerationsTitle: 'What should you consider?',
+      considerations: [
+        { title: 'The change you want', body: 'Bring your questions: are you concerned about one tooth, or would you like to change your overall smile? The number of teeth involved is determined by your individual treatment plan.' },
+        { title: 'Ongoing care', body: 'Composite can generally be repaired more easily, but may be more prone to wear and staining than porcelain. You should also allow for future polishing and check-ups.' },
+        { title: 'The overall cost', body: 'The displayed price covers veneer treatment for one tooth. The number of teeth and any preparatory treatment fees are discussed in your personal treatment plan.' },
+      ],
+      steps: [
+        { title: 'Consultation and planning', body: 'We discuss your goals, tooth shade and shape, and which teeth may be suitable for treatment.' },
+        { title: 'Shaping at the clinic', body: 'Following the necessary preparation, the dentist builds up the composite layer and hardens it with a curing light.' },
+        { title: 'Finishing and review', body: 'After polishing the surface and checking your bite, we discuss your next review appointment.' },
+      ],
+      faqs: [
+        { question: 'How much does a composite veneer cost?', answer: 'The price section shows the current price per tooth and the exact promotional treatment period. For several teeth, the veneer fee is multiplied by the number of teeth. The overall cost is confirmed after your dental assessment.' },
+        { question: 'Is a composite veneer the same as a porcelain veneer?', answer: 'No. At Crown Dental, a direct veneer is made from composite at the clinic. An indirect veneer is made from porcelain in our own dental laboratory.' },
+        { question: 'When can I request an appointment?', answer: 'You can submit the appointment request form at any time. Places for the November–December composite veneer promotion are limited. We will contact you to confirm the appointment.' },
+        { question: 'How many teeth need veneers for an attractive smile?', answer: 'There is no single number that suits everyone. During the consultation, we discuss which teeth would benefit from a change and the result you would like to achieve.' },
+        { question: 'Can I request a Hollywood smile consultation for composite veneers?', answer: 'Yes. Hollywood smile planning starts with the appearance you would like, followed by a discussion of which treatment options are suitable for you.' },
+      ],
+      otherTitle: 'Looking for porcelain veneers?',
+      otherDescription: 'Explore the indirect ceramic veneers made in our own laboratory and their separate pricing.',
+      otherSlug: 'indirekt-hej',
+    },
+    'indirekt-hej': {
+      title: 'Porcelain veneers in Esztergom – 99,000 HUF | Crown Dental',
+      description: 'Porcelain veneers from our in-house laboratory in Esztergom. Now 99,000 HUF per tooth instead of 120,000 HUF. Premium ceramic and personal consultation.',
+      h1: 'Porcelain veneers from our own laboratory',
+      eyebrow: 'Premium ceramic · Esztergom',
+      lead: 'Individually designed porcelain veneers from Crown Dental’s own dental laboratory. Dental planning and laboratory work come together to create the shade and shape that suit your preferences. Appointment requests are already open.',
+      introTitle: 'What is an indirect porcelain veneer?',
+      intro: 'A porcelain veneer is a thin ceramic covering for the visible surface of a tooth. “Indirect” means that the dental laboratory makes the veneer before the dentist bonds it to the tooth. At Crown Dental, this work takes place in our own laboratory using premium ceramic.',
+      considerationsTitle: 'Our own laboratory, your personal smile plan',
+      considerations: [
+        { title: 'An agreed shade and shape', body: 'Your preferences are one starting point when planning your smile. During the consultation, we can discuss both a subtle appearance and a brighter shade.' },
+        { title: 'Made in the laboratory', body: 'The technical work takes place in our own dental laboratory. We check the fit and appearance of the finished veneer before bonding it.' },
+        { title: 'Clear pricing per tooth', body: 'The displayed porcelain veneer price is for one tooth. We discuss the number of teeth, preparation and any further treatment with you in person.' },
+      ],
+      steps: [
+        { title: 'Personal smile planning', body: 'During the consultation, we discuss your goals, preferred shade and what the treatment involves.' },
+        { title: 'Preparation and laboratory work', body: 'After the necessary preparation and impressions, our dental laboratory makes your individual porcelain veneers.' },
+        { title: 'Try-in and bonding', body: 'The dentist checks the fit and shape before bonding the veneers. Your treatment also includes a review plan and personal care advice.' },
+      ],
+      faqs: [
+        { question: 'How much do porcelain veneers cost at Crown Dental?', answer: 'The current price is 99,000 HUF per tooth instead of 120,000 HUF. This is the veneer price for one tooth; any additional treatment required is priced as part of your individual treatment plan.' },
+        { question: 'Can I request a porcelain veneer appointment now?', answer: 'Yes, you can already request a porcelain veneer consultation at the current special price. After you send the form, we will contact you to arrange and confirm an appointment.' },
+        { question: 'Where are the indirect veneers made?', answer: 'In Crown Dental’s own dental laboratory, following the plan agreed with the dentist. The clinic is at Petőfi Sándor utca 11, Esztergom, Hungary.' },
+        { question: 'Does the tooth need to be prepared for a porcelain veneer?', answer: 'The preparation required can differ from tooth to tooth. At the consultation, we explain how much tooth structure can be preserved and what preparation is appropriate. We do not promise no-preparation treatment without examining your teeth.' },
+        { question: 'Are porcelain veneers used for a Hollywood smile?', answer: 'Porcelain veneers can be one option when planning a Hollywood smile. The term describes the desired appearance; the material and number of teeth are determined by your individual treatment plan.' },
+      ],
+      otherTitle: 'Would you like to compare composite veneers?',
+      otherDescription: 'See how composite veneers are shaped at the clinic, what they cost and how to request an appointment.',
+      otherSlug: 'direkt-hej',
+    },
+  },
+  de: {
+    'direkt-hej': {
+      title: 'Komposit-Veneers in Esztergom – Preise | Crown Dental',
+      description: 'Direkte Komposit-Veneers in Esztergom: Preise, Behandlungsablauf und Terminanfrage. Vergleichen Sie Komposit mit Keramik-Veneers aus unserem eigenen Labor.',
+      h1: 'Direkte Komposit-Veneers in Esztergom',
+      eyebrow: 'Komposit-Veneers · Crown Dental',
+      lead: 'Möchten Sie die Farbe oder Form Ihres Lächelns verändern? Direkte Komposit-Veneers werden auf dem Zahn modelliert. Farbton und Zahnform stimmen wir auf Ihre Wünsche ab. Beginnen Sie mit einer persönlichen Beratung.',
+      introTitle: 'Was sind direkte Komposit-Veneers?',
+      intro: '„Direkt“ beschreibt die Herstellung: Der Zahnarzt modelliert das Kompositmaterial unmittelbar auf dem Zahn. Farbton und Kontur werden auf die Nachbarzähne und Ihre Vorstellungen abgestimmt. Ein Keramik-Veneer wird dagegen separat im Dentallabor angefertigt.',
+      considerationsTitle: 'Was sollten Sie vorab berücksichtigen?',
+      considerations: [
+        { title: 'Ihre gewünschte Veränderung', body: 'Bringen Sie Ihre Fragen mit: Stört Sie die Form eines einzelnen Zahns oder möchten Sie Ihr gesamtes Lächeln verändern? Die Anzahl der zu behandelnden Zähne ergibt sich aus Ihrem individuellen Behandlungsplan.' },
+        { title: 'Pflege und Nachsorge', body: 'Komposit lässt sich in der Regel leichter reparieren, kann jedoch anfälliger für Abnutzung und Verfärbungen sein als Keramik. Auch spätere Polituren und Kontrolltermine sollten eingeplant werden.' },
+        { title: 'Die Gesamtkosten', body: 'Der angegebene Preis gilt für die Veneer-Behandlung eines Zahns. Die Anzahl der Zähne und Kosten eventueller Vorbehandlungen besprechen wir im persönlichen Behandlungsplan.' },
+      ],
+      steps: [
+        { title: 'Beratung und Planung', body: 'Wir besprechen Ihre Vorstellungen, Zahnfarbe und Zahnform sowie die Zähne, die für eine Behandlung infrage kommen.' },
+        { title: 'Modellierung in der Praxis', body: 'Nach der erforderlichen Vorbereitung baut der Zahnarzt die Kompositschicht auf und härtet sie mit Licht aus.' },
+        { title: 'Feinarbeit und Kontrolle', body: 'Nach der Politur der Oberfläche und der Bisskontrolle besprechen wir den nächsten Kontrolltermin.' },
+      ],
+      faqs: [
+        { question: 'Was kostet ein Komposit-Veneer?', answer: 'Im Preisabschnitt finden Sie den aktuellen Preis pro Zahn und den genauen Aktionszeitraum für die Behandlung. Bei mehreren Zähnen richtet sich der Veneer-Preis nach deren Anzahl. Die Gesamtkosten lassen sich nach der Untersuchung festlegen.' },
+        { question: 'Sind Komposit-Veneers dasselbe wie Keramik-Veneers?', answer: 'Nein. Bei Crown Dental wird die direkte Variante aus Komposit in der Praxis hergestellt. Die indirekte Variante wird aus Keramik in unserem eigenen Dentallabor angefertigt.' },
+        { question: 'Wann kann ich einen Termin anfragen?', answer: 'Sie können das Anfrageformular jederzeit senden. Für die Komposit-Veneer-Aktion im November und Dezember stehen nur begrenzt Termine zur Verfügung. Wir setzen uns zur Terminbestätigung mit Ihnen in Verbindung.' },
+        { question: 'Wie viele Zähne benötigen Veneers für ein schönes Lächeln?', answer: 'Es gibt keine für alle passende Anzahl. In der Beratung klären wir, bei welchen Zähnen eine Veränderung sinnvoll ist und welches Ergebnis Sie sich wünschen.' },
+        { question: 'Kann ich eine Hollywood-Smile-Beratung für Komposit-Veneers anfragen?', answer: 'Ja. Bei der Planung Ihres Hollywood Smile gehen wir von Ihren ästhetischen Vorstellungen aus und besprechen anschließend, welche Behandlungsmöglichkeiten für Sie geeignet sind.' },
+      ],
+      otherTitle: 'Interessieren Sie sich für Keramik-Veneers?',
+      otherDescription: 'Lernen Sie die indirekten Keramik-Veneers aus unserem eigenen Labor und deren Preise kennen.',
+      otherSlug: 'indirekt-hej',
+    },
+    'indirekt-hej': {
+      title: 'Keramik-Veneers in Esztergom – 99.000 HUF | Crown Dental',
+      description: 'Keramik-Veneers aus unserem eigenen Dentallabor in Esztergom. Jetzt 99.000 HUF pro Zahn statt 120.000 HUF. Hochwertige Keramik und persönliche Beratung.',
+      h1: 'Keramik-Veneers aus unserem eigenen Labor',
+      eyebrow: 'Hochwertige Keramik · Esztergom',
+      lead: 'Individuell geplante Keramik-Veneers aus dem eigenen Dentallabor von Crown Dental. Zahnärztliche Planung und Laborarbeit greifen ineinander, um Farbe und Form auf Ihre Vorstellungen abzustimmen. Sie können bereits einen Termin anfragen.',
+      introTitle: 'Was sind indirekte Keramik-Veneers?',
+      intro: 'Ein Keramik-Veneer ist eine dünne Verblendschale für die sichtbare Zahnoberfläche. „Indirekt“ bedeutet, dass das Dentallabor das Veneer herstellt und der Zahnarzt es anschließend befestigt. Bei Crown Dental erfolgt diese Arbeit in unserem eigenen Labor mit hochwertiger Keramik.',
+      considerationsTitle: 'Eigenes Labor, persönlicher Plan für Ihr Lächeln',
+      considerations: [
+        { title: 'Abgestimmter Farbton und Form', body: 'Ihre Wünsche bilden einen Ausgangspunkt der Planung. Bei der Beratung können wir sowohl eine dezente Gestaltung als auch hellere Farbtöne besprechen.' },
+        { title: 'Im Labor angefertigte Veneers', body: 'Die zahntechnische Arbeit findet in unserem eigenen Labor statt. Vor der Befestigung prüfen wir die Passform und das Aussehen des fertigen Veneers.' },
+        { title: 'Transparenter Preis pro Zahn', body: 'Der angegebene Preis für ein Keramik-Veneer gilt für einen Zahn. Die Zahnanzahl, die Vorbereitung und mögliche weitere Behandlungen besprechen wir persönlich mit Ihnen.' },
+      ],
+      steps: [
+        { title: 'Individuelle Planung Ihres Lächelns', body: 'Bei der Beratung besprechen wir Ihre Ziele, den gewünschten Farbton und die Voraussetzungen für die Behandlung.' },
+        { title: 'Vorbereitung und Laborarbeit', body: 'Nach der notwendigen Vorbereitung und Abformung fertigt unser Dentallabor Ihre individuellen Keramik-Veneers an.' },
+        { title: 'Anprobe und Befestigung', body: 'Der Zahnarzt kontrolliert Passform und Form und befestigt anschließend die Veneers. Kontrolltermine und persönliche Pflegehinweise ergänzen die Behandlung.' },
+      ],
+      faqs: [
+        { question: 'Was kosten Keramik-Veneers bei Crown Dental?', answer: 'Der aktuelle Preis beträgt 99.000 HUF pro Zahn statt 120.000 HUF. Dies ist der Veneer-Preis für einen Zahn. Die Kosten eventuell erforderlicher weiterer Behandlungen werden im individuellen Behandlungsplan aufgeführt.' },
+        { question: 'Kann ich schon jetzt einen Termin für Keramik-Veneers anfragen?', answer: 'Ja, Sie können bereits einen Beratungstermin für Keramik-Veneers zum aktuellen Aktionspreis anfragen. Nach dem Absenden des Formulars stimmen wir einen Termin mit Ihnen ab und bestätigen ihn.' },
+        { question: 'Wo werden die indirekten Veneers hergestellt?', answer: 'Im eigenen Dentallabor von Crown Dental auf Grundlage des mit dem Zahnarzt abgestimmten Plans. Die Praxis befindet sich in der Petőfi Sándor utca 11 in Esztergom, Ungarn.' },
+        { question: 'Müssen Zähne für Keramik-Veneers beschliffen werden?', answer: 'Die notwendige Vorbereitung kann sich von Zahn zu Zahn unterscheiden. Bei der Beratung klären wir, wie viel Zahnsubstanz erhalten werden kann und welche Vorbereitung sinnvoll ist. Ohne Untersuchung versprechen wir keine Behandlung ohne Beschleifen.' },
+        { question: 'Werden Keramik-Veneers für ein Hollywood Smile verwendet?', answer: 'Keramik-Veneers können bei der Planung eines Hollywood Smile eine Möglichkeit sein. Der Begriff beschreibt das gewünschte Aussehen. Material und Zahnanzahl werden im persönlichen Behandlungsplan festgelegt.' },
+      ],
+      otherTitle: 'Möchten Sie auch Komposit-Veneers vergleichen?',
+      otherDescription: 'Erfahren Sie mehr über die Herstellung in der Praxis, die Preise und die Terminanfrage für Komposit-Veneers.',
+      otherSlug: 'direkt-hej',
+    },
+  },
+  sk: {
+    'direkt-hej': {
+      title: 'Kompozitné fazety v Ostrihome – ceny | Crown Dental',
+      description: 'Priame kompozitné fazety v Ostrihome: ceny, priebeh ošetrenia a žiadosť o termín. Porovnajte ich s keramickými fazetami z nášho vlastného laboratória.',
+      h1: 'Priame kompozitné fazety v Ostrihome',
+      eyebrow: 'Kompozitné fazety · Crown Dental',
+      lead: 'Chceli by ste zmeniť farbu alebo tvar svojho úsmevu? Priama kompozitná fazeta sa modeluje priamo na zube. Odtieň a tvar prispôsobíme vašim predstavám. Začnite osobnou konzultáciou.',
+      introTitle: 'Čo je priama kompozitná fazeta?',
+      intro: 'Slovo „priama“ označuje spôsob zhotovenia: zubný lekár modeluje kompozitný materiál priamo na zube. Odtieň a obrys prispôsobí okolitým zubom a vašim predstavám. Keramická fazeta sa naopak zhotovuje samostatne v zubnom laboratóriu.',
+      considerationsTitle: 'Čo je dobré zvážiť?',
+      considerations: [
+        { title: 'Želaná zmena', body: 'Pripravte si otázky: prekáža vám tvar jedného zuba alebo chcete zmeniť celý úsmev? Počet ošetrovaných zubov sa určí v individuálnom liečebnom pláne.' },
+        { title: 'Následná starostlivosť', body: 'Kompozit sa spravidla jednoduchšie opravuje, no môže byť náchylnejší na opotrebovanie a zafarbenie než keramika. Počítať treba aj s neskorším leštením a kontrolami.' },
+        { title: 'Celkové náklady', body: 'Uvedená cena platí za fazetu na jeden zub. Počet zubov a cenu prípadných prípravných ošetrení si dohodneme v osobnom liečebnom pláne.' },
+      ],
+      steps: [
+        { title: 'Konzultácia a plánovanie', body: 'Preberieme vaše predstavy, odtieň a tvar zubov aj to, ktoré zuby sú vhodné na ošetrenie.' },
+        { title: 'Modelovanie v ambulancii', body: 'Po potrebnej príprave zubný lekár vytvorí kompozitnú vrstvu a vytvrdí ju svetlom.' },
+        { title: 'Dokončenie a kontrola', body: 'Po vyleštení povrchu a kontrole zhryzu sa dohodneme na ďalšej kontrole.' },
+      ],
+      faqs: [
+        { question: 'Koľko stojí kompozitná fazeta?', answer: 'Aktuálnu cenu za zub a presné akciové obdobie ošetrenia nájdete v cenovej časti. Pri viacerých zuboch sa cena faziet násobí ich počtom. Celkové náklady vieme určiť po vyšetrení.' },
+        { question: 'Je kompozitná fazeta rovnaká ako keramická?', answer: 'Nie. V Crown Dental sa priama fazeta zhotovuje z kompozitu v ambulancii. Nepriama fazeta je keramická a vyrába sa v našom vlastnom zubnom laboratóriu.' },
+        { question: 'Kedy môžem požiadať o termín?', answer: 'Formulár so žiadosťou o termín môžete odoslať kedykoľvek. Počet termínov na novembrovú a decembrovú akciu kompozitných faziet je obmedzený. Požadovaný termín vám potvrdíme.' },
+        { question: 'Na koľko zubov treba fazety pre pekný úsmev?', answer: 'Neexistuje počet vhodný pre každého. Na konzultácii preberieme, na ktorých zuboch je zmena opodstatnená a aký výsledok si želáte.' },
+        { question: 'Môžem požiadať o konzultáciu Hollywood smile ku kompozitným fazetám?', answer: 'Áno. Pri plánovaní hollywoodskeho úsmevu vychádzame zo želaného vzhľadu a následne preberieme, ktoré možnosti ošetrenia sú pre vás vhodné.' },
+      ],
+      otherTitle: 'Zaujímajú vás keramické fazety?',
+      otherDescription: 'Spoznajte nepriame keramické fazety z nášho vlastného laboratória a ich samostatný cenník.',
+      otherSlug: 'indirekt-hej',
+    },
+    'indirekt-hej': {
+      title: 'Keramické fazety v Ostrihome – 99 000 HUF | Crown Dental',
+      description: 'Keramické fazety z vlastného laboratória v Ostrihome. Teraz 99 000 HUF za zub namiesto 120 000 HUF. Prémiová keramika a osobná konzultácia.',
+      h1: 'Keramické fazety z nášho vlastného laboratória',
+      eyebrow: 'Prémiová keramika · Ostrihom',
+      lead: 'Individuálne navrhnuté keramické fazety z vlastného zubného laboratória Crown Dental. Spolupráca zubného lekára a laboratória pomáha vytvoriť farbu a tvar podľa vašich predstáv. O termín môžete požiadať už teraz.',
+      introTitle: 'Čo je nepriama keramická fazeta?',
+      intro: 'Keramická fazeta je tenká keramická škrupina na viditeľnú plochu zuba. Slovo „nepriama“ znamená, že fazetu zhotoví zubné laboratórium a zubný lekár ju následne upevní na zub. V Crown Dental táto práca prebieha v našom vlastnom laboratóriu z prémiovej keramiky.',
+      considerationsTitle: 'Vlastné laboratórium, osobný plán úsmevu',
+      considerations: [
+        { title: 'Dohodnutý odtieň a tvar', body: 'Vaše predstavy sú jedným z východísk pri plánovaní úsmevu. Na konzultácii môžeme prebrať decentný vzhľad aj svetlejšie odtiene.' },
+        { title: 'Fazety zhotovené v laboratóriu', body: 'Zubnotechnická práca prebieha v našom vlastnom laboratóriu. Pred upevnením skontrolujeme dosadnutie a vzhľad hotovej fazety.' },
+        { title: 'Prehľadná cena za zub', body: 'Uvedená cena keramickej fazety platí za jeden zub. Počet zubov, prípravu a prípadné ďalšie ošetrenia preberieme osobne.' },
+      ],
+      steps: [
+        { title: 'Osobné plánovanie úsmevu', body: 'Na konzultácii preberieme vaše ciele, vybraný odtieň a podmienky ošetrenia.' },
+        { title: 'Príprava a laboratórium', body: 'Po potrebnej príprave a odtlačkoch naše zubné laboratórium zhotoví individuálne keramické fazety.' },
+        { title: 'Skúška a upevnenie', body: 'Zubný lekár skontroluje dosadnutie a tvar a potom fazety upevní. Súčasťou liečby je plán kontrol a osobné odporúčania na starostlivosť.' },
+      ],
+      faqs: [
+        { question: 'Koľko stoja keramické fazety v Crown Dental?', answer: 'Aktuálna cena je 99 000 HUF za zub namiesto 120 000 HUF. Ide o cenu fazety na jeden zub. Náklady na prípadné ďalšie potrebné ošetrenia sú súčasťou individuálneho liečebného plánu.' },
+        { question: 'Môžem už teraz požiadať o termín na keramické fazety?', answer: 'Áno, už teraz môžete požiadať o konzultáciu ku keramickým fazetám za aktuálnu zvýhodnenú cenu. Po odoslaní formulára sa s vami dohodneme na termíne a potvrdíme ho.' },
+        { question: 'Kde sa zhotovujú nepriame fazety?', answer: 'Vo vlastnom zubnom laboratóriu Crown Dental podľa plánu dohodnutého so zubným lekárom. Ambulancia sa nachádza na adrese Petőfi Sándor utca 11, Ostrihom (Esztergom), Maďarsko.' },
+        { question: 'Treba zub pre keramickú fazetu brúsiť?', answer: 'Potrebná príprava sa môže pri jednotlivých zuboch líšiť. Na konzultácii vysvetlíme, koľko zubného tkaniva možno zachovať a aký zásah je opodstatnený. Bez vyšetrenia nesľubujeme ošetrenie bez brúsenia.' },
+        { question: 'Používajú sa keramické fazety na Hollywood smile?', answer: 'Keramické fazety môžu byť jednou z možností pri plánovaní hollywoodskeho úsmevu. Názov opisuje želaný vzhľad. Materiál a počet zubov určuje individuálny liečebný plán.' },
+      ],
+      otherTitle: 'Chcete porovnať aj kompozitné fazety?',
+      otherDescription: 'Pozrite si priebeh zhotovenia kompozitných faziet v ambulancii, ich cenu a možnosti žiadosti o termín.',
+      otherSlug: 'direkt-hej',
+    },
+  },
+};
+
+export function getVeneerContent(slug: VeneerSlug, locale: string = 'hu'): VeneerTreatmentContent {
+  const language = normalizeVeneerLocale(locale);
+  return language === 'hu' ? veneerContent[slug] : translatedVeneerContent[language][slug];
+}
+
+const veneerUi = {
+  hu: {
+    faqTitle: 'Gyakori kérdések', back: 'Vissza a kezelésekhez', book: 'Időpontot kérek',
+    phone: '06 30 589 2468',
+    healthNote: 'A héjkezelés előtt a fogak és az íny állapotát, valamint a harapást is meg kell vizsgálni. A szuvasodást és az ínybetegséget előbb kezelni kell. Fogcsikorgatás esetén külön mérlegelés szükséges.',
+    healthSourcePrefix: 'Általános betegtájékoztatás:', healthSource: 'American Dental Association – fogászati héjak',
+    processEyebrow: 'A kezelés menete', processTitle: 'A konzultációtól a kész héjig',
+    processNote: 'A kezelési alkalmak számát és az ütemezést az egyéni tervben egyeztetjük. Az előkészítés menetéről általánosan itt is olvashat:',
+    processSource: 'NHS fogászati betegtájékoztató',
+    priceEyebrow: 'Árak és időpontkérés', directPriceTitle: 'Direkt héj ára', indirectPriceTitle: 'Porcelán héj ára',
+    priceNote: 'Az ár egy fogra vonatkozik. Az Önnek megfelelő kezelésről és a végleges költségről az állapotfelmérés után egyeztetünk. Az esetleg szükséges előkezelések külön költséget jelenthetnek.',
+    locationNote: 'Crown Dental · 2500 Esztergom, Petőfi Sándor utca 11. Az online űrlap időpontkérés; az időpont a visszaigazolással válik véglegessé.',
+    directBook: 'Direkt héj konzultáció', indirectBook: 'Porcelán héj konzultáció',
+    comparison: 'Hollywood smile: lehetőségek', aesthetic: 'Esztétikai fogászat', treatments: 'Kezelések',
+    serviceList: 'Fogászati héj kezelések',
+    beforeAfterAlt: 'Mosoly a direkt héjkezelés előtt és után – Hollywood smile Esztergomban',
+    expiredBookingAnswer: 'Az időpontkérő űrlap bármikor elküldhető. Kollégánk egyezteti a részleteket és visszaigazolja a rendelkezésre álló időpontot.',
+  },
+  en: {
+    faqTitle: 'Frequently asked questions', back: 'Back to treatments', book: 'Request an appointment',
+    phone: '+36 30 589 2468',
+    healthNote: 'Before veneer treatment, your teeth, gums and bite need to be examined. Tooth decay and gum disease must be treated first. Teeth grinding requires individual assessment.',
+    healthSourcePrefix: 'General patient information:', healthSource: 'American Dental Association – dental veneers',
+    processEyebrow: 'The treatment process', processTitle: 'From consultation to finished veneer',
+    processNote: 'The number and timing of visits are agreed in your individual plan. General information about preparation is also available here:',
+    processSource: 'NHS dental treatment information',
+    priceEyebrow: 'Prices and appointment requests', directPriceTitle: 'Composite veneer prices', indirectPriceTitle: 'Porcelain veneer prices',
+    priceNote: 'The price is for one tooth and is shown in Hungarian forints (HUF). We discuss suitable treatment and the final cost after your assessment. Any preparatory treatment may involve additional charges.',
+    locationNote: 'Crown Dental · 2500 Esztergom, Petőfi Sándor utca 11, Hungary. The online form is an appointment request; your appointment is final only once confirmed.',
+    directBook: 'Composite veneer consultation', indirectBook: 'Porcelain veneer consultation',
+    comparison: 'Hollywood smile: your options', aesthetic: 'Cosmetic dentistry', treatments: 'Treatments',
+    serviceList: 'Dental veneer treatments',
+    beforeAfterAlt: 'Smile before and after direct composite veneer treatment – Hollywood smile in Esztergom',
+    expiredBookingAnswer: 'You can send the appointment request form at any time. Our team will contact you to discuss the details and confirm an available appointment.',
+  },
+  de: {
+    faqTitle: 'Häufige Fragen', back: 'Zurück zu den Behandlungen', book: 'Termin anfragen',
+    phone: '+36 30 589 2468',
+    healthNote: 'Vor einer Veneer-Behandlung müssen Zähne, Zahnfleisch und Biss untersucht werden. Karies und Zahnfleischerkrankungen sind zuerst zu behandeln. Bei Zähneknirschen ist eine individuelle Abwägung erforderlich.',
+    healthSourcePrefix: 'Allgemeine Patienteninformation:', healthSource: 'American Dental Association – Veneers (Englisch)',
+    processEyebrow: 'Der Behandlungsablauf', processTitle: 'Von der Beratung zum fertigen Veneer',
+    processNote: 'Anzahl und zeitlicher Abstand der Termine werden in Ihrem individuellen Plan festgelegt. Allgemeine Informationen zur Vorbereitung finden Sie auch hier:',
+    processSource: 'NHS-Informationen zu Zahnbehandlungen (Englisch)',
+    priceEyebrow: 'Preise und Terminanfrage', directPriceTitle: 'Preise für Komposit-Veneers', indirectPriceTitle: 'Preise für Keramik-Veneers',
+    priceNote: 'Der Preis gilt pro Zahn und ist in ungarischen Forint (HUF) angegeben. Die geeignete Behandlung und die endgültigen Kosten besprechen wir nach der Untersuchung. Erforderliche Vorbehandlungen können zusätzliche Kosten verursachen.',
+    locationNote: 'Crown Dental · 2500 Esztergom, Petőfi Sándor utca 11, Ungarn. Das Onlineformular ist eine Terminanfrage. Der Termin wird erst mit unserer Bestätigung verbindlich.',
+    directBook: 'Beratung zu Komposit-Veneers', indirectBook: 'Beratung zu Keramik-Veneers',
+    comparison: 'Hollywood Smile: Ihre Möglichkeiten', aesthetic: 'Ästhetische Zahnmedizin', treatments: 'Behandlungen',
+    serviceList: 'Veneer-Behandlungen',
+    beforeAfterAlt: 'Lächeln vor und nach einer Behandlung mit direkten Komposit-Veneers – Hollywood Smile in Esztergom',
+    expiredBookingAnswer: 'Sie können das Anfrageformular jederzeit senden. Unser Team bespricht die Einzelheiten mit Ihnen und bestätigt einen verfügbaren Termin.',
+  },
+  sk: {
+    faqTitle: 'Často kladené otázky', back: 'Späť na ošetrenia', book: 'Požiadať o termín',
+    phone: '+36 30 589 2468',
+    healthNote: 'Pred ošetrením fazetami je potrebné vyšetriť zuby, ďasná aj zhryz. Zubný kaz a ochorenia ďasien treba najprv liečiť. Škrípanie zubami si vyžaduje individuálne posúdenie.',
+    healthSourcePrefix: 'Všeobecné informácie pre pacientov:', healthSource: 'American Dental Association – zubné fazety (anglicky)',
+    processEyebrow: 'Priebeh ošetrenia', processTitle: 'Od konzultácie po hotovú fazetu',
+    processNote: 'Počet návštev a ich harmonogram dohodneme v individuálnom pláne. Všeobecné informácie o príprave si môžete prečítať aj tu:',
+    processSource: 'NHS – informácie o zubných ošetreniach (anglicky)',
+    priceEyebrow: 'Ceny a žiadosť o termín', directPriceTitle: 'Cena kompozitných faziet', indirectPriceTitle: 'Cena keramických faziet',
+    priceNote: 'Cena platí za jeden zub a je uvedená v maďarských forintoch (HUF). Vhodné ošetrenie a konečné náklady dohodneme po vyšetrení. Prípadné prípravné ošetrenia môžu znamenať ďalšie náklady.',
+    locationNote: 'Crown Dental · 2500 Ostrihom (Esztergom), Petőfi Sándor utca 11, Maďarsko. Online formulár je žiadosťou o termín. Termín je záväzný až po našom potvrdení.',
+    directBook: 'Konzultácia ku kompozitným fazetám', indirectBook: 'Konzultácia ku keramickým fazetám',
+    comparison: 'Hollywood smile: vaše možnosti', aesthetic: 'Estetická stomatológia', treatments: 'Ošetrenia',
+    serviceList: 'Ošetrenie zubnými fazetami',
+    beforeAfterAlt: 'Úsmev pred a po ošetrení priamymi kompozitnými fazetami – Hollywood smile v Ostrihome',
+    expiredBookingAnswer: 'Formulár so žiadosťou o termín môžete odoslať kedykoľvek. Náš tím s vami dohodne podrobnosti a potvrdí dostupný termín.',
+  },
+};
+
+export function getVeneerUi(locale: string = 'hu') {
+  return veneerUi[normalizeVeneerLocale(locale)];
+}

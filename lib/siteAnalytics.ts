@@ -3,7 +3,7 @@ import { CONSENT_STORAGE_KEY, parseStoredConsent, type StoredConsent } from './c
 export const GOOGLE_TAG_ID = 'G-9BS3P1DC4T';
 export const ANALYTICS_READY_EVENT = 'crown-analytics-ready';
 const SOURCE_KEY = 'crown_booking_source_v1';
-const TREATMENT_SLUGS = new Set(['allapotfelmeres', 'esztetikai-fogaszat', 'fogfeherites', 'foghuzas', 'fogsor', 'fogszabalyozas', 'fogtechnikai-megoldasok', 'gockutatas', 'gyerekfogaszat', 'gyokerkezeles', 'implantatum', 'koronak-hidak', 'szajsebeszet']);
+const TREATMENT_SLUGS = new Set(['allapotfelmeres', 'esztetikai-fogaszat', 'fogfeherites', 'foghuzas', 'fogsor', 'fogszabalyozas', 'fogtechnikai-megoldasok', 'gockutatas', 'gyerekfogaszat', 'gyokerkezeles', 'implantatum', 'koronak-hidak', 'szajsebeszet', 'direkt-hej', 'indirekt-hej']);
 let currentConsent: StoredConsent | null | undefined;
 
 export function isProductionSite() {
@@ -46,7 +46,7 @@ export function measurementPage(pathname: string) {
   if (path === '/idopont') return 'booking';
   if (path === '/idopont/sikeres') return 'booking_success';
   if (path === '/blog' || path.startsWith('/blog/')) return 'blog';
-  if (['/esztergom', '/budapest', '/kapcsolat', '/rolunk', '/utazas-szallas'].includes(path)) return path.slice(1);
+  if (['/esztergom', '/budapest', '/kapcsolat', '/rolunk', '/utazas-szallas', '/hollywood-mosoly'].includes(path)) return path.slice(1);
   return 'other';
 }
 
@@ -74,7 +74,7 @@ export type SiteEvent = 'booking_cta_click' | 'phone_click' | 'booking_form_view
   | 'booking_submit' | 'booking_success' | 'booking_error' | 'booking_validation_error';
 export type EventOptions = {
   step?: 1 | 2;
-  placement?: 'navigation' | 'footer' | 'content' | 'home_hero' | 'treatment_hero' | 'mobile_bar' | 'treatment_card';
+  placement?: 'navigation' | 'footer' | 'content' | 'home_hero' | 'treatment_hero' | 'mobile_bar' | 'treatment_card' | 'landing_hero' | 'landing_offer' | 'landing_form';
   error?: 'validation' | 'rate_limited' | 'service' | 'network' | 'unknown';
 };
 

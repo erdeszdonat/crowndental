@@ -22,7 +22,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   const isStudio = pathname?.includes('/studio') || pathname?.includes('/admin');
   const basePath = pathname.replace(/^\/(hu|en|sk|de)(?=\/|$)/, '') || '/';
-  const hasContactBar = basePath === '/' || basePath.startsWith('/kezelesek');
+  const hasContactBar = basePath === '/' || basePath === '/hollywood-mosoly' || basePath.startsWith('/kezelesek');
   const copy = getSiteCopy(locale);
 
   if (isStudio) {
