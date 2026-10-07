@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { createHash } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import { getPreferredGreetingName } from '@/lib/names';
 import { requireAdminSession } from '@/lib/adminAuth';
 import { normalizeLocale, noStoreJson, rejectUntrustedMutation, type SupportedLocale } from '@/lib/serverSecurity';
+import { getAppointmentClinic, getConsultationImagingNotice, type AppointmentClinicId } from '@/lib/appointmentClinics';
 
 const ALLOWED_TABLES = new Set(['appointments', 'career_applications', 'quote_leads']);
 const ALLOWED_STATUSES = new Set(['new', 'no_answer', 'processed', 'cancelled', 'special']);
@@ -11,6 +12,7 @@ const CLINIC_PHONE_DISPLAY = '06 30 589 2468';
 const CLINIC_PHONE_TEL = '+36305892468';
 const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.crowndental.hu').replace(/\/$/, '');
 const APPOINTMENT_DURATION_MINUTES = 60;
+const CONFIRMATION_SEND_LOCK_MS = 15 * 60_000;
 
 type AppointmentForNoAnswerEmail = {
   name?: string | null;
@@ -35,6 +37,7 @@ type AppointmentDateTimeMeta = {
   googleCalendarUrl: string;
   appleCalendarUrl: string;
   location: string;
+  imagingNotice: ReturnType<typeof getConsultationImagingNotice>;
   isConsultationPolicyApplicable: boolean;
 };
 
@@ -170,25 +173,17 @@ function getAppointmentLocale(appointment: AppointmentForNoAnswerEmail): Support
   return normalizeLocale(appointment.locale);
 }
 
-function getAppointmentLocation(city?: string | null) {
-  const normalizedCity = String(city || '').toLowerCase();
-
-  if (normalizedCity.includes('budapest')) {
-    return 'Crown Dental Budapest, 1039 Budapest, Királyok útja 55.';
-  }
-
-  return 'Crown Dental Esztergom, 2500 Esztergom, Petőfi Sándor utca 11.';
-}
-
 function buildAppointmentDateTimeMeta(
   appointment: AppointmentForConfirmationEmail,
-  appointmentDateTime: unknown
+  appointmentDateTime: unknown,
+  clinic: NonNullable<ReturnType<typeof getAppointmentClinic>>,
 ): AppointmentDateTimeMeta | null {
   const parsed = parseAppointmentDateTime(appointmentDateTime);
   if (!parsed) return null;
 
-  const location = getAppointmentLocation(appointment.city);
+  const location = clinic.location;
   const locale = getAppointmentLocale(appointment);
+  const imagingNotice = getConsultationImagingNotice(clinic.id, appointment.treatment, locale);
   const calendarCopy: Record<SupportedLocale, { title: string; appointment: string; treatment: string; phone: string }> = {
     hu: { title: 'Crown Dental fogászati időpont', appointment: 'Időpont', treatment: 'Kezelés', phone: 'Telefon' },
     en: { title: 'Crown Dental dental appointment', appointment: 'Appointment', treatment: 'Treatment', phone: 'Phone' },
@@ -200,6 +195,7 @@ function buildAppointmentDateTimeMeta(
     `${copy.appointment}: ${parsed.displayDateTime}`,
     appointment.treatment ? `${copy.treatment}: ${appointment.treatment}` : '',
     `${copy.phone}: ${CLINIC_PHONE_DISPLAY}`,
+    imagingNotice ? `${imagingNotice.title}: ${imagingNotice.body}` : '',
   ].filter(Boolean).join('\n');
   const encodedTitle = encodeURIComponent(copy.title);
   const encodedLocation = encodeURIComponent(location);
@@ -208,6 +204,7 @@ function buildAppointmentDateTimeMeta(
   return {
     displayDateTime: parsed.displayDateTime,
     location,
+    imagingNotice,
     isConsultationPolicyApplicable: isConsultationTreatment(appointment.treatment) && parsed.dateKey >= '2026-07-01',
     googleCalendarUrl: `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodedTitle}&dates=${parsed.startCompact}/${parsed.endCompact}&ctz=Europe%2FBudapest&details=${encodedDetails}&location=${encodedLocation}`,
     appleCalendarUrl: `${SITE_URL}/api/calendar/appointment.ics?start=${parsed.startCompact}&end=${parsed.endCompact}&title=${encodedTitle}&location=${encodedLocation}&details=${encodedDetails}`,
@@ -502,6 +499,9 @@ async function sendAppointmentConfirmationEmail(
   const displayDateTime = escapeHtml(appointmentMeta.displayDateTime);
   const googleCalendarUrl = escapeHtml(appointmentMeta.googleCalendarUrl);
   const appleCalendarUrl = escapeHtml(appointmentMeta.appleCalendarUrl);
+  const imagingNotice = appointmentMeta.imagingNotice
+    ? `<div style="background:#fffbeb;border:2px solid #f59e0b;border-radius:14px;padding:20px;margin:24px 0;color:#78350f"><p style="font-size:18px;font-weight:800;line-height:1.4;margin:0 0 10px">${escapeHtml(appointmentMeta.imagingNotice.title)}</p><p style="font-size:16px;line-height:1.65;margin:0">${escapeHtml(appointmentMeta.imagingNotice.body)}</p></div>`
+    : '';
   const consultationPolicyNotice = appointmentMeta.isConsultationPolicyApplicable
     ? isGerman
       ? `
@@ -533,7 +533,7 @@ async function sendAppointmentConfirmationEmail(
     try {
       await resend.emails.send({
         from: 'Crown Dental <info@crowndental.hu>', to: email, subject: copy.subject,
-        html: `<div style="font-family:'Segoe UI',sans-serif;max-width:640px;margin:auto;border:1px solid #e2e8f0;border-radius:20px;overflow:hidden"><div style="background:linear-gradient(135deg,#0284c7,#0f172a);padding:36px 30px;text-align:center;color:white"><p>${copy.eyebrow}</p><h1>${copy.greeting}</h1><p>${copy.intro}</p></div><div style="padding:34px 30px"><div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:16px;padding:24px"><p>${copy.appointment}</p><p style="font-size:30px;font-weight:900">${displayDateTime}</p><p><strong>${copy.treatment}:</strong> ${treatment}<br><strong>${copy.location}:</strong> ${location}</p></div><p style="font-size:16px;line-height:1.65;color:#334155">${copy.arrive}</p><a href="${googleCalendarUrl}" style="display:block;text-align:center;background:#0284c7;color:white;text-decoration:none;font-weight:900;padding:16px;border-radius:14px;margin:12px 0">${copy.google}</a><a href="${appleCalendarUrl}" style="display:block;text-align:center;background:#0f172a;color:white;text-decoration:none;font-weight:900;padding:16px;border-radius:14px">${copy.apple}</a><p style="color:#64748b">${copy.fallback} <strong>${displayDateTime}</strong></p></div><div style="background:#f8fafc;padding:20px;text-align:center;color:#64748b">${copy.signoff},<br><strong>Crown Dental</strong></div></div>`,
+        html: `<div style="font-family:'Segoe UI',sans-serif;max-width:640px;margin:auto;border:1px solid #e2e8f0;border-radius:20px;overflow:hidden"><div style="background:linear-gradient(135deg,#0284c7,#0f172a);padding:36px 30px;text-align:center;color:white"><p>${copy.eyebrow}</p><h1>${copy.greeting}</h1><p>${copy.intro}</p></div><div style="padding:34px 30px"><div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:16px;padding:24px"><p>${copy.appointment}</p><p style="font-size:30px;font-weight:900">${displayDateTime}</p><p><strong>${copy.treatment}:</strong> ${treatment}<br><strong>${copy.location}:</strong> ${location}</p></div>${imagingNotice}<p style="font-size:16px;line-height:1.65;color:#334155">${copy.arrive}</p><a href="${googleCalendarUrl}" style="display:block;text-align:center;background:#0284c7;color:white;text-decoration:none;font-weight:900;padding:16px;border-radius:14px;margin:12px 0">${copy.google}</a><a href="${appleCalendarUrl}" style="display:block;text-align:center;background:#0f172a;color:white;text-decoration:none;font-weight:900;padding:16px;border-radius:14px">${copy.apple}</a><p style="color:#64748b">${copy.fallback} <strong>${displayDateTime}</strong></p></div><div style="background:#f8fafc;padding:20px;text-align:center;color:#64748b">${copy.signoff},<br><strong>Crown Dental</strong></div></div>`,
       });
       return { sent: true };
     } catch (mailErr) {
@@ -563,6 +563,7 @@ async function sendAppointmentConfirmationEmail(
                 <p style="margin:18px 0 0; color:#334155; font-size:15px; line-height:1.6;"><strong>Behandlung:</strong> ${treatment}<br><strong>Ort:</strong> ${location}</p>
                 ${customerPhone ? `<p style="margin:14px 0 0; color:#64748b; font-size:14px; line-height:1.6;">Ihre Telefonnummer: <strong style="color:#0f172a;">${customerPhone}</strong></p>` : ''}
               </div>
+              ${imagingNotice}
               <p style="font-size:16px; color:#334155; line-height:1.65; margin:0 0 18px;">Bitte kommen Sie nach Möglichkeit 5 Minuten vor Ihrem Termin. So können Sie die kurze Wartezeit entspannt in unserem komfortablen Praxiswartebereich verbringen. Falls Sie den Termin nicht wahrnehmen können, bitten wir Sie, uns spätestens 24 Stunden vor der Behandlung telefonisch zu informieren, damit wir den frei gewordenen Termin einem anderen Patienten anbieten können.</p>
               <div style="display:block; margin:26px 0;">
                 <a href="${googleCalendarUrl}" style="display:block; text-align:center; background:#0284c7; color:#ffffff; text-decoration:none; font-size:17px; font-weight:900; padding:16px 22px; border-radius:14px; margin-bottom:12px;">Zu Google Kalender hinzufügen</a>
@@ -611,6 +612,7 @@ async function sendAppointmentConfirmationEmail(
               ${customerPhone ? `<p style="margin:14px 0 0 0; color:#64748b; font-size:14px; line-height:1.6;">Megadott telefonszám: <strong style="color:#0f172a;">${customerPhone}</strong></p>` : ''}
             </div>
 
+            ${imagingNotice}
             <p style="font-size:16px; color:#334155; line-height:1.65; margin:0 0 18px 0;">
               Kérjük, lehetőség szerint érkezzen 5 perccel korábban az időpontjához képest, így kényelmesen, nyugodt környezetben töltheti a várakozási időt a prémium rendelői várónkban. Amennyiben az időpont mégsem alkalmas, kérjük, legkésőbb 24 órával a kezelés előtt jelezze nekünk telefonon, hogy más páciensnek is fel tudjuk ajánlani a felszabaduló időpontot.
             </p>
@@ -651,8 +653,10 @@ export async function POST(req: Request) {
   const authError = requireAdminSession(req);
   if (authError) return authError;
 
+  let statusMutationLock: { token: string; release: () => PromiseLike<{ error: unknown }> } | null = null;
+
   try {
-    const { action, table, id, value, appointmentDateTime, statusNote } = await req.json();
+    const { action, table, id, value, appointmentDateTime, appointmentClinicId, statusNote } = await req.json();
 
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -681,6 +685,8 @@ export async function POST(req: Request) {
     let appointmentConfirmationDateTime: string | undefined;
     let appointmentConfirmationIdempotencyKey: string | undefined;
     let appointmentConfirmationSentAt: string | undefined;
+    let appointmentConfirmationClinicId: AppointmentClinicId | undefined;
+    let appointmentConfirmationSendToken: string | undefined;
     let specialNoteUpdatedAt: string | undefined;
     let normalizedStatusNote = '';
 
@@ -704,6 +710,33 @@ export async function POST(req: Request) {
 
       if (safeTable === 'appointments' && value === 'special' && !normalizedStatusNote) {
         return NextResponse.json({ error: 'Különleges egyeztetéshez kötelező rövid megjegyzést megadni.' }, { status: 400 });
+      }
+
+      // Cancellation and other status changes use the same lock, so they cannot
+      // race a confirmation and send contradictory messages to the patient.
+      if (safeTable === 'appointments' && value !== 'processed') {
+        const { data: current, error: readError } = await supabase.from('appointments').select('status').eq('id', id).maybeSingle();
+        if (readError) throw readError;
+        if (!current) return noStoreJson({ error: 'Nem található időpontkérés.' }, { status: 404 });
+        const token = randomUUID();
+        const claimTime = new Date();
+        const claim = supabase.from('appointments').update({
+          confirmation_sending_token: token,
+          confirmation_sending_started_at: claimTime.toISOString(),
+        }).eq('id', id);
+        const statusClaim = current.status == null ? claim.is('status', null) : claim.eq('status', current.status);
+        const { data: claimed, error: claimError } = await statusClaim
+          .or(`confirmation_sending_started_at.is.null,confirmation_sending_started_at.lt.${new Date(claimTime.getTime() - CONFIRMATION_SEND_LOCK_MS).toISOString()}`)
+          .select('id').maybeSingle();
+        if (claimError) throw claimError;
+        if (!claimed) return noStoreJson({ error: 'Az időpont módosítása vagy a visszaigazolás küldése folyamatban van. Frissítse az adatokat.' }, { status: 409 });
+        statusMutationLock = {
+          token,
+          release: () => supabase.from('appointments').update({
+            confirmation_sending_token: null,
+            confirmation_sending_started_at: null,
+          }).eq('id', id).eq('confirmation_sending_token', token),
+        };
       }
 
       if (safeTable === 'appointments' && value === 'no_answer') {
@@ -765,6 +798,11 @@ export async function POST(req: Request) {
       }
 
       if (safeTable === 'appointments' && value === 'processed') {
+        const clinic = getAppointmentClinic(appointmentClinicId);
+        if (!clinic) {
+          return noStoreJson({ error: 'Kérjük, válassza ki az időpont rendelőjét: Crown Dental Belváros vagy Crown Dental Prímás Sziget.' }, { status: 400 });
+        }
+
         const { data, error } = await supabase
           .from('appointments')
           .select('name,nickname,email,phone,city,treatment,status,locale,confirmation_email_idempotency_key')
@@ -774,18 +812,41 @@ export async function POST(req: Request) {
         if (error) throw error;
         if (!data) return NextResponse.json({ error: 'Nem található időpontkérés.' }, { status: 404 });
 
-        if (data.status !== 'processed') {
-          const appointmentMeta = buildAppointmentDateTimeMeta(data, appointmentDateTime);
+        if (data.status === 'processed') {
+          return noStoreJson({ error: 'Ezt az időpontot már visszaigazolták. Frissítse az adatokat az aktuális rendelő és időpont ellenőrzéséhez.' }, { status: 409 });
+        }
+
+        {
+          const appointmentMeta = buildAppointmentDateTimeMeta(data, appointmentDateTime, clinic);
 
           if (!appointmentMeta) {
             return NextResponse.json({ error: 'Kérjük, adja meg a pontos időpontot év-hónap-nap óra:perc formátumban.' }, { status: 400 });
           }
 
+          // Claim before sending: two assistants must never send conflicting
+          // confirmations. A stale claim expires after an interrupted request.
+          const sendToken = randomUUID();
+          const claimTime = new Date();
+          const claim = supabase.from('appointments').update({
+            confirmation_sending_token: sendToken,
+            confirmation_sending_started_at: claimTime.toISOString(),
+          }).eq('id', id);
+          const statusClaim = data.status == null ? claim.is('status', null) : claim.eq('status', data.status);
+          const { data: claimed, error: claimError } = await statusClaim
+            .or(`confirmation_sending_started_at.is.null,confirmation_sending_started_at.lt.${new Date(claimTime.getTime() - CONFIRMATION_SEND_LOCK_MS).toISOString()}`)
+            .select('id')
+            .maybeSingle();
+          if (claimError) throw claimError;
+          if (!claimed) {
+            return noStoreJson({ error: 'Ezt az időpontot közben másik munkatárs módosította, vagy a visszaigazolás küldése folyamatban van. Frissítse az adatokat.' }, { status: 409 });
+          }
+          appointmentConfirmationSendToken = sendToken;
+
           appointmentConfirmationIdempotencyKey = buildEmailIdempotencyKey(
             'processed',
             id,
             data.confirmation_email_idempotency_key,
-            appointmentMeta.displayDateTime,
+            JSON.stringify([appointmentMeta.displayDateTime, clinic.id, data.treatment, data.locale, appointmentMeta.imagingNotice]),
           );
           const appointmentConfirmationResult = await sendAppointmentConfirmationEmail(
             data,
@@ -794,6 +855,11 @@ export async function POST(req: Request) {
           );
 
           if (!appointmentConfirmationResult.sent) {
+            const { error: releaseError } = await supabase.from('appointments').update({
+              confirmation_sending_token: null,
+              confirmation_sending_started_at: null,
+            }).eq('id', id).eq('confirmation_sending_token', sendToken);
+            if (releaseError) console.error('Visszaigazolási küldészár feloldása sikertelen.');
             return noStoreJson(
               { error: appointmentConfirmationResult.error || 'Az időpont-visszaigazoló e-mail nem küldhető el; a státusz változatlan maradt.' },
               { status: 502 },
@@ -803,6 +869,7 @@ export async function POST(req: Request) {
           appointmentConfirmationEmailSent = true;
           appointmentConfirmationDateTime = appointmentMeta.displayDateTime;
           appointmentConfirmationSentAt = new Date().toISOString();
+          appointmentConfirmationClinicId = clinic.id;
         }
       }
 
@@ -828,20 +895,42 @@ export async function POST(req: Request) {
         appointmentConfirmationEmailSent &&
         appointmentConfirmationDateTime &&
         appointmentConfirmationIdempotencyKey &&
+        appointmentConfirmationClinicId &&
         appointmentConfirmationSentAt
       ) {
+        updatePayload.confirmed_clinic_id = appointmentConfirmationClinicId;
         updatePayload.confirmed_appointment_local = appointmentConfirmationDateTime;
         updatePayload.confirmation_email_sent_at = appointmentConfirmationSentAt;
         updatePayload.confirmation_email_idempotency_key = appointmentConfirmationIdempotencyKey;
+        updatePayload.confirmation_sending_token = null;
+        updatePayload.confirmation_sending_started_at = null;
       }
 
       if (safeTable === 'appointments' && value === 'cancelled') {
+        updatePayload.confirmed_clinic_id = null;
         updatePayload.confirmed_appointment_local = null;
         updatePayload.confirmation_email_sent_at = null;
       }
 
-      const { error } = await supabase.from(safeTable).update(updatePayload).eq('id', id);
-      if (error) throw error;
+      if (statusMutationLock) {
+        updatePayload.confirmation_sending_token = null;
+        updatePayload.confirmation_sending_started_at = null;
+      }
+
+      const update = supabase.from(safeTable).update(updatePayload).eq('id', id);
+      const mutationToken = appointmentConfirmationSendToken || statusMutationLock?.token;
+      if (mutationToken) {
+        const { data: saved, error } = await update.eq('confirmation_sending_token', mutationToken).select('id').maybeSingle();
+        if (error || !saved) {
+          return noStoreJson({ error: appointmentConfirmationEmailSent
+            ? 'A visszaigazoló e-mailt elküldtük, de az adatok mentése nem sikerült. Ne küldje újra: frissítse az adatokat, és ellenőrizze a kiküldött levelet.'
+            : 'Az időpont módosításának mentése nem sikerült. Frissítse az adatokat, és ellenőrizze az esetleg kiküldött levelet.' }, { status: 500 });
+        }
+        statusMutationLock = null;
+      } else {
+        const { error } = await update;
+        if (error) throw error;
+      }
     } else {
       return NextResponse.json({ error: 'Ismeretlen admin művelet.' }, { status: 400 });
     }
@@ -854,9 +943,20 @@ export async function POST(req: Request) {
       specialNoteUpdatedAt,
       appointmentConfirmationEmailSent,
       appointmentConfirmationDateTime,
+      appointmentConfirmationClinicId,
+      appointmentConfirmationSentAt,
     });
   } catch (error: unknown) {
     console.error('Action API Hiba:', error);
     return noStoreJson({ error: 'Szerverhiba történt a művelet során.' }, { status: 500 });
+  } finally {
+    if (statusMutationLock) {
+      try {
+        const { error } = await statusMutationLock.release();
+        if (error) console.error('Időpont-módosítási zár feloldása sikertelen.');
+      } catch {
+        console.error('Időpont-módosítási zár feloldása sikertelen.');
+      }
+    }
   }
 }

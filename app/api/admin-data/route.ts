@@ -12,6 +12,7 @@ const APPOINTMENT_ADMIN_FIELDS = [
   'status',
   'created_at',
   'confirmed_appointment_local',
+  'confirmed_clinic_id',
   'confirmation_email_sent_at',
   'special_note',
   'special_note_updated_at',
