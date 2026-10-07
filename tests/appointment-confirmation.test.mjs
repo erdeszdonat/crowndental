@@ -142,6 +142,32 @@ function calendarLinks(html) {
   };
 }
 
+function assertOrthodonticPreparation(html, { locale, treatment }) {
+  const requirements = {
+    hu: [/nincs CBCT/i, /vagy.*1 hónapnál régebbi/i, /teleröntgen/i, /nyitvatart/i, /időpont.*előtt/i],
+    en: [/(?:do not|don't|no|without).*CBCT/i, /or.*(?:1|one) month.*old|or.*older than (?:1|one) month/i, /cephalometric/i, /opening hours/i, /before.*appointment/i],
+    de: [/keine.*CBCT/i, /oder.*älter als (?:1|einen) Monat/i, /Fernröntgen/i, /Öffnungszeiten/i, /vor.*Termin/i],
+    sk: [/nemáte.*CBCT/i, /alebo.*starši[aeí].*(?:1|jeden) mesiac/i, /tele[-\s]?RTG|teleröntgen|cefalometr/i, /otváracích hodín/i, /pred.*termín/i],
+  };
+  const links = calendarLinks(html);
+  const copies = [
+    ['email', visibleText(html)],
+    ['Google Calendar', links.google.searchParams.get('details')],
+    ['ICS', links.ics.searchParams.get('details')],
+  ];
+  for (const [surface, text] of copies) {
+    const message = `${treatment}: ${surface}`;
+    assert.match(text, /\bCBCT\b/, message);
+    for (const requirement of requirements[locale]) assert.match(text, requirement, message);
+    assert.ok(text.includes('Crown Dental Belváros'), message);
+    assert.ok(text.includes('Petőfi Sándor utca 11'), message);
+  }
+  for (const url of Object.values(links)) {
+    assert.ok(url.searchParams.get('location').includes('Crown Dental Prímás Sziget'));
+    assert.ok(url.searchParams.get('location').includes('Helischer József út 6'));
+  }
+}
+
 test('confirming any appointment requires an explicit recognized clinic, including processed legacy records', async () => {
   for (const status of ['new', 'processed']) {
     for (const appointmentClinicId of [undefined, null, '', 'unknown', 'Belváros', 'PRIMAS-SZIGET', 1, {}]) {
@@ -234,10 +260,11 @@ test('general consultations at Prímás Sziget explain the earlier Belváros X-r
     assert.ok(text.includes('Crown Dental Belváros'), fixture.locale);
     assert.ok(text.includes('Petőfi Sándor utca 11'), fixture.locale);
     assert.ok(text.includes('Crown Dental Prímás Sziget'), fixture.locale);
+    assert.doesNotMatch(text, /CBCT|teleröntgen|cephalometric|Fernröntgen|tele[-\s]?RTG/i, fixture.locale);
   }
 });
 
-test('orthodontic consultation wording, including accented and unaccented requests, receives the CBCT instructions', async () => {
+test('orthodontic consultations explain the missing or older-than-one-month CBCT condition and the earlier cephalometric X-ray visit', async () => {
   for (const fixture of [
     { locale: 'hu', treatment: 'Fogszabályozási konzultáció' },
     { locale: 'hu', treatment: 'Fogszabályozás konzultáció' },
@@ -249,26 +276,48 @@ test('orthodontic consultation wording, including accented and unaccented reques
   ]) {
     const env = environment({ appointment: fixture });
     assert.equal((await env.submit()).status, 200);
-    const text = visibleText(env.emails[0].payload.html);
-    assert.match(text, /\bCBCT\b/, fixture.treatment);
-    assert.ok(text.includes('Crown Dental Belváros'), fixture.treatment);
-    assert.ok(text.includes('Petőfi Sándor utca 11'), fixture.treatment);
+    assertOrthodonticPreparation(env.emails[0].payload.html, fixture);
   }
 });
 
-test('Belváros consultations and non-consultation treatments receive no Prímás Sziget imaging instructions', async () => {
+test('standalone orthodontic booking labels receive the same conditional preparation instructions in all four languages', async () => {
   for (const fixture of [
+    { locale: 'hu', treatment: 'Fogszabályozás' },
+    { locale: 'hu', treatment: 'Fogszabalyozas' },
+    { locale: 'en', treatment: 'Orthodontics' },
+    { locale: 'de', treatment: 'Kieferorthopädie' },
+    { locale: 'sk', treatment: 'Ortodontia' },
+  ]) {
+    const env = environment({ appointment: fixture });
+    assert.equal((await env.submit()).status, 200);
+    assertOrthodonticPreparation(env.emails[0].payload.html, fixture);
+  }
+});
+
+test('Belváros appointments, orthodontic follow-ups and unrelated treatments receive no Prímás Sziget imaging instructions', async () => {
+  for (const fixture of [
+    { clinic: 'belvaros', locale: 'hu', treatment: 'Fogszabályozás' },
+    { clinic: 'belvaros', locale: 'en', treatment: 'Orthodontics' },
+    { clinic: 'belvaros', locale: 'de', treatment: 'Kieferorthopädie' },
+    { clinic: 'belvaros', locale: 'sk', treatment: 'Ortodontia' },
     { clinic: 'belvaros', locale: 'hu', treatment: 'Fogszabályozási konzultáció' },
     { clinic: 'belvaros', locale: 'en', treatment: 'General consultation' },
     { clinic: 'belvaros', locale: 'de', treatment: 'Kieferorthopädische Beratung' },
     { clinic: 'belvaros', locale: 'sk', treatment: 'Ortodontická konzultácia' },
     { clinic: 'primas-sziget', locale: 'hu', treatment: 'Fogkőeltávolítás' },
     { clinic: 'primas-sziget', locale: 'hu', treatment: 'Fogszabályozás kontroll' },
+    { clinic: 'primas-sziget', locale: 'en', treatment: 'Orthodontics follow-up' },
+    { clinic: 'primas-sziget', locale: 'de', treatment: 'Kieferorthopädie Kontrolle' },
+    { clinic: 'primas-sziget', locale: 'sk', treatment: 'Ortodontická kontrola' },
     { clinic: 'primas-sziget', locale: 'en', treatment: 'Teeth whitening' },
   ]) {
     const env = environment({ appointment: fixture });
     assert.equal((await env.submit({ appointmentClinicId: fixture.clinic })).status, 200);
-    assert.doesNotMatch(visibleText(env.emails[0].payload.html), /\bCBCT\b|\bCT\b|röntgen|X-ray|\bRTG\b/i, fixture.treatment);
+    const html = env.emails[0].payload.html;
+    const links = calendarLinks(html);
+    for (const text of [visibleText(html), links.google.searchParams.get('details'), links.ics.searchParams.get('details')]) {
+      assert.doesNotMatch(text, /\bCBCT\b|\bCT\b|röntgen|X-ray|cephalometric|\bRTG\b/i, fixture.treatment);
+    }
   }
 });
 
