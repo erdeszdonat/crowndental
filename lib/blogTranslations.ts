@@ -16,6 +16,24 @@ export type BlogTranslationGroup = Record<SupportedLocale, string>;
  */
 export const BLOG_TRANSLATION_GROUPS: readonly BlogTranslationGroup[] = [
   {
+    hu: 'fogaszati-hej-arak-teljes-koltseg',
+    sk: 'fazety-cena-celkove-naklady',
+    en: 'veneers-cost-total-treatment',
+    de: 'veneers-kosten-gesamte-behandlung',
+  },
+  {
+    hu: 'direkt-vagy-porcelan-hej-melyiket-valasszam',
+    sk: 'kompozitne-alebo-keramicke-fazety',
+    en: 'composite-vs-porcelain-veneers',
+    de: 'komposit-oder-keramik-veneers',
+  },
+  {
+    hu: 'lathatatlan-sin-vagy-rogzitett-fogszabalyozo-felnottkorban',
+    sk: 'neviditelny-alebo-fixny-strojcek-v-dospelosti',
+    en: 'clear-aligners-or-fixed-braces-adults',
+    de: 'aligner-oder-feste-zahnspange-erwachsene',
+  },
+  {
     hu: 'soha-nincs-keso-a-tokeletes-mosolyhoz-fogszabalyoz',
     sk: 'ortodoncia-v-kazdom-veku-deti-tinedzeri-dospeli',
     en: 'orthodontics-every-age-children-teenagers-adults',

@@ -18,8 +18,9 @@ function relatedTreatmentSlug(post: any): string {
   const haystack = `${post?.title ?? ''} ${post?.excerpt ?? ''} ${post?.slug ?? ''}`.toLocaleLowerCase();
   if (/implant|all-on-4/.test(haystack)) return 'implantatum';
   if (/protez|denture|zahnersatz|fogsor|műfogsor|zubn[aé] n[aá]hrad/.test(haystack)) return 'fogsor';
+  if (/h[eé]j|fazet|veneer/.test(haystack)) return 'direkt-hej';
+  if (/ortodon|orthodon|aligner|stroj[cč]ek|braces|zahnspang|fogszab/.test(haystack)) return 'fogszabalyozas';
   if (/koron|crown|krone|most[ií]k|bridge|brücke|cirk|zircon|zirkon/.test(haystack)) return 'koronak-hidak';
-  if (/ortodon|braces|zahnspang|fogszab/.test(haystack)) return 'fogszabalyozas';
   if (/whiten|bleach|bielen|feh[eé]r[ií]t/.test(haystack)) return 'fogfeherites';
   if (/root canal|wurzel|gy[oö]k[eé]r|endodon/.test(haystack)) return 'gyokerkezeles';
   if (/g[oó]c|focal|ohnisk/.test(haystack)) return 'gockutatas';
@@ -34,12 +35,39 @@ const articleLinkCopy = {
   de: { heading: 'Passende nächste Schritte', treatment: 'Passende Behandlung', all: 'Behandlungen und Preise', international: 'Zahnbehandlung in Ungarn' },
 } as const;
 
+type ArticleImageData = {
+  imageUrl?: string;
+  width?: number;
+  height?: number;
+  alt?: string;
+  caption?: string;
+  sourceName?: string;
+  sourceUrl?: string;
+};
+
+function ImageCaption({ image, sourceLabel }: { image: ArticleImageData; sourceLabel: string }) {
+  if (!image.caption && !image.sourceName && !image.sourceUrl) return null;
+
+  return (
+    <figcaption className="mt-3 text-sm font-normal leading-relaxed text-gray-500">
+      {image.caption}
+      {image.caption && (image.sourceName || image.sourceUrl) ? ' · ' : null}
+      {image.sourceUrl ? (
+        <a href={image.sourceUrl} className="underline underline-offset-2 hover:text-sky-600" rel="noopener noreferrer">
+          {image.sourceName || sourceLabel}
+        </a>
+      ) : image.sourceName}
+    </figcaption>
+  );
+}
+
 export default function BlogPostClient({ post }: { post: any }) {
   const t = useTranslations('blog');
   const locale = useLocale();
   const p = locale === 'hu' ? '' : `/${locale}`;
   const dateLocale = locale === 'sk' ? 'sk-SK' : locale === 'en' ? 'en-GB' : locale === 'de' ? 'de-DE' : 'hu-HU';
   const linkCopy = articleLinkCopy[locale as keyof typeof articleLinkCopy] ?? articleLinkCopy.hu;
+  const sourceLabel = locale === 'sk' ? 'Zdroj fotografie' : locale === 'en' ? 'Image source' : locale === 'de' ? 'Bildquelle' : 'Kép forrása';
   const treatmentSlug = relatedTreatmentSlug(post);
   const internationalPath = INTERNATIONAL_PATIENT_PATHS[locale as keyof typeof INTERNATIONAL_PATIENT_PATHS] ?? INTERNATIONAL_PATIENT_PATHS.hu;
 
@@ -75,19 +103,22 @@ export default function BlogPostClient({ post }: { post: any }) {
             {post.title}
           </h1>
           {post.imageUrl && (
-            <div className="relative aspect-video rounded-[2.5rem] overflow-hidden shadow-2xl mb-12 border border-gray-100 group">
-              <Image
-                loader={sanityImageLoader}
-                src={post.imageUrl}
-                alt={post.title}
-                fill
-                sizes="(max-width: 767px) calc(100vw - 2rem), 896px"
-                quality={82}
-                preload
-                className="object-cover transform group-hover:scale-105 transition-transform duration-1000"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
-            </div>
+            <figure className="mb-12">
+              <div className="relative aspect-video rounded-[2.5rem] overflow-hidden shadow-2xl border border-gray-100 group">
+                <Image
+                  loader={sanityImageLoader}
+                  src={post.imageUrl}
+                  alt={post.mainImage?.alt ?? post.title}
+                  fill
+                  sizes="(max-width: 767px) calc(100vw - 2rem), 896px"
+                  quality={82}
+                  preload
+                  className="object-cover transform group-hover:scale-105 transition-transform duration-1000"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+              </div>
+              <ImageCaption image={post.mainImage ?? {}} sourceLabel={sourceLabel} />
+            </figure>
           )}
         </header>
 
@@ -116,6 +147,26 @@ export default function BlogPostClient({ post }: { post: any }) {
 
             while (idx < blocks.length) {
               const block = blocks[idx];
+              if (block._type === 'image' && block.imageUrl) {
+                result.push(
+                  <figure key={block._key ?? `image-${idx}`} className="my-10 not-prose">
+                    <Image
+                      loader={sanityImageLoader}
+                      src={block.imageUrl}
+                      alt={block.alt ?? ''}
+                      width={block.width > 0 ? block.width : 1600}
+                      height={block.height > 0 ? block.height : 900}
+                      sizes="(max-width: 767px) calc(100vw - 2rem), 896px"
+                      quality={82}
+                      loading="lazy"
+                      className="h-auto w-full rounded-2xl border border-gray-100"
+                    />
+                    <ImageCaption image={block} sourceLabel={sourceLabel} />
+                  </figure>
+                );
+                idx++;
+                continue;
+              }
               if (block._type !== 'block') { idx++; continue; }
 
               if (block.listItem === 'bullet') {

@@ -1,3 +1,10 @@
+const articleImageFields = [
+  { name: 'alt', title: 'Képleírás (akadálymentesítés)', type: 'string' },
+  { name: 'caption', title: 'Képaláírás', type: 'text', rows: 2 },
+  { name: 'sourceName', title: 'Kép készítője / forrása', type: 'string' },
+  { name: 'sourceUrl', title: 'Kép forrásának hivatkozása', type: 'url' },
+];
+
 export default {
   name: 'post',
   title: 'Blog Cikkek',
@@ -122,12 +129,16 @@ export default {
       title: 'Kiemelt kép',
       type: 'image',
       options: { hotspot: true },
+      fields: articleImageFields,
     },
     {
       name: 'content',
       title: 'Cikk tartalma',
       type: 'array',
-      of: [{ type: 'block' }, { type: 'image' }],
+      of: [
+        { type: 'block' },
+        { type: 'image', options: { hotspot: true }, fields: articleImageFields },
+      ],
     }
   ],
 }

@@ -39,6 +39,12 @@ type BlogPost = {
   language: string;
   category: string;
   imageUrl?: string;
+  mainImage?: {
+    alt?: string;
+    caption?: string;
+    sourceName?: string;
+    sourceUrl?: string;
+  };
   content?: unknown[];
   authorName?: string;
   authorRole?: string;
@@ -94,7 +100,15 @@ const postFields = `
   "language": coalesce(language, "hu"),
   "category": coalesce(category, "professional"),
   "imageUrl": mainImage.asset->url,
-  content,
+  mainImage { alt, caption, sourceName, sourceUrl },
+  content[] {
+    ...,
+    _type == "image" => {
+      "imageUrl": asset->url,
+      "width": asset->metadata.dimensions.width,
+      "height": asset->metadata.dimensions.height
+    }
+  },
   authorName,
   authorRole,
   authorProfileUrl,
@@ -186,7 +200,7 @@ export async function generateMetadata(props: BlogPostPageProps): Promise<Metada
       publishedTime: post.publishedAt,
       modifiedTime: post._updatedAt,
       authors: post.authorName ? [post.authorName] : ['Crown Dental'],
-      images: [{ url: image, alt: post.title }],
+      images: [{ url: image, alt: post.mainImage?.alt ?? post.title }],
     },
     twitter: { card: 'summary_large_image', title, description, images: [image] },
   };
