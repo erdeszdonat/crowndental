@@ -293,7 +293,8 @@ export function BookingForm({ directOffer, initialTreatmentSlug }: {
                         <input type="radio" name="city" value={city} checked={formData.city === city} disabled={unavailable} onChange={handleChange} className="mt-1 h-4 w-4 accent-sky-700 shrink-0" />
                         <span className="min-w-0">
                           <strong className="block text-sm">{city}</strong>
-                          <span className="mt-1 block text-xs leading-relaxed">{city === 'Esztergom' ? 'Petőfi Sándor utca 11.' : 'Királyok útja 55.'}</span>
+                          <span className="mt-1 block text-xs leading-relaxed">{city === 'Esztergom' ? 'Belváros: Petőfi Sándor utca 11. · Prímás Sziget: Helischer József út 6.' : 'Királyok útja 55.'}</span>
+                          {city === 'Esztergom' && <span className="mt-2 block text-xs leading-relaxed">{locale === 'en' ? 'We confirm the clinic when calling you back.' : locale === 'de' ? 'Die Praxis stimmen wir beim Rückruf mit Ihnen ab.' : locale === 'sk' ? 'Presnú ambulanciu potvrdíme pri spätnom telefonáte.' : 'A pontos rendelőt visszahíváskor egyeztetjük.'}</span>}
                           {unavailable && <span className="mt-2 block text-xs">{budapestOpenLabel}</span>}
                         </span>
                       </label>

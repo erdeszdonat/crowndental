@@ -1,6 +1,7 @@
 import HomeClient, { type HomeSanityImages } from './HomeClient';
 import type { Metadata } from 'next';
-import { buildHomeMetadata } from '@/lib/seo';
+import { buildHomeMetadata, normalizeLocale, safeJsonLd } from '@/lib/seo';
+import { buildLocationSchema } from '@/lib/clinicSchema';
 import { getTreatmentImages } from '@/lib/treatmentImages';
 
 // Sanity-managed marketing images rarely change. A weekly fallback prevents
@@ -83,8 +84,12 @@ async function getHomeSanityImages(): Promise<HomeSanityImages> {
   };
 }
 
-export default async function HomePage() {
+export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
+  const locale = normalizeLocale((await params).locale);
   const sanityImages = await getHomeSanityImages();
 
-  return <HomeClient sanityImages={sanityImages} />;
+  return <>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd({ '@context': 'https://schema.org', '@graph': [buildLocationSchema(locale, 0), buildLocationSchema(locale, 1)] }) }} />
+    <HomeClient sanityImages={sanityImages} />
+  </>;
 }

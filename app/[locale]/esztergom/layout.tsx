@@ -92,7 +92,7 @@ function buildClinicJsonLd(locale: SupportedLocale) {
     '@context': 'https://schema.org',
     '@type': 'Dentist',
     '@id': `${SITE_URL}/esztergom#dentist`,
-    name: 'Crown Dental Esztergom',
+    name: 'Crown Dental Belváros',
     alternateName: ['Crown Dental Ostrihom', 'Crown Dental Esztergomi Rendelő', 'Crown Dental Zahnarztpraxis Esztergom'],
     description: clinicDescriptions[locale],
     url: pageUrl,
@@ -129,7 +129,7 @@ function buildClinicJsonLd(locale: SupportedLocale) {
       },
       {
         '@type': 'OpeningHoursSpecification',
-        dayOfWeek: ['Saturday', 'Sunday'],
+        dayOfWeek: ['Saturday', 'Sunday', 'PublicHolidays'],
         opens: '08:00',
         closes: '20:00',
       },

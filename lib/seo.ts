@@ -163,22 +163,22 @@ export function buildHomeMetadata(locale: string): Metadata {
   const content: Record<SupportedLocale, { title: string; description: string; keywords: string[] }> = {
     hu: {
       title: 'Crown Dental Esztergom | Fogászat saját fogtechnikai laborral',
-      description: 'Prémium fogászati ellátás Esztergom belvárosában saját fogtechnikai laborral, hétvégi rendelés és online időpontkérés magyar és szlovák pácienseknek.',
+      description: 'Crown Dental fogászat Esztergomban: Belváros és Prímás Sziget. Saját laborháttér, hétvégi és ünnepnapi rendelés, online időpontkérés.',
       keywords: ['Crown Dental Esztergom', 'fogászat Esztergom', 'fogorvos Esztergom', 'fogorvos Komárom-Esztergom'],
     },
     en: {
       title: 'Crown Dental Esztergom | Dentistry with an in-house laboratory',
-      description: 'Modern dental care in central Esztergom with an in-house dental laboratory, weekend appointments and online booking for Hungarian and international patients.',
+      description: 'Crown Dental in Esztergom: Belváros and Prímás Sziget clinics, in-house laboratory support, weekend and holiday appointments and online booking.',
       keywords: ['dentist Esztergom', 'dental clinic Esztergom', 'dentist Hungary', 'Crown Dental'],
     },
     sk: {
       title: 'Crown Dental Ostrihom | Zubár pre pacientov zo Slovenska',
-      description: 'Moderná zubná klinika v centre Ostrihomu s vlastným laboratóriom, víkendovými termínmi a online rezerváciou pre pacientov zo Štúrova a južného Slovenska.',
+      description: 'Crown Dental v Ostrihome: ambulancie Belváros a Prímás Sziget, vlastné laboratórium, ošetrenia cez víkendy a sviatky, online žiadosť o termín.',
       keywords: ['zubár Ostrihom', 'zubná klinika Ostrihom', 'zubár Maďarsko', 'zubár pri Štúrove'],
     },
     de: {
       title: 'Crown Dental Esztergom | Zahnarztpraxis mit eigenem Dentallabor',
-      description: 'Moderne Zahnmedizin im Zentrum von Esztergom mit eigenem Dentallabor, Wochenendterminen und Online-Terminbuchung für deutschsprachige Patienten.',
+      description: 'Crown Dental Esztergom: Praxen Belváros und Prímás Sziget, eigenes Dentallabor, Wochenend- und Feiertagstermine sowie Online-Terminanfragen.',
       keywords: ['Zahnarzt Esztergom', 'Zahnarzt Ungarn', 'Zahnklinik Esztergom', 'Crown Dental Esztergom'],
     },
   };
