@@ -33,14 +33,24 @@ function imageUrl(url: string, width: number) {
   return `${url}?auto=format&w=${width}&q=75`;
 }
 
+async function getPrimasClinicImage(): Promise<string | undefined> {
+  const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'h68mmabs';
+  const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
+  const query = '*[_type == "location" && name == "primas-sziget" && !(_id in path("drafts.**"))][0]{"url": image.asset->url}';
+  const response = await fetch(`https://${projectId}.api.sanity.io/v2024-03-10/data/query/${dataset}?query=${encodeURIComponent(query)}`, { next: { revalidate: 604800, tags: ['clinic-images'] } });
+  if (!response.ok) throw new Error(`Clinic image unavailable (${response.status})`);
+  const data = await response.json() as { result: { url?: string } | null };
+  return data.result?.url?.startsWith('https://cdn.sanity.io/') ? data.result.url : undefined;
+}
+
 export default async function PrimasSzigetPage({ params }: Props) {
-  const [routeParams, images] = await Promise.all([params, getTreatmentImages()]);
+  const [routeParams, images, clinicImage] = await Promise.all([params, getTreatmentImages(), getPrimasClinicImage()]);
   const locale = normalizeLocale(routeParams.locale);
   const copy = clinicCopy[locale];
   const content = primasPageContent[locale];
   const prefix = localePrefix(locale);
   const clinic = CLINIC_LOCATIONS[1];
-  const heroImage = images['esztetikai-fogaszat'];
+  const heroImage = clinicImage || images['esztetikai-fogaszat'];
   const labImage = images.fokep1;
   const veneerCards = [{ slug: 'direkt-hej' as const, title: copy.direct }, { slug: 'indirekt-hej' as const, title: copy.indirect }];
 
@@ -51,7 +61,7 @@ export default async function PrimasSzigetPage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(buildFaqJsonLd(content.faqs.map(({ question, answer }) => ({ q: question, a: answer })))) }} />
 
       <section className="relative isolate overflow-hidden bg-slate-950 text-white">
-        {heroImage && <Image src={imageUrl(heroImage, 1920)} alt="" fill preload unoptimized sizes="100vw" className="object-cover object-[65%_center]" />}
+        {heroImage && <Image src={imageUrl(heroImage, 1536)} alt="" fill preload unoptimized sizes="100vw" className="object-cover object-center" />}
         <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/80 to-slate-950/25" />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-slate-950/20" />
         <div className="container relative mx-auto px-5 pb-16 pt-36 sm:pb-24 sm:pt-44 lg:pb-28 lg:pt-48">

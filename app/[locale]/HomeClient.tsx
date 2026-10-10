@@ -268,12 +268,16 @@ function LocationSelector({ locations }: { locations: HomeSanityImages['location
             </div>
           </motion.a>
           <Link href={`${p}/primas-sziget`} className="group relative flex min-h-[360px] flex-col justify-end overflow-hidden rounded-[2rem] bg-gradient-to-br from-sky-950 to-sky-700 p-8 shadow-xl md:p-10">
+            {locations['primas-sziget']?.imageUrl && <Image src={locations['primas-sziget'].imageUrl} alt="Crown Dental Prímás Sziget" fill unoptimized sizes="(max-width: 767px) 100vw, 50vw" className="object-cover transition-transform duration-700 motion-safe:group-hover:scale-105" />}
+            <div className="absolute inset-0 bg-gradient-to-t from-gray-950/95 via-gray-950/60 to-gray-950/20" />
+            <div className="relative">
             <MapPin className="mb-6 h-12 w-12 text-sky-300" aria-hidden="true" />
             <p className="mb-3 font-bold uppercase tracking-wider text-sky-300">Esztergom · Prímás-sziget</p>
             <h3 className="mb-2 text-3xl font-black text-white md:text-4xl">Crown Dental Prímás Sziget</h3>
             <p className="mb-3 text-lg text-sky-100">2500 Esztergom, Helischer József út 6.</p>
             <p className="mb-6 text-sm leading-relaxed text-sky-100">{copy.freeParking} · {copy.accessible}</p>
             <span className="inline-flex items-center gap-3 font-bold text-white">{t('visitClinic')} <ArrowRight className="h-5 w-5" aria-hidden="true" /></span>
+            </div>
           </Link>
           {/* Budapest */}
           <motion.a href={`${p}/budapest`} initial={{ opacity:0, x:30 }} whileInView={{ opacity:1, x:0 }} viewport={{ once:true }} className="group relative rounded-[2rem] overflow-hidden shadow-xl aspect-[4/3] lg:aspect-video cursor-pointer bg-gray-900 block">
