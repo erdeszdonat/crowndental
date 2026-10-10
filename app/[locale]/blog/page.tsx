@@ -40,7 +40,7 @@ async function getBlogPosts() {
   try {
     const sanityProjectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'h68mmabs';
     const dataSet = process.env.NEXT_PUBLIC_SANITY_DATASET ?? 'production';
-    const query = encodeURIComponent(`*[_type == "post"] | order(publishedAt desc) {
+    const query = encodeURIComponent(`*[_type == "post" && !(_id in path("drafts.**"))] | order(publishedAt desc) {
       _id,
       title,
       "slug": slug.current,

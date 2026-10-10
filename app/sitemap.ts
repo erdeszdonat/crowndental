@@ -20,7 +20,7 @@ const fetchSanityPosts = async (): Promise<SanityPost[]> => {
   const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'h68mmabs';
   const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
   const query = encodeURIComponent(
-    `*[_type == "post"]{ "slug": slug.current, _updatedAt, "language": coalesce(language, "hu") }`,
+    `*[_type == "post" && !(_id in path("drafts.**"))]{ "slug": slug.current, _updatedAt, "language": coalesce(language, "hu") }`,
   );
   const url = `https://${projectId}.api.sanity.io/v2024-03-08/data/query/${dataset}?query=${query}`;
 

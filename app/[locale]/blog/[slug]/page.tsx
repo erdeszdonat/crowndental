@@ -69,7 +69,7 @@ export const revalidate = 604800;
 export async function generateStaticParams(): Promise<Array<{ locale: string; slug: string }>> {
   try {
     const posts = await client.fetch<Array<{ slug?: string; locale?: string }>>(
-      `*[_type == "post" && defined(slug.current)]{
+      `*[_type == "post" && !(_id in path("drafts.**")) && defined(slug.current)]{
         "slug": slug.current,
         "locale": coalesce(language, "hu")
       }`,
@@ -118,7 +118,7 @@ const postFields = `
 `;
 
 const getPost = cache(async (locale: string, slug: string): Promise<BlogPost | null> => {
-  const query = `*[_type == "post" && slug.current == $slug && coalesce(language, "hu") == $language][0]{${postFields}}`;
+  const query = `*[_type == "post" && !(_id in path("drafts.**")) && slug.current == $slug && coalesce(language, "hu") == $language][0]{${postFields}}`;
   return client.fetch(
     query,
     { slug: sanityBlogSlug(slug), language: locale },
@@ -147,7 +147,7 @@ async function getConsolidatedPost(locale: string, slug: string): Promise<BlogPo
 }
 
 const getPostLanguageBySlug = cache(async (slug: string): Promise<{ language: string } | null> => {
-  const query = `*[_type == "post" && slug.current == $slug][0]{"language": coalesce(language, "hu")}`;
+  const query = `*[_type == "post" && !(_id in path("drafts.**")) && slug.current == $slug][0]{"language": coalesce(language, "hu")}`;
   return client.fetch(query, { slug }, { next: { revalidate } });
 });
 
