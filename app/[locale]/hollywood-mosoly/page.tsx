@@ -7,6 +7,7 @@ import { normalizeVeneerLocale, veneerPath } from '@/lib/veneerI18n';
 import { hollywoodContent } from '@/components/HollywoodContent';
 import VeneerImage from '@/components/VeneerImage';
 import VeneerOffer from '@/components/VeneerOffer';
+import HollywoodPrices from '@/components/HollywoodPrices';
 import VeneerSeo, { veneerMetadata } from '@/components/VeneerSeo';
 import { VeneerHealthNote } from '@/components/VeneerPage';
 import { BookingForm } from '../idopont/BookingClient';
@@ -81,6 +82,8 @@ export default async function HollywoodMosolyPage({ params }: Props) {
             <p className={styles.costNote}>{copy.costNote}</p>
           </div>
         </section>
+
+        <HollywoodPrices locale={locale} directOffer={direct} indirectOffer={indirect} />
 
         <section className={styles.process} aria-labelledby="hollywood-process-title">
           <div className="crown-container">

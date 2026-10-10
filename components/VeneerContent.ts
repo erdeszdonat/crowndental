@@ -35,8 +35,8 @@ export const veneerContent = {
     otherSlug: 'indirekt-hej' as const,
   },
   'indirekt-hej': {
-    title: 'Porcelán héj Esztergom – 99.000 Ft/fog | Crown Dental',
-    description: 'Indirekt porcelán héj saját fogtechnikai laborból, Esztergomban. Most 99.000 Ft/fog 120.000 Ft helyett. Prémium kerámia, személyes konzultáció és időpontkérés.',
+    title: 'Porcelán héj Esztergom – 75.000 Ft/fog | Crown Dental',
+    description: 'Indirekt porcelán héj saját fogtechnikai laborból, Esztergomban. Most 75.000 Ft/fog 120.000 Ft helyett. Prémium kerámia, személyes konzultáció és időpontkérés.',
     h1: 'Indirekt porcelán héj saját laborból',
     eyebrow: 'Prémium kerámia · Esztergom',
     lead: 'Egyénre tervezett porcelán héj a Crown Dental saját fogtechnikai laborjából. A fogorvosi tervezés és a labor munkája együtt alakítja ki az Ön elképzeléséhez illő színt és formát. Már most kérhető időpont.',
@@ -54,7 +54,7 @@ export const veneerContent = {
       { title: 'Próba és rögzítés', body: 'A fogorvos ellenőrzi az illeszkedést és a formát, majd rögzíti a héjakat. A kezelést kontroll és személyes ápolási tanácsok egészítik ki.' },
     ],
     faqs: [
-      { question: 'Mennyi a porcelán héj ára a Crown Dentalnál?', answer: 'A porcelán héj jelenlegi ára 99.000 Ft/fog, 120.000 Ft helyett. Ez egy fogra vonatkozó héjár; az esetleg szükséges további kezelések költsége az egyéni kezelési terv része.' },
+      { question: 'Mennyi a porcelán héj ára a Crown Dentalnál?', answer: 'A porcelán héj jelenlegi ára 75.000 Ft/fog, 120.000 Ft helyett. Ez egy fogra vonatkozó héjár; az esetleg szükséges további kezelések költsége az egyéni kezelési terv része.' },
       { question: 'Már most lehet időpontot kérni porcelán héjra?', answer: 'Igen, a porcelán héjra már most kérhető konzultációs időpont a jelenlegi kedvezményes áron. Az űrlap elküldése után egyeztetjük és visszaigazoljuk az időpontot.' },
       { question: 'Hol készül az indirekt héj?', answer: 'A Crown Dental saját fogtechnikai laborjában, a fogorvossal egyeztetett terv alapján. A rendelő Esztergomban, a Petőfi Sándor utca 11. alatt található.' },
       { question: 'Kell csiszolni a fogat a porcelán héjhoz?', answer: 'A szükséges előkészítés foganként eltérhet. A konzultáción tisztázzuk, mennyi foganyag megőrizhető, és milyen beavatkozás indokolt; csiszolásmentességet vizsgálat nélkül nem ígérünk.' },
@@ -108,8 +108,8 @@ const translatedVeneerContent: Record<Exclude<VeneerLocale, 'hu'>, Record<Veneer
       otherSlug: 'indirekt-hej',
     },
     'indirekt-hej': {
-      title: 'Porcelain veneers in Esztergom – 99,000 HUF | Crown Dental',
-      description: 'Porcelain veneers from our in-house laboratory in Esztergom. Now 99,000 HUF per tooth instead of 120,000 HUF. Premium ceramic and personal consultation.',
+      title: 'Porcelain veneers in Esztergom – 75,000 HUF | Crown Dental',
+      description: 'Porcelain veneers from our in-house laboratory in Esztergom. Now 75,000 HUF per tooth instead of 120,000 HUF. Premium ceramic and personal consultation.',
       h1: 'Porcelain veneers from our own laboratory',
       eyebrow: 'Premium ceramic · Esztergom',
       lead: 'Individually designed porcelain veneers from Crown Dental’s own dental laboratory. Dental planning and laboratory work come together to create the shade and shape that suit your preferences. Appointment requests are already open.',
@@ -127,7 +127,7 @@ const translatedVeneerContent: Record<Exclude<VeneerLocale, 'hu'>, Record<Veneer
         { title: 'Try-in and bonding', body: 'The dentist checks the fit and shape before bonding the veneers. Your treatment also includes a review plan and personal care advice.' },
       ],
       faqs: [
-        { question: 'How much do porcelain veneers cost at Crown Dental?', answer: 'The current price is 99,000 HUF per tooth instead of 120,000 HUF. This is the veneer price for one tooth; any additional treatment required is priced as part of your individual treatment plan.' },
+        { question: 'How much do porcelain veneers cost at Crown Dental?', answer: 'The current price is 75,000 HUF per tooth instead of 120,000 HUF. This is the veneer price for one tooth; any additional treatment required is priced as part of your individual treatment plan.' },
         { question: 'Can I request a porcelain veneer appointment now?', answer: 'Yes, you can already request a porcelain veneer consultation at the current special price. After you send the form, we will contact you to arrange and confirm an appointment.' },
         { question: 'Where are the indirect veneers made?', answer: 'In Crown Dental’s own dental laboratory, following the plan agreed with the dentist. The clinic is at Petőfi Sándor utca 11, Esztergom, Hungary.' },
         { question: 'Does the tooth need to be prepared for a porcelain veneer?', answer: 'The preparation required can differ from tooth to tooth. At the consultation, we explain how much tooth structure can be preserved and what preparation is appropriate. We do not promise no-preparation treatment without examining your teeth.' },
@@ -170,8 +170,8 @@ const translatedVeneerContent: Record<Exclude<VeneerLocale, 'hu'>, Record<Veneer
       otherSlug: 'indirekt-hej',
     },
     'indirekt-hej': {
-      title: 'Keramik-Veneers in Esztergom – 99.000 HUF | Crown Dental',
-      description: 'Keramik-Veneers aus unserem eigenen Dentallabor in Esztergom. Jetzt 99.000 HUF pro Zahn statt 120.000 HUF. Hochwertige Keramik und persönliche Beratung.',
+      title: 'Keramik-Veneers in Esztergom – 75.000 HUF | Crown Dental',
+      description: 'Keramik-Veneers aus unserem eigenen Dentallabor in Esztergom. Jetzt 75.000 HUF pro Zahn statt 120.000 HUF. Hochwertige Keramik und persönliche Beratung.',
       h1: 'Keramik-Veneers aus unserem eigenen Labor',
       eyebrow: 'Hochwertige Keramik · Esztergom',
       lead: 'Individuell geplante Keramik-Veneers aus dem eigenen Dentallabor von Crown Dental. Zahnärztliche Planung und Laborarbeit greifen ineinander, um Farbe und Form auf Ihre Vorstellungen abzustimmen. Sie können bereits einen Termin anfragen.',
@@ -189,7 +189,7 @@ const translatedVeneerContent: Record<Exclude<VeneerLocale, 'hu'>, Record<Veneer
         { title: 'Anprobe und Befestigung', body: 'Der Zahnarzt kontrolliert Passform und Form und befestigt anschließend die Veneers. Kontrolltermine und persönliche Pflegehinweise ergänzen die Behandlung.' },
       ],
       faqs: [
-        { question: 'Was kosten Keramik-Veneers bei Crown Dental?', answer: 'Der aktuelle Preis beträgt 99.000 HUF pro Zahn statt 120.000 HUF. Dies ist der Veneer-Preis für einen Zahn. Die Kosten eventuell erforderlicher weiterer Behandlungen werden im individuellen Behandlungsplan aufgeführt.' },
+        { question: 'Was kosten Keramik-Veneers bei Crown Dental?', answer: 'Der aktuelle Preis beträgt 75.000 HUF pro Zahn statt 120.000 HUF. Dies ist der Veneer-Preis für einen Zahn. Die Kosten eventuell erforderlicher weiterer Behandlungen werden im individuellen Behandlungsplan aufgeführt.' },
         { question: 'Kann ich schon jetzt einen Termin für Keramik-Veneers anfragen?', answer: 'Ja, Sie können bereits einen Beratungstermin für Keramik-Veneers zum aktuellen Aktionspreis anfragen. Nach dem Absenden des Formulars stimmen wir einen Termin mit Ihnen ab und bestätigen ihn.' },
         { question: 'Wo werden die indirekten Veneers hergestellt?', answer: 'Im eigenen Dentallabor von Crown Dental auf Grundlage des mit dem Zahnarzt abgestimmten Plans. Die Praxis befindet sich in der Petőfi Sándor utca 11 in Esztergom, Ungarn.' },
         { question: 'Müssen Zähne für Keramik-Veneers beschliffen werden?', answer: 'Die notwendige Vorbereitung kann sich von Zahn zu Zahn unterscheiden. Bei der Beratung klären wir, wie viel Zahnsubstanz erhalten werden kann und welche Vorbereitung sinnvoll ist. Ohne Untersuchung versprechen wir keine Behandlung ohne Beschleifen.' },
@@ -232,8 +232,8 @@ const translatedVeneerContent: Record<Exclude<VeneerLocale, 'hu'>, Record<Veneer
       otherSlug: 'indirekt-hej',
     },
     'indirekt-hej': {
-      title: 'Keramické fazety v Ostrihome – 99 000 HUF | Crown Dental',
-      description: 'Keramické fazety z vlastného laboratória v Ostrihome. Teraz 99 000 HUF za zub namiesto 120 000 HUF. Prémiová keramika a osobná konzultácia.',
+      title: 'Keramické fazety v Ostrihome – 75 000 HUF | Crown Dental',
+      description: 'Keramické fazety z vlastného laboratória v Ostrihome. Teraz 75 000 HUF za zub namiesto 120 000 HUF. Prémiová keramika a osobná konzultácia.',
       h1: 'Keramické fazety z nášho vlastného laboratória',
       eyebrow: 'Prémiová keramika · Ostrihom',
       lead: 'Individuálne navrhnuté keramické fazety z vlastného zubného laboratória Crown Dental. Spolupráca zubného lekára a laboratória pomáha vytvoriť farbu a tvar podľa vašich predstáv. O termín môžete požiadať už teraz.',
@@ -251,7 +251,7 @@ const translatedVeneerContent: Record<Exclude<VeneerLocale, 'hu'>, Record<Veneer
         { title: 'Skúška a upevnenie', body: 'Zubný lekár skontroluje dosadnutie a tvar a potom fazety upevní. Súčasťou liečby je plán kontrol a osobné odporúčania na starostlivosť.' },
       ],
       faqs: [
-        { question: 'Koľko stoja keramické fazety v Crown Dental?', answer: 'Aktuálna cena je 99 000 HUF za zub namiesto 120 000 HUF. Ide o cenu fazety na jeden zub. Náklady na prípadné ďalšie potrebné ošetrenia sú súčasťou individuálneho liečebného plánu.' },
+        { question: 'Koľko stoja keramické fazety v Crown Dental?', answer: 'Aktuálna cena je 75 000 HUF za zub namiesto 120 000 HUF. Ide o cenu fazety na jeden zub. Náklady na prípadné ďalšie potrebné ošetrenia sú súčasťou individuálneho liečebného plánu.' },
         { question: 'Môžem už teraz požiadať o termín na keramické fazety?', answer: 'Áno, už teraz môžete požiadať o konzultáciu ku keramickým fazetám za aktuálnu zvýhodnenú cenu. Po odoslaní formulára sa s vami dohodneme na termíne a potvrdíme ho.' },
         { question: 'Kde sa zhotovujú nepriame fazety?', answer: 'Vo vlastnom zubnom laboratóriu Crown Dental podľa plánu dohodnutého so zubným lekárom. Ambulancia sa nachádza na adrese Petőfi Sándor utca 11, Ostrihom (Esztergom), Maďarsko.' },
         { question: 'Treba zub pre keramickú fazetu brúsiť?', answer: 'Potrebná príprava sa môže pri jednotlivých zuboch líšiť. Na konzultácii vysvetlíme, koľko zubného tkaniva možno zachovať a aký zásah je opodstatnený. Bez vyšetrenia nesľubujeme ošetrenie bez brúsenia.' },

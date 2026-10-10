@@ -14,10 +14,10 @@ type HollywoodCopy = {
 
 export const hollywoodContent: Record<VeneerLocale, HollywoodCopy> = {
   hu: {
-    title: 'Hollywood smile Esztergom – mosolytervezés és időpontkérés',
-    description: 'Hollywoodi mosoly a Crown Dentalnál, Esztergomban. Direkt kompozit és saját laborban készülő porcelán héjak, átlátható fogankénti árak. Kérjen konzultációt online!',
+    title: 'Hollywoodi mosoly árak Esztergomban | Crown Dental',
+    description: 'Hollywood smile Esztergomban: direkt kompozit és porcelán héj összehasonlítása, fogankénti árak és költségpéldák 4, 6, 8 vagy 10 fogra. Saját fogtechnikai labor.',
     eyebrow: 'Hollywood smile · Crown Dental · Esztergom',
-    heading: 'Hollywood smile.', accent: 'Önre tervezve.',
+    heading: 'Hollywoodi mosoly.', accent: 'Önre tervezve.',
     lead: 'Természetesebb forma vagy ragyogóbb összhatás? Tervezzük meg együtt az Ön hollywoodi mosolyát – direkt kompozit vagy saját laborunkban készülő porcelán héjakkal.',
     cta: 'Mosolytervezési konzultációt kérek', secondaryCta: 'Megnézem a lehetőségeket',
     reassurance: 'Az időpontkérést követően kollégánk egyezteti Önnel a részleteket.',
@@ -53,8 +53,8 @@ export const hollywoodContent: Record<VeneerLocale, HollywoodCopy> = {
     ],
   },
   en: {
-    title: 'Hollywood smile in Esztergom – smile design and consultation',
-    description: 'Plan your Hollywood smile at Crown Dental in Esztergom, Hungary. Composite and in-house porcelain veneers, clear per-tooth prices and online consultation requests.',
+    title: 'Hollywood smile prices in Esztergom | Crown Dental',
+    description: 'Compare composite and in-house porcelain veneers in Esztergom, Hungary. Hollywood smile prices per tooth and cost examples for 4, 6, 8 or 10 teeth.',
     eyebrow: 'Hollywood smile · Crown Dental · Esztergom',
     heading: 'Hollywood smile.', accent: 'Designed around you.',
     lead: 'A more natural shape or a brighter overall look? Let’s plan your Hollywood smile together, with direct composite veneers or porcelain veneers made in our own laboratory.',
@@ -92,8 +92,8 @@ export const hollywoodContent: Record<VeneerLocale, HollywoodCopy> = {
     ],
   },
   de: {
-    title: 'Hollywood Smile in Esztergom – Smile Design und Beratung',
-    description: 'Ihr Hollywood Smile bei Crown Dental in Esztergom, Ungarn. Komposit-Veneers und Keramik-Veneers aus eigenem Labor, transparente Preise pro Zahn und Online-Terminanfrage.',
+    title: 'Hollywood Smile: Preise in Esztergom | Crown Dental',
+    description: 'Komposit- und Keramik-Veneers aus eigenem Labor in Esztergom, Ungarn. Hollywood-Smile-Preise pro Zahn und Kostenbeispiele für 4, 6, 8 oder 10 Zähne im Vergleich.',
     eyebrow: 'Hollywood Smile · Crown Dental · Esztergom',
     heading: 'Hollywood Smile.', accent: 'Individuell geplant.',
     lead: 'Eine natürlichere Form oder ein strahlenderes Gesamtbild? Gemeinsam planen wir Ihr Hollywood Smile – mit direkten Komposit-Veneers oder Keramik-Veneers aus unserem eigenen Labor.',
@@ -131,8 +131,8 @@ export const hollywoodContent: Record<VeneerLocale, HollywoodCopy> = {
     ],
   },
   sk: {
-    title: 'Hollywood smile v Ostrihome – návrh úsmevu a konzultácia',
-    description: 'Naplánujte si hollywoodsky úsmev v Crown Dental v Ostrihome. Kompozitné fazety a keramické fazety z vlastného laboratória, ceny za zub a online žiadosť o konzultáciu.',
+    title: 'Hollywood smile: ceny v Ostrihome | Crown Dental',
+    description: 'Porovnajte kompozitné a keramické fazety z vlastného laboratória v Ostrihome. Ceny hollywoodskeho úsmevu za zub a príklady nákladov na 4, 6, 8 alebo 10 zubov.',
     eyebrow: 'Hollywood smile · Crown Dental · Ostrihom',
     heading: 'Hollywood smile.', accent: 'Navrhnutý pre vás.',
     lead: 'Prirodzenejší tvar alebo žiarivejší celkový vzhľad? Naplánujme váš hollywoodsky úsmev spoločne – s priamymi kompozitnými fazetami alebo keramickými fazetami z nášho vlastného laboratória.',

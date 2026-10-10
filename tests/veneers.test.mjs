@@ -22,15 +22,15 @@ test('direct discount ends at local Budapest midnight, not at UTC midnight', () 
   assert.doesNotMatch(expired.availabilityCopy, /2026|november|korlátozott/);
 });
 
-test('porcelain 99k price applies now while treatment appointments start in November', () => {
+test('porcelain 75k price applies now while treatment appointments start in November', () => {
   for (const date of ['2026-10-02', '2026-11-01', '2027-01-01']) {
     const offer = getVeneerOffer('indirekt-hej', date);
-    assert.equal(offer.price, 99000);
+    assert.equal(offer.price, 75000);
     assert.equal(offer.regularPrice, 120000);
     assert.equal(offer.isPromotion, true);
     assert.equal(offer.bookingFrom, date < '2026-11-01' ? '2026-11-01' : null);
     assert.equal(offer.validThrough, null);
-    assert.equal(offer.formattedPrice, '99.000 Ft');
+    assert.equal(offer.formattedPrice, '75.000 Ft');
   }
 });
 
