@@ -9,6 +9,8 @@ import Link from 'next/link';
 import { MapPin, Phone, Award, Building2, Shield, Calendar, ArrowRight, CheckCircle2, Heart, Upload, Sparkles, User, FileText, Loader2, Download, ChevronDown, Wrench } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
 import { getPreferredGreetingName } from '@/lib/names';
+import { clinicCopy } from '@/lib/clinicLocations';
+import { normalizeLocale } from '@/lib/seo';
 import GoogleReviewsCta from '@/components/GoogleReviewsCta';
 import TreatmentCard from '@/components/TreatmentCard';
 import SmileTreatmentsSection from '@/components/SmileTreatmentsSection';
@@ -239,6 +241,7 @@ function LocationSelector({ locations }: { locations: HomeSanityImages['location
   const t = useTranslations('home.locations');
   const locale = useLocale();
   const p = locale === 'hu' ? '' : `/${locale}`;
+  const copy = clinicCopy[normalizeLocale(locale)];
   return (
     <section className="py-28 bg-white">
       <div className="container mx-auto px-4">
@@ -259,11 +262,19 @@ function LocationSelector({ locations }: { locations: HomeSanityImages['location
             <div className="absolute inset-0 bg-gradient-to-t from-gray-950/90 via-gray-950/40 to-transparent"/>
             <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-end">
               <div className="flex items-center gap-2 text-sky-400 font-bold uppercase tracking-wider mb-3 text-sm"><MapPin className="w-4 h-4"/>{locations.esztergom?.tag||'Komárom-Esztergom'}</div>
-              <h3 className="text-3xl md:text-4xl font-black text-white mb-2">{t('esztergomName')}</h3>
-              <p className="text-gray-300 text-base md:text-lg font-medium mb-6">{locations.esztergom?.address||'Esztergom, Petőfi Sándor utca 11.'}</p>
+              <h3 className="text-3xl md:text-4xl font-black text-white mb-2">Crown Dental Belváros</h3>
+              <p className="text-gray-300 text-base md:text-lg font-medium mb-6">2500 Esztergom, Petőfi Sándor utca 11.</p>
               <div className="inline-flex items-center gap-3 text-white font-bold group-hover:text-sky-400 transition-colors">{t('visitClinic')}<div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-sky-500 transition-all"><ArrowRight className="w-5 h-5"/></div></div>
             </div>
           </motion.a>
+          <Link href={`${p}/primas-sziget`} className="group relative flex min-h-[360px] flex-col justify-end overflow-hidden rounded-[2rem] bg-gradient-to-br from-sky-950 to-sky-700 p-8 shadow-xl md:p-10">
+            <MapPin className="mb-6 h-12 w-12 text-sky-300" aria-hidden="true" />
+            <p className="mb-3 font-bold uppercase tracking-wider text-sky-300">Esztergom · Prímás-sziget</p>
+            <h3 className="mb-2 text-3xl font-black text-white md:text-4xl">Crown Dental Prímás Sziget</h3>
+            <p className="mb-3 text-lg text-sky-100">2500 Esztergom, Helischer József út 6.</p>
+            <p className="mb-6 text-sm leading-relaxed text-sky-100">{copy.freeParking} · {copy.accessible}</p>
+            <span className="inline-flex items-center gap-3 font-bold text-white">{t('visitClinic')} <ArrowRight className="h-5 w-5" aria-hidden="true" /></span>
+          </Link>
           {/* Budapest */}
           <motion.a href={`${p}/budapest`} initial={{ opacity:0, x:30 }} whileInView={{ opacity:1, x:0 }} viewport={{ once:true }} className="group relative rounded-[2rem] overflow-hidden shadow-xl aspect-[4/3] lg:aspect-video cursor-pointer bg-gray-900 block">
             <div className="absolute inset-0">{locations.budapest?.imageUrl?<img src={locations.budapest.imageUrl} loading="lazy" alt="Budapest" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"/>:<div className="w-full h-full bg-slate-800"/>}</div>

@@ -1,0 +1,66 @@
+import type { SupportedLocale } from '@/lib/seo';
+import { APPOINTMENT_CLINICS } from '@/lib/appointmentClinics';
+
+export const CLINIC_LOCATIONS = [
+  { ...APPOINTMENT_CLINICS[0], path: 'esztergom', streetAddress: 'Petőfi Sándor utca 11.', weekdayOpens: '09:00', mapUrl: 'https://maps.app.goo.gl/Xq9V8Z7yymT5nirb9' },
+  { ...APPOINTMENT_CLINICS[1], path: 'primas-sziget', streetAddress: 'Helischer József út 6.', weekdayOpens: '08:00', mapUrl: 'https://www.google.com/maps/search/?api=1&query=2500+Esztergom+Helischer+J%C3%B3zsef+%C3%BAt+6' },
+] as const;
+
+export const clinicCopy = {
+  hu: {
+    title: 'Fogászat Esztergomban, a Prímás-szigeten',
+    description: 'Crown Dental Prímás Sziget: Helischer József út 6., Esztergom. Ingyenes parkoló, akadálymentes bejárat és mosdó, hétvégi rendelés 8–20 óráig.',
+    intro: 'A Crown Dental Prímás Sziget rendelőben állapotfelméréssel és személyre szabott kezelési tervvel várjuk. Fogmegtartó, esztétikai és fogpótló kezeléseinket saját fogtechnikai laborhátterünk támogatja.',
+    weekdays: 'Hétfő–péntek', weekend: 'Szombat, vasárnap és ünnepnapok',
+    freeParking: 'Ingyenes saját parkoló', paidParking: 'Fizetős utcai parkolás', accessible: 'Akadálymentes bejárat és mosdó',
+    book: 'Időpontot kérek', directions: 'Útvonaltervezés', details: 'A rendelő bemutatása',
+    treatments: 'Kezelések a Prímás-szigeti rendelőben', allTreatments: 'Minden kezelés és ár',
+    imaging: 'A szükséges röntgen- és CT-felvételeket a Belváros rendelőben, a Petőfi Sándor utca 11. alatt készítjük. A vizsgálatot és az érkezést telefonon egyeztetjük.',
+    smile: 'Hollywoodi mosoly: direkt vagy porcelán héj?', direct: 'Direkt kompozit héj', indirect: 'Indirekt porcelán héj',
+    smileNote: 'A héj típusa és a kezelendő fogak száma személyes vizsgálat alapján választható ki. A végleges kezelési tervet és költséget konzultáción egyeztetjük.',
+    bookingNote: 'Az online űrlap időpontkérés. A pontos rendelőt és időpontot munkatársunk visszahíváskor egyezteti. Sürgős panasz esetén kérjük, telefonáljon.',
+    clinics: 'Két esztergomi rendelő, közös csapat', fillings: 'Fogtömés és fogkőeltávolítás',
+  },
+  en: {
+    title: 'Dentist on Prímás Island, Esztergom',
+    description: 'Crown Dental Prímás Sziget, Helischer József út 6, Esztergom. Free on-site parking, accessible entrance and toilet. Weekends and holidays 08:00–20:00.',
+    intro: 'At Crown Dental Prímás Sziget, care starts with an examination and a personalised treatment plan. Our in-house laboratory supports restorative, cosmetic and prosthetic dental care.',
+    weekdays: 'Monday–Friday', weekend: 'Saturday, Sunday and public holidays',
+    freeParking: 'Free on-site parking', paidParking: 'Paid street parking', accessible: 'Accessible entrance and toilet',
+    book: 'Request an appointment', directions: 'Get directions', details: 'Explore the clinic',
+    treatments: 'Treatments at Prímás Sziget', allTreatments: 'All treatments and prices',
+    imaging: 'Required X-rays and CT scans are taken at our Belváros clinic, Petőfi Sándor utca 11. Please arrange your examination and visit by phone.',
+    smile: 'Hollywood smile: composite or porcelain veneers?', direct: 'Direct composite veneer', indirect: 'Indirect porcelain veneer',
+    smileNote: 'The type of veneer and number of teeth are determined after an examination. Your final treatment plan and cost are agreed during a consultation.',
+    bookingNote: 'The online form is an appointment request. Our team confirms the clinic and time when calling you back. For urgent concerns, please call us.',
+    clinics: 'Two Esztergom clinics, one team', fillings: 'Fillings and dental cleaning',
+  },
+  sk: {
+    title: 'Zubár na Prímás-sziget v Ostrihome',
+    description: 'Crown Dental Prímás Sziget: Helischer József út 6, Ostrihom. Bezplatné parkovanie, bezbariérový vchod a toaleta. Víkendy a sviatky 08:00–20:00.',
+    intro: 'V Crown Dental Prímás Sziget začíname vyšetrením a individuálnym liečebným plánom. Záchovnú a estetickú stomatológiu aj zubné náhrady podporuje naše vlastné laboratórium.',
+    weekdays: 'Pondelok–piatok', weekend: 'Sobota, nedeľa a maďarské sviatky',
+    freeParking: 'Bezplatné vlastné parkovisko', paidParking: 'Platené parkovanie na ulici', accessible: 'Bezbariérový vchod a toaleta',
+    book: 'Požiadať o termín', directions: 'Navigácia', details: 'Spoznať ambulanciu',
+    treatments: 'Ošetrenia v ambulancii Prímás Sziget', allTreatments: 'Všetky ošetrenia a ceny',
+    imaging: 'Potrebné RTG a CT snímky zhotovujeme v ambulancii Belváros na adrese Petőfi Sándor utca 11. Vyšetrenie a návštevu si dohodnite telefonicky.',
+    smile: 'Hollywoodsky úsmev: kompozitné alebo porcelánové fazety?', direct: 'Priama kompozitná fazeta', indirect: 'Nepriama porcelánová fazeta',
+    smileNote: 'Typ fazety a počet zubov určíme na základe vyšetrenia. Konečný plán a cenu dohodneme pri konzultácii.',
+    bookingNote: 'Online formulár je žiadosť o termín. Presnú ambulanciu a čas vám potvrdíme telefonicky. Pri akútnych ťažkostiach nám zavolajte.',
+    clinics: 'Dve ambulancie v Ostrihome, jeden tím', fillings: 'Výplne a dentálna hygiena',
+  },
+  de: {
+    title: 'Zahnarzt auf der Prímás-Insel in Esztergom',
+    description: 'Crown Dental Prímás Sziget, Helischer József út 6, Esztergom. Kostenloser Parkplatz, barrierefreier Eingang und WC. Wochenende und Feiertage 08–20 Uhr.',
+    intro: 'Bei Crown Dental Prímás Sziget beginnen wir mit einer Untersuchung und einem individuellen Behandlungsplan. Unser eigenes Dentallabor unterstützt Zahnerhaltung, ästhetische Zahnmedizin und Zahnersatz.',
+    weekdays: 'Montag–Freitag', weekend: 'Samstag, Sonntag und ungarische Feiertage',
+    freeParking: 'Kostenloser eigener Parkplatz', paidParking: 'Kostenpflichtige Parkplätze an der Straße', accessible: 'Barrierefreier Eingang und WC',
+    book: 'Termin anfragen', directions: 'Route planen', details: 'Praxis kennenlernen',
+    treatments: 'Behandlungen bei Prímás Sziget', allTreatments: 'Alle Behandlungen und Preise',
+    imaging: 'Erforderliche Röntgen- und CT-Aufnahmen erstellen wir in der Praxis Belváros, Petőfi Sándor utca 11. Bitte stimmen Sie Untersuchung und Anreise telefonisch ab.',
+    smile: 'Hollywood Smile: Komposit- oder Keramik-Veneers?', direct: 'Direktes Komposit-Veneer', indirect: 'Indirektes Keramik-Veneer',
+    smileNote: 'Art der Veneers und Anzahl der Zähne werden nach einer Untersuchung festgelegt. Behandlungsplan und endgültige Kosten besprechen wir bei der Beratung.',
+    bookingNote: 'Das Onlineformular ist eine Terminanfrage. Praxis und Uhrzeit stimmen wir beim Rückruf mit Ihnen ab. Bei akuten Beschwerden rufen Sie uns bitte an.',
+    clinics: 'Zwei Praxen in Esztergom, ein Team', fillings: 'Füllungen und Zahnreinigung',
+  },
+} satisfies Record<SupportedLocale, Record<string, string>>;

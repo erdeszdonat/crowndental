@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { buildLocationSchema } from '@/lib/clinicSchema';
 import ContactClient from './ContactClient';
 import {
   buildBreadcrumbJsonLd,
@@ -15,21 +16,21 @@ const metadataByLocale: Record<SupportedLocale, { title: string; description: st
   hu: {
     title: 'Kapcsolat és útvonal | Crown Dental fogorvos Esztergom',
     description:
-      'Crown Dental Esztergom elérhetőségei: 2500 Esztergom, Petőfi Sándor utca 11. Telefon, e-mail, útvonalterv és online időpontkérés.',
+      'Crown Dental Esztergom elérhetőségei: Belváros, Petőfi Sándor utca 11.; Prímás Sziget, Helischer József út 6. Telefon, útvonalterv és időpontkérés.',
   },
   en: {
     title: 'Contact and directions | Crown Dental dentist Esztergom',
     description:
-      'Contact Crown Dental Esztergom at 11 Petőfi Sándor Street, 2500 Esztergom. Phone, email, directions and online appointment requests.',
+      'Contact both Crown Dental Esztergom clinics: Belváros, Petőfi Sándor utca 11, and Prímás Sziget, Helischer József út 6. Directions and appointments.',
   },
   sk: {
     title: 'Kontakt a navigácia | Crown Dental zubár Ostrihom',
     description:
-      'Kontaktujte Crown Dental Ostrihom na adrese Petőfi Sándor utca 11, 2500 Esztergom. Telefón, e-mail, navigácia a online rezervácia.',
+      'Crown Dental Ostrihom: Belváros, Petőfi Sándor utca 11, a Prímás Sziget, Helischer József út 6. Kontakty, navigácia a online žiadosť o termín.',
   },
   de: {
     title: 'Kontakt und Anfahrt | Crown Dental Zahnarzt Esztergom',
-    description: 'Kontaktieren Sie Crown Dental Esztergom in der Petőfi Sándor utca 11, 2500 Esztergom. Telefon, E-Mail, Anfahrt und Online-Terminbuchung.',
+    description: 'Crown Dental Esztergom: Belváros, Petőfi Sándor utca 11, und Prímás Sziget, Helischer József út 6. Kontakt, Anfahrt und Terminanfrage.',
   },
 };
 
@@ -51,7 +52,7 @@ export default async function ContactPage(props: ContactPageProps) {
     description: metadataByLocale[locale].description,
     url,
     inLanguage: locale,
-    mainEntity: { '@id': 'https://www.crowndental.hu/esztergom#dentist' },
+    mainEntity: [buildLocationSchema(locale, 0), buildLocationSchema(locale, 1)],
   };
   const breadcrumbJsonLd = buildBreadcrumbJsonLd(
     locale,

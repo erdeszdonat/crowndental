@@ -10,20 +10,20 @@ import {
   CheckCircle2,
   Clock,
   Mail,
-  MapPin,
   MessageCircle,
-  Navigation,
   Phone,
   ShieldCheck,
   Sparkles,
 } from 'lucide-react';
-import { GOOGLE_BUSINESS_URL } from '@/lib/seo';
+import { normalizeLocale } from '@/lib/seo';
+import { clinicCopy, CLINIC_LOCATIONS } from '@/lib/clinicLocations';
+import ClinicDetails from '@/components/ClinicDetails';
 
 const copyByLocale = {
   hu: {
     eyebrow: 'Kapcsolat',
     title: 'Beszéljünk, és megtaláljuk a legjobb következő lépést.',
-    subtitle: 'Esztergomi rendelőnkben várjuk pácienseinket. Hívjon, írjon e-mailt, vagy foglaljon online időpontot pár kattintással.',
+    subtitle: 'Esztergomi rendelőinkben várjuk pácienseinket. Hívjon, írjon e-mailt, vagy foglaljon online időpontot pár kattintással.',
     call: 'Hívás most',
     book: 'Időpontfoglalás',
     email: 'E-mail küldése',
@@ -49,7 +49,7 @@ const copyByLocale = {
   en: {
     eyebrow: 'Contact',
     title: 'Let’s talk and find the best next step.',
-    subtitle: 'Our Esztergom clinic is ready to welcome you. Call, email or book your appointment online in a few clicks.',
+    subtitle: 'Our two Esztergom clinics are ready to welcome you. Call, email or book your appointment online in a few clicks.',
     call: 'Call now',
     book: 'Book appointment',
     email: 'Send email',
@@ -75,7 +75,7 @@ const copyByLocale = {
   sk: {
     eyebrow: 'Kontakt',
     title: 'Porozprávajme sa a nájdime najlepší ďalší krok.',
-    subtitle: 'Naša ambulancia v Ostrihome vás privíta. Zavolajte, napíšte e-mail alebo si rezervujte termín online.',
+    subtitle: 'Naše dve ambulancie v Ostrihome vás privítajú. Zavolajte, napíšte e-mail alebo si rezervujte termín online.',
     call: 'Zavolať teraz',
     book: 'Rezervovať termín',
     email: 'Poslať e-mail',
@@ -101,7 +101,7 @@ const copyByLocale = {
   de: {
     eyebrow: 'Kontakt',
     title: 'Sprechen wir darüber und finden wir den besten nächsten Schritt.',
-    subtitle: 'Unsere Praxis in Esztergom heißt Sie willkommen. Rufen Sie uns an, schreiben Sie eine E-Mail oder fragen Sie mit wenigen Klicks online einen Termin an.',
+    subtitle: 'Unsere zwei Praxen in Esztergom heißen Sie willkommen. Rufen Sie uns an, schreiben Sie eine E-Mail oder fragen Sie mit wenigen Klicks online einen Termin an.',
     call: 'Jetzt anrufen',
     book: 'Termin anfragen',
     email: 'E-Mail senden',
@@ -126,10 +126,8 @@ const copyByLocale = {
   },
 };
 
-const address = '2500 Esztergom, Petőfi Sándor utca 11.';
 const phone = '06 30 589 2468';
 const email = 'info@crowndental.hu';
-const mapHref = GOOGLE_BUSINESS_URL;
 
 function ContactAnimation() {
   return (
@@ -173,7 +171,8 @@ function ContactAnimation() {
 }
 
 export default function ContactClient() {
-  const locale = useLocale();
+  const locale = normalizeLocale(useLocale());
+  const locationCopy = clinicCopy[locale];
   const text = copyByLocale[locale as keyof typeof copyByLocale] ?? copyByLocale.hu;
   const prefix = locale === 'hu' ? '' : `/${locale}`;
 
@@ -220,17 +219,20 @@ export default function ContactClient() {
                     <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-emerald-50 px-4 py-2 text-sm font-black text-emerald-700">
                       <CheckCircle2 className="h-4 w-4" /> {text.available}
                     </div>
-                    <h2 className="text-3xl font-black text-gray-950 md:text-4xl">{text.clinicTitle}</h2>
-                    <p className="mt-3 max-w-2xl text-gray-600 leading-relaxed">{text.clinicIntro}</p>
+                    <h2 className="text-3xl font-black text-gray-950 md:text-4xl">{locationCopy.clinics}</h2>
+
                   </div>
                 </div>
 
-                <div className="grid gap-4 md:grid-cols-3">
-                  <div className="rounded-2xl bg-gray-50 p-5">
-                    <MapPin className="mb-4 h-6 w-6 text-sky-600" />
-                    <div className="mb-1 text-xs font-black uppercase tracking-widest text-gray-400">{text.addressLabel}</div>
-                    <div className="font-bold text-gray-900">{address}</div>
-                  </div>
+                <div className="mb-6 space-y-6">
+                  {CLINIC_LOCATIONS.map((clinic, index) => (
+                    <div key={clinic.id} className="rounded-2xl bg-gray-50 p-5">
+                      <h3 className="mb-4 text-xl font-bold text-gray-950">{clinic.name}</h3>
+                      <ClinicDetails locale={locale} index={index as 0 | 1} />
+                    </div>
+                  ))}
+                </div>
+                <div className="grid gap-4 sm:grid-cols-2">
                   <a href="tel:+36305892468" className="rounded-2xl bg-sky-50 p-5 transition-all hover:-translate-y-1 hover:bg-sky-100">
                     <Phone className="mb-4 h-6 w-6 text-sky-600" />
                     <div className="mb-1 text-xs font-black uppercase tracking-widest text-sky-500">{text.phoneLabel}</div>
@@ -244,9 +246,6 @@ export default function ContactClient() {
                 </div>
 
                 <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                  <a href={mapHref} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gray-950 px-6 py-4 font-black text-white transition-all hover:-translate-y-0.5 hover:bg-gray-800">
-                    <Navigation className="h-5 w-5" /> {text.map}
-                  </a>
                   <a href="mailto:info@crowndental.hu" className="inline-flex items-center justify-center gap-2 rounded-2xl border border-gray-200 bg-white px-6 py-4 font-black text-gray-900 transition-all hover:border-sky-200 hover:bg-sky-50">
                     <Mail className="h-5 w-5 text-sky-600" /> {text.email}
                   </a>

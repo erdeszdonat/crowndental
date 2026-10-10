@@ -6,6 +6,7 @@ import { MapPin, Phone, Mail, ChevronRight, Facebook, Instagram, Settings } from
 import Link from 'next/link';
 import { useTranslations, useLocale } from 'next-intl';
 import { INTERNATIONAL_PATIENT_PATHS } from '@/lib/internationalPaths';
+import { CLINIC_LOCATIONS } from '@/lib/clinicLocations';
 import { GOOGLE_BUSINESS_URL } from '@/lib/seo';
 
 export default function Footer() {
@@ -153,11 +154,18 @@ export default function Footer() {
                 </div>
                 <div>
                   <Link prefetch={false} href={`${prefix}/esztergom`} className="block text-white font-bold mb-1 hover:text-sky-400 transition-colors">
-                    {t('esztergomClinic')}
+                    Crown Dental Belváros
                   </Link>
                   <a href={GOOGLE_BUSINESS_URL} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors leading-relaxed block">
                     2500 Esztergom,<br /> Petőfi Sándor utca 11.
                   </a>
+                </div>
+              </li>
+              <li className="flex items-start gap-4">
+                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gray-800"><MapPin className="h-5 w-5 text-sky-500" /></div>
+                <div>
+                  <Link prefetch={false} href={`${prefix}/primas-sziget`} className="mb-1 block font-bold text-white hover:text-sky-400">Crown Dental Prímás Sziget</Link>
+                  <a href={CLINIC_LOCATIONS[1].mapUrl} target="_blank" rel="noopener noreferrer" className="block leading-relaxed text-gray-400 hover:text-white">2500 Esztergom,<br /> Helischer József út 6.</a>
                 </div>
               </li>
               {!isContactPage && (

@@ -8,6 +8,8 @@ import { createClient } from 'next-sanity';
 import { dataset, projectId } from '@/sanity/env';
 import locationGerman from '@/messages/location-de.json';
 import { GOOGLE_BUSINESS_URL } from '@/lib/seo';
+import { clinicCopy } from '@/lib/clinicLocations';
+import { normalizeLocale } from '@/lib/seo';
 import GoogleReviewsCta from '@/components/GoogleReviewsCta';
 import { translateLocationGerman } from '@/lib/locationGermanFallback';
 import {
@@ -866,7 +868,7 @@ function ContactAndMap() {
                       <span className="font-bold text-gray-900">09:00 – 18:00</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="font-bold text-amber-600">{t(locale, 'Szombat – Vasárnap', 'Saturday – Sunday', 'Sobota – Nedeľa')}</span>
+                      <span className="font-bold text-amber-600">{clinicCopy[normalizeLocale(locale)].weekend}</span>
                       <span className="font-bold text-gray-900">08:00 – 20:00</span>
                     </div>
                   </div>
@@ -908,6 +910,8 @@ function ContactAndMap() {
 }
 
 export default function EsztergomPage() {
+  const locale = normalizeLocale(useLocale());
+  const prefix = locale === 'hu' ? '' : `/${locale}`;
   return (
     <main className="min-h-screen bg-white selection:bg-sky-200 selection:text-sky-900">
       <FloatingCTA />
@@ -923,6 +927,11 @@ export default function EsztergomPage() {
       <CTASection />
       <FAQSection />
       <ContactAndMap />
+      <section className="bg-sky-50 px-4 py-12 text-center">
+        <h2 className="mb-4 text-2xl font-bold">{clinicCopy[locale].clinics}</h2>
+        <Link href={`${prefix}/primas-sziget`} className="font-semibold text-sky-700 underline underline-offset-4">Crown Dental Prímás Sziget · Helischer József út 6.</Link>
+        <p className="mt-3 text-gray-600">{clinicCopy[locale].freeParking} · {clinicCopy[locale].accessible}</p>
+      </section>
     </main>
   );
 }

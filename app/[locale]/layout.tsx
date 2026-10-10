@@ -76,6 +76,7 @@ const organizationJsonLd = {
         postalCode: '2500',
         addressCountry: 'HU',
       },
+      department: [{ '@id': `${SITE_URL}/esztergom#dentist` }, { '@id': `${SITE_URL}/primas-sziget#dentist` }],
       contactPoint: {
         '@type': 'ContactPoint',
         telephone: '+36305892468',

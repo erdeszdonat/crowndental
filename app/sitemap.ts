@@ -40,6 +40,7 @@ const staticPaths = [
   'kezelesek',
   ...TREATMENT_SLUGS.map((slug) => `kezelesek/${slug}`),
   'esztergom',
+  'primas-sziget',
   'budapest',
   'rolunk',
   'kapcsolat',
@@ -74,7 +75,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     SUPPORTED_LOCALES.map((locale) => ({
       url: localizedUrl(locale, path),
       changeFrequency: path === '' ? 'daily' : path === 'blog' ? 'daily' : 'weekly',
-      priority: path === '' ? 1 : path === 'esztergom' ? 0.95 : path.startsWith('kezelesek') ? 0.9 : 0.7,
+      priority: path === '' ? 1 : ['esztergom', 'primas-sziget'].includes(path) ? 0.95 : path.startsWith('kezelesek') ? 0.9 : 0.7,
       alternates: { languages: languageAlternates(path) },
     })),
   );
