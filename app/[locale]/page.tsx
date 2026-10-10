@@ -47,7 +47,7 @@ async function getHomeSanityImages(): Promise<HomeSanityImages> {
       `*[_type=="treatment"&&slug.current in ["fokep","fokep1","fokep2"]]{"slug":slug.current,"imageUrl":coalesce(mainImage.asset->url,heroImage.asset->url)}`
     ),
     fetchSanityData<Array<{ name?: string; title?: string; address?: string; tag?: string; imageUrl?: string }>>(
-      `*[_type=="location"]{name,title,address,tag,"imageUrl":image.asset->url}`
+      `*[_type=="location" && !(_id in path("drafts.**"))]{name,title,address,tag,"imageUrl":image.asset->url}`
     ),
     fetchSanityData<{ url?: string }>(
       `*[_type=="treatment"&&slug.current=="fogtechnika"][0]{"url":coalesce(mainImage.asset->url,heroImage.asset->url)}`
