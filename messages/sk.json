@@ -450,7 +450,7 @@
       { "id": "esztetikai-fogaszat", "title": "Estetická stomatológia", "description": "Keramické fazety a neviditeľné výplne pre dokonalý úsmev." },
       { "id": "hollywood-mosoly", "title": "Hollywood Smile – hollywoodsky úsmev", "description": "Individuálny návrh úsmevu: spoznajte kompozitné a keramické fazety, porovnajte možnosti a objednajte sa na konzultáciu.", "href": "/hollywood-mosoly" },
       { "id": "direkt-hej", "title": "Priame kompozitné fazety", "description": "Kompozitné fazety modelované priamo v ambulancii s individuálnym odtieňom a tvarom. Ceny, priebeh ošetrenia a objednanie." },
-      { "id": "indirekt-hej", "title": "Nepriame keramické fazety", "description": "Prémiové keramické fazety z vlastného laboratória. Už teraz 99 000 HUF za zub namiesto 120 000 HUF." },
+      { "id": "indirekt-hej", "title": "Nepriame keramické fazety", "description": "Prémiové keramické fazety z vlastného laboratória. Už teraz 75 000 HUF za zub namiesto 120 000 HUF." },
       { "id": "foghuzas", "title": "Extrakcia zuba", "description": "Šetrné odstránenie zuba s rýchlym hojením." },
       { "id": "gockutatas", "title": "Hľadanie ložísk nákazy", "description": "Odhalenie skrytých zápalov moderným 3D CT." },
       { "id": "gyerekfogaszat", "title": "Detská stomatológia", "description": "Ošetrenia mliečnych zubov a zapečatenie v priateľskom, trpezlivom prostredí." }
@@ -812,7 +812,7 @@
       "servicesTitle": "Estetické riešenia",
       "services": [
         { "title": "Profesionálne bielenie zubov", "desc": "Zuby až o 8 odtieňov svetlejšie po jednom ošetrení.", "price": "od 35 000 Ft" },
-        { "title": "Porcelánové fazety (Veneer)", "desc": "Ultratenkí porcelánové fazety – dokonalý tvar a farba.", "price": "99 000 Ft / zub (pôvodne 120 000 Ft)" },
+        { "title": "Porcelánové fazety (Veneer)", "desc": "Ultratenkí porcelánové fazety – dokonalý tvar a farba.", "price": "75 000 Ft / zub (pôvodne 120 000 Ft)" },
         { "title": "Odstránenie zubného kameňa", "desc": "Ultrazvukový scaling a leštenie pre zdravé ďasná.", "price": "od 15 000 Ft" },
         { "title": "Farebne zhodné výplne", "desc": "Kompozitné výplne zodpovedajúce farbe zuba – prakticky neviditeľné.", "price": "od 25 000 Ft" },
         { "title": "Kompletná premena úsmevu", "desc": "Komplexná premena úsmevu: bielenie, fazety, tvarovanie zubov.", "price": "Individuálna ponuka" },
@@ -840,7 +840,7 @@
       "faqs": [
         { "q": "Ako dlho trvá účinok bielenia?", "a": "Výsledky profesionálneho bielenia trvajú 1–3 roky v závislosti od životného štýlu." },
         { "q": "Je bielenie bolestivé?", "a": "Moderné techniky sú spravidla bezbolestné. Môže sa vyskytnúť prechodná citlivosť." },
-        { "q": "Koľko stojí porcelánová fazeta?", "a": "Porcelánová fazeta teraz stojí 99 000 Ft za zub namiesto 120 000 Ft a vyrába sa v našom vlastnom zubnom laboratóriu." },
+        { "q": "Koľko stojí porcelánová fazeta?", "a": "Porcelánová fazeta teraz stojí 75 000 Ft za zub namiesto 120 000 Ft a vyrába sa v našom vlastnom zubnom laboratóriu." },
         { "q": "Bude výsledok vyzerať prirodzene?", "a": "Naším cieľom je prirodzený, harmonický vzhľad prispôsobený rysám vašej tváre." },
         { "q": "Ako často treba odstrániť zubný kameň?", "a": "Profesionálne čistenie sa odporúča 1–2-krát ročne." }
       ]
