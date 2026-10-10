@@ -11,6 +11,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import { getPreferredGreetingName } from '@/lib/names';
 import GoogleReviewsCta from '@/components/GoogleReviewsCta';
 import TreatmentCard from '@/components/TreatmentCard';
+import SmileTreatmentsSection from '@/components/SmileTreatmentsSection';
 import { getSiteCopy } from '@/lib/siteCopy';
 import { Pause, Play } from 'lucide-react';
 
@@ -1041,6 +1042,7 @@ export default function HomeClient({ sanityImages = emptyHomeSanityImages }: { s
         <HeroSlider images={sanityImages.hero} />
         <div className="crown-page crown-home-sections">
         <TrustBadges />
+        <SmileTreatmentsSection />
         <FeaturedPricesSection sanityImages={sanityImages.services} />
         <LocationSelector locations={sanityImages.locations} />
         <StatsSection />
