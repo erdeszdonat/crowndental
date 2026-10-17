@@ -2,6 +2,8 @@ import type { MetadataRoute } from 'next';
 import { SITE_URL } from '@/lib/seo';
 
 const privatePaths = [
+  '/crown-dental',
+  '/beauty-crown',
   '/admin',
   '/admin/',
   '/studio',

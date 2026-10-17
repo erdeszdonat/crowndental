@@ -83,6 +83,8 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      // Keep the former admin entrance a single hop, including on the apex.
+      { source: '/admin', has: [{ type: 'host', value: 'crowndental.hu' }], destination: 'https://admin.crowndental.hu/', permanent: true },
       // CANONICAL HOST - az apex domaint mindig permanensen a www hostra visszük.
       {
         source: '/:path*',

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Calendar, Briefcase, Sparkles, BookOpen, ChevronDown, ChevronUp,
@@ -417,19 +418,18 @@ export default function AdminDashboard() {
     return (
       <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
         <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="max-w-md w-full bg-white rounded-3xl p-8 shadow-2xl">
-          <div className="w-16 h-16 bg-sky-100 text-sky-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-            <ShieldAlert className="w-8 h-8" />
-          </div>
-          <h1 className="text-2xl font-black text-gray-900 mb-1 text-center tracking-tight">CROWN ADMIN</h1>
+          <a href="/admin/portal" className="mb-6 inline-flex text-sm text-slate-600 underline underline-offset-4">← Vissza a választáshoz</a>
+          <Image src="/logo.webp" alt="Crown Dental" width={232} height={145} className="mx-auto mb-6 h-32 w-56 object-contain" />
+          <h1 className="text-2xl font-black text-gray-900 mb-1 text-center tracking-tight">CROWN DENTAL</h1>
           <p className="text-gray-500 mb-8 text-center text-sm font-medium">Titkosított belépés a vezérlőpultba</p>
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="relative">
               <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <input type="text" value={usernameInput} onChange={(e) => setUsernameInput(e.target.value)} placeholder="Felhasználónév" required className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sky-600 outline-none font-bold" />
+              <input type="text" aria-label="Felhasználónév" autoComplete="username" value={usernameInput} onChange={(e) => setUsernameInput(e.target.value)} placeholder="Felhasználónév" required className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sky-600 outline-none font-bold" />
             </div>
             <div className="relative">
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <input type="password" value={passwordInput} onChange={(e) => setPasswordInput(e.target.value)} placeholder="Jelszó" required className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sky-600 outline-none font-bold tracking-widest" />
+              <input type="password" aria-label="Jelszó" autoComplete="current-password" value={passwordInput} onChange={(e) => setPasswordInput(e.target.value)} placeholder="Jelszó" required className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sky-600 outline-none font-bold tracking-widest" />
             </div>
             {dbError && <p className="text-red-500 text-center text-sm font-bold bg-red-50 py-2 rounded-xl border border-red-100">{dbError}</p>}
             <button type="submit" disabled={isLoginLoading} className="w-full bg-gray-900 text-white font-black py-4 rounded-xl hover:bg-sky-600 transition-all shadow-lg disabled:bg-gray-400 flex justify-center items-center gap-2">
@@ -454,7 +454,7 @@ export default function AdminDashboard() {
   const tabLabel = tabs.find(t => t.id === activeTab)?.label ?? '';
   const getBlogPostPath = (language: string | undefined, slug: string) => {
     const normalizedLanguage = normalizeBlogLanguage(language);
-    return `${normalizedLanguage === 'hu' ? '' : `/${normalizedLanguage}`}/blog/${slug}`;
+    return `https://www.crowndental.hu${normalizedLanguage === 'hu' ? '' : `/${normalizedLanguage}`}/blog/${slug}`;
   };
   const getBlogLanguageLabel = (language: string | undefined) =>
     BLOG_LANGUAGES.find(item => item.id === normalizeBlogLanguage(language))?.label ?? 'Magyar';
@@ -506,7 +506,8 @@ export default function AdminDashboard() {
             <h2 className="text-lg md:text-2xl font-black text-gray-900 tracking-tight italic uppercase">{tabLabel}</h2>
           </div>
           <div className="flex items-center gap-2">
-          <Link href="/admin/hidfutas" className="rounded-full bg-sky-800 px-4 py-2.5 text-sm font-bold text-white">Hídfutás</Link>
+          <a href="/admin/portal" className="rounded-full border border-gray-200 px-3 py-2.5 text-sm font-bold text-gray-700">Márkaválasztó</a>
+          <Link href="/crown-dental/hidfutas" className="rounded-full bg-sky-800 px-4 py-2.5 text-sm font-bold text-white">Hídfutás</Link>
           <button onClick={() => fetchSecureData()} disabled={isLoading} className="flex items-center gap-2 bg-gray-100 text-gray-600 px-4 py-2.5 rounded-full font-bold hover:bg-gray-200 transition-all text-sm">
             <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
             <span className="hidden sm:inline">Frissítés</span>
@@ -539,7 +540,7 @@ export default function AdminDashboard() {
                     <h3 className="font-black text-sky-400 flex items-center gap-2 text-sm"><Edit3 className="w-4 h-4" /> Sanity Studio CMS</h3>
                     <p className="text-gray-400 text-xs mt-0.5">Képek feltöltése, cikkek szerkesztése</p>
                   </div>
-                  <a href="/studio" target="_blank" className="bg-white text-gray-900 px-5 py-2.5 rounded-xl font-black flex items-center gap-2 hover:scale-105 transition-all text-xs uppercase tracking-widest whitespace-nowrap">
+                  <a href="https://www.crowndental.hu/studio" target="_blank" className="bg-white text-gray-900 px-5 py-2.5 rounded-xl font-black flex items-center gap-2 hover:scale-105 transition-all text-xs uppercase tracking-widest whitespace-nowrap">
                     STÚDIÓ <ExternalLink className="w-3.5 h-3.5" />
                   </a>
                 </div>

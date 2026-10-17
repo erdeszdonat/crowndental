@@ -50,8 +50,8 @@ export default function HidfutasAdmin() {
   }
 
   return <main className="min-h-screen bg-slate-50 p-5 text-slate-900 sm:p-10"><div className="mx-auto max-w-7xl">
-    <div className="mb-8 flex flex-wrap items-center justify-between gap-4"><div><Link href="/admin" className="text-sm text-sky-800 underline">← Crown Dental admin</Link><h1 className="mt-3 text-3xl font-bold">Hídfutás 2026</h1><p className="mt-2 text-slate-600">Nevezés: szeptember 26. 9:00–13:00 · Sorsolás: szeptember 28.</p></div><Link href="/hidfutas" className="text-sky-800 underline" target="_blank">Játékoldal megnyitása</Link></div>
-    {needsLogin && <div className="rounded-xl border border-sky-200 bg-white p-6"><h2 className="text-xl font-bold">Admin belépés szükséges</h2><p className="my-3">Lépj be a meglévő Crown Dental adminba, majd térj vissza erre az oldalra.</p><Link href="/admin" className={button}>Belépés</Link></div>}
+    <div className="mb-8 flex flex-wrap items-center justify-between gap-4"><div><Link href="/crown-dental" className="text-sm text-sky-800 underline">← Crown Dental admin</Link><h1 className="mt-3 text-3xl font-bold">Hídfutás 2026</h1><p className="mt-2 text-slate-600">Nevezés: szeptember 26. 9:00–13:00 · Sorsolás: szeptember 28.</p></div><Link href="https://www.crowndental.hu/hidfutas" className="text-sky-800 underline" target="_blank">Játékoldal megnyitása</Link></div>
+    {needsLogin && <div className="rounded-xl border border-sky-200 bg-white p-6"><h2 className="text-xl font-bold">Admin belépés szükséges</h2><p className="my-3">Lépj be a meglévő Crown Dental adminba, majd térj vissza erre az oldalra.</p><Link href="/crown-dental" className={button}>Belépés</Link></div>}
     {error && <p role="alert" className="mb-5 rounded-lg border border-red-200 bg-red-50 p-4 text-red-800">{error}</p>}
     {notice && <p role="status" className="mb-5 rounded-lg bg-sky-100 p-4 text-sky-900">{notice}</p>}
     {!data && !needsLogin && !error && <p>Adatok betöltése…</p>}
