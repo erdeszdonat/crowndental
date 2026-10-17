@@ -18,7 +18,7 @@ const proxyModule = { exports: {} };
 const source = ts.transpileModule(readFileSync(new URL('../proxy.ts', import.meta.url), 'utf8'), {
   compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
 }).outputText;
-vm.runInNewContext(source, { module: proxyModule, exports: proxyModule.exports, require });
+vm.runInNewContext(source, { module: proxyModule, exports: proxyModule.exports, require, URL });
 const { default: proxy, config: proxyConfig } = proxyModule.exports;
 const origin = 'https://www.crowndental.hu';
 
@@ -67,4 +67,73 @@ test('legacy spelling corrections preserve queries and do not redirect canonical
     assert.equal(unstable_doesMiddlewareMatch({ config: proxyConfig, nextConfig, url: origin + target }), false, target);
     assert.equal(proxy(new NextRequest(origin + target)).headers.get('location'), null, target);
   }
+});
+
+test('admin hostname opens the brand chooser and routes each brand separately', () => {
+  for (const [pathname, internalPath] of [
+    ['/', '/admin/portal'], ['/crown-dental', '/admin'],
+    ['/crown-dental/hidfutas', '/admin/hidfutas'], ['/beauty-crown', '/admin/beauty'],
+  ]) {
+    const url = 'https://admin.crowndental.hu' + pathname;
+    assert.equal(unstable_doesMiddlewareMatch({ config: proxyConfig, nextConfig, url }), true);
+    const response = proxy(new NextRequest(url));
+    assert.equal(getRewrittenUrl(response), 'https://admin.crowndental.hu' + internalPath);
+    assert.match(response.headers.get('x-robots-tag'), /noindex/);
+    assert.equal(response.headers.get('cache-control'), 'no-store');
+  }
+});
+
+test('old admin bookmarks redirect without loops and preserve deep links and queries', () => {
+  for (const hostname of ['www.crowndental.hu', 'crowndental.hu', 'admin.crowndental.hu']) {
+    for (const [pathname, destination] of [['/admin', '/'], ['/admin/portal', '/'], ['/admin/hidfutas', '/crown-dental/hidfutas'], ['/admin/beauty', '/beauty-crown']]) {
+      const response = proxy(new NextRequest(`https://${hostname}${pathname}?page=2`));
+      assert.equal(response.status, 308);
+      assert.equal(response.headers.get('location'), 'https://admin.crowndental.hu' + destination + '?page=2');
+    }
+  }
+});
+
+test('retired public-host admin APIs reject requests without forwarding credentials', async () => {
+  for (const pathname of ['/api/admin-login', '/api/admin-logout', '/api/admin-data', '/api/admin-action', '/api/admin/hidfutas', '/api/admin/import-resend']) {
+    for (const hostname of ['www.crowndental.hu', 'crowndental.hu']) {
+      const response = proxy(new NextRequest(`https://${hostname}${pathname}`, { method: 'POST' }));
+      assert.equal(response.status, 421);
+      assert.equal(response.headers.get('location'), null);
+      assert.equal(response.headers.get('x-middleware-rewrite'), null);
+    }
+    const response = proxy(new NextRequest('https://admin.crowndental.hu' + pathname));
+    assert.equal(response.headers.get('x-middleware-next'), '1');
+  }
+});
+
+test('admin hostname cannot serve public forms or an indexable duplicate website', async () => {
+  const robots = proxy(new NextRequest('https://admin.crowndental.hu/robots.txt'));
+  assert.equal(await robots.text(), 'User-agent: *\nDisallow: /\n');
+  for (const path of ['/api/book-appointment', '/api/career_applications', '/sitemap.xml']) {
+    assert.equal(proxy(new NextRequest('https://admin.crowndental.hu' + path)).status, 404);
+  }
+  for (const path of ['/studio', '/studio/structure', '/blog/test', '/hidfutas']) {
+    assert.equal(proxy(new NextRequest('https://admin.crowndental.hu' + path)).headers.get('location'), origin + path);
+  }
+});
+
+test('local and preview verification stays local instead of using production admin', () => {
+  for (const host of ['http://localhost:3050', 'https://review.vercel.app']) {
+    assert.equal(getRewrittenUrl(proxy(new NextRequest(host + '/crown-dental'))), host + '/admin');
+    assert.equal(proxy(new NextRequest(host + '/admin/portal')).headers.get('location'), null);
+    assert.equal(proxy(new NextRequest(host + '/api/admin-login')).headers.get('x-middleware-next'), '1');
+  }
+});
+
+test('admin origin matching is exact and leaves similarly named public paths alone', () => {
+  for (const url of ['https://admin.crowndental.hu.evil.example/', origin + '/administrator', origin + '/api/admin-login-other']) {
+    assert.equal(proxy(new NextRequest(url)).headers.get('location'), null);
+    assert.equal(proxy(new NextRequest(url)).headers.get('x-middleware-rewrite'), null);
+  }
+});
+
+
+test('host routing uses the served Host even when Next has an internal request URL', () => {
+  const request = new NextRequest('http://127.0.0.1:3050/', { headers: { host: 'admin.crowndental.hu' } });
+  assert.equal(getRewrittenUrl(proxy(request)), request.nextUrl.origin + '/admin/portal');
 });
