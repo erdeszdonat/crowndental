@@ -84,8 +84,13 @@ export default function AdminDashboard() {
         setMarketingSubscribers(data.marketingSubscribers || []);
         setPosts(data.posts);
       } else {
-        setDbError(data.error || 'Hiba az adatok betöltésekor.');
-        if (res.status === 401) setIsAuthenticated(false);
+        if (res.status === 401) {
+          // A first visit on the new host is a normal login, not an error.
+          setIsAuthenticated(false);
+          setDbError(null);
+        } else {
+          setDbError(data.error || 'Hiba az adatok betöltésekor.');
+        }
       }
     } catch {
       setDbError('Hálózati hiba az adatok betöltésekor.');
