@@ -18,12 +18,12 @@ export default function AdminPortal() {
             <span className={styles.description}>Fogászat · rendelői adminisztráció</span>
             <span className={styles.action}>Bejelentkezés <span aria-hidden="true">↗</span></span>
           </a>
-          <a className={`${styles.card} ${styles.beauty}`} href="/beauty-crown" aria-label="Beauty Crown admin – hamarosan">
-            <span className={styles.badge}>Hamarosan</span>
+          <a className={`${styles.card} ${styles.beauty}`} href="https://vercel.beautycrown.hu/admin" aria-label="Beauty Crown admin – bejelentkezés">
+            <span className={styles.badge}>Privát előnézet</span>
             <div className={styles.logo}><Image src="/beauty-crown-logo.png" alt="Beauty Crown by Crown Dental" width={240} height={240} priority className={styles.beautyLogo} /></div>
             <span className={styles.cardName}>Beauty Crown</span>
             <span className={styles.description}>Orvosesztétika · mosolytervezés</span>
-            <span className={styles.action}>Előkészítés alatt <span aria-hidden="true">↗</span></span>
+            <span className={styles.action}>Bejelentkezés <span aria-hidden="true">↗</span></span>
           </a>
         </div>
         <p className={styles.footer}>Belső kezelőfelület · Jogosult munkatársak részére</p>
