@@ -205,7 +205,8 @@ const documents: Record<InformationalLegalLocale, Record<LegalDocument, LegalCon
             'Budapest clinic: Királyok útja 55, 1039 Budapest, Hungary.',
             'Company registration number: 11-09-026431.',
             'Tax number: 26537353-2-11.',
-            'Email: info@crowndental.hu. Telephone: 06 30 589 2468.',
+            'Patient enquiries: info@crowndental.hu. Telephone: 06 30 589 2468.',
+            'Business enquiries and CVs: iroda@crowndental.hu.',
           ],
         },
         {
@@ -406,7 +407,8 @@ const documents: Record<InformationalLegalLocale, Record<LegalDocument, LegalCon
             'Ambulancia v Budapešti: Királyok útja 55, 1039 Budapest, Maďarsko.',
             'Registračné číslo spoločnosti: 11-09-026431.',
             'Daňové číslo: 26537353-2-11.',
-            'E-mail: info@crowndental.hu. Telefón: 06 30 589 2468.',
+            'Pre pacientov: info@crowndental.hu. Telefón: 06 30 589 2468.',
+            'Obchodné dopyty a životopisy: iroda@crowndental.hu.',
           ],
         },
         {

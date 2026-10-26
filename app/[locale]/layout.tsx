@@ -6,6 +6,7 @@ import '../globals.css';
 import ClientLayout from "./ClientLayout";
 import ConsentScripts from '@/components/ConsentScripts';
 import { GOOGLE_BUSINESS_URL, SITE_URL, normalizeLocale, safeJsonLd } from '@/lib/seo';
+import { OFFICE_EMAIL, PATIENT_EMAIL } from '@/lib/contact';
 
 const locales = ['hu', 'en', 'sk', 'de'];
 
@@ -66,7 +67,7 @@ const organizationJsonLd = {
       logo: { '@type': 'ImageObject', url: `${SITE_URL}/logo.webp` },
       image: `${SITE_URL}/og-image.jpg`,
       telephone: '+36305892468',
-      email: 'info@crowndental.hu',
+      email: PATIENT_EMAIL,
       foundingDate: '1994',
       address: {
         '@type': 'PostalAddress',
@@ -77,13 +78,19 @@ const organizationJsonLd = {
         addressCountry: 'HU',
       },
       department: [{ '@id': `${SITE_URL}/esztergom#dentist` }, { '@id': `${SITE_URL}/primas-sziget#dentist` }],
-      contactPoint: {
+      contactPoint: [{
         '@type': 'ContactPoint',
         telephone: '+36305892468',
+        email: PATIENT_EMAIL,
         contactType: 'appointments',
         availableLanguage: ['hu', 'sk', 'en', 'de'],
         areaServed: ['HU', 'SK'],
-      },
+      }, {
+        '@type': 'ContactPoint',
+        email: OFFICE_EMAIL,
+        contactType: 'business enquiries and careers',
+        availableLanguage: ['hu', 'sk', 'en', 'de'],
+      }],
       sameAs: [
         'https://www.facebook.com/koronafogaszatesztergom/',
         'https://www.instagram.com/crown_dental93/',
