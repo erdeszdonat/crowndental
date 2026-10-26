@@ -4,6 +4,7 @@ import React, { useState, useRef } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { sanityImageLoader } from '@/lib/sanityImage';
+import { getContactCopy, OFFICE_EMAIL } from '@/lib/contact';
 import {
   Briefcase,
   Users,
@@ -186,6 +187,7 @@ function CareerForm() {
   const locale = useLocale();
   const safeLocale = normalizeLocale(locale);
   const feedback = careerFeedback[safeLocale];
+  const contactCopy = getContactCopy(safeLocale);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -243,6 +245,12 @@ function CareerForm() {
   return (
     <section id="jelentkezes" className="py-24 bg-white text-left">
       <div className="container mx-auto px-4 max-w-3xl">
+        <div className="mb-10 rounded-[2rem] border border-sky-100 bg-sky-50 p-6 md:p-10">
+          <h2 className="text-2xl font-black text-gray-950">{contactCopy.careerTitle}</h2>
+          <p className="mt-3 leading-relaxed text-gray-600">{contactCopy.careerDescription}</p>
+          <a href={`mailto:${OFFICE_EMAIL}`} className="mt-4 inline-block break-words text-xl font-bold text-sky-700 underline underline-offset-4 hover:text-sky-900">{OFFICE_EMAIL}</a>
+          <p className="mt-2 text-sm text-gray-600">{contactCopy.careerAction}</p>
+        </div>
         <form onSubmit={handleSubmit} className="bg-gray-50 rounded-[2rem] shadow-xl p-6 md:p-10 space-y-8">
           <div className="grid sm:grid-cols-2 gap-5">
             <label htmlFor="career-name" className="sr-only">{t('formName')}</label>

@@ -8,10 +8,12 @@ import { useTranslations, useLocale } from 'next-intl';
 import { INTERNATIONAL_PATIENT_PATHS } from '@/lib/internationalPaths';
 import { CLINIC_LOCATIONS } from '@/lib/clinicLocations';
 import { GOOGLE_BUSINESS_URL } from '@/lib/seo';
+import { getContactCopy, OFFICE_EMAIL, PATIENT_EMAIL } from '@/lib/contact';
 
 export default function Footer() {
   const t = useTranslations('footer');
   const locale = useLocale();
+  const contactCopy = getContactCopy(locale);
   const pathname = usePathname();
 
   if (pathname?.includes('/studio') || pathname?.includes('/admin')) {
@@ -189,11 +191,23 @@ export default function Footer() {
                 </div>
                 <a href="tel:+36305892468" className="hover:text-white transition-colors font-bold text-lg">06 30 589 2468</a>
               </li>
-              <li className="flex items-center gap-4">
+              <li className="flex items-start gap-4">
                 <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center flex-shrink-0">
                   <Mail className="w-5 h-5 text-sky-500" />
                 </div>
-                <a href="mailto:info@crowndental.hu" className="hover:text-white transition-colors text-base">info@crowndental.hu</a>
+                <div className="min-w-0">
+                  <p className="mb-1 text-sm font-bold text-gray-400">{contactCopy.patientLabel}</p>
+                  <a href={`mailto:${PATIENT_EMAIL}`} className="break-words hover:text-white transition-colors text-base">{PATIENT_EMAIL}</a>
+                </div>
+              </li>
+              <li className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center flex-shrink-0">
+                  <Mail className="w-5 h-5 text-sky-500" />
+                </div>
+                <div className="min-w-0">
+                  <p className="mb-1 text-sm font-bold text-gray-400">{contactCopy.officeLabel}</p>
+                  <a href={`mailto:${OFFICE_EMAIL}`} className="break-words hover:text-white transition-colors text-base">{OFFICE_EMAIL}</a>
+                </div>
               </li>
             </ul>
           </div>

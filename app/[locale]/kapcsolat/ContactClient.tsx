@@ -4,6 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useLocale } from 'next-intl';
+import { getContactCopy, OFFICE_EMAIL, PATIENT_EMAIL } from '@/lib/contact';
 import {
   ArrowRight,
   Calendar,
@@ -127,7 +128,6 @@ const copyByLocale = {
 };
 
 const phone = '06 30 589 2468';
-const email = 'info@crowndental.hu';
 
 function ContactAnimation() {
   return (
@@ -174,6 +174,7 @@ export default function ContactClient() {
   const locale = normalizeLocale(useLocale());
   const locationCopy = clinicCopy[locale];
   const text = copyByLocale[locale as keyof typeof copyByLocale] ?? copyByLocale.hu;
+  const contactCopy = getContactCopy(locale);
   const prefix = locale === 'hu' ? '' : `/${locale}`;
 
   return (
@@ -238,16 +239,23 @@ export default function ContactClient() {
                     <div className="mb-1 text-xs font-black uppercase tracking-widest text-sky-500">{text.phoneLabel}</div>
                     <div className="font-black text-gray-950">{phone}</div>
                   </a>
-                  <a href="mailto:info@crowndental.hu" className="rounded-2xl bg-gray-50 p-5 transition-all hover:-translate-y-1 hover:bg-sky-50">
+                  <a href={`mailto:${PATIENT_EMAIL}`} className="min-w-0 rounded-2xl bg-gray-50 p-5 transition-all hover:-translate-y-1 hover:bg-sky-50">
                     <Mail className="mb-4 h-6 w-6 text-sky-600" />
-                    <div className="mb-1 text-xs font-black uppercase tracking-widest text-gray-400">{text.emailLabel}</div>
-                    <div className="font-bold text-gray-900">{email}</div>
+                    <div className="mb-1 text-xs font-black uppercase tracking-widest text-gray-500">{contactCopy.patientLabel}</div>
+                    <div className="break-words font-bold text-gray-900">{PATIENT_EMAIL}</div>
+                    <p className="mt-2 text-sm leading-relaxed text-gray-600">{contactCopy.patientDescription}</p>
+                  </a>
+                  <a href={`mailto:${OFFICE_EMAIL}`} className="min-w-0 rounded-2xl border border-sky-100 bg-sky-50 p-5 transition-all hover:-translate-y-1 hover:bg-sky-100 sm:col-span-2">
+                    <Mail className="mb-4 h-6 w-6 text-sky-600" />
+                    <div className="mb-1 text-xs font-black uppercase tracking-widest text-sky-700">{contactCopy.officeLabel}</div>
+                    <div className="break-words font-bold text-gray-900">{OFFICE_EMAIL}</div>
+                    <p className="mt-2 text-sm leading-relaxed text-gray-600">{contactCopy.officeDescription}</p>
                   </a>
                 </div>
 
                 <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                  <a href="mailto:info@crowndental.hu" className="inline-flex items-center justify-center gap-2 rounded-2xl border border-gray-200 bg-white px-6 py-4 font-black text-gray-900 transition-all hover:border-sky-200 hover:bg-sky-50">
-                    <Mail className="h-5 w-5 text-sky-600" /> {text.email}
+                  <a href={`mailto:${PATIENT_EMAIL}`} className="inline-flex items-center justify-center gap-2 rounded-2xl border border-gray-200 bg-white px-6 py-4 font-black text-gray-900 transition-all hover:border-sky-200 hover:bg-sky-50">
+                    <Mail className="h-5 w-5 text-sky-600" /> {contactCopy.patientAction}
                   </a>
                 </div>
               </motion.div>

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { OFFICE_EMAIL, PATIENT_EMAIL } from '@/lib/contact';
 import { 
   Building2, 
   Server, 
@@ -105,7 +106,8 @@ function ImpresszumContent() {
                     </div>
                     <div className="space-y-4 sm:border-l sm:border-slate-200 sm:pl-6">
                       <div><p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Adószám</p><p className="text-base font-mono text-slate-700">26537353-2-11</p></div>
-                      <div><p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Elérhetőség</p><p className="text-base text-slate-700 flex items-center gap-2"><Mail className="w-4 h-4 text-sky-500" /> info@crowndental.hu</p></div>
+                      <div><p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Pácienseknek</p><a href={`mailto:${PATIENT_EMAIL}`} className="text-base text-slate-700 flex items-center gap-2 hover:text-sky-700"><Mail className="w-4 h-4 shrink-0 text-sky-500" /> {PATIENT_EMAIL}</a></div>
+                      <div><p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Üzleti megkeresések és önéletrajzok</p><a href={`mailto:${OFFICE_EMAIL}`} className="text-base text-slate-700 flex items-center gap-2 hover:text-sky-700"><Mail className="w-4 h-4 shrink-0 text-sky-500" /> {OFFICE_EMAIL}</a></div>
                     </div>
                   </div>
                 </div>
