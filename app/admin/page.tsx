@@ -1,19 +1,22 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Calendar, Briefcase, Sparkles, BookOpen, ChevronDown, ChevronUp,
-  RefreshCw, LogOut, ExternalLink, Phone, MapPin, ShieldAlert,
+  Sparkles, ChevronDown, ChevronUp,
+  ExternalLink, Phone, MapPin,
   User, Lock, Edit3, Search, UserCheck, DollarSign,
   AlertTriangle, Loader2, Trash2, CheckCircle2, Clock, ListOrdered,
-  BarChart3, Mail, Download
+  Mail, ArrowRight
 } from 'lucide-react';
 import StatsDashboard from './StatsDashboard';
 import StaffManager from './StaffManager';
 import AccountSecurity from './AccountSecurity';
+import AdminShell, { type AdminTab } from './AdminShell';
+import AdminListFilters from './AdminListFilters';
+import MarketingContacts from './MarketingContacts';
+import { filterAdminRecords, type AdminListOptions } from '@/lib/adminLists';
 import type { StaffIdentity } from '@/lib/staffAuth';
 import AppointmentConfirmationDialog, { type AppointmentConfirmationModalState } from './AppointmentConfirmationDialog';
 import { getAppointmentClinic } from '@/lib/appointmentClinics';
@@ -55,7 +58,13 @@ export default function AdminDashboard() {
   const [passwordInput, setPasswordInput] = useState('');
   const [isLoginLoading, setIsLoginLoading] = useState(false);
 
-  const [activeTab, setActiveTab] = useState<'stats' | 'appointments' | 'career' | 'quotes' | 'blog' | 'marketing' | 'staff' | 'security'>('stats');
+  const [activeTab, setActiveTab] = useState<AdminTab>('appointments');
+  const [checkingSession, setCheckingSession] = useState(true);
+  const [updatedAt, setUpdatedAt] = useState<Date | null>(null);
+  const [visibleLimit, setVisibleLimit] = useState(40);
+  const [clinicFilter, setClinicFilter] = useState('all');
+  const initialFilter: AdminListOptions = { query: '', status: 'all', oldestFirst: false };
+  const [filters, setFilters] = useState<Record<'appointments' | 'career' | 'quotes' | 'marketing', AdminListOptions>>({ appointments: initialFilter, career: initialFilter, quotes: initialFilter, marketing: initialFilter });
   const [expandedId, setExpandedId] = useState<string | number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
@@ -101,6 +110,7 @@ export default function AdminDashboard() {
         setIsAuthenticated(true);
         setIdentity(data.user);
         if (data.user.role === 'assistant') setActiveTab(tab => tab === 'security' ? tab : 'appointments');
+        setUpdatedAt(new Date());
         setAppointments(data.appointments || []);
         setApplications(data.applications || []);
         setQuotes(data.quotes || []);
@@ -119,7 +129,7 @@ export default function AdminDashboard() {
     } catch {
       setDbError('Hálózati hiba az adatok betöltésekor.');
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); setCheckingSession(false);
     }
   };
 
@@ -144,7 +154,7 @@ export default function AdminDashboard() {
     extraPayload?: Record<string, unknown>
   ) => {
     if (action === 'hide') {
-      const confirmed = window.confirm('Biztosan törlöd a listából ezt a bejegyzést?');
+      const confirmed = window.confirm('Biztosan elrejted a listából ezt a bejegyzést?');
       if (!confirmed) return false;
     }
     setActionLoading(`${action}-${id}`);
@@ -331,7 +341,6 @@ export default function AdminDashboard() {
       });
       const data = await res.json();
       if (data.success) {
-        setIsAuthenticated(true);
         setPasswordInput('');
         await fetchSecureData();
       } else {
@@ -358,7 +367,7 @@ export default function AdminDashboard() {
       setPasswordInput('');
       setUsernameInput('');
       setIdentity(null);
-      setActiveTab('stats');
+      setActiveTab('appointments');
       setAppointments([]);
       setApplications([]);
       setQuotes([]);
@@ -376,18 +385,18 @@ export default function AdminDashboard() {
 
   const getStatusBadge = (status: string) => {
     if (status === 'processed') {
-      return <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-green-100 text-green-700 text-[10px] font-black uppercase tracking-wider"><CheckCircle2 className="w-3 h-3" /> Feldolgozva</span>;
+      return <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-green-100 text-green-700 text-[11px] font-semibold"><CheckCircle2 className="w-3 h-3" />{activeTab === 'appointments' ? 'Időpontot kapott' : 'Feldolgozva'}</span>;
     }
     if (status === 'no_answer') {
-      return <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-red-100 text-red-700 text-[10px] font-black uppercase tracking-wider"><Phone className="w-3 h-3" /> Nem vette fel</span>;
+      return <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-red-100 text-red-700 text-[11px] font-semibold"><Phone className="w-3 h-3" /> Nem vette fel</span>;
     }
     if (status === 'cancelled') {
-      return <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 text-[10px] font-black uppercase tracking-wider"><Trash2 className="w-3 h-3" /> Időpont sztornózva</span>;
+      return <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 text-[11px] font-semibold"><Trash2 className="w-3 h-3" /> Időpont sztornózva</span>;
     }
     if (status === 'special') {
-      return <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-purple-100 text-purple-700 text-[10px] font-black uppercase tracking-wider"><Sparkles className="w-3 h-3" /> Különleges egyeztetés</span>;
+      return <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-purple-100 text-purple-700 text-[11px] font-semibold"><Sparkles className="w-3 h-3" /> Különleges egyeztetés</span>;
     }
-    return <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-100 text-amber-700 text-[10px] font-black uppercase tracking-wider animate-pulse"><Clock className="w-3 h-3" /> Új Kérelem</span>;
+    return <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-100 text-amber-700 text-[11px] font-semibold"><Clock className="w-3 h-3" /> Új megkeresés</span>;
   };
 
   const parseItems = (itemsStr: string | any) => {
@@ -410,7 +419,7 @@ export default function AdminDashboard() {
     return `"${safe.replace(/"/g, '""')}"`;
   };
 
-  const exportMarketingSubscribers = () => {
+  const exportMarketingSubscribers = (records = marketingSubscribers) => {
     const headers = [
       'Email',
       'Name',
@@ -425,7 +434,7 @@ export default function AdminDashboard() {
       'Created at',
     ];
 
-    const rows = marketingSubscribers.filter((subscriber) => subscriber.consent_status === 'subscribed').map((subscriber) => {
+    const rows = records.filter((subscriber) => subscriber.consent_status === 'subscribed').map((subscriber) => {
       const fullName = subscriber.name || '';
       const { firstName, lastName } = getNamePartsForExport(fullName);
       return [
@@ -457,30 +466,32 @@ export default function AdminDashboard() {
     URL.revokeObjectURL(url);
   };
 
+  if (checkingSession) return <main className="flex min-h-dvh items-center justify-center bg-slate-50"><div role="status" className="flex flex-col items-center gap-4 text-sm font-medium text-slate-500"><Loader2 className="h-6 w-6 animate-spin text-sky-700" />Munkatér betöltése…</div></main>;
+
   // ── LOGIN SCREEN ──────────────────────────────────────────────────────────
   if (isAuthenticated && identity && (identity.ownerSetup || !identity.mfa?.satisfied)) {
     return <main className="min-h-screen bg-slate-100 px-4 py-8 md:py-14"><AccountSecurity identity={identity} gated onReady={fetchSecureData} onLogout={handleLogout} /></main>;
   }
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="max-w-md w-full bg-white rounded-3xl p-8 shadow-2xl">
+      <div className="min-h-dvh bg-[radial-gradient(ellipse_at_top,#e2f0f8,#f4f7fb_65%)] flex items-center justify-center p-5">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="max-w-md w-full bg-white rounded-3xl border border-slate-200/80 p-7 sm:p-10 shadow-xl shadow-slate-200/50">
           <a href="/admin/portal" className="mb-6 inline-flex text-sm text-slate-600 underline underline-offset-4">← Vissza a választáshoz</a>
-          <Image src="/logo.webp" alt="Crown Dental" width={232} height={145} className="mx-auto mb-6 h-32 w-56 object-contain" />
-          <h1 className="text-2xl font-black text-gray-900 mb-1 text-center tracking-tight">CROWN DENTAL</h1>
-          <p className="text-gray-500 mb-8 text-center text-sm font-medium">Titkosított belépés a vezérlőpultba</p>
+          <Image src="/logo.webp" alt="Crown Dental" width={232} height={145} priority className="mx-auto mb-7 h-24 w-44 object-contain" />
+          <h1 className="text-2xl font-bold text-slate-900 mb-2 text-center tracking-tight">Üdvözöljük a munkatérben</h1>
+          <p className="text-gray-500 mb-8 text-center text-sm font-medium">Lépjen be a saját fiókjával a folytatáshoz.</p>
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="relative">
               <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <input type="text" value={usernameInput} onChange={(e) => setUsernameInput(e.target.value)} aria-label="E-mail-cím vagy meglévő adminnév" autoComplete="username" placeholder="E-mail-cím vagy adminnév" required className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sky-600 outline-none font-bold" />
+              <input type="text" value={usernameInput} onChange={(e) => setUsernameInput(e.target.value)} aria-label="E-mail-cím vagy meglévő adminnév" autoComplete="username" placeholder="E-mail-cím vagy adminnév" required className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sky-600 outline-none text-base font-medium" />
             </div>
             <div className="relative">
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <input type="password" value={passwordInput} onChange={(e) => setPasswordInput(e.target.value)} aria-label="Jelszó" autoComplete="current-password" placeholder="Jelszó" required className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sky-600 outline-none font-bold tracking-widest" />
+              <input type="password" value={passwordInput} onChange={(e) => setPasswordInput(e.target.value)} aria-label="Jelszó" autoComplete="current-password" placeholder="Jelszó" required className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sky-600 outline-none text-base font-medium" />
             </div>
             {dbError && <p className="text-red-500 text-center text-sm font-bold bg-red-50 py-2 rounded-xl border border-red-100">{dbError}</p>}
             <button type="submit" disabled={isLoginLoading} className="w-full bg-gray-900 text-white font-black py-4 rounded-xl hover:bg-sky-600 transition-all shadow-lg disabled:bg-gray-400 flex justify-center items-center gap-2">
-              {isLoginLoading ? <Loader2 className="animate-spin w-5 h-5" /> : 'RENDSZER BELÉPÉS'}
+              {isLoginLoading ? <Loader2 className="animate-spin w-5 h-5" /> : 'Belépés a munkatérbe'}
             </button>
           </form>
         </motion.div>
@@ -488,19 +499,6 @@ export default function AdminDashboard() {
     );
   }
 
-  // ── TAB CONFIG ────────────────────────────────────────────────────────────
-  const tabs = [
-    { id: 'stats' as const, label: 'Statisztika', icon: BarChart3, count: null },
-    { id: 'appointments' as const, label: 'Időpontok', icon: Calendar, count: appointments.length },
-    { id: 'career' as const, label: 'Karrier', icon: Briefcase, count: applications.length },
-    { id: 'quotes' as const, label: 'AI Leads', icon: Sparkles, count: quotes.length },
-    { id: 'blog' as const, label: 'Blog', icon: BookOpen, count: null },
-    { id: 'marketing' as const, label: 'Email lista', icon: Mail, count: marketingSubscribers.length },
-    { id: 'staff' as const, label: 'Kollégák', icon: UserCheck, count: null },
-    { id: 'security' as const, label: 'Fiókbiztonság', icon: Lock, count: null },
-  ].filter(tab => identity?.role === 'admin' || tab.id === 'appointments' || tab.id === 'security');
-
-  const tabLabel = tabs.find(t => t.id === activeTab)?.label ?? '';
   const getBlogPostPath = (language: string | undefined, slug: string) => {
     const normalizedLanguage = normalizeBlogLanguage(language);
     return `https://www.crowndental.hu${normalizedLanguage === 'hu' ? '' : `/${normalizedLanguage}`}/blog/${slug}`;
@@ -509,70 +507,28 @@ export default function AdminDashboard() {
     BLOG_LANGUAGES.find(item => item.id === normalizeBlogLanguage(language))?.label ?? 'Magyar';
   const getBlogCategoryLabel = (category: string | undefined) =>
     BLOG_CATEGORIES.find(item => item.id === normalizeBlogCategory(category))?.shortLabel ?? 'Szakmai';
-  const marketingClinicStats = Object.entries(
-    marketingSubscribers.reduce<Record<string, number>>((totals, subscriber) => {
-      const clinic = subscriber.clinic || 'Nincs megadva';
-      totals[clinic] = (totals[clinic] || 0) + 1;
-      return totals;
-    }, {})
-  );
+  const appointmentClinic = (record: any) => getAppointmentClinic(record.confirmed_clinic_id)?.name || (record.city ? `Kérés: ${record.city}` : 'Rendelő még nincs megadva');
+  const clinics = Array.from(new Set(appointments.map(appointmentClinic))).sort((a, b) => a.localeCompare(b, 'hu'));
+  const visibleAppointments = filterAdminRecords(appointments, filters.appointments, ['name', 'email', 'phone', 'treatment', 'city', 'special_note']).filter(record => clinicFilter === 'all' || appointmentClinic(record) === clinicFilter);
+  const visibleApplications = filterAdminRecords(applications, filters.career, ['name', 'email', 'phone', 'position', 'location']);
+  const visibleQuotes = filterAdminRecords(quotes, filters.quotes, ['name', 'email', 'phone']);
+  const visibleMarketing = filterAdminRecords(marketingSubscribers, filters.marketing, ['name', 'nickname', 'email', 'phone', 'clinic']);
+  const dataTab = ['appointments', 'career', 'quotes', 'marketing'].includes(activeTab) ? activeTab as keyof typeof filters : null;
+  const records = activeTab === 'appointments' ? visibleAppointments : activeTab === 'career' ? visibleApplications : activeTab === 'quotes' ? visibleQuotes : visibleMarketing;
+  const totalRecords = activeTab === 'appointments' ? appointments.length : activeTab === 'career' ? applications.length : activeTab === 'quotes' ? quotes.length : marketingSubscribers.length;
+  const updateFilter = (value: AdminListOptions) => { if (dataTab) setFilters(previous => ({ ...previous, [dataTab]: value })); setVisibleLimit(40); };
+  const statusOptions = [{ value: 'new', label: 'Új megkeresés' }, { value: 'processed', label: activeTab === 'appointments' ? 'Időpontot kapott' : 'Feldolgozva' }, ...(activeTab === 'appointments' ? [{ value: 'no_answer', label: 'Nem vette fel' }, { value: 'special', label: 'Különleges egyeztetés' }, { value: 'cancelled', label: 'Sztornózva' }] : [])];
 
-  // ── MAIN DASHBOARD ────────────────────────────────────────────────────────
-  return (
-    <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row">
-
-      {/* ── DESKTOP SIDEBAR ── */}
-      <aside className="hidden md:flex w-72 bg-gray-950 text-white flex-col flex-shrink-0 shadow-2xl sticky top-0 h-screen">
-        <div className="p-6 border-b border-white/5 flex items-center justify-between bg-black/20">
-          <div>
-            <h1 className="text-lg font-black text-white tracking-tighter italic">CROWN DENTAL</h1>
-            <p className="text-green-400 text-[10px] font-black uppercase tracking-widest mt-0.5 flex items-center gap-1"><ShieldAlert className="w-3 h-3" /> Titkosított Kapcsolat</p>
-          </div>
-          <div className="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse shadow-[0_0_12px_rgba(34,197,94,0.6)]" />
-        </div>
-        <nav className="flex-1 p-5 space-y-2 overflow-y-auto">
-          {tabs.map(({ id, label, icon: Icon, count }) => (
-            <button key={id} onClick={() => { setActiveTab(id); setExpandedId(null); }} className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold transition-all ${activeTab === id ? 'bg-sky-600 text-white shadow-lg shadow-sky-600/30' : 'text-gray-500 hover:bg-gray-900 hover:text-white'}`}>
-              <Icon className="w-5 h-5 flex-shrink-0" /> {label}
-              {count !== null && <span className="ml-auto bg-black/30 text-[10px] py-0.5 px-2 rounded-full border border-white/5">{count}</span>}
-            </button>
-          ))}
-        </nav>
-        <div className="p-5 border-t border-white/5 bg-black/40">
-          <button onClick={handleLogout} className="w-full flex items-center justify-center gap-2 px-4 py-3.5 text-red-400 hover:bg-red-500/10 rounded-2xl transition-all font-bold">
-            <LogOut className="w-4 h-4" /> Kijelentkezés
-          </button>
-        </div>
-      </aside>
-
-      {/* ── MAIN CONTENT ── */}
-      <div className="flex-1 flex flex-col min-h-screen pb-20 md:pb-0">
-
-        {/* Header */}
-        <header className="bg-white border-b border-gray-200 px-4 py-3 md:px-8 md:py-5 flex justify-between items-center sticky top-0 z-10 shadow-sm">
-          <div>
-            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest md:hidden">Crown Admin</p>
-            <p className="text-xs text-slate-500">{identity?.name} · {identity?.role === 'admin' ? 'Admin' : 'Asszisztens'}</p>
-            <h2 className="text-lg md:text-2xl font-black text-gray-900 tracking-tight italic uppercase">{tabLabel}</h2>
-          </div>
-          <div className="flex items-center gap-2">
-          {identity?.role === 'admin' && <a href="/admin/portal" className="rounded-full border border-gray-200 px-3 py-2.5 text-sm font-bold text-gray-700">Márkaválasztó</a>}
-          {identity?.role === 'admin' && <Link href="/crown-dental/hidfutas" className="rounded-full bg-sky-800 px-4 py-2.5 text-sm font-bold text-white">Hídfutás</Link>}
-          <button onClick={() => fetchSecureData()} disabled={isLoading} className="flex items-center gap-2 bg-gray-100 text-gray-600 px-4 py-2.5 rounded-full font-bold hover:bg-gray-200 transition-all text-sm">
-            <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
-            <span className="hidden sm:inline">Frissítés</span>
-          </button>
-          </div>
-        </header>
-
-        {/* Content */}
-        <main className="flex-1 p-3 md:p-8">
+  if (!identity) return null;
+  return (<AdminShell identity={identity} activeTab={activeTab} onSelect={tab => { setActiveTab(tab); setExpandedId(null); setVisibleLimit(40); }} refreshing={isLoading} onRefresh={() => void fetchSecureData()} onLogout={() => void handleLogout()} updatedAt={updatedAt} pendingCount={identity.role === 'admin' ? appointments.filter(item => !item.status || item.status === 'new').length : 0}>
           {dbError && (
             <div className="mb-4 p-4 bg-red-50 border-2 border-red-100 rounded-2xl flex items-center gap-3 text-red-700">
               <AlertTriangle className="w-6 h-6 flex-shrink-0" />
               <div><p className="font-black uppercase text-xs">Szerver Hiba</p><p className="text-sm font-medium">{dbError}</p></div>
             </div>
           )}
+
+          {dataTab && <AdminListFilters value={filters[dataTab]} onChange={updateFilter} total={totalRecords} visible={records.length} statuses={activeTab === 'marketing' ? undefined : statusOptions} clinics={activeTab === 'appointments' ? clinics : undefined} clinic={activeTab === 'appointments' ? clinicFilter : 'all'} onClinicChange={activeTab === 'appointments' ? value => { setClinicFilter(value); setVisibleLimit(40); } : undefined} />}
 
           <AnimatePresence mode="wait">
 
@@ -600,7 +556,7 @@ export default function AdminDashboard() {
                 </div>
 
                 {/* POST LIST */}
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden divide-y divide-gray-100">
+                <div className="bg-white rounded-2xl shadow-sm shadow-slate-200/20 border border-slate-200/80 overflow-hidden divide-y divide-gray-100">
                   {posts.length === 0 && !isLoading && <div className="p-12 text-center text-gray-400 font-bold uppercase tracking-widest italic text-xs">Nincsenek publikált cikkek...</div>}
                   {posts.map(post => (
                     <div key={post._id} className="p-4 flex justify-between items-center hover:bg-gray-50 transition-all">
@@ -618,165 +574,31 @@ export default function AdminDashboard() {
                 </div>
               </motion.div>
             ) : activeTab === 'marketing' && identity?.role === 'admin' ? (
-              <motion.div key="marketing" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-4">
-                <div className="bg-white rounded-3xl border border-gray-200 p-5 md:p-6 shadow-sm">
-                  <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                    <div>
-                      <div className="inline-flex items-center gap-2 rounded-full bg-sky-50 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-sky-700">
-                        <Mail className="w-3.5 h-3.5" /> Marketing feliratkozók
-                      </div>
-                      <h3 className="mt-3 text-2xl font-black text-gray-950 tracking-tight">Email lista</h3>
-                      <p className="mt-1 text-sm text-gray-500">
-                        Csak azok jelennek meg itt, akik külön bepipálták vagy a sikeres foglalás oldalon kérték az ajánlatokat.
-                      </p>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={exportMarketingSubscribers}
-                      disabled={marketingSubscribers.length === 0}
-                      className="inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-500 px-5 py-3.5 text-sm font-black text-white shadow-lg shadow-emerald-500/20 transition-all hover:bg-emerald-600 disabled:bg-gray-300 disabled:shadow-none"
-                    >
-                      <Download className="w-4 h-4" /> Export MailerLite CSV
-                    </button>
-                  </div>
-                </div>
-
-                <div className="grid gap-3 md:grid-cols-4">
-                  <div className="rounded-2xl border border-sky-100 bg-sky-50 p-4">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-sky-600">Feliratkozók</p>
-                    <p className="mt-2 text-3xl font-black text-gray-950">{marketingSubscribers.length}</p>
-                    <p className="text-xs font-medium text-gray-500">összes marketing consent</p>
-                  </div>
-                  {marketingClinicStats.slice(0, 3).map(([clinic, count]) => (
-                    <div key={clinic} className="rounded-2xl border border-gray-200 bg-white p-4">
-                      <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">Rendelő</p>
-                      <p className="mt-2 text-2xl font-black text-gray-950">{count}</p>
-                      <p className="truncate text-xs font-bold text-gray-500">{clinic}</p>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm">
-                  <div className="border-b border-gray-100 px-5 py-4">
-                    <h4 className="font-black text-gray-950">Feliratkozói lista</h4>
-                    <p className="text-xs text-gray-500">Az export külön oszlopokba teszi az emailt, nevet, keresztnevet, vezetéknevet, telefonszámot, rendelőt és consent adatokat.</p>
-                  </div>
-                  {marketingSubscribers.length === 0 ? (
-                    <div className="py-20 text-center">
-                      <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-50 text-gray-300">
-                        <Mail className="h-7 w-7" />
-                      </div>
-                      <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">Még nincs email lista feliratkozó.</p>
-                    </div>
-                  ) : (
-                    <div className="overflow-x-auto">
-                      <table className="w-full min-w-[980px] text-left text-sm">
-                        <thead className="bg-gray-50 text-[10px] font-black uppercase tracking-widest text-gray-400">
-                          <tr>
-                            <th className="px-5 py-3">Név</th>
-                            <th className="px-5 py-3">Email</th>
-                            <th className="px-5 py-3">Telefonszám</th>
-                            <th className="px-5 py-3">Rendelő</th>
-                            <th className="px-5 py-3">Forrás</th>
-                            <th className="px-5 py-3">Nyelv</th>
-                            <th className="px-5 py-3">Feliratkozás</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-100">
-                          {marketingSubscribers.map((subscriber) => (
-                            <tr key={subscriber.id || subscriber.email} className="hover:bg-sky-50/40">
-                              <td className="px-5 py-4">
-                                <p className="font-black text-gray-950">{subscriber.name || '-'}</p>
-                                {subscriber.nickname && <p className="text-xs font-medium text-gray-400">{subscriber.nickname}</p>}
-                              </td>
-                              <td className="px-5 py-4">
-                                <a href={`mailto:${subscriber.email}`} className="font-bold text-sky-700 hover:underline">{subscriber.email}</a>
-                              </td>
-                              <td className="px-5 py-4">
-                                {subscriber.phone ? (
-                                  <a href={`tel:${subscriber.phone}`} className="font-bold text-gray-800 hover:text-sky-600">{subscriber.phone}</a>
-                                ) : '-'}
-                              </td>
-                              <td className="px-5 py-4">
-                                <span className="inline-flex rounded-full bg-gray-100 px-3 py-1 text-xs font-black text-gray-700">{subscriber.clinic || 'Nincs megadva'}</span>
-                              </td>
-                              <td className="px-5 py-4 text-xs font-bold text-gray-500">{subscriber.source || '-'}</td>
-                              <td className="px-5 py-4">
-                                <span className="rounded-full bg-sky-50 px-2.5 py-1 text-[10px] font-black uppercase text-sky-700">{subscriber.locale || 'hu'}</span>
-                              </td>
-                              <td className="px-5 py-4 text-xs font-medium text-gray-500">{formatDate(subscriber.consented_at || subscriber.created_at)}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  )}
-                </div>
-              </motion.div>
+              <motion.div key="marketing" initial={{ opacity: 0 }} animate={{ opacity: 1 }}><MarketingContacts records={visibleMarketing} onExport={() => exportMarketingSubscribers(visibleMarketing)} /></motion.div>
             ) : (
 
               /* DATA CARDS */
               <motion.div key="data" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-3">
 
-                {/* APPOINTMENTS STATS */}
-                {activeTab === 'appointments' && identity?.role === 'admin' && (() => {
-                  const total = appointments.length;
-                  const waiting = appointments.filter(a => !a.status || a.status === 'new').length;
-                  const noAnswer = appointments.filter(a => a.status === 'no_answer').length;
-                  const done = appointments.filter(a => a.status === 'processed').length;
-                  const cancelled = appointments.filter(a => a.status === 'cancelled').length;
-                  const special = appointments.filter(a => a.status === 'special').length;
-                  return (
-                    <div className="grid grid-cols-2 md:grid-cols-6 gap-2 mb-1">
-                      <div className="bg-white rounded-2xl border border-gray-200 p-3 text-center">
-                        <p className="text-2xl font-black text-gray-900">{total}</p>
-                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-wider mt-0.5">Összes</p>
-                      </div>
-                      <div className="bg-amber-50 rounded-2xl border border-amber-200 p-3 text-center">
-                        <p className="text-2xl font-black text-amber-600">{waiting}</p>
-                        <p className="text-[10px] font-black text-amber-500 uppercase tracking-wider mt-0.5">Vár</p>
-                      </div>
-                      <div className="bg-red-50 rounded-2xl border border-red-200 p-3 text-center">
-                        <p className="text-2xl font-black text-red-600">{noAnswer}</p>
-                        <p className="text-[10px] font-black text-red-400 uppercase tracking-wider mt-0.5">Nem vette fel</p>
-                      </div>
-                      <div className="bg-green-50 rounded-2xl border border-green-200 p-3 text-center">
-                        <p className="text-2xl font-black text-green-600">{done}</p>
-                        <p className="text-[10px] font-black text-green-500 uppercase tracking-wider mt-0.5">Időpontot kapott</p>
-                      </div>
-                      <div className="bg-slate-50 rounded-2xl border border-slate-200 p-3 text-center">
-                        <p className="text-2xl font-black text-slate-600">{cancelled}</p>
-                        <p className="text-[10px] font-black text-slate-500 uppercase tracking-wider mt-0.5">Sztornózva</p>
-                      </div>
-                      <div className="bg-purple-50 rounded-2xl border border-purple-200 p-3 text-center">
-                        <p className="text-2xl font-black text-purple-600">{special}</p>
-                        <p className="text-[10px] font-black text-purple-500 uppercase tracking-wider mt-0.5">Különleges</p>
-                      </div>
-                    </div>
-                  );
-                })()}
+                {activeTab === 'appointments' && identity?.role === 'admin' && <div className="mb-5 grid grid-cols-3 gap-2 sm:gap-4">{[
+                  { status: 'new', label: 'Új megkeresés', color: 'text-sky-800', bg: 'bg-sky-50/70' },
+                  { status: 'no_answer', label: 'Visszahívás', color: 'text-amber-800', bg: 'bg-amber-50/70' },
+                  { status: 'processed', label: 'Időpontot kapott', color: 'text-emerald-800', bg: 'bg-emerald-50/70' },
+                ].map(tile => <button key={tile.status} onClick={() => updateFilter({ ...filters.appointments, status: filters.appointments.status === tile.status ? 'all' : tile.status })} aria-pressed={filters.appointments.status === tile.status} className={`rounded-2xl border p-3 text-left transition sm:p-5 ${tile.bg} ${filters.appointments.status === tile.status ? 'border-sky-500 ring-1 ring-sky-500' : 'border-transparent hover:border-slate-200'}`}><p className={`text-2xl font-bold tracking-tight sm:text-3xl ${tile.color}`}>{appointments.filter(item => (item.status || 'new') === tile.status).length}</p><p className={`mt-1.5 text-[10px] font-medium leading-snug sm:text-xs ${tile.color}`}>{tile.label}</p></button>)}</div>}
 
                 {/* APPOINTMENTS */}
-                {activeTab === 'appointments' && appointments.map(item => (
-                  <div key={item.id} className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-                    <button className="w-full text-left p-4 flex items-start gap-3" onClick={() => setExpandedId(expandedId === item.id ? null : item.id)}>
+                {activeTab === 'appointments' && visibleAppointments.slice(0, visibleLimit).map(item => (
+                  <div key={item.id} className="bg-white rounded-2xl shadow-sm shadow-slate-200/20 border border-slate-200/80 overflow-hidden relative">
+                    <button aria-expanded={expandedId === item.id} className="w-full text-left p-5 xl:pr-60 flex items-start gap-3 hover:bg-slate-50/70 transition-colors" onClick={() => setExpandedId(expandedId === item.id ? null : item.id)}>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap mb-1">
                           {getStatusBadge(item.status)}
-                          {item.confirmed_appointment_local && (
-                            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-black uppercase text-emerald-700">
-                              <Clock className="w-3 h-3" /> {item.confirmed_appointment_local}
-                            </span>
-                          )}
-                          {item.status === 'special' && item.special_note && (
-                            <span className="inline-flex items-center gap-1 rounded-full bg-purple-50 px-2 py-0.5 text-[10px] font-black uppercase text-purple-700">
-                              <Sparkles className="w-3 h-3" /> {item.special_note}
-                            </span>
-                          )}
-                          <span className="text-gray-400 text-xs">{formatDate(item.created_at)}</span>
+                          <span className="ml-auto text-[11px] text-slate-500">{formatDate(item.created_at)}</span>
                         </div>
-                        <p className="font-black text-gray-900 text-base uppercase truncate">{item.name}</p>
-                        <span className="inline-block mt-1 bg-sky-100 text-sky-700 px-3 py-0.5 rounded-full text-[10px] font-black uppercase">{item.treatment}</span>
+                        <p className="text-base font-semibold tracking-tight text-slate-900 break-words">{item.name}</p>
+                        <span className="mt-2 block text-sm leading-relaxed text-slate-500">{item.treatment}</span>
+                        {item.confirmed_appointment_local && <p className="mt-2 flex items-center gap-1.5 text-xs font-semibold text-emerald-800"><Clock className="h-3.5 w-3.5" aria-hidden="true" />{formatAppointmentDateTime(item.confirmed_appointment_local) || item.confirmed_appointment_local}</p>}
+                        {item.status === 'special' && item.special_note && <p className="mt-2 flex items-start gap-1.5 text-xs leading-relaxed text-purple-700"><Sparkles className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" />{item.special_note}</p>}
                         {(item.confirmed_appointment_local || item.status === 'processed') && (
                           <p className={`mt-2 flex items-start gap-1 text-sm font-bold ${getAppointmentClinic(item.confirmed_clinic_id) ? 'text-emerald-800' : 'text-amber-800'}`}>
                             <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0" aria-hidden="true" />
@@ -788,13 +610,14 @@ export default function AdminDashboard() {
                         {expandedId === item.id ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
                       </div>
                     </button>
+                    <div className="flex gap-2 px-5 pb-4 xl:absolute xl:right-5 xl:top-9 xl:w-48 xl:p-0"><a href={`tel:${item.phone}`} className="flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-sky-50 text-sm font-semibold text-sky-800 hover:bg-sky-100"><Phone className="h-4 w-4" aria-hidden="true" /> Hívás</a><a href={`mailto:${item.email}`} className="flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl border border-slate-200 text-sm font-semibold text-slate-600 hover:bg-slate-50"><Mail className="h-4 w-4" aria-hidden="true" /> E-mail</a></div>
                     {expandedId === item.id && (
                       <div className="border-t border-sky-100 bg-sky-50/20 p-4 space-y-4">
                         <div className="grid grid-cols-2 gap-3">
                           <div className="col-span-2 min-w-0 bg-white rounded-xl p-3 border border-sky-100 sm:col-span-1">
                             <p className="text-[10px] font-black text-sky-400 uppercase tracking-widest mb-1 flex items-center gap-1"><Phone className="w-3 h-3" /> Telefon</p>
                             <a href={`tel:${item.phone}`} className="font-black text-gray-900 text-sm hover:text-sky-600 block">{item.phone}</a>
-                            <p className="text-gray-500 text-xs truncate">{item.email}</p>
+                            <a className="mt-1 block break-all text-xs text-sky-800" href={`mailto:${item.email}`}>{item.email}</a>
                           </div>
                           <div className="col-span-2 bg-white rounded-xl p-3 border border-sky-100 sm:col-span-1">
                             <p className="text-[10px] font-black text-sky-400 uppercase tracking-widest mb-1 flex items-center gap-1"><MapPin className="w-3 h-3" /> Rendelő</p>
@@ -804,7 +627,7 @@ export default function AdminDashboard() {
                           {item.confirmed_appointment_local && (
                             <div className="col-span-2 bg-emerald-50 rounded-xl p-3 border border-emerald-100">
                               <p className="text-[10px] font-black text-emerald-500 uppercase tracking-widest mb-1 flex items-center gap-1"><Clock className="w-3 h-3" /> Kapott időpont</p>
-                              <p className="font-black text-emerald-950 text-lg">{item.confirmed_appointment_local}</p>
+                              <p className="font-black text-emerald-950 text-lg">{formatAppointmentDateTime(item.confirmed_appointment_local) || item.confirmed_appointment_local}</p>
                               {item.confirmation_email_sent_at && (
                                 <p className="text-emerald-700/70 text-xs mt-0.5">Visszaigazoló e-mail elküldve: {formatDate(item.confirmation_email_sent_at)}</p>
                               )}
@@ -822,7 +645,7 @@ export default function AdminDashboard() {
                         </div>
                         <div className="bg-white rounded-xl p-3 border border-sky-100 space-y-2">
                           <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Adminisztráció</p>
-                          <select value={item.status || 'new'} disabled={actionLoading !== null} onChange={(e) => handleAppointmentStatusChange(item, e.target.value)} className="w-full min-h-12 p-2.5 bg-gray-50 border border-gray-200 rounded-lg font-bold text-base text-gray-700 outline-none focus:ring-2 focus:ring-sky-500 disabled:opacity-60 sm:text-sm">
+                          <select aria-label={`${item.name} státusza`} value={item.status || 'new'} disabled={actionLoading !== null} onChange={(e) => handleAppointmentStatusChange(item, e.target.value)} className="w-full min-h-12 p-2.5 bg-gray-50 border border-gray-200 rounded-lg font-bold text-base text-gray-700 outline-none focus:ring-2 focus:ring-sky-500 disabled:opacity-60 sm:text-sm">
                             <option value="new">Új Kérelem</option>
                             <option value="no_answer">Felhívtuk – Nem vette fel</option>
                             <option value="processed">Időpontot kapott / Feldolgozva</option>
@@ -830,7 +653,7 @@ export default function AdminDashboard() {
                             <option value="special">Különleges Egyeztetés</option>
                           </select>
                           <button onClick={() => handleAction('appointments', item.id, 'hide')} className="w-full py-2.5 text-red-500 hover:bg-red-50 font-bold text-sm rounded-lg flex items-center justify-center gap-2 border border-red-100">
-                            {actionLoading === `hide-${item.id}` ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Trash2 className="w-4 h-4" /> Törlés</>}
+                            {actionLoading === `hide-${item.id}` ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Trash2 className="w-4 h-4" /> Elrejtés</>}
                           </button>
                         </div>
                       </div>
@@ -839,15 +662,15 @@ export default function AdminDashboard() {
                 ))}
 
                 {/* CAREER */}
-                {activeTab === 'career' && applications.map(item => (
-                  <div key={item.id} className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-                    <button className="w-full text-left p-4 flex items-start gap-3" onClick={() => setExpandedId(expandedId === item.id ? null : item.id)}>
+                {activeTab === 'career' && visibleApplications.slice(0, visibleLimit).map(item => (
+                  <div key={item.id} className="bg-white rounded-2xl shadow-sm shadow-slate-200/20 border border-slate-200/80 overflow-hidden">
+                    <button aria-expanded={expandedId === item.id} className="w-full text-left p-5 flex items-start gap-3 hover:bg-slate-50/70 transition-colors" onClick={() => setExpandedId(expandedId === item.id ? null : item.id)}>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap mb-1">
                           {getStatusBadge(item.status)}
-                          <span className="text-gray-400 text-xs">{formatDate(item.created_at)}</span>
+                          <span className="ml-auto text-[11px] text-slate-500">{formatDate(item.created_at)}</span>
                         </div>
-                        <p className="font-black text-gray-900 text-base uppercase truncate">{item.name}</p>
+                        <p className="text-base font-semibold tracking-tight text-slate-900 break-words">{item.name}</p>
                         <span className="inline-block mt-1 bg-amber-100 text-amber-800 px-3 py-0.5 rounded-full text-[10px] font-black uppercase">{item.position}</span>
                       </div>
                       <div className="flex-shrink-0 text-amber-500 mt-1">
@@ -856,11 +679,11 @@ export default function AdminDashboard() {
                     </button>
                     {expandedId === item.id && (
                       <div className="border-t border-amber-100 bg-amber-50/20 p-4 space-y-4">
-                        <div className="grid grid-cols-2 gap-3">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                           <div className="bg-white rounded-xl p-3 border border-amber-100">
                             <p className="text-[10px] font-black text-amber-500 uppercase tracking-widest mb-1 flex items-center gap-1"><UserCheck className="w-3 h-3" /> Kapcsolat</p>
-                            <p className="font-black text-gray-900 text-sm">{item.phone}</p>
-                            <p className="text-gray-500 text-xs truncate underline italic">{item.email}</p>
+                            <a className="block min-h-11 py-2 text-sm font-semibold text-sky-800" href={`tel:${item.phone}`}>{item.phone}</a>
+                            <a className="block break-all text-xs text-sky-800 underline" href={`mailto:${item.email}`}>{item.email}</a>
                           </div>
                           <div className="bg-white rounded-xl p-3 border border-amber-100">
                             <p className="text-[10px] font-black text-amber-500 uppercase tracking-widest mb-1 flex items-center gap-1"><MapPin className="w-3 h-3" /> Tapasztalat</p>
@@ -876,7 +699,7 @@ export default function AdminDashboard() {
                         )}
                         <div className="bg-white rounded-xl p-3 border border-amber-100 space-y-2">
                           <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">HR Adminisztráció</p>
-                          <select value={item.status || 'new'} onChange={(e) => handleAction('career_applications', item.id, 'update_status', e.target.value)} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg font-bold text-sm text-gray-700 outline-none focus:border-amber-400">
+                          <select aria-label={`${item.name} státusza`} value={item.status || 'new'} onChange={(e) => handleAction('career_applications', item.id, 'update_status', e.target.value)} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg font-bold text-sm text-gray-700 outline-none focus:border-amber-400">
                             <option value="new">Új Jelentkező</option>
                             <option value="processed">Feldolgozva / Felhívva</option>
                           </select>
@@ -890,7 +713,7 @@ export default function AdminDashboard() {
                 ))}
 
                 {/* QUOTES */}
-                {activeTab === 'quotes' && quotes.map(item => {
+                {activeTab === 'quotes' && visibleQuotes.slice(0, visibleLimit).map(item => {
                   const quoteItems = parseItems(item.items);
                   const crownTotalRange = getMoneyRange(item.crown_total_min, item.crown_total_max, item.new_total);
                   const savingsRange = getMoneyRange(item.savings_min, item.savings_max, item.savings);
@@ -898,14 +721,14 @@ export default function AdminDashboard() {
                   const savingsLabel = formatMoneyRange(savingsRange);
                   const requiresManualReview = Boolean(item.requires_manual_review) || !crownTotalRange;
                   return (
-                    <div key={item.id} className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-                      <button className="w-full text-left p-4 flex items-start gap-3" onClick={() => setExpandedId(expandedId === item.id ? null : item.id)}>
+                    <div key={item.id} className="bg-white rounded-2xl shadow-sm shadow-slate-200/20 border border-slate-200/80 overflow-hidden">
+                      <button aria-expanded={expandedId === item.id} className="w-full text-left p-5 flex items-start gap-3 hover:bg-slate-50/70 transition-colors" onClick={() => setExpandedId(expandedId === item.id ? null : item.id)}>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 flex-wrap mb-1">
                             {getStatusBadge(item.status)}
-                            <span className="text-gray-400 text-xs">{formatDate(item.created_at)}</span>
+                            <span className="ml-auto text-[11px] text-slate-500">{formatDate(item.created_at)}</span>
                           </div>
-                          <p className="font-black text-gray-900 text-base uppercase truncate">{item.name}</p>
+                          <p className="text-base font-semibold tracking-tight text-slate-900 break-words">{item.name}</p>
                           <p className={`font-black text-lg mt-0.5 ${requiresManualReview ? 'text-amber-600' : savingsLabel ? 'text-green-600' : 'text-gray-500'}`}>
                             {requiresManualReview
                               ? 'Kézi ellenőrzés szükséges'
@@ -935,8 +758,8 @@ export default function AdminDashboard() {
                             <a href={`tel:${item.phone}`} className="w-full bg-gray-900 text-white py-3 rounded-xl font-black hover:bg-sky-500 transition-all text-sm uppercase tracking-widest text-center flex items-center justify-center gap-2">
                               <Phone className="w-4 h-4" /> Hívás indítása
                             </a>
-                            <p className="text-xs text-gray-400 text-center">{item.phone} · {item.email}</p>
-                            <select value={item.status || 'new'} onChange={(e) => handleAction('quote_leads', item.id, 'update_status', e.target.value)} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg font-bold text-sm text-gray-700 outline-none focus:border-green-400">
+                            <p className="break-words text-xs text-gray-500 text-center">{item.phone} · {item.email}</p>
+                            <select aria-label={`${item.name} státusza`} value={item.status || 'new'} onChange={(e) => handleAction('quote_leads', item.id, 'update_status', e.target.value)} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg font-bold text-sm text-gray-700 outline-none focus:border-green-400">
                               <option value="new">Új Lead (Még nincs hívva)</option>
                               <option value="processed">Feldolgozva / Siker</option>
                             </select>
@@ -987,20 +810,19 @@ export default function AdminDashboard() {
                 })}
 
                 {/* EMPTY STATE */}
-                {((activeTab === 'appointments' && appointments.length === 0) || (activeTab === 'career' && applications.length === 0) || (activeTab === 'quotes' && quotes.length === 0)) && !isLoading && (
+                {(['appointments', 'career', 'quotes'].includes(activeTab) && records.length === 0) && !isLoading && (
                   <div className="py-24 text-center flex flex-col items-center">
                     <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4 border border-gray-100">
                       <Search className="w-7 h-7 text-gray-200" />
                     </div>
-                    <p className="text-gray-400 font-black uppercase tracking-widest text-[10px]">Nincs megjeleníthető adat.</p>
+                    <p className="text-gray-400 font-black uppercase tracking-widest text-[10px]">Nincs találat a megadott szűrőkkel.</p>
                   </div>
                 )}
 
               </motion.div>
             )}
           </AnimatePresence>
-        </main>
-      </div>
+        {dataTab && dataTab !== 'marketing' && records.length > visibleLimit && <div className="mt-6 text-center"><p className="mb-3 text-xs text-slate-500">{Math.min(visibleLimit, records.length)} / {records.length} bejegyzés</p><button onClick={() => setVisibleLimit(value => value + 40)} className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-slate-200 bg-white px-6 text-sm font-semibold text-sky-800">További bejegyzések <ArrowRight className="h-4 w-4" /></button></div>}
 
       <AnimatePresence>
         {appointmentConfirmModal && (
@@ -1107,23 +929,6 @@ export default function AdminDashboard() {
         )}
       </AnimatePresence>
 
-      {/* ── MOBILE BOTTOM NAV ── */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-gray-950 border-t border-white/5 flex overflow-x-auto z-50">
-        {tabs.map(({ id, label, icon: Icon, count }) => (
-          <button key={id} onClick={() => { setActiveTab(id); setExpandedId(null); }} className={`min-w-[4rem] flex-1 flex flex-col items-center gap-0.5 py-3 px-1 transition-all relative ${activeTab === id ? 'text-sky-400' : 'text-gray-600'}`}>
-            <div className="relative">
-              <Icon className="w-5 h-5" />
-              {count !== null && count > 0 && <span className="absolute -top-1.5 -right-2 bg-sky-500 text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center">{count}</span>}
-            </div>
-            <span className="text-[10px] font-black uppercase tracking-wider leading-none">{label}</span>
-          </button>
-        ))}
-        <button onClick={handleLogout} className="flex-shrink-0 flex flex-col items-center gap-0.5 py-3 px-3 text-red-500">
-          <LogOut className="w-5 h-5" />
-          <span className="text-[10px] font-black uppercase tracking-wider leading-none">Ki</span>
-        </button>
-      </nav>
-
-    </div>
+    </AdminShell>
   );
 }

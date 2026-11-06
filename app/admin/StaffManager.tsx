@@ -66,7 +66,7 @@ export default function StaffManager({ identity }: { identity: StaffIdentity }) 
     {error && !pending && <p role="alert" className="rounded-2xl border border-red-200 bg-red-50 p-4 text-red-800">{error}</p>}
     <form onSubmit={event => { event.preventDefault(); setPending({ action: 'invite', email, role, label: 'Meghívó küldése' }); }} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
       <h3 className="mb-5 flex items-center gap-3 text-xl font-bold text-slate-950"><UserPlus className="h-6 w-6 text-sky-600" aria-hidden="true" /> Új kolléga meghívása</h3>
-      <div className="grid gap-4 md:grid-cols-[1fr_220px_auto] md:items-end">
+      <div className="grid min-w-0 gap-4 xl:grid-cols-[minmax(0,1fr)_180px_auto] xl:items-end">
         <label className="space-y-2 text-sm font-semibold text-slate-700">E-mail-cím<input required type="email" autoComplete="off" maxLength={254} value={email} onChange={e => setEmail(e.target.value)} className="block w-full rounded-xl border border-slate-300 px-4 py-3 font-normal" placeholder="A kolléga e-mail-címe" /></label>
         <label className="space-y-2 text-sm font-semibold text-slate-700">Jogosultság<select value={role} onChange={e => setRole(e.target.value as StaffRole)} className="block w-full rounded-xl border border-slate-300 bg-white px-4 py-3"><option value="assistant">Asszisztens</option><option value="admin">Admin</option></select></label>
         <button type="submit" className="flex items-center justify-center gap-2 rounded-xl bg-sky-600 px-5 py-3 font-bold text-white hover:bg-sky-700"><Mail className="h-5 w-5" aria-hidden="true" /> Meghívó küldése</button>

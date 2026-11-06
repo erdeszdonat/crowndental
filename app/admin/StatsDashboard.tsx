@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   BarChart, Bar, LineChart, Line, AreaChart, Area, PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
@@ -44,6 +44,13 @@ function quoteSavingsValue(quote: any): number {
 type TimeRange = '7d' | '30d' | '90d' | '365d';
 
 export default function StatsDashboard({ appointments, quotes, marketingSubscriberCount }: StatsDashboardProps) {
+  const [compact, setCompact] = useState(false);
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 639px)');
+    const update = () => setCompact(media.matches);
+    update(); media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
   const [range, setRange] = useState<TimeRange>('30d');
   const [importLoading, setImportLoading] = useState(false);
   const [importResult, setImportResult] = useState<any>(null);
@@ -245,7 +252,7 @@ export default function StatsDashboard({ appointments, quotes, marketingSubscrib
     <div className="space-y-5">
 
       {/* ── HERO KPI CARDS ── */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-3">
         <KpiCard label="Ma" value={stats.apptToday} sub="időpont kérés" icon={Clock} color="sky" />
         <KpiCard label="Héten" value={stats.apptWeek} sub="elmúlt 7 nap" icon={Calendar} color="indigo" />
         <KpiCard label="Hónapban" value={stats.apptMonth} sub="elmúlt 30 nap" icon={TrendingUp} color="violet" />
@@ -254,7 +261,7 @@ export default function StatsDashboard({ appointments, quotes, marketingSubscrib
       </div>
 
       {/* ── CONVERSION & TOP STATS ── */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-3">
         <StatCard
           label="Konverzió"
           value={`${stats.conversionRate}%`}
@@ -360,7 +367,7 @@ export default function StatsDashboard({ appointments, quotes, marketingSubscrib
               </PieChart>
             </ResponsiveContainer>
           ) : <EmptyState text="Nincs adat" />}
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-2 mt-2 text-xs">
+          <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-2 mt-2 text-xs">
             <LegendDot color={STATUS_COLORS.new} label="Vár" value={stats.apptByStatus.new} />
             <LegendDot color={STATUS_COLORS.no_answer} label="Nem vette fel" value={stats.apptByStatus.no_answer} />
             <LegendDot color={STATUS_COLORS.processed} label="Időpontot kapott" value={stats.apptByStatus.processed} />
@@ -379,7 +386,7 @@ export default function StatsDashboard({ appointments, quotes, marketingSubscrib
               <BarChart data={stats.byTreatment} layout="vertical" margin={{ top: 10, right: 16, left: 0, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                 <XAxis type="number" stroke="#94a3b8" fontSize={11} allowDecimals={false} />
-                <YAxis type="category" dataKey="name" stroke="#475569" fontSize={11} width={170} />
+                <YAxis type="category" dataKey="name" stroke="#475569" fontSize={11} width={compact ? 105 : 170} />
                 <Tooltip
                   contentStyle={{ background: '#0f172a', border: 'none', borderRadius: 12, color: 'white', fontSize: 12 }}
                   labelStyle={{ color: '#94a3b8', fontWeight: 700 }}
@@ -470,7 +477,7 @@ export default function StatsDashboard({ appointments, quotes, marketingSubscrib
               <BarChart data={stats.byCalcTreatment} layout="vertical" margin={{ top: 0, right: 16, left: 0, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f3e8ff" />
                 <XAxis type="number" stroke="#94a3b8" fontSize={11} allowDecimals={false} />
-                <YAxis type="category" dataKey="name" stroke="#475569" fontSize={11} width={170} />
+                <YAxis type="category" dataKey="name" stroke="#475569" fontSize={11} width={compact ? 105 : 170} />
                 <Tooltip
                   contentStyle={{ background: '#0f172a', border: 'none', borderRadius: 12, color: 'white', fontSize: 12 }}
                 />
@@ -659,7 +666,7 @@ function StatCard({ label, value, sub, icon: Icon, accent, small }: { label: str
 function ChartCard({ title, subtitle, children, action, className }: { title: string; subtitle?: string; children: React.ReactNode; action?: React.ReactNode; className?: string }) {
   return (
     <div className={`bg-white rounded-2xl border border-gray-200 p-4 ${className ?? ''}`}>
-      <div className="flex items-start justify-between mb-3 gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 gap-4">
         <div>
           <h3 className="font-black text-gray-900 text-sm uppercase tracking-wider">{title}</h3>
           {subtitle && <p className="text-xs text-gray-500 mt-0.5">{subtitle}</p>}
