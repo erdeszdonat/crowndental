@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import StatsDashboard from './StatsDashboard';
 import StaffManager from './StaffManager';
+import AccountSecurity from './AccountSecurity';
 import type { StaffIdentity } from '@/lib/staffAuth';
 import AppointmentConfirmationDialog, { type AppointmentConfirmationModalState } from './AppointmentConfirmationDialog';
 import { getAppointmentClinic } from '@/lib/appointmentClinics';
@@ -54,7 +55,7 @@ export default function AdminDashboard() {
   const [passwordInput, setPasswordInput] = useState('');
   const [isLoginLoading, setIsLoginLoading] = useState(false);
 
-  const [activeTab, setActiveTab] = useState<'stats' | 'appointments' | 'career' | 'quotes' | 'blog' | 'marketing' | 'staff'>('stats');
+  const [activeTab, setActiveTab] = useState<'stats' | 'appointments' | 'career' | 'quotes' | 'blog' | 'marketing' | 'staff' | 'security'>('stats');
   const [expandedId, setExpandedId] = useState<string | number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
@@ -82,8 +83,13 @@ export default function AdminDashboard() {
         return;
       }
       setIdentity(session.user);
+      if (session.user.ownerSetup || !session.user.mfa?.satisfied) {
+        setIsAuthenticated(true);
+        setAppointments([]); setApplications([]); setQuotes([]); setMarketingSubscribers([]); setPosts([]);
+        return;
+      }
       if (session.user.role === 'assistant') {
-        setActiveTab('appointments'); setApplications([]); setQuotes([]); setMarketingSubscribers([]); setPosts([]);
+        setActiveTab(tab => tab === 'security' ? tab : 'appointments'); setApplications([]); setQuotes([]); setMarketingSubscribers([]); setPosts([]);
       }
       const res = await fetch('/api/admin-data', {
         method: 'POST',
@@ -94,16 +100,17 @@ export default function AdminDashboard() {
       if (data.success) {
         setIsAuthenticated(true);
         setIdentity(data.user);
-        if (data.user.role === 'assistant') setActiveTab('appointments');
+        if (data.user.role === 'assistant') setActiveTab(tab => tab === 'security' ? tab : 'appointments');
         setAppointments(data.appointments || []);
         setApplications(data.applications || []);
         setQuotes(data.quotes || []);
         setMarketingSubscribers(data.marketingSubscribers || []);
         setPosts(data.posts || []);
       } else {
-        if (res.status === 401) {
+        if (res.status === 401 || res.status === 428) {
           // A first visit on the new host is a normal login, not an error.
-          setIsAuthenticated(false);
+          setIsAuthenticated(false); setIdentity(null);
+          setAppointments([]); setApplications([]); setQuotes([]); setMarketingSubscribers([]); setPosts([]);
           setDbError(null);
         } else {
           setDbError(data.error || 'Hiba az adatok betöltésekor.');
@@ -123,11 +130,11 @@ export default function AdminDashboard() {
   }, []);
 
   useEffect(() => {
-    if (!isAuthenticated) return;
+    if (!isAuthenticated || identity?.ownerSetup || !identity?.mfa?.satisfied) return;
     const interval = window.setInterval(() => { void fetchSecureData(); }, 5 * 60_000);
     return () => window.clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthenticated]);
+  }, [isAuthenticated, identity?.ownerSetup, identity?.mfa?.satisfied]);
 
   const handleAction = async (
     table: string,
@@ -451,6 +458,9 @@ export default function AdminDashboard() {
   };
 
   // ── LOGIN SCREEN ──────────────────────────────────────────────────────────
+  if (isAuthenticated && identity && (identity.ownerSetup || !identity.mfa?.satisfied)) {
+    return <main className="min-h-screen bg-slate-100 px-4 py-8 md:py-14"><AccountSecurity identity={identity} gated onReady={fetchSecureData} onLogout={handleLogout} /></main>;
+  }
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
@@ -487,7 +497,8 @@ export default function AdminDashboard() {
     { id: 'blog' as const, label: 'Blog', icon: BookOpen, count: null },
     { id: 'marketing' as const, label: 'Email lista', icon: Mail, count: marketingSubscribers.length },
     { id: 'staff' as const, label: 'Kollégák', icon: UserCheck, count: null },
-  ].filter(tab => identity?.role === 'admin' || tab.id === 'appointments');
+    { id: 'security' as const, label: 'Fiókbiztonság', icon: Lock, count: null },
+  ].filter(tab => identity?.role === 'admin' || tab.id === 'appointments' || tab.id === 'security');
 
   const tabLabel = tabs.find(t => t.id === activeTab)?.label ?? '';
   const getBlogPostPath = (language: string | undefined, slug: string) => {
@@ -566,7 +577,9 @@ export default function AdminDashboard() {
           <AnimatePresence mode="wait">
 
             {/* STATS */}
-            {activeTab === 'staff' && identity?.role === 'admin' ? (
+            {activeTab === 'security' && identity ? (
+              <motion.div key="security" initial={{ opacity: 0 }} animate={{ opacity: 1 }}><AccountSecurity identity={identity} onReady={fetchSecureData} onLogout={handleLogout} /></motion.div>
+            ) : activeTab === 'staff' && identity?.role === 'admin' ? (
               <motion.div key="staff" initial={{ opacity: 0 }} animate={{ opacity: 1 }}><StaffManager identity={identity} /></motion.div>
             ) : activeTab === 'stats' && identity?.role === 'admin' ? (
               <motion.div key="stats" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>

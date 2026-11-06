@@ -1,10 +1,14 @@
 import { authorizeStaff, publicStaffIdentity, readStaffCookie, requireStaffOrigin, staffPublicClient, staffContextForToken, setStaffCookies, clearStaffCookies } from '@/lib/staffAuth';
 import { noStoreJson } from '@/lib/serverSecurity';
+import { hasOwnerSetup, ownerSetupIdentity } from '@/lib/ownerSetup';
 
 export async function POST(request: Request) {
   const originError = requireStaffOrigin(request);
   if (originError) return originError;
-  const current = await authorizeStaff(request, 'assistant');
+  try {
+    if (await hasOwnerSetup(request)) return noStoreJson({ success: true, user: ownerSetupIdentity() });
+  } catch { return noStoreJson({ error: 'A belépés átmenetileg nem ellenőrizhető.' }, { status: 503 }); }
+  const current = await authorizeStaff(request, 'assistant', true);
   let refreshSoon = false;
   if (current.context?.accessToken) {
     try {

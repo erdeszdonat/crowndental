@@ -66,6 +66,7 @@ test('admin-only endpoints reject an assistant before any service access or side
   const never = () => { throw new Error('Privileged operation called for assistant'); };
   const imports = {
     'node:crypto': crypto,
+    '@/lib/ownerSetup': { OWNER_EMAIL: 'reserved@example.invalid' },
     '@/lib/staffAuth': { authorizeStaff: async () => ({ context: null, error: denied }), requireStaffOrigin: () => null, staffServiceClient: never },
     '@/lib/staffAccess': { auditStaff: never, issueStaffLink: never, reauthenticateStaff: never, STAFF_FIELDS: '' },
     '@/lib/serverSecurity': { enforceRateLimit: never, noStoreJson: json },
@@ -164,6 +165,7 @@ test('an admin session alone cannot change access without the acting admin passw
   let privilegedCalls = 0;
   const route = load('app/api/admin/staff/route.ts', {
     'node:crypto': crypto,
+    '@/lib/ownerSetup': { OWNER_EMAIL: 'reserved@example.invalid' },
     '@/lib/staffAuth': { authorizeStaff: async () => ({ error: null, context: { id: 'actor', role: 'admin' } }), requireStaffOrigin: () => null, staffServiceClient: () => { privilegedCalls++; throw new Error('Unexpected service access'); } },
     '@/lib/staffAccess': { reauthenticateStaff: async () => false },
     '@/lib/serverSecurity': { enforceRateLimit: async () => null, noStoreJson: json },
@@ -176,6 +178,7 @@ test('administrators cannot demote, disable or reset themselves', async () => {
   const id = '10000000-0000-4000-8000-000000000001';
   const route = load('app/api/admin/staff/route.ts', {
     'node:crypto': crypto,
+    '@/lib/ownerSetup': { OWNER_EMAIL: 'reserved@example.invalid' },
     '@/lib/staffAuth': { authorizeStaff: async () => ({ error: null, context: { id, role: 'admin' } }), requireStaffOrigin: () => null, staffServiceClient: () => ({ from() { throw new Error('Unexpected write'); } }) },
     '@/lib/staffAccess': { reauthenticateStaff: async () => true },
     '@/lib/serverSecurity': { enforceRateLimit: async () => null, noStoreJson: json },

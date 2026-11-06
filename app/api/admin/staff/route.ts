@@ -2,6 +2,7 @@ import { randomBytes } from 'node:crypto';
 import { authorizeStaff, requireStaffOrigin, staffServiceClient } from '@/lib/staffAuth';
 import { auditStaff, issueStaffLink, reauthenticateStaff, STAFF_FIELDS } from '@/lib/staffAccess';
 import { enforceRateLimit, noStoreJson, normalizeEmail, isValidEmail } from '@/lib/serverSecurity';
+import { OWNER_EMAIL } from '@/lib/ownerSetup';
 
 export async function GET(request: Request) {
   const access = await authorizeStaff(request);
@@ -39,6 +40,7 @@ export async function POST(request: Request) {
     if (body.action === 'invite') {
       const email = normalizeEmail(body.email);
       if (!isValidEmail(email) || !['admin', 'assistant'].includes(body.role)) return noStoreJson({ error: 'Adjon meg érvényes e-mail-címet és jogosultságot.' }, { status: 400 });
+      if (email === OWNER_EMAIL) return noStoreJson({ error: 'Ez a cím a tulajdonosi fiók számára van fenntartva.' }, { status: 409 });
       const { data: existing, error: lookupError } = await db.from('staff_members').select('user_id').eq('email', email).maybeSingle();
       if (lookupError) throw new Error('staff_lookup_failed');
       if (existing) return noStoreJson({ error: 'Ehhez az e-mail-címhez már tartozik hozzáférés. Használja az újraküldést vagy a jelszó-visszaállítást.' }, { status: 409 });
@@ -55,9 +57,10 @@ export async function POST(request: Request) {
     } else {
       if (typeof body.userId !== 'string' || !/^[0-9a-f-]{36}$/i.test(body.userId)) return noStoreJson({ error: 'Érvénytelen azonosító.' }, { status: 400 });
       if (body.userId === access.context.id) return noStoreJson({ error: 'A saját hozzáférését itt nem módosíthatja.' }, { status: 400 });
-      const { data: target, error: targetError } = await db.from('staff_members').select('user_id,status,role').eq('user_id', body.userId).maybeSingle();
+      const { data: target, error: targetError } = await db.from('staff_members').select('user_id,status,role,is_owner').eq('user_id', body.userId).maybeSingle();
       if (targetError) throw new Error('staff_lookup_failed');
       if (!target) return noStoreJson({ error: 'Nem található kolléga.' }, { status: 404 });
+      if (target.is_owner) return noStoreJson({ error: 'A tulajdonosi fiókot csak a tulajdonos kezelheti a Fiókbiztonság menüben.' }, { status: 403 });
       if (body.action === 'reset' || body.action === 'resend') {
         await issueStaffLink(target.user_id, target.status === 'invited' ? 'invite' : 'reset', actor);
       } else {

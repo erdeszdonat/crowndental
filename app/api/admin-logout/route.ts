@@ -1,6 +1,7 @@
 import { clearAdminSessionCookie } from '@/lib/adminAuth';
 import { clearStaffCookies, readStaffCookie, requireStaffOrigin, staffServiceClient, staffPublicClient } from '@/lib/staffAuth';
 import { noStoreJson } from '@/lib/serverSecurity';
+import { clearOwnerSetupCookie } from '@/lib/ownerSetup';
 
 export async function POST(request: Request) {
   const originError = requireStaffOrigin(request);
@@ -24,5 +25,6 @@ export async function POST(request: Request) {
   const response = noStoreJson(revoked ? { success: true } : { error: 'A böngészőből kijelentkezett, de a szerveres munkamenet lezárását nem sikerült visszaigazolni.' }, { status: revoked ? 200 : 503 });
   clearAdminSessionCookie(response);
   clearStaffCookies(response);
+  clearOwnerSetupCookie(response);
   return response;
 }
