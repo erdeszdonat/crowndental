@@ -12,6 +12,8 @@ import {
   BarChart3, Mail, Download
 } from 'lucide-react';
 import StatsDashboard from './StatsDashboard';
+import StaffManager from './StaffManager';
+import type { StaffIdentity } from '@/lib/staffAuth';
 import AppointmentConfirmationDialog, { type AppointmentConfirmationModalState } from './AppointmentConfirmationDialog';
 import { getAppointmentClinic } from '@/lib/appointmentClinics';
 import { BLOG_CATEGORIES, BLOG_LANGUAGES, normalizeBlogCategory, normalizeBlogLanguage } from '@/lib/blogConfig';
@@ -47,11 +49,12 @@ function formatMoneyRange(range: MoneyRange | null): string | null {
 
 export default function AdminDashboard() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [identity, setIdentity] = useState<StaffIdentity | null>(null);
   const [usernameInput, setUsernameInput] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
   const [isLoginLoading, setIsLoginLoading] = useState(false);
 
-  const [activeTab, setActiveTab] = useState<'stats' | 'appointments' | 'career' | 'quotes' | 'blog' | 'marketing'>('stats');
+  const [activeTab, setActiveTab] = useState<'stats' | 'appointments' | 'career' | 'quotes' | 'blog' | 'marketing' | 'staff'>('stats');
   const [expandedId, setExpandedId] = useState<string | number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
@@ -70,6 +73,18 @@ export default function AdminDashboard() {
     setIsLoading(true);
     setDbError(null);
     try {
+      const sessionResponse = await fetch('/api/admin/session', { method: 'POST' });
+      const session = await sessionResponse.json();
+      if (!sessionResponse.ok) {
+        setIsAuthenticated(false); setIdentity(null);
+        setAppointments([]); setApplications([]); setQuotes([]); setMarketingSubscribers([]); setPosts([]);
+        if (sessionResponse.status !== 401) setDbError(session.error || 'A belépés nem ellenőrizhető.');
+        return;
+      }
+      setIdentity(session.user);
+      if (session.user.role === 'assistant') {
+        setActiveTab('appointments'); setApplications([]); setQuotes([]); setMarketingSubscribers([]); setPosts([]);
+      }
       const res = await fetch('/api/admin-data', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -78,11 +93,13 @@ export default function AdminDashboard() {
       const data = await res.json();
       if (data.success) {
         setIsAuthenticated(true);
-        setAppointments(data.appointments);
-        setApplications(data.applications);
-        setQuotes(data.quotes);
+        setIdentity(data.user);
+        if (data.user.role === 'assistant') setActiveTab('appointments');
+        setAppointments(data.appointments || []);
+        setApplications(data.applications || []);
+        setQuotes(data.quotes || []);
         setMarketingSubscribers(data.marketingSubscribers || []);
-        setPosts(data.posts);
+        setPosts(data.posts || []);
       } else {
         if (res.status === 401) {
           // A first visit on the new host is a normal login, not an error.
@@ -104,6 +121,13 @@ export default function AdminDashboard() {
     // A böngészőben tárolt HttpOnly admin munkamenetet csak egyszer ellenőrizzük betöltéskor.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    const interval = window.setInterval(() => { void fetchSecureData(); }, 5 * 60_000);
+    return () => window.clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated]);
 
   const handleAction = async (
     table: string,
@@ -315,11 +339,19 @@ export default function AdminDashboard() {
 
   const handleLogout = async () => {
     try {
-      await fetch('/api/admin-logout', { method: 'POST' });
+      const response = await fetch('/api/admin-logout', { method: 'POST' });
+      if (!response.ok) {
+        const result = await response.json();
+        setDbError(result.error || 'A kijelentkezés nem igazolható vissza.');
+      }
+    } catch {
+      setDbError('A szerveres kijelentkezés hálózati hiba miatt nem igazolható vissza.');
     } finally {
       setIsAuthenticated(false);
       setPasswordInput('');
       setUsernameInput('');
+      setIdentity(null);
+      setActiveTab('stats');
       setAppointments([]);
       setApplications([]);
       setQuotes([]);
@@ -430,11 +462,11 @@ export default function AdminDashboard() {
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="relative">
               <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <input type="text" aria-label="Felhasználónév" autoComplete="username" value={usernameInput} onChange={(e) => setUsernameInput(e.target.value)} placeholder="Felhasználónév" required className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sky-600 outline-none font-bold" />
+              <input type="text" value={usernameInput} onChange={(e) => setUsernameInput(e.target.value)} aria-label="E-mail-cím vagy meglévő adminnév" autoComplete="username" placeholder="E-mail-cím vagy adminnév" required className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sky-600 outline-none font-bold" />
             </div>
             <div className="relative">
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <input type="password" aria-label="Jelszó" autoComplete="current-password" value={passwordInput} onChange={(e) => setPasswordInput(e.target.value)} placeholder="Jelszó" required className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sky-600 outline-none font-bold tracking-widest" />
+              <input type="password" value={passwordInput} onChange={(e) => setPasswordInput(e.target.value)} aria-label="Jelszó" autoComplete="current-password" placeholder="Jelszó" required className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sky-600 outline-none font-bold tracking-widest" />
             </div>
             {dbError && <p className="text-red-500 text-center text-sm font-bold bg-red-50 py-2 rounded-xl border border-red-100">{dbError}</p>}
             <button type="submit" disabled={isLoginLoading} className="w-full bg-gray-900 text-white font-black py-4 rounded-xl hover:bg-sky-600 transition-all shadow-lg disabled:bg-gray-400 flex justify-center items-center gap-2">
@@ -454,7 +486,8 @@ export default function AdminDashboard() {
     { id: 'quotes' as const, label: 'AI Leads', icon: Sparkles, count: quotes.length },
     { id: 'blog' as const, label: 'Blog', icon: BookOpen, count: null },
     { id: 'marketing' as const, label: 'Email lista', icon: Mail, count: marketingSubscribers.length },
-  ];
+    { id: 'staff' as const, label: 'Kollégák', icon: UserCheck, count: null },
+  ].filter(tab => identity?.role === 'admin' || tab.id === 'appointments');
 
   const tabLabel = tabs.find(t => t.id === activeTab)?.label ?? '';
   const getBlogPostPath = (language: string | undefined, slug: string) => {
@@ -508,11 +541,12 @@ export default function AdminDashboard() {
         <header className="bg-white border-b border-gray-200 px-4 py-3 md:px-8 md:py-5 flex justify-between items-center sticky top-0 z-10 shadow-sm">
           <div>
             <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest md:hidden">Crown Admin</p>
+            <p className="text-xs text-slate-500">{identity?.name} · {identity?.role === 'admin' ? 'Admin' : 'Asszisztens'}</p>
             <h2 className="text-lg md:text-2xl font-black text-gray-900 tracking-tight italic uppercase">{tabLabel}</h2>
           </div>
           <div className="flex items-center gap-2">
-          <a href="/admin/portal" className="rounded-full border border-gray-200 px-3 py-2.5 text-sm font-bold text-gray-700">Márkaválasztó</a>
-          <Link href="/crown-dental/hidfutas" className="rounded-full bg-sky-800 px-4 py-2.5 text-sm font-bold text-white">Hídfutás</Link>
+          {identity?.role === 'admin' && <a href="/admin/portal" className="rounded-full border border-gray-200 px-3 py-2.5 text-sm font-bold text-gray-700">Márkaválasztó</a>}
+          {identity?.role === 'admin' && <Link href="/crown-dental/hidfutas" className="rounded-full bg-sky-800 px-4 py-2.5 text-sm font-bold text-white">Hídfutás</Link>}
           <button onClick={() => fetchSecureData()} disabled={isLoading} className="flex items-center gap-2 bg-gray-100 text-gray-600 px-4 py-2.5 rounded-full font-bold hover:bg-gray-200 transition-all text-sm">
             <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
             <span className="hidden sm:inline">Frissítés</span>
@@ -532,11 +566,13 @@ export default function AdminDashboard() {
           <AnimatePresence mode="wait">
 
             {/* STATS */}
-            {activeTab === 'stats' ? (
+            {activeTab === 'staff' && identity?.role === 'admin' ? (
+              <motion.div key="staff" initial={{ opacity: 0 }} animate={{ opacity: 1 }}><StaffManager identity={identity} /></motion.div>
+            ) : activeTab === 'stats' && identity?.role === 'admin' ? (
               <motion.div key="stats" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
                 <StatsDashboard appointments={appointments} quotes={quotes} marketingSubscriberCount={marketingSubscribers.length} />
               </motion.div>
-            ) : activeTab === 'blog' ? (
+            ) : activeTab === 'blog' && identity?.role === 'admin' ? (
               <motion.div key="blog" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-4">
 
                 {/* STUDIO LINK */}
@@ -568,7 +604,7 @@ export default function AdminDashboard() {
                   ))}
                 </div>
               </motion.div>
-            ) : activeTab === 'marketing' ? (
+            ) : activeTab === 'marketing' && identity?.role === 'admin' ? (
               <motion.div key="marketing" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-4">
                 <div className="bg-white rounded-3xl border border-gray-200 p-5 md:p-6 shadow-sm">
                   <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -670,7 +706,7 @@ export default function AdminDashboard() {
               <motion.div key="data" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-3">
 
                 {/* APPOINTMENTS STATS */}
-                {activeTab === 'appointments' && (() => {
+                {activeTab === 'appointments' && identity?.role === 'admin' && (() => {
                   const total = appointments.length;
                   const waiting = appointments.filter(a => !a.status || a.status === 'new').length;
                   const noAnswer = appointments.filter(a => a.status === 'no_answer').length;
@@ -1059,9 +1095,9 @@ export default function AdminDashboard() {
       </AnimatePresence>
 
       {/* ── MOBILE BOTTOM NAV ── */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-gray-950 border-t border-white/5 flex z-50">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-gray-950 border-t border-white/5 flex overflow-x-auto z-50">
         {tabs.map(({ id, label, icon: Icon, count }) => (
-          <button key={id} onClick={() => { setActiveTab(id); setExpandedId(null); }} className={`flex-1 flex flex-col items-center gap-0.5 py-3 px-1 transition-all relative ${activeTab === id ? 'text-sky-400' : 'text-gray-600'}`}>
+          <button key={id} onClick={() => { setActiveTab(id); setExpandedId(null); }} className={`min-w-[4rem] flex-1 flex flex-col items-center gap-0.5 py-3 px-1 transition-all relative ${activeTab === id ? 'text-sky-400' : 'text-gray-600'}`}>
             <div className="relative">
               <Icon className="w-5 h-5" />
               {count !== null && count > 0 && <span className="absolute -top-1.5 -right-2 bg-sky-500 text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center">{count}</span>}
@@ -1069,7 +1105,7 @@ export default function AdminDashboard() {
             <span className="text-[10px] font-black uppercase tracking-wider leading-none">{label}</span>
           </button>
         ))}
-        <button onClick={() => { setIsAuthenticated(false); setPasswordInput(''); setUsernameInput(''); setAppointments([]); setMarketingSubscribers([]); }} className="flex-shrink-0 flex flex-col items-center gap-0.5 py-3 px-3 text-red-500">
+        <button onClick={handleLogout} className="flex-shrink-0 flex flex-col items-center gap-0.5 py-3 px-3 text-red-500">
           <LogOut className="w-5 h-5" />
           <span className="text-[10px] font-black uppercase tracking-wider leading-none">Ki</span>
         </button>

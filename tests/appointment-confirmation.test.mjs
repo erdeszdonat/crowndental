@@ -11,6 +11,17 @@ const root = fileURLToPath(new URL('..', import.meta.url));
 const compiled = new Map();
 
 function load(file, imports = {}, globals = {}) {
+  if (imports['@/lib/adminAuth']) {
+    imports['@/lib/staffAuth'] = {
+      authorizeStaff: async request => {
+        const error = imports['@/lib/adminAuth'].requireAdminSession(request);
+        return error ? { error, context: null } : { error: null, context: { role: imports.testRole || 'admin', db: imports['@supabase/supabase-js'].createClient() } };
+      },
+      requireStaffOrigin: request => imports['@/lib/serverSecurity'].rejectUntrustedMutation(request),
+      publicStaffIdentity: context => ({ role: context.role }),
+    };
+  }
+
   if (!compiled.has(file)) {
     compiled.set(file, ts.transpileModule(fs.readFileSync(path.join(root, file), 'utf8'), {
       compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
@@ -30,7 +41,7 @@ function load(file, imports = {}, globals = {}) {
 
 const normalizeLocale = value => ['hu', 'en', 'sk', 'de'].includes(value) ? value : 'hu';
 
-function environment({ appointment = {}, readError = null, missing = false, mailStatus = 200, mailBody = { id: 'test-email-id' }, networkError = false, authError = false, originError = false, finalSaveError = null, beforeMailResponse } = {}) {
+function environment({ role = 'admin', appointment = {}, readError = null, missing = false, mailStatus = 200, mailBody = { id: 'test-email-id' }, networkError = false, authError = false, originError = false, finalSaveError = null, beforeMailResponse } = {}) {
   const reads = [];
   const updates = [];
   const mutations = [];
@@ -45,6 +56,7 @@ function environment({ appointment = {}, readError = null, missing = false, mail
   const json = (body, options) => Response.json(body, options);
   const clinics = load('lib/appointmentClinics.ts', { '@/lib/serverSecurity': { normalizeLocale } });
   const api = load('app/api/admin-action/route.ts', {
+    testRole: role,
     'next/server': { NextResponse: { json } },
     'node:crypto': { createHash, randomUUID },
     '@supabase/supabase-js': {
@@ -529,7 +541,7 @@ test('a worker that has lost claim ownership cannot save a confirmation or clear
   }
 });
 
-function adminDataEnvironment({ failedTable } = {}) {
+function adminDataEnvironment({ failedTable, role = 'admin' } = {}) {
   const queries = [];
   const fixtures = {
     appointments: [
@@ -540,6 +552,7 @@ function adminDataEnvironment({ failedTable } = {}) {
   };
   const json = (body, options) => Response.json(body, options);
   const api = load('app/api/admin-data/route.ts', {
+    testRole: role,
     '@supabase/supabase-js': {
       createClient: () => ({
         from(table) {
@@ -598,4 +611,35 @@ test('admin data read failure returns an error rather than presenting an incompl
     assert.equal('appointments' in result, false);
     assert.notEqual(result.success, true);
   }
+});
+
+
+test('assistant data includes only patients and never queries HR, finance, marketing or Sanity', async () => {
+  const env = adminDataEnvironment({ role: 'assistant' });
+  const response = await env.submit();
+  const result = await response.json();
+  assert.equal(response.status, 200);
+  assert.equal(result.user.role, 'assistant');
+  assert.equal(result.appointments.length, 2);
+  assert.deepEqual(env.queries.map(q => q.table), ['appointments']);
+  for (const key of ['applications','quotes','marketingSubscribers','posts']) assert.equal(key in result, false);
+});
+
+test('assistant cannot mutate HR or financial leads, even with a handcrafted request', async () => {
+  for (const table of ['career_applications', 'quote_leads', 'marketing_subscribers', 'staff_members']) {
+    const env = environment({ role: 'assistant' });
+    const response = await env.submit({ table });
+    assert.equal(response.status, 403, table);
+    assert.equal(env.reads.length, 0);
+    assert.equal(env.mutations.length, 0);
+    assert.equal(env.emails.length, 0);
+  }
+});
+
+test('assistant can still confirm patients through the guarded appointment flow', async () => {
+  const env = environment({ role: 'assistant' });
+  const response = await env.submit();
+  assert.equal(response.status, 200);
+  assert.equal(env.emails.length, 1);
+  assert.equal(env.state.status, 'processed');
 });

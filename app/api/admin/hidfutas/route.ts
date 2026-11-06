@@ -1,6 +1,6 @@
-import { requireAdminSession } from '@/lib/adminAuth';
-import { noStoreJson, rejectUntrustedMutation } from '@/lib/serverSecurity';
-import { hidfutasDatabase, syncHidfutasMarketing } from '@/lib/hidfutasServer';
+import { authorizeStaff, requireStaffOrigin } from '@/lib/staffAuth';
+import { noStoreJson } from '@/lib/serverSecurity';
+import { syncHidfutasMarketing } from '@/lib/hidfutasServer';
 import { sendTransactionalEmail } from '@/lib/addToAudience';
 import { HIDFUTAS } from '@/lib/hidfutas';
 
@@ -8,10 +8,10 @@ export const maxDuration = 60;
 const FIELDS = 'id,code,name,email,phone,prize,created_at,redeemed_at,marketing_consent,marketing_synced_at,marketing_error';
 
 export async function GET(request: Request) {
-  const authError = requireAdminSession(request);
-  if (authError) return authError;
+  const access = await authorizeStaff(request);
+  if (access.error) return access.error;
   try {
-    const db = hidfutasDatabase();
+    const db = access.context.db;
     const search = new URL(request.url).searchParams;
     const page = Math.max(0, Math.min(10000, Number.parseInt(search.get('page') || '0', 10) || 0));
     const query = (search.get('q') || '').trim().slice(0, 120);
@@ -36,13 +36,13 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const originError = rejectUntrustedMutation(request);
+  const originError = requireStaffOrigin(request);
   if (originError) return originError;
-  const authError = requireAdminSession(request);
-  if (authError) return authError;
+  const access = await authorizeStaff(request);
+  if (access.error) return access.error;
   try {
     const body = await request.json();
-    const db = hidfutasDatabase();
+    const db = access.context.db;
     if (body.action === 'redeem') {
       if (typeof body.code !== 'string' || !/^HF-[A-F0-9]{12}$/.test(body.code)) return noStoreJson({ error: 'Érvénytelen kód.' }, { status: 400 });
       if (Date.now() < Date.parse(HIDFUTAS.startsAt) || Date.now() >= Date.parse(HIDFUTAS.closesAt)) return noStoreJson({ error: 'Az ajándékátvételi időszak 2026. szeptember 26., 9:00–13:00.' }, { status: 409 });
