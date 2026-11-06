@@ -9,7 +9,7 @@ const next = require('next/server');
 const actorId = '10000000-0000-4000-8000-000000000001';
 const targetId = '10000000-0000-4000-8000-000000000002';
 const origin = 'https://admin.crowndental.hu';
-function environment({ password = true, owner = false, status = 'active', providerFails = false, claimFails = false, forbidden = false, auditFails = false } = {}) {
+function environment({ password = true, owner = false, status = 'active', providerFails = false, completedWithTimeout = false, claimFails = false, forbidden = false, auditFails = false } = {}) {
   const events = [];
   let member = { user_id: targetId, email: 'colleague@example.invalid', status, role: 'assistant', is_owner: owner };
   const db = { from(table) {
@@ -22,6 +22,7 @@ function environment({ password = true, owner = false, status = 'active', provid
   }, auth: { admin: { async deleteUser(id, softDelete) {
     assert.equal(id, targetId); assert.equal(softDelete, false); assert.equal(member.status, 'deleting');
     events.push('auth-delete');
+    if (completedWithTimeout) { member = null; return { error: new Error('response timed out') }; }
     if (providerFails) return { error: new Error('provider unavailable') };
     member = null; return { error: null };
   } } } };
@@ -74,4 +75,11 @@ test('failed revocation/audit prevents Auth deletion; a completed deletion stays
   const completed = environment({ auditFails: true });
   assert.equal((await completed.submit()).status, 200); assert.equal(completed.member(), null);
   assert.deepEqual(completed.events, ['revoked-and-audited', 'auth-delete']);
+});
+
+test('a concurrent completed deletion or provider timeout after success is reported as successful', async () => {
+  const e = environment({ completedWithTimeout: true });
+  assert.equal((await e.submit()).status, 200);
+  assert.equal(e.member(), null);
+  assert.deepEqual(e.events, ['revoked-and-audited', 'auth-delete', 'completed-audit']);
 });

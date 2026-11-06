@@ -74,7 +74,11 @@ export async function POST(request: Request) {
           const { error: deletionError } = await db.auth.admin.deleteUser(target.user_id, false);
           if (deletionError) throw new Error('auth_deletion_failed');
         } catch {
-          return noStoreJson({ error: 'A hozzáférést visszavontuk, de a végleges törlés nem sikerült. Használja a Törlés újrapróbálása gombot.', code: 'DELETION_PENDING' }, { status: 503 });
+          // A parallel admin or a successful request whose response timed out
+          // may already have completed the Auth cascade. Do not report that
+          // already-deleted account as a pending failure.
+          const remaining = await db.from('staff_members').select('user_id').eq('user_id', target.user_id).maybeSingle();
+          if (remaining.error || remaining.data) return noStoreJson({ error: 'A hozzáférést visszavontuk, de a végleges törlés nem sikerült. Használja a Törlés újrapróbálása gombot.', code: 'DELETION_PENDING' }, { status: 503 });
         }
         try { await auditStaff(actor, 'access_deleted', target.user_id, target.email); }
         catch { console.warn('staff_deletion_completion_audit_failed'); } // The mandatory start record remains durable.
