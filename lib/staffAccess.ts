@@ -7,8 +7,8 @@ export const staffTokenHash = (token: string) => createHash('sha256').update(tok
 export const validStaffToken = (value: unknown): value is string => typeof value === 'string' && /^[A-Za-z0-9_-]{43}$/.test(value);
 export const validStaffPassword = (value: unknown): value is string => typeof value === 'string' && value.length >= 12 && value.length <= 128;
 
-export async function auditStaff(actor: string, action: string, target: string | null) {
-  const { error } = await staffServiceClient().from('staff_audit_log').insert({ actor, action, target_user_id: target });
+export async function auditStaff(actor: string, action: string, target: string | null, targetEmail?: string) {
+  const { error } = await staffServiceClient().from('staff_audit_log').insert({ actor, action, target_user_id: target, target_email: targetEmail || null });
   if (error) throw new Error('audit_write_failed');
 }
 
