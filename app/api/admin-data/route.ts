@@ -1,6 +1,5 @@
-import { createClient } from '@supabase/supabase-js';
-import { requireAdminSession } from '@/lib/adminAuth';
-import { noStoreJson, rejectUntrustedMutation } from '@/lib/serverSecurity';
+import { authorizeStaff, publicStaffIdentity, requireStaffOrigin } from '@/lib/staffAuth';
+import { noStoreJson } from '@/lib/serverSecurity';
 
 const APPOINTMENT_ADMIN_FIELDS = [
   'id',
@@ -51,21 +50,20 @@ const QUOTE_ADMIN_FIELDS = [
 ].join(',');
 
 export async function POST(req: Request) {
-  const originError = rejectUntrustedMutation(req);
+  const originError = requireStaffOrigin(req);
   if (originError) return originError;
-  const authError = requireAdminSession(req);
-  if (authError) return authError;
+  const access = await authorizeStaff(req, 'assistant');
+  if (access.error) return access.error;
 
   try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    // 2. Service Role Key használata: Ez áttöri az RLS-t és 100% biztonságos, mert csak a szerveren fut!
-    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY; 
-
-    if (!supabaseUrl || !supabaseServiceKey) {
-      return noStoreJson({ error: 'Hiányzó szerveroldali Supabase kulcsok (Service Role Key)!' }, { status: 500 });
+    const supabase = access.context.db;
+    const user = publicStaffIdentity(access.context);
+    if (access.context.role === 'assistant') {
+      const { data, error } = await supabase.from('appointments').select(APPOINTMENT_ADMIN_FIELDS)
+        .is('is_hidden', false).order('created_at', { ascending: false });
+      if (error) return noStoreJson({ error: 'A pácienslista nem tölthető be.' }, { status: 503 });
+      return noStoreJson({ success: true, user, appointments: data || [] });
     }
-
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     // 3. Adatok lekérése, DE csak azokat, amik nincsenek elrejtve (is_hidden = false vagy null)
     const [appointmentsRes, careerRes, quotesRes, marketingSubscribersRes] = await Promise.all([
@@ -94,6 +92,7 @@ export async function POST(req: Request) {
 
     return noStoreJson({
       success: true,
+      user,
       appointments: appointmentsRes.data || [],
       applications: careerRes.data || [],
       quotes: quotesRes.data || [],

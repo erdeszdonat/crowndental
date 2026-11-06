@@ -1,9 +1,8 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
 import { createHash, randomUUID } from 'node:crypto';
 import { getPreferredGreetingName } from '@/lib/names';
-import { requireAdminSession } from '@/lib/adminAuth';
-import { normalizeLocale, noStoreJson, rejectUntrustedMutation, type SupportedLocale } from '@/lib/serverSecurity';
+import { authorizeStaff, requireStaffOrigin } from '@/lib/staffAuth';
+import { normalizeLocale, noStoreJson, type SupportedLocale } from '@/lib/serverSecurity';
 import { getAppointmentClinic, getConsultationImagingNotice, type AppointmentClinicId } from '@/lib/appointmentClinics';
 
 const ALLOWED_TABLES = new Set(['appointments', 'career_applications', 'quote_leads']);
@@ -648,24 +647,20 @@ async function sendAppointmentConfirmationEmail(
 }
 
 export async function POST(req: Request) {
-  const originError = rejectUntrustedMutation(req);
+  const originError = requireStaffOrigin(req);
   if (originError) return originError;
-  const authError = requireAdminSession(req);
-  if (authError) return authError;
+  const access = await authorizeStaff(req, 'assistant');
+  if (access.error) return access.error;
 
   let statusMutationLock: { token: string; release: () => PromiseLike<{ error: unknown }> } | null = null;
 
   try {
     const { action, table, id, value, appointmentDateTime, appointmentClinicId, statusNote } = await req.json();
 
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-    if (!supabaseUrl || !supabaseServiceKey) {
-      return NextResponse.json({ error: 'Szerver beállítási hiba. Hiányzik a Service Role Key!' }, { status: 500 });
-    }
-
     const safeTable = String(table || '');
+    if (access.context.role === 'assistant' && safeTable !== 'appointments') {
+      return noStoreJson({ error: 'Ehhez adminisztrátori jogosultság szükséges.' }, { status: 403 });
+    }
     if (!ALLOWED_TABLES.has(safeTable)) {
       return NextResponse.json({ error: 'Ismeretlen admin tábla.' }, { status: 400 });
     }
@@ -674,7 +669,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Hiányzó azonosító.' }, { status: 400 });
     }
 
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    const supabase = access.context.db;
     let noAnswerEmailResult: Awaited<ReturnType<typeof sendNoAnswerEmail>> | null = null;
     let noAnswerEmailIdempotencyKey: string | undefined;
     let noAnswerEmailSentAt: string | undefined;

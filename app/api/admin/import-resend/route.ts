@@ -1,27 +1,20 @@
-import { createClient } from '@supabase/supabase-js';
 import { addToResendAudience } from '@/lib/addToAudience';
-import { requireAdminSession } from '@/lib/adminAuth';
+import { authorizeStaff, requireStaffOrigin } from '@/lib/staffAuth';
 import { createUnsubscribeToken, getUnsubscribeTokenHash } from '@/lib/marketingTokens';
-import { noStoreJson, rejectUntrustedMutation } from '@/lib/serverSecurity';
+import { noStoreJson } from '@/lib/serverSecurity';
 
 export const maxDuration = 60;
 
 export async function POST(req: Request) {
-  const originError = rejectUntrustedMutation(req);
+  const originError = requireStaffOrigin(req);
   if (originError) return originError;
-  const authError = requireAdminSession(req);
-  if (authError) return authError;
+  const access = await authorizeStaff(req);
+  if (access.error) return access.error;
 
   try {
     const { skipEvent } = await req.json();
 
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    if (!supabaseUrl || !supabaseKey) {
-      return noStoreJson({ error: 'Hiányoznak Supabase env változók' }, { status: 500 });
-    }
-
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    const supabase = access.context.db;
     const { data, error } = await supabase
       .from('marketing_subscribers')
       .select('id, email, name, nickname, created_at, unsubscribe_token_hash')

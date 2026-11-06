@@ -13,7 +13,7 @@ const exactLegacyRedirects = new Map<string, string>([
 const ADMIN_ORIGIN = 'https://admin.crowndental.hu';
 const PUBLIC_ORIGIN = 'https://www.crowndental.hu';
 const adminApiPaths = new Set(['/api/admin-login', '/api/admin-logout', '/api/admin-data', '/api/admin-action']);
-const privateHeaders = { 'X-Robots-Tag': 'noindex, nofollow, noarchive', 'Cache-Control': 'no-store' };
+const privateHeaders = { 'Referrer-Policy': 'no-referrer', 'X-Frame-Options': 'DENY', 'X-Robots-Tag': 'noindex, nofollow, noarchive', 'Cache-Control': 'no-store' };
 
 function adminDestination(path: string) {
   if (path === '/admin' || path === '/admin/portal') return '/';

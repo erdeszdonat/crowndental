@@ -17,7 +17,7 @@
     "@sanity/client": "^7.26.2",
     "@sanity/image-url": "^1.1.0",
     "@sanity/vision": "6.10.0",
-    "@supabase/supabase-js": "^2.39.7",
+    "@supabase/supabase-js": "2.112.3",
     "autoprefixer": "^10.4.17",
     "framer-motion": "^11.15.0",
     "lucide-react": "^0.468.0",

@@ -21,7 +21,8 @@ function environment() {
   }
   const security = load('lib/serverSecurity.ts', { 'node:crypto': crypto, 'next/server': next, '@supabase/supabase-js': { createClient() { throw new Error('No real database in auth tests'); } } });
   const auth = load('lib/adminAuth.ts', { 'node:crypto': crypto, 'next/server': next, './serverSecurity': security });
-  const imports = { 'next/server': next, '@/lib/adminAuth': auth, '@/lib/serverSecurity': security };
+  const staffAuth = load('lib/staffAuth.ts', { '@supabase/supabase-js': { createClient() { throw new Error('No real database in auth tests'); } }, 'next/server': next, './adminAuth': auth, './serverSecurity': security });
+  const imports = { 'next/server': next, '@/lib/adminAuth': auth, '@/lib/staffAuth': staffAuth, '@/lib/serverSecurity': security };
   return { auth, security, login: load('app/api/admin-login/route.ts', imports).POST, logout: load('app/api/admin-logout/route.ts', imports).POST };
 }
 const adminOrigin = 'https://admin.crowndental.hu';
@@ -33,7 +34,7 @@ test('existing credentials create a secure host-only session on the new admin or
   const e = environment();
   const response = await e.login(request('/api/admin-login', { username: 'test-admin', password: 'fixture-password-only' }));
   assert.equal(response.status, 200);
-  const cookie = response.headers.get('set-cookie');
+  const cookie = response.headers.getSetCookie().find(cookie => cookie.startsWith('crown_admin_session='));
   assert.match(cookie, /HttpOnly/i);
   assert.match(cookie, /Secure/i);
   assert.match(cookie, /SameSite=strict/i);

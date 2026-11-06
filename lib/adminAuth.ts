@@ -6,7 +6,7 @@ const COOKIE_NAME = 'crown_admin_session';
 const SESSION_SECONDS = 8 * 60 * 60;
 
 function getSecret(): string | null {
-  return process.env.ADMIN_SESSION_SECRET || process.env.ADMIN_PASSWORD || null;
+  return process.env.ADMIN_SESSION_SECRET || (process.env.NODE_ENV !== 'production' ? process.env.ADMIN_PASSWORD : null) || null;
 }
 
 function sign(payload: string, secret: string): string {
