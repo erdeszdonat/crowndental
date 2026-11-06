@@ -11,7 +11,7 @@ export async function GET(request: Request) {
     const db = staffServiceClient();
     const [members, audit] = await Promise.all([
       db.from('staff_members').select(STAFF_FIELDS).order('invited_at', { ascending: false }),
-      db.from('staff_audit_log').select('id,actor,action,target_user_id,created_at').order('created_at', { ascending: false }).limit(30),
+      db.from('staff_audit_log').select('id,actor,action,target_user_id,target_email,created_at').order('created_at', { ascending: false }).limit(30),
     ]);
     if (members.error || audit.error) throw new Error('staff_read_failed');
     return noStoreJson({ success: true, members: members.data, audit: audit.data });
@@ -29,7 +29,7 @@ export async function POST(request: Request) {
   if (limit) return limit;
   try {
     const body = await request.json();
-    if (!['invite', 'reset', 'resend', 'role', 'disable'].includes(body.action)) return noStoreJson({ error: 'Ismeretlen művelet.' }, { status: 400 });
+    if (!['invite', 'reset', 'resend', 'role', 'disable', 'delete'].includes(body.action)) return noStoreJson({ error: 'Ismeretlen művelet.' }, { status: 400 });
     if (!await reauthenticateStaff(access.context, body.adminPassword)) {
       return noStoreJson({ error: 'A megerősítéshez adja meg a saját, jelenlegi jelszavát.' }, { status: 403 });
     }
@@ -57,10 +57,29 @@ export async function POST(request: Request) {
     } else {
       if (typeof body.userId !== 'string' || !/^[0-9a-f-]{36}$/i.test(body.userId)) return noStoreJson({ error: 'Érvénytelen azonosító.' }, { status: 400 });
       if (body.userId === access.context.id) return noStoreJson({ error: 'A saját hozzáférését itt nem módosíthatja.' }, { status: 400 });
-      const { data: target, error: targetError } = await db.from('staff_members').select('user_id,status,role,is_owner').eq('user_id', body.userId).maybeSingle();
+      const { data: target, error: targetError } = await db.from('staff_members').select('user_id,email,status,role,is_owner').eq('user_id', body.userId).maybeSingle();
       if (targetError) throw new Error('staff_lookup_failed');
-      if (!target) return noStoreJson({ error: 'Nem található kolléga.' }, { status: 404 });
-      if (target.is_owner) return noStoreJson({ error: 'A tulajdonosi fiókot csak a tulajdonos kezelheti a Fiókbiztonság menüben.' }, { status: 403 });
+      if (!target) return body.action === 'delete' ? noStoreJson({ success: true, message: 'A kolléga már nem szerepel a hozzáférések között.' }) : noStoreJson({ error: 'Nem található kolléga.' }, { status: 404 });
+      if (target.is_owner || target.email === OWNER_EMAIL) return noStoreJson({ error: 'A tulajdonosi fiókot csak a tulajdonos kezelheti a Fiókbiztonság menüben.' }, { status: 403 });
+      if (target.status === 'deleting' && body.action !== 'delete') return noStoreJson({ error: 'A kolléga törlése folyamatban van. Próbálja újra a törlést.' }, { status: 409 });
+      if (body.action === 'delete') {
+        if (normalizeEmail(body.email) !== target.email) return noStoreJson({ error: 'A kiválasztott fiók adatai megváltoztak. Frissítse a listát.' }, { status: 409 });
+        const { data: claimed, error: claimError } = await db.rpc('begin_staff_deletion', { p_user_id: target.user_id, p_actor: renewed.context.id, p_email: target.email });
+        if (claimError) throw new Error('staff_deletion_claim_failed');
+        if (!claimed) return noStoreJson({ success: true, message: 'A kolléga már nem szerepel a hozzáférések között.' });
+        // Membership revocation is already durable. Hard Auth deletion then
+        // cascades only staff credentials, sessions, invitations and recovery
+        // codes; patient and contact records have no FK to these accounts.
+        try {
+          const { error: deletionError } = await db.auth.admin.deleteUser(target.user_id, false);
+          if (deletionError) throw new Error('auth_deletion_failed');
+        } catch {
+          return noStoreJson({ error: 'A hozzáférést visszavontuk, de a végleges törlés nem sikerült. Használja a Törlés újrapróbálása gombot.', code: 'DELETION_PENDING' }, { status: 503 });
+        }
+        try { await auditStaff(actor, 'access_deleted', target.user_id, target.email); }
+        catch { console.warn('staff_deletion_completion_audit_failed'); } // The mandatory start record remains durable.
+        return noStoreJson({ success: true, message: 'A kollégát töröltük. A belépése és a korábbi meghívói megszűntek.' });
+      }
       if (body.action === 'reset' || body.action === 'resend') {
         await issueStaffLink(target.user_id, target.status === 'invited' ? 'invite' : 'reset', actor);
       } else {
@@ -68,8 +87,9 @@ export async function POST(request: Request) {
         const payload = body.action === 'disable'
           ? { status: 'disabled', auth_valid_after: new Date().toISOString(), updated_at: new Date().toISOString() }
           : { role: body.role, updated_at: new Date().toISOString() };
-        const { error } = await db.from('staff_members').update(payload).eq('user_id', target.user_id);
+        const { data: changed, error } = await db.from('staff_members').update(payload).eq('user_id', target.user_id).eq('is_owner', false).neq('status', 'deleting').select('user_id').maybeSingle();
         if (error) throw new Error('staff_update_failed');
+        if (!changed) return noStoreJson({ error: 'A hozzáférés közben megváltozott. Frissítse a listát.' }, { status: 409 });
         await auditStaff(actor, body.action === 'disable' ? 'access_disabled' : `role_changed_to_${body.role}`, target.user_id);
       }
     }

@@ -183,7 +183,7 @@ test('administrators cannot demote, disable or reset themselves', async () => {
     '@/lib/staffAccess': { reauthenticateStaff: async () => true },
     '@/lib/serverSecurity': { enforceRateLimit: async () => null, noStoreJson: json },
   });
-  for (const action of ['role','disable','reset','resend']) {
+  for (const action of ['role','disable','reset','resend','delete']) {
     assert.equal((await route.POST(request('/api/admin/staff', { action, userId: id, role: 'assistant', adminPassword: 'fixture' }))).status, 400);
   }
 });
