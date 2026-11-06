@@ -1,9 +1,8 @@
 import { createHash, randomBytes, randomUUID } from 'node:crypto';
 import { sendTransactionalEmail } from './addToAudience';
 import { staffServiceClient, staffPublicClient, type StaffContext } from './staffAuth';
-import { validateAdminCredentials } from './adminAuth';
 
-export const STAFF_FIELDS = 'user_id,email,name,role,status,invited_at,activated_at,updated_at';
+export const STAFF_FIELDS = 'user_id,email,name,role,status,is_owner,invited_at,activated_at,updated_at';
 export const staffTokenHash = (token: string) => createHash('sha256').update(token).digest('hex');
 export const validStaffToken = (value: unknown): value is string => typeof value === 'string' && /^[A-Za-z0-9_-]{43}$/.test(value);
 export const validStaffPassword = (value: unknown): value is string => typeof value === 'string' && value.length >= 12 && value.length <= 128;
@@ -15,7 +14,7 @@ export async function auditStaff(actor: string, action: string, target: string |
 
 export async function reauthenticateStaff(context: StaffContext, password: unknown) {
   if (typeof password !== 'string' || password.length > 256) return false;
-  if (context.legacy) return validateAdminCredentials(context.name, password);
+  if (context.legacy || !context.id || !context.email) return false;
   const { data, error } = await staffPublicClient().auth.signInWithPassword({ email: context.email!, password });
   if (error || data.user?.id !== context.id || !data.session) return false;
   // Reauthentication must not leave an extra authenticated session behind.

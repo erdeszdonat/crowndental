@@ -6,7 +6,8 @@ do $$ declare u uuid := gen_random_uuid(); s uuid := gen_random_uuid(); begin
   perform set_config('crown.test_session', s::text, true);
   insert into auth.users(id,email,role,aud,created_at,updated_at)
     values(u,'rls-'||u||'@example.invalid','authenticated','authenticated',now(),now());
-  insert into auth.sessions(id,user_id,created_at,updated_at,aal) values(s,u,now(),now(),'aal1');
+  insert into auth.sessions(id,user_id,created_at,updated_at,aal) values(s,u,now(),now(),'aal2');
+  insert into auth.mfa_factors(id,user_id,factor_type,status,created_at,updated_at) values(gen_random_uuid(),u,'totp','verified',now(),now());
   insert into public.staff_members(user_id,email,role,status,auth_valid_after)
     values(u,'rls-'||u||'@example.invalid','assistant','active',now()-interval '1 minute');
   insert into public.appointments(id,name,email,phone,city,treatment,status,is_hidden)
@@ -15,8 +16,31 @@ do $$ declare u uuid := gen_random_uuid(); s uuid := gen_random_uuid(); begin
     overriding system value values(-611060001,'Fixture','Fixture','0','RLS fixture','fixture@example.invalid','00000000');
   insert into public.quote_leads(id,name,email,phone)
     overriding system value values(-611060001,'RLS fixture','fixture@example.invalid','00000000');
-  perform set_config('request.jwt.claims', jsonb_build_object('sub',u,'session_id',s,'role','authenticated','user_metadata',jsonb_build_object('role','admin'),'app_metadata',jsonb_build_object('role','admin'))::text,true);
+  perform set_config('request.jwt.claims', jsonb_build_object('sub',u,'session_id',s,'role','authenticated','aal','aal2','user_metadata',jsonb_build_object('role','admin'),'app_metadata',jsonb_build_object('role','admin'))::text,true);
 end $$;
+
+-- AAL1 is sufficient only for the identity/setup screen, never patient data.
+select set_config('request.jwt.claims', (current_setting('request.jwt.claims')::jsonb || '{"aal":"aal1"}'::jsonb)::text, true);
+set local role authenticated;
+do $$ begin
+  if (select count(*) from public.staff_members where user_id=auth.uid()) <> 1 then raise exception 'MFA setup cannot read own identity'; end if;
+  if private.current_staff_role() is not null then raise exception 'AAL1 authorized'; end if;
+  if (select count(*) from public.appointments where id=-611060001) <> 0 then raise exception 'AAL1 sees patients'; end if;
+  begin select count(*) from public.staff_recovery_codes; raise exception 'Recovery hashes readable'; exception when insufficient_privilege then null; end;
+  begin perform public.consume_staff_recovery_code(auth.uid(),repeat('a',64)); raise exception 'Recovery RPC callable by user'; exception when insufficient_privilege then null; end;
+end $$;
+reset role;
+select set_config('request.jwt.claims', (current_setting('request.jwt.claims')::jsonb || '{"aal":"aal2"}'::jsonb)::text, true);
+update auth.sessions set aal='aal1' where id=current_setting('crown.test_session')::uuid;
+set local role authenticated;
+do $$ begin if private.current_staff_role() is not null then raise exception 'Stale AAL2 token authorized without live AAL2'; end if; end $$;
+reset role;
+update auth.sessions set aal='aal2' where id=current_setting('crown.test_session')::uuid;
+update auth.mfa_factors set status='unverified' where user_id=current_setting('crown.test_user')::uuid;
+set local role authenticated;
+do $$ begin if private.current_staff_role() is not null then raise exception 'Missing verified factor authorized'; end if; end $$;
+reset role;
+update auth.mfa_factors set status='verified' where user_id=current_setting('crown.test_user')::uuid;
 
 set local role authenticated;
 do $$ begin
@@ -72,6 +96,16 @@ reset role;
 delete from auth.sessions where id=current_setting('crown.test_session')::uuid;
 set local role authenticated;
 do $$ begin if private.current_staff_role() is not null then raise exception 'Revoked session authorized'; end if; end $$;
+reset role;
+
+-- Recovery code consumption is single-use and invalidates every older session.
+set local role service_role;
+select public.replace_staff_recovery_codes(current_setting('crown.test_user')::uuid, array(select lpad(i::text,64,'0') from generate_series(1,10) i));
+do $$ begin
+  if not public.consume_staff_recovery_code(current_setting('crown.test_user')::uuid,lpad('1',64,'0')) then raise exception 'Valid recovery rejected'; end if;
+  if public.consume_staff_recovery_code(current_setting('crown.test_user')::uuid,lpad('1',64,'0')) then raise exception 'Recovery replay succeeded'; end if;
+  if (select auth_valid_after from public.staff_members where user_id=current_setting('crown.test_user')::uuid) <= transaction_timestamp() then raise exception 'Recovery did not advance revocation epoch'; end if;
+end $$;
 reset role;
 
 -- Service-only invitation replacement is atomic; older links are invalidated.

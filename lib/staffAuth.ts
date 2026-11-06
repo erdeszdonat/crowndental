@@ -1,14 +1,14 @@
 import { createClient, type SupabaseClient, type Session } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
-import { hasValidAdminSession, clearAdminSessionCookie } from './adminAuth';
+import { clearAdminSessionCookie } from './adminAuth';
 import { noStoreJson } from './serverSecurity';
 
 export type StaffRole = 'admin' | 'assistant';
-export type StaffIdentity = { id: string | null; name: string; email: string | null; role: StaffRole; legacy: boolean };
-export type StaffContext = StaffIdentity & { db: SupabaseClient; accessToken?: string };
+export type StaffIdentity = { id: string | null; name: string; email: string | null; role: StaffRole; legacy: boolean; owner?: boolean; ownerSetup?: boolean; mfa?: { enrolled: boolean; satisfied: boolean } };
+export type StaffContext = StaffIdentity & { db: SupabaseClient; accessToken?: string; factors?: { id: string; status: string; factor_type: string }[] };
 const ACCESS_COOKIE = process.env.NODE_ENV === 'production' ? '__Host-crown_staff_access' : 'crown_staff_access';
 const REFRESH_COOKIE = process.env.NODE_ENV === 'production' ? '__Host-crown_staff_refresh' : 'crown_staff_refresh';
-const IDENTITY_FIELDS = 'user_id,email,name,role,status';
+const IDENTITY_FIELDS = 'user_id,email,name,role,status,is_owner';
 const authOptions = { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false };
 
 export function staffServiceClient() {
@@ -56,22 +56,32 @@ export async function staffContextForToken(accessToken: string): Promise<StaffCo
     .select(IDENTITY_FIELDS).eq('user_id', user.id).maybeSingle();
   if (memberError || !member || member.status !== 'active' || user.email?.toLowerCase() !== member.email
     || !['admin', 'assistant'].includes(member.role)) return null;
-  return { id: user.id, email: member.email, name: member.name, role: member.role, legacy: false, db, accessToken };
+  const factors = (user.factors || []).filter(factor => factor.factor_type === 'totp');
+  const enrolled = factors.some(factor => factor.status === 'verified');
+  // Only inspect claims after getUser has verified this token with Auth.
+  let aal: string | undefined;
+  try { aal = JSON.parse(Buffer.from(accessToken.split('.')[1], 'base64url').toString('utf8')).aal; } catch {}
+  let satisfied = false;
+  if (enrolled && aal === 'aal2') {
+    const live = await db.rpc('staff_mfa_session_valid');
+    if (live.error) throw new Error('mfa_session_unavailable');
+    satisfied = live.data === true;
+  }
+  return { id: user.id, email: member.email, name: member.name, role: member.role, legacy: false, owner: member.is_owner === true,
+    mfa: { enrolled, satisfied }, factors, db, accessToken };
 }
 
-export async function authorizeStaff(request: Request, minimum: StaffRole = 'admin') {
+export async function authorizeStaff(request: Request, minimum: StaffRole = 'admin', allowIncompleteMfa = false) {
   try {
     let context: StaffContext | null = null;
-    if (hasValidAdminSession(request)) {
-      context = { id: null, name: process.env.ADMIN_NAME || 'erdeszdonat', email: null, role: 'admin', legacy: true, db: staffServiceClient() };
-    } else {
-      const token = readStaffCookie(request, 'access');
-      if (token) context = await staffContextForToken(token);
-    }
+    const token = readStaffCookie(request, 'access');
+    if (token) context = await staffContextForToken(token);
     if (!context) return { context: null, error: noStoreJson({ error: 'A munkamenet lejárt. Jelentkezzen be újra.' }, { status: 401 }) };
     if (minimum === 'admin' && context.role !== 'admin') {
       return { context: null, error: noStoreJson({ error: 'Ehhez adminisztrátori jogosultság szükséges.' }, { status: 403 }) };
     }
+    if (!allowIncompleteMfa && !context.mfa?.satisfied) return { context: null,
+      error: noStoreJson({ error: 'A folytatáshoz kétlépcsős azonosítás szükséges.', code: 'MFA_REQUIRED' }, { status: 428 }) };
     return { context, error: null };
   } catch {
     return { context: null, error: noStoreJson({ error: 'A belépési szolgáltatás átmenetileg nem érhető el.' }, { status: 503 }) };
@@ -79,7 +89,7 @@ export async function authorizeStaff(request: Request, minimum: StaffRole = 'adm
 }
 
 export function publicStaffIdentity(context: StaffContext): StaffIdentity {
-  return { id: context.id, name: context.name, email: context.email, role: context.role, legacy: context.legacy };
+  return { id: context.id, name: context.name, email: context.email, role: context.role, legacy: false, owner: context.owner, mfa: context.mfa };
 }
 
 export function setStaffCookies(response: NextResponse, session: Session) {

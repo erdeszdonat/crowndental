@@ -61,10 +61,11 @@ function trimMap<T>(map: Map<string, T>, maxSize: number) {
 export async function enforceRateLimit(
   request: Request,
   scope: string,
-  options: { limit: number; windowMs: number },
+  options: { limit: number; windowMs: number; key?: string },
 ): Promise<NextResponse | null> {
   const now = Date.now();
-  const key = `${scope}:${hashForLog(getClientIp(request))}`;
+  const keyHash = hashForLog(options.key || getClientIp(request));
+  const key = `${scope}:${keyHash}`;
   const current = rateLimits.get(key);
 
   if (!current || current.resetAt <= now) {
@@ -94,7 +95,7 @@ export async function enforceRateLimit(
       const { data, error } = await createClient(supabaseUrl, serviceRoleKey, { auth: { persistSession: false } })
         .rpc('consume_api_rate_limit', {
           p_scope: scope,
-          p_key_hash: hashForLog(getClientIp(request)),
+          p_key_hash: keyHash,
           p_limit: options.limit,
           p_window_seconds: Math.max(1, Math.ceil(options.windowMs / 1000)),
         })
