@@ -1,8 +1,8 @@
 export const TEAM_ROLES = [
-  "professional_lead",
   "dentist",
   "dental_assistant",
   "dental_hygienist",
+  "professional_lead",
 ] as const;
 export const TEAM_LOCALES = ["hu", "en", "sk", "de"] as const;
 export const TEAM_LEAD_ID = "crownTeam.professional-lead";
@@ -30,7 +30,7 @@ export type TeamMember = {
   isVisible: boolean;
 };
 export const TEAM_ROLE_LABELS: Record<TeamRole, string> = {
-  professional_lead: "Szakmai vezető",
+  professional_lead: "Vezetőség",
   dentist: "Fogorvos",
   dental_assistant: "Fogászati asszisztens",
   dental_hygienist: "Dentálhigiénikus",

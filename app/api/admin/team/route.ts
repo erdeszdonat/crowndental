@@ -84,7 +84,7 @@ export async function POST(request: Request) {
       return noStoreJson(
         {
           error:
-            "A szakmai vezető saját adatlapját szerkessze. Egy szakmai vezető adható meg.",
+            "A vezetőség saját adatlapját szerkessze. Egy vezetőségi adatlap adható meg.",
         },
         { status: 409 },
       );
@@ -119,7 +119,7 @@ export async function POST(request: Request) {
       return noStoreJson(
         {
           error:
-            "Az adatlapot közben módosították, vagy már van szakmai vezető. Frissítse a listát, majd nyissa meg újra.",
+            "Az adatlapot közben módosították, vagy már van vezetőségi adatlap. Frissítse a listát, majd nyissa meg újra.",
         },
         { status: 409 },
       );

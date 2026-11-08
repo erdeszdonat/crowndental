@@ -128,42 +128,6 @@ export default async function TeamPage({ params }: Props) {
             </div>
           </nav>
           <div className={styles.team} id="csapat">
-            {lead && (
-              <section
-                id="professional_lead"
-                className={styles.leadSection}
-                aria-labelledby="lead-heading"
-              >
-                <div className={styles.sectionTop}>
-                  <span className={styles.eyebrow}>
-                    01 / {copy.sections.professional_lead}
-                  </span>
-                  <h2 id="lead-heading">{copy.groups.professional_lead}</h2>
-                </div>
-                <article className={styles.lead}>
-                  <Portrait member={lead} priority />
-                  <div className={styles.leadCopy}>
-                    <span className={styles.role}>
-                      {copy.roles.professional_lead}
-                    </span>
-                    <h3>{lead.name}</h3>
-                    {localizedTeamText(lead.title, locale) && (
-                      <p className={styles.subtitle}>
-                        {localizedTeamText(lead.title, locale)}
-                      </p>
-                    )}
-                    <Biography text={localizedTeamText(lead.bio, locale)} />
-                    <Link
-                      href={`${prefix}/idopont`}
-                      className={styles.textLink}
-                    >
-                      {copy.book}
-                      <ArrowRight size={17} />
-                    </Link>
-                  </div>
-                </article>
-              </section>
-            )}
             {TEAM_ROLES.filter((role) => role !== "professional_lead").map(
               (role, index) => {
                 const group = members.filter((member) => member.role === role);
@@ -177,7 +141,7 @@ export default async function TeamPage({ params }: Props) {
                   >
                     <div className={styles.sectionTop}>
                       <span className={styles.eyebrow}>
-                        0{index + 2} / {copy.sections[role]}
+                        0{index + 1} / {copy.sections[role]}
                       </span>
                       <h2 id={`${role}-heading`}>{copy.groups[role]}</h2>
                       <span className={styles.sectionLine} />
@@ -217,6 +181,42 @@ export default async function TeamPage({ params }: Props) {
                   </section>
                 );
               },
+            )}
+            {lead && (
+              <section
+                id="professional_lead"
+                className={styles.leadSection}
+                aria-labelledby="lead-heading"
+              >
+                <div className={styles.sectionTop}>
+                  <span className={styles.eyebrow}>
+                    04 / {copy.sections.professional_lead}
+                  </span>
+                  <h2 id="lead-heading">{copy.groups.professional_lead}</h2>
+                </div>
+                <article className={styles.lead}>
+                  <Portrait member={lead} />
+                  <div className={styles.leadCopy}>
+                    <span className={styles.role}>
+                      {copy.roles.professional_lead}
+                    </span>
+                    <h3>{lead.name}</h3>
+                    {localizedTeamText(lead.title, locale) && (
+                      <p className={styles.subtitle}>
+                        {localizedTeamText(lead.title, locale)}
+                      </p>
+                    )}
+                    <Biography text={localizedTeamText(lead.bio, locale)} />
+                    <Link
+                      href={`${prefix}/idopont`}
+                      className={styles.textLink}
+                    >
+                      {copy.book}
+                      <ArrowRight size={17} />
+                    </Link>
+                  </div>
+                </article>
+              </section>
             )}
           </div>
         </>

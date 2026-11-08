@@ -52,7 +52,7 @@ export const teamMemberType = defineType({
           const id = context.document?._id?.replace(/^drafts\./, "");
           return (role === "professional_lead") === (id === TEAM_LEAD_ID)
             ? true
-            : "A szakmai vezetőt a bal oldali külön Szakmai vezető menüpontban szerkessze.";
+            : "A vezetőségi adatlapot a bal oldali külön Vezetőség menüpontban szerkessze.";
         }),
     }),
     localized("title", "Szakterület / megnevezés"),
