@@ -21,6 +21,7 @@
     "home": "Domov",
     "services": "Ošetrenia & Ceny",
     "about": "O nás",
+    "team": "Náš tím",
     "blog": "Blog",
     "career": "Kariéra",
     "bookAppointment": "Objednať sa"
@@ -36,6 +37,7 @@
     "fullPriceList": "Úplný cenník",
     "bookingLink": "Objednať sa",
     "aboutLink": "O nás",
+    "teamLink": "Náš tím",
     "contactLink": "Kontakt",
     "blogLink": "Blog & Magazín",
     "careerLink": "Kariéra",

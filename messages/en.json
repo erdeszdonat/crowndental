@@ -21,6 +21,7 @@
     "home": "Home",
     "services": "Treatments & Prices",
     "about": "About Us",
+    "team": "Our team",
     "blog": "Blog",
     "career": "Career",
     "bookAppointment": "Book Appointment"
@@ -36,6 +37,7 @@
     "fullPriceList": "Full Price List",
     "bookingLink": "Book Appointment",
     "aboutLink": "About Us",
+    "teamLink": "Our team",
     "contactLink": "Contact",
     "blogLink": "Blog & Magazine",
     "careerLink": "Career",

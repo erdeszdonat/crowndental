@@ -30,6 +30,7 @@ export type AdminTab =
   | "quotes"
   | "blog"
   | "marketing"
+  | "team"
   | "staff"
   | "security";
 const sections = [
@@ -73,6 +74,13 @@ const sections = [
     label: "Blog",
     description: "Cikkek és tartalmak kezelése.",
     icon: BookOpen,
+    group: "Kommunikáció",
+  },
+  {
+    id: "team",
+    label: "Kollégáink oldal",
+    description: "A weboldal csapata és a bemutatkozások.",
+    icon: UsersRound,
     group: "Kommunikáció",
   },
   {

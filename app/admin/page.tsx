@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import StatsDashboard from './StatsDashboard';
 import StaffManager from './StaffManager';
+import nextDynamic from 'next/dynamic';
 import AccountSecurity from './AccountSecurity';
 import AdminShell, { type AdminTab } from './AdminShell';
 import AdminListFilters from './AdminListFilters';
@@ -21,6 +22,8 @@ import type { StaffIdentity } from '@/lib/staffAuth';
 import AppointmentConfirmationDialog, { type AppointmentConfirmationModalState } from './AppointmentConfirmationDialog';
 import { getAppointmentClinic } from '@/lib/appointmentClinics';
 import { BLOG_CATEGORIES, BLOG_LANGUAGES, normalizeBlogCategory, normalizeBlogLanguage } from '@/lib/blogConfig';
+
+const TeamManager = nextDynamic(() => import('./TeamManager'));
 
 export const dynamic = 'force-dynamic';
 
@@ -537,6 +540,8 @@ export default function AdminDashboard() {
               <motion.div key="security" initial={{ opacity: 0 }} animate={{ opacity: 1 }}><AccountSecurity identity={identity} onReady={fetchSecureData} onLogout={handleLogout} /></motion.div>
             ) : activeTab === 'staff' && identity?.role === 'admin' ? (
               <motion.div key="staff" initial={{ opacity: 0 }} animate={{ opacity: 1 }}><StaffManager identity={identity} /></motion.div>
+            ) : activeTab === 'team' && identity?.role === 'admin' ? (
+              <motion.div key="team" initial={{ opacity: 0 }} animate={{ opacity: 1 }}><TeamManager /></motion.div>
             ) : activeTab === 'stats' && identity?.role === 'admin' ? (
               <motion.div key="stats" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
                 <StatsDashboard appointments={appointments} quotes={quotes} marketingSubscriberCount={marketingSubscribers.length} />
