@@ -93,3 +93,21 @@ test('production ignores the development provider; development accepts only bare
   assert.equal(clientFor({ NODE_ENV: 'development', CROWN_TEAM_DEV_API_ORIGIN: 'http://127.0.0.1:3060' }).apiHost, 'http://127.0.0.1:3060');
   for (const origin of ['http://attacker.invalid', 'https://localhost', 'http://localhost/private', 'http://user:pass@localhost', 'http://localhost?query=value']) assert.throws(() => clientFor({ NODE_ENV: 'development', CROWN_TEAM_DEV_API_ORIGIN: origin }));
 });
+
+test('server reads authenticate dotted admin profile IDs while retaining the visible-only query and cache', async () => {
+  for (const env of [{ SANITY_WRITE_TOKEN: 'fixture-write' }, { SANITY_WRITE_TOKEN: 'fixture-write', SANITY_READ_TOKEN: 'fixture-read' }]) {
+    let request;
+    const member = { ...input, _id: 'crownTeam.fixture-admin-profile', _type: 'crownTeamMember', isVisible: true };
+    const server = load('../lib/teamServer.ts', { 'server-only': {}, '@sanity/client': {}, '@sanity/image-url': { default: () => ({ image: () => { const builder = { width: () => builder, height: () => builder, fit: () => builder, auto: () => builder, url: () => 'https://cdn.sanity.io/photo.webp' }; return builder; } }) }, '@/sanity/env': { projectId: 'fixture', dataset: 'production', apiVersion: '2024-03-10' }, './team': team }, { process: { env }, fetch: async (url, options) => { request = { url, options }; return { ok: true, json: async () => ({ result: options.headers?.Authorization ? [member] : [] }) }; } });
+    const result = await server.getPublicTeam();
+    assert.equal(result.length, 1);
+    assert.equal(result[0]._id, member._id);
+    assert.equal(request.options.headers.Authorization, 'Bearer '+(env.SANITY_READ_TOKEN || env.SANITY_WRITE_TOKEN));
+    assert.equal(request.options.cache, 'force-cache');
+    assert.equal(request.options.next.revalidate, 300);
+    assert.match(request.url.searchParams.get('query'), /isVisible == true/);
+    assert.match(request.url.searchParams.get('query'), /drafts/);
+    assert.ok(!JSON.stringify(result).includes('fixture-write'));
+    assert.ok(!JSON.stringify(result).includes('fixture-read'));
+  }
+});
