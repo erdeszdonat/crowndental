@@ -78,7 +78,14 @@ export async function getPublicTeam(): Promise<TeamMember[]> {
   url.searchParams.set("query", query);
   url.searchParams.set("$type", JSON.stringify(TEAM_TYPE));
   url.searchParams.set("perspective", "published");
+  // Sanity restricts dotted IDs (including profiles created by our admin) to
+  // authenticated reads. Keep the credential on the server and expose only
+  // the explicitly visible documents selected by this fixed query.
+  const readToken =
+    process.env.SANITY_READ_TOKEN || process.env.SANITY_WRITE_TOKEN;
   const response = await fetch(url, {
+    ...(readToken ? { headers: { Authorization: `Bearer ${readToken}` } } : {}),
+    cache: "force-cache",
     next: { revalidate: 300, tags: [TEAM_CACHE_TAG] },
   });
   if (!response.ok) throw new Error("team_read_failed");
