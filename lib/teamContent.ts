@@ -3,7 +3,7 @@ export const teamContent = {
   hu: {
     title: "Kollégáink | Crown Dental",
     description:
-      "Ismerd meg a Crown Dental csapatát: szakmai vezetőnk, fogorvosaink, fogászati asszisztenseink és dentálhigiénikusaink bemutatkozása.",
+      "Ismerd meg a Crown Dental csapatát: fogorvosaink, fogászati asszisztenseink, dentálhigiénikusaink és vezetőségünk bemutatkozása.",
     eyebrow: "A mosolyod mögött egy csapat áll",
     heading: "Szakértelem.",
     headingAccent: "Emberi figyelem.",
@@ -11,19 +11,19 @@ export const teamContent = {
       "Ismerd meg azokat, akik a Crown Dentalnál a mosolyodért dolgoznak. Arcok, nevek és a hivatásuk iránti elkötelezettség.",
     pageName: "Kollégáink",
     groups: {
-      professional_lead: "Szakmai vezető",
+      professional_lead: "Vezetőség",
       dentist: "Fogorvosaink",
       dental_assistant: "Fogászati asszisztensek",
       dental_hygienist: "Dentálhigiénikusok",
     },
     roles: {
-      professional_lead: "Szakmai vezető",
+      professional_lead: "Vezetőség",
       dentist: "Fogorvos",
       dental_assistant: "Fogászati asszisztens",
       dental_hygienist: "Dentálhigiénikus",
     },
     sections: {
-      professional_lead: "Szakmai irányítás",
+      professional_lead: "Szakmai háttér",
       dentist: "Tudás és törődés",
       dental_assistant: "Biztos kezekben",
       dental_hygienist: "A megelőzés szakemberei",
@@ -41,7 +41,7 @@ export const teamContent = {
   en: {
     title: "Our team | Crown Dental",
     description:
-      "Meet the Crown Dental team: our clinical lead, dentists, dental assistants and dental hygienists.",
+      "Meet the Crown Dental team: our dentists, dental assistants, dental hygienists and leadership.",
     eyebrow: "A team behind your smile",
     heading: "Expert care.",
     headingAccent: "A personal approach.",
@@ -49,19 +49,19 @@ export const teamContent = {
       "Meet the people caring for your smile at Crown Dental. Get to know their faces, their stories and their dedication to dentistry.",
     pageName: "Our team",
     groups: {
-      professional_lead: "Clinical lead",
+      professional_lead: "Leadership",
       dentist: "Our dentists",
       dental_assistant: "Dental assistants",
       dental_hygienist: "Dental hygienists",
     },
     roles: {
-      professional_lead: "Clinical lead",
+      professional_lead: "Leadership",
       dentist: "Dentist",
       dental_assistant: "Dental assistant",
       dental_hygienist: "Dental hygienist",
     },
     sections: {
-      professional_lead: "Clinical leadership",
+      professional_lead: "Experience and leadership",
       dentist: "Knowledge and care",
       dental_assistant: "In caring hands",
       dental_hygienist: "Focused on prevention",
@@ -79,7 +79,7 @@ export const teamContent = {
   sk: {
     title: "Náš tím | Crown Dental",
     description:
-      "Spoznajte tím Crown Dental: nášho odborného vedúceho, zubných lekárov, zubných asistentov a dentálnych hygienikov.",
+      "Spoznajte tím Crown Dental: našich zubných lekárov, zubných asistentov, dentálnych hygienikov a vedenie.",
     eyebrow: "Za vaším úsmevom stojí tím",
     heading: "Odbornosť.",
     headingAccent: "Ľudský prístup.",
@@ -87,13 +87,13 @@ export const teamContent = {
       "Spoznajte ľudí, ktorí sa v Crown Dental starajú o váš úsmev. Ich tváre, príbehy a oddanosť svojmu povolaniu.",
     pageName: "Náš tím",
     groups: {
-      professional_lead: "Odborný vedúci",
+      professional_lead: "Vedenie",
       dentist: "Naši zubní lekári",
       dental_assistant: "Zubní asistenti",
       dental_hygienist: "Dentálni hygienici",
     },
     roles: {
-      professional_lead: "Odborný vedúci",
+      professional_lead: "Vedenie",
       dentist: "Zubný lekár",
       dental_assistant: "Zubný asistent",
       dental_hygienist: "Dentálny hygienik",
@@ -118,7 +118,7 @@ export const teamContent = {
   de: {
     title: "Unser Team | Crown Dental",
     description:
-      "Lernen Sie das Team von Crown Dental kennen: unsere zahnärztliche Leitung, Zahnärzte, zahnmedizinischen Fachassistenzen und Dentalhygieniker.",
+      "Lernen Sie das Team von Crown Dental kennen: unsere Zahnärzte, zahnmedizinischen Fachassistenzen, Dentalhygieniker und die Leitung.",
     eyebrow: "Ein Team für Ihr Lächeln",
     heading: "Fachkompetenz.",
     headingAccent: "Persönliche Zuwendung.",
@@ -126,19 +126,19 @@ export const teamContent = {
       "Lernen Sie die Menschen kennen, die sich bei Crown Dental um Ihr Lächeln kümmern. Ihre Gesichter, ihre Geschichten und ihre Leidenschaft für die Zahnmedizin.",
     pageName: "Unser Team",
     groups: {
-      professional_lead: "Zahnärztliche Leitung",
+      professional_lead: "Leitung",
       dentist: "Unsere Zahnärzte",
       dental_assistant: "Zahnmedizinische Fachassistenzen",
       dental_hygienist: "Dentalhygieniker",
     },
     roles: {
-      professional_lead: "Zahnärztliche Leitung",
+      professional_lead: "Leitung",
       dentist: "Zahnarzt",
       dental_assistant: "Zahnmedizinische Fachassistenz",
       dental_hygienist: "Dentalhygieniker",
     },
     sections: {
-      professional_lead: "Fachliche Leitung",
+      professional_lead: "Erfahrung und Leitung",
       dentist: "Wissen und Fürsorge",
       dental_assistant: "In guten Händen",
       dental_hygienist: "Vorsorge im Mittelpunkt",

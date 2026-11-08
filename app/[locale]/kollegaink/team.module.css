@@ -238,9 +238,11 @@
   padding-bottom: 9px;
   min-height: 44px;
 }
+.leadSection,
 .teamSection {
   margin-top: 78px;
 }
+.leadSection:first-child,
 .teamSection:first-child {
   margin-top: 0;
 }
@@ -518,6 +520,7 @@
   .cardCopy {
     padding: 19px;
   }
+  .leadSection,
   .teamSection {
     margin-top: 54px;
   }

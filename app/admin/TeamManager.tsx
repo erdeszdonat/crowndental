@@ -475,7 +475,7 @@ export default function TeamManager() {
                     <h3>
                       {
                         {
-                          professional_lead: "Szakmai vezető",
+                          professional_lead: "Vezetőség",
                           dentist: "Fogorvosaink",
                           dental_assistant: "Fogászati asszisztensek",
                           dental_hygienist: "Dentálhigiénikusok",

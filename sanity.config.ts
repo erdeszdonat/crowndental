@@ -17,7 +17,7 @@ export default defineConfig({
       ...templates,
       {
         id: "team-lead",
-        title: "Szakmai vezető",
+        title: "Vezetőség",
         schemaType: TEAM_TYPE,
         value: { role: "professional_lead", isVisible: false, displayOrder: 0 },
       },
@@ -38,7 +38,7 @@ export default defineConfig({
           .title("Tartalmak")
           .items([
             S.listItem()
-              .title("Szakmai vezető")
+              .title("Vezetőség")
               .child(
                 S.document()
                   .schemaType(TEAM_TYPE)

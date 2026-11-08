@@ -7,7 +7,8 @@ Az adminban a **Kommunikáció → Kollégáink oldal** menüpont kezeli a nyilv
 ## Tartalom
 
 - Sanity-típus: `crownTeamMember`.
-- Csoportok: szakmai vezető, fogorvos, fogászati asszisztens, dentálhigiénikus.
+- Csoportok: fogorvos, fogászati asszisztens, dentálhigiénikus, vezetőség.
+- A vezetőség a nyilvános oldalon és az adminlistában a többi csoport után szerepel.
 - A vezető egyetlen dokumentum: `crownTeam.professional-lead`.
 - A név és a munkakör közös, a megnevezés és a bemutatkozás négy nyelven szerkeszthető. Hiányzó fordításnál magyar szöveg jelenik meg.
 - Az új profil alapból nem jelenik meg a weboldalon. A `Megjelenik a weboldalon` kapcsoló és a mentés teszi ki; nyilvános profilhoz fénykép szükséges.
