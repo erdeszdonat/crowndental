@@ -125,6 +125,7 @@ export default function Footer() {
                 <li><Link prefetch={false} href={`${prefix}/${INTERNATIONAL_PATIENT_PATHS[locale as keyof typeof INTERNATIONAL_PATIENT_PATHS] ?? INTERNATIONAL_PATIENT_PATHS.hu}`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {internationalPatientLabel[locale] ?? internationalPatientLabel.hu}</Link></li>
               )}
               <li><Link prefetch={false} href={`${prefix}/utazas-szallas`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {travelLinkLabel[locale] ?? travelLinkLabel.hu}</Link></li>
+              <li><Link prefetch={false} href={`${prefix}/kollegaink`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('teamLink')}</Link></li>
               <li><Link prefetch={false} href={`${prefix}/karrier`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('careerLink')}</Link></li>
             </ul>
 

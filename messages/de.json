@@ -20,6 +20,7 @@
     "home": "Startseite",
     "services": "Behandlungen & Preise",
     "about": "Über uns",
+    "team": "Unser Team",
     "blog": "Blog",
     "career": "Karriere",
     "bookAppointment": "Termin buchen"
@@ -34,6 +35,7 @@
     "fullPriceList": "Vollständige Preisliste",
     "bookingLink": "Termin buchen",
     "aboutLink": "Über uns",
+    "teamLink": "Unser Team",
     "contactLink": "Kontakt",
     "blogLink": "Blog & Magazin",
     "careerLink": "Karriere",

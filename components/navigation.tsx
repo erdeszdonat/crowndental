@@ -275,6 +275,7 @@ export default function Navigation() {
     { name: t('home'), href: homeHref },
     { name: t('services'), href: `${prefix}/kezelesek` },
     { name: t('about'), href: `${prefix}/rolunk` },
+    { name: t('team'), href: `${prefix}/kollegaink` },
     { name: t('blog'), href: `${prefix}/blog` },
     { name: t('career'), href: `${prefix}/karrier` },
   ];
@@ -309,7 +310,7 @@ export default function Navigation() {
         </a>
 
         {/* Desktop nav linkek */}
-        <div className="hidden lg:flex items-center gap-6 xl:gap-8">
+        <div className="hidden xl:flex items-center gap-5 2xl:gap-7">
           {navLinks.map((link) => (
             <a
               key={link.href}
@@ -323,7 +324,7 @@ export default function Navigation() {
 
         {/* Jobb oldali gombok */}
         <div className="flex items-center gap-2 z-50">
-          <a href="tel:+36305892468" className="hidden xl:flex items-center gap-2 font-bold text-sky-700 hover:text-sky-600 mr-1">
+          <a href="tel:+36305892468" className="hidden 2xl:flex items-center gap-2 font-bold text-sky-700 hover:text-sky-600 mr-1">
             <Phone className="w-5 h-5" /> 06 30 589 2468
           </a>
 
@@ -344,7 +345,7 @@ export default function Navigation() {
             aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
             aria-expanded={isOpen}
             aria-controls="mobile-navigation"
-            className="lg:hidden p-2 rounded-lg text-gray-900 bg-gray-100 hover:bg-gray-200 transition-colors"
+            className="xl:hidden p-2 rounded-lg text-gray-900 bg-gray-100 hover:bg-gray-200 transition-colors"
           >
             {isOpen ? <X /> : <Menu />}
           </button>
@@ -359,7 +360,7 @@ export default function Navigation() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-white border-t border-gray-100 p-6 flex flex-col gap-4 font-bold shadow-2xl absolute w-full left-0 z-40"
+            className="xl:hidden bg-white border-t border-gray-100 p-6 flex flex-col gap-4 font-bold shadow-2xl absolute w-full left-0 z-40"
           >
             {navLinks.map((link) => (
               <a

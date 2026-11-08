@@ -21,6 +21,7 @@
     "home": "Főoldal",
     "services": "Szolgáltatások & Árak",
     "about": "Rólunk",
+    "team": "Kollégáink",
     "blog": "Blog",
     "career": "Karrier",
     "bookAppointment": "Időpontot kérek"
@@ -36,6 +37,7 @@
     "fullPriceList": "Teljes Árlista",
     "bookingLink": "Időpontfoglalás",
     "aboutLink": "Rólunk",
+    "teamLink": "Kollégáink",
     "contactLink": "Kapcsolat",
     "blogLink": "Blog & Magazin",
     "careerLink": "Karrier",

@@ -1,0 +1,589 @@
+.page {
+  background: #fff;
+  color: #142c3e;
+}
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: #f0f6f7;
+  padding: 164px 24px 36px;
+}
+.heroInner {
+  position: relative;
+  z-index: 1;
+  max-width: 1176px;
+  margin: auto;
+}
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #3a7b8e;
+  line-height: 1.6;
+}
+.eyebrow > span {
+  width: 7px;
+  height: 7px;
+  border-radius: 100%;
+  background: #30a0b7;
+}
+.hero h1 {
+  font-size: clamp(42px, 5.8vw, 78px);
+  font-weight: 750;
+  line-height: 1.08;
+  letter-spacing: -0.055em;
+  max-width: 920px;
+  margin-top: 22px;
+}
+.hero h1 em {
+  font-style: normal;
+  font-weight: 400;
+  color: #24879c;
+}
+.hero p {
+  max-width: 500px;
+  font-size: 16px;
+  line-height: 1.85;
+  color: #637c89;
+  margin-top: 27px;
+}
+.heroFoot {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  margin-top: 56px;
+}
+.wordmark {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  color: #2c5162;
+}
+.wordmark > span {
+  font-weight: 400;
+  color: #6f8d99;
+}
+.line {
+  height: 1px;
+  background: #d1e1e5;
+  flex: 1;
+}
+.heroFoot > a {
+  width: 43px;
+  height: 43px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #c5dbe0;
+  border-radius: 50%;
+  color: #438495;
+}
+.heroMark {
+  position: absolute;
+  right: 6%;
+  top: 142px;
+  display: grid;
+  grid-template-columns: repeat(2, 100px);
+  gap: 30px;
+  transform: rotate(-12deg);
+  opacity: 0.14;
+  color: #53a3b3;
+  pointer-events: none;
+}
+.heroMark span {
+  font-size: 130px;
+  font-weight: 100;
+  line-height: 1;
+}
+.groupNav {
+  position: sticky;
+  top: 80px;
+  z-index: 20;
+  background: #ffffffed;
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid #e7eef1;
+}
+.groupNav > div {
+  max-width: 1224px;
+  margin: auto;
+  display: flex;
+  gap: 32px;
+  padding: 0 24px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+.groupNav a {
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 600;
+  min-height: 62px;
+  display: flex;
+  align-items: center;
+  color: #577383;
+  transition: color 0.15s;
+}
+.groupNav a:hover {
+  color: #1689a4;
+}
+.team {
+  max-width: 1224px;
+  padding: 74px 24px 90px;
+  margin: auto;
+  scroll-margin-top: 160px;
+}
+.leadSection,
+.teamSection {
+  scroll-margin-top: 174px;
+}
+.sectionTop {
+  margin-bottom: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 20px;
+  row-gap: 12px;
+}
+.sectionTop > .eyebrow {
+  flex-basis: 100%;
+  font-size: 9px;
+}
+.sectionTop h2 {
+  font-size: clamp(27px, 3.1vw, 40px);
+  font-weight: 650;
+  letter-spacing: -0.045em;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+.sectionLine {
+  flex: 1;
+  height: 1px;
+  background: #deeaee;
+  min-width: 50px;
+}
+.lead {
+  display: grid;
+  grid-template-columns: 0.85fr 1.35fr;
+  gap: 0;
+  border-radius: 22px;
+  overflow: hidden;
+  background: #edf5f6;
+}
+.portrait {
+  position: relative;
+  aspect-ratio: 4/5;
+  background: #e1ebed;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  color: #85a8b4;
+}
+.portrait img {
+  object-fit: cover;
+}
+.lead > .portrait {
+  height: 100%;
+  min-height: 440px;
+  aspect-ratio: auto;
+}
+.leadCopy {
+  padding: clamp(28px, 4vw, 64px);
+  align-self: center;
+}
+.role {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #328094;
+}
+.lead h3 {
+  font-size: clamp(29px, 3.5vw, 46px);
+  font-weight: 650;
+  line-height: 1.15;
+  letter-spacing: -0.04em;
+  margin: 14px 0 10px;
+  overflow-wrap: anywhere;
+}
+.subtitle {
+  font-size: 13px;
+  color: #458597;
+  font-weight: 500;
+  line-height: 1.65;
+}
+.bio {
+  font-size: 14px;
+  color: #607785;
+  line-height: 1.9;
+  overflow-wrap: anywhere;
+  white-space: pre-line;
+}
+.bio p + p {
+  margin-top: 15px;
+}
+.leadCopy > .bio {
+  margin-top: 25px;
+}
+.textLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 15px;
+  color: #1a758e;
+  font-size: 12px;
+  font-weight: 750;
+  margin-top: 28px;
+  border-bottom: 1px solid #a9cbd3;
+  padding-bottom: 9px;
+  min-height: 44px;
+}
+.teamSection {
+  margin-top: 78px;
+}
+.teamSection:first-child {
+  margin-top: 0;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+  align-items: start;
+}
+.card {
+  overflow: hidden;
+  border: 1px solid #e4edf0;
+  border-radius: 17px;
+  background: #fff;
+}
+.cardImage {
+  position: relative;
+  overflow: hidden;
+}
+.cardImage .portrait {
+  transition: transform 0.4s;
+}
+.card:hover .portrait {
+  transform: scale(1.025);
+}
+.rolePill {
+  position: absolute;
+  bottom: 17px;
+  left: 17px;
+  max-width: calc(100% - 34px);
+  background: #ffffffed;
+  color: #245c70;
+  border: 1px solid #ffffffa3;
+  border-radius: 7px;
+  padding: 8px 12px;
+  font-size: 9px;
+  font-weight: 700;
+  backdrop-filter: blur(8px);
+}
+.cardCopy {
+  padding: 25px;
+}
+.card h3 {
+  font-size: 23px;
+  line-height: 1.3;
+  letter-spacing: -0.035em;
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+.cardCopy > .subtitle {
+  margin-top: 8px;
+  font-size: 12px;
+}
+.details {
+  margin-top: 22px;
+  border-top: 1px solid #e6eef1;
+}
+.details summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  list-style: none;
+  font-size: 12px;
+  font-weight: 650;
+  color: #347c90;
+  cursor: pointer;
+  min-height: 53px;
+}
+.details summary::-webkit-details-marker {
+  display: none;
+}
+.details[open] summary svg {
+  transform: rotate(45deg);
+}
+.details .bio {
+  padding-bottom: 8px;
+  font-size: 13px;
+}
+.empty {
+  max-width: 800px;
+  padding: 70px 24px 80px;
+  margin: auto;
+  text-align: center;
+}
+.emptyIcon {
+  display: grid;
+  place-items: center;
+  background: #edf5f7;
+  border-radius: 19px;
+  width: 66px;
+  height: 66px;
+  color: #5294a5;
+  margin: 0 auto 25px;
+}
+.empty h2 {
+  font-size: clamp(28px, 4vw, 42px);
+  letter-spacing: -0.04em;
+  font-weight: 600;
+  margin: 13px 0 19px;
+}
+.empty > p {
+  max-width: 570px;
+  margin: auto;
+  font-size: 15px;
+  line-height: 1.9;
+  color: #718692;
+}
+.emptyRoles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 9px;
+  margin-top: 30px;
+}
+.emptyRoles > span {
+  border: 1px solid #dce9ed;
+  background: #fbfdfe;
+  border-radius: 100px;
+  padding: 8px 14px;
+  font-size: 10px;
+  color: #5c7a88;
+}
+.contact {
+  max-width: 1176px;
+  margin: 0 auto 82px;
+  padding: 42px 46px;
+  border-radius: 20px;
+  background: #142f41;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 36px;
+}
+.contact .eyebrow {
+  color: #87cbd7;
+  font-size: 9px;
+}
+.contact h2 {
+  font-size: clamp(27px, 3vw, 36px);
+  font-weight: 550;
+  letter-spacing: -0.035em;
+  line-height: 1.25;
+  max-width: 610px;
+  margin: 12px 0;
+}
+.contact p {
+  font-size: 13px;
+  line-height: 1.8;
+  color: #aec5d0;
+}
+.contactActions {
+  display: grid;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  min-height: 49px;
+  padding: 14px 20px;
+  background: #fff;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #1c637b;
+}
+.phone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  color: #c8dde5;
+  font-size: 11px;
+  min-height: 44px;
+}
+.page a:focus-visible,
+.page summary:focus-visible {
+  outline: 3px solid #45a7c5;
+  outline-offset: 4px;
+}
+@media (min-width: 1500px) {
+  .heroMark {
+    right: 17%;
+  }
+}
+@media (max-width: 1100px) {
+  .heroMark {
+    right: -60px;
+    opacity: 0.08;
+  }
+  .grid {
+    gap: 20px;
+  }
+  .cardCopy {
+    padding: 20px;
+  }
+  .contact {
+    margin-left: 24px;
+    margin-right: 24px;
+    padding: 32px;
+  }
+  .groupNav > div {
+    gap: 25px;
+  }
+  .groupNav a {
+    font-size: 11px;
+  }
+}
+@media (max-width: 760px) {
+  .hero {
+    padding: 133px 22px 25px;
+  }
+  .hero h1 {
+    font-size: 44px;
+    margin-top: 20px;
+  }
+  .hero p {
+    font-size: 14px;
+    line-height: 1.85;
+    max-width: 420px;
+  }
+  .heroFoot {
+    margin-top: 34px;
+  }
+  .heroMark {
+    top: 125px;
+    right: -100px;
+  }
+  .eyebrow {
+    font-size: 8px;
+    letter-spacing: 0.13em;
+  }
+  .groupNav a {
+    min-height: 55px;
+    font-size: 10px;
+  }
+  .groupNav > div {
+    gap: 23px;
+    padding: 0 22px;
+  }
+  .team {
+    padding: 48px 22px 56px;
+  }
+  .sectionTop {
+    margin-bottom: 23px;
+  }
+  .lead {
+    grid-template-columns: 1fr;
+  }
+  .lead > .portrait {
+    aspect-ratio: 4/4.5;
+    min-height: 0;
+    height: auto;
+  }
+  .leadCopy {
+    padding: 29px;
+  }
+  .lead h3 {
+    font-size: 32px;
+  }
+  .leadCopy > .bio {
+    font-size: 13px;
+  }
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+  .card h3 {
+    font-size: 22px;
+  }
+  .cardCopy {
+    padding: 19px;
+  }
+  .teamSection {
+    margin-top: 54px;
+  }
+  .empty {
+    padding: 48px 22px 56px;
+  }
+  .empty > p {
+    font-size: 14px;
+  }
+  .contact {
+    margin: 0 22px 50px;
+    padding: 30px 25px;
+    display: block;
+  }
+  .contactActions {
+    margin-top: 27px;
+    justify-items: start;
+  }
+  .primary {
+    font-size: 12px;
+    min-width: 210px;
+  }
+  .phone {
+    padding: 0 10px;
+  }
+  .leadSection,
+  .teamSection {
+    scroll-margin-top: 158px;
+  }
+}
+@media (max-width: 500px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .cardCopy {
+    padding: 24px;
+  }
+  .card h3 {
+    font-size: 25px;
+  }
+  .hero h1 {
+    font-size: 40px;
+  }
+  .hero > div > p {
+    max-width: 300px;
+  }
+  .emptyRoles {
+    gap: 7px;
+  }
+  .emptyRoles > span {
+    font-size: 9px;
+  }
+  .contact h2 {
+    font-size: 29px;
+  }
+  .heroMark {
+    right: -150px;
+    opacity: 0.07;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cardImage .portrait {
+    transition: none;
+  }
+  .card:hover .portrait {
+    transform: none;
+  }
+}

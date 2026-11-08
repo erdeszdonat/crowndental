@@ -43,6 +43,7 @@ const staticPaths = [
   'primas-sziget',
   'budapest',
   'rolunk',
+  'kollegaink',
   'kapcsolat',
   'blog',
   'karrier',
