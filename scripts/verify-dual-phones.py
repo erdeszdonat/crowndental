@@ -1,4 +1,5 @@
 """Read-only HTTP smoke check for paired, ordered clinic phone CTAs in all locales."""
+from pathlib import Path
 from html.parser import HTMLParser
 from urllib.request import urlopen
 from concurrent.futures import ThreadPoolExecutor
@@ -30,6 +31,8 @@ class PhoneParser(HTMLParser):
 origin=(sys.argv[1] if len(sys.argv)>1 else 'http://localhost:3016').rstrip('/')
 pages=['','/idopont','/idopont/sikeres','/kapcsolat','/primas-sziget','/esztergom','/budapest','/kezelesek','/kezelesek/fogszabalyozas','/kezelesek/direkt-hej','/hollywood-mosoly','/kollegaink','/aszf','/adatkezeles','/cookie-tajekoztato']
 paths=[(prefix+page or '/') for prefix in ('','/en','/sk','/de') for page in pages]
+opening=json.loads((Path(__file__).parent.parent/'lib/openingContent.json').read_text())
+paths += [('' if lang=='hu' else '/'+lang)+'/blog/'+copy['slug'] for lang,copy in opening.items()]
 def verify(path):
     with urlopen(origin+path,timeout=45) as response:
         assert response.status==200,path

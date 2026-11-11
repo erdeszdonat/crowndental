@@ -1,5 +1,6 @@
 'use client';
 
+import ClinicPhoneLinks from '@/components/ClinicPhoneLinks';
 import React from 'react';
 import {
   ArrowLeft,
@@ -139,7 +140,11 @@ export default function BlogPostClient({ post }: { post: any }) {
                 if (c.marks?.includes('em')) el = <em key={`e${j}`}>{el}</em>;
                 const linkMark = c.marks?.find((mk: string) => linkMap[mk]);
                 if (linkMark) {
-                  el = <a key={`l${j}`} href={linkMap[linkMark]} className="text-sky-600 font-semibold underline underline-offset-2 hover:text-sky-500 transition-colors">{el}</a>;
+                  const href = linkMap[linkMark];
+                  const isClinicPhone = /^tel:(?:\+36|06)(?:305892468|706042500)$/.test(href.replace(/[\s()-]/g, ''));
+                  el = isClinicPhone
+                    ? <ClinicPhoneLinks key={`l${j}`} />
+                    : <a key={`l${j}`} href={href} className="text-sky-600 font-semibold underline underline-offset-2 hover:text-sky-500 transition-colors">{el}</a>;
                 }
                 return <React.Fragment key={j}>{el}</React.Fragment>;
               });
