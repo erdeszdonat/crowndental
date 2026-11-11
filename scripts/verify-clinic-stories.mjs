@@ -34,7 +34,7 @@ for (const [kind, content, image] of [['opening', opening, clinicImage], ['story
     for (const [heading] of copy.sections) assert.ok(html.includes(heading), path + ': section ' + heading);
     if (kind === 'story') {
       assert.ok(html.includes(copy.imageCaption), path + ': honest editorial caption');
-      assert.ok(html.includes('Erdélyi Zsolt'), path + ': lab leadership');
+      assert.ok(html.includes('Erdész Zsolt'), path + ': lab leadership');
       assert.ok(html.includes('/_next/image?'), path + ': optimized local image');
       assert.ok(!/\b(?:30 colleagues|30 Kollegen|30 kolegov|harminc kolléga|ten dentists|tíz orvos)\b/.test(html), path + ': no invented headcount');
     }
