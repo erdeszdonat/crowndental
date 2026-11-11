@@ -95,7 +95,9 @@ export default function BlogPostClient({ post }: { post: any }) {
           </div>
           <div className="mb-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-600">
             <span>
-              {locale === 'sk' ? 'Vydavateľ odborného obsahu' : locale === 'en' ? 'Dental information published by' : locale === 'de' ? 'Fachinformation veröffentlicht von' : 'Szakmai tartalom kiadója'}:{' '}
+              {post.category === 'magazine'
+                ? (locale === 'sk' ? 'Vydavateľ' : locale === 'en' ? 'Published by' : locale === 'de' ? 'Herausgeber' : 'Kiadó')
+                : (locale === 'sk' ? 'Vydavateľ odborného obsahu' : locale === 'en' ? 'Dental information published by' : locale === 'de' ? 'Fachinformation veröffentlicht von' : 'Szakmai tartalom kiadója')}:{' '}
               <strong className="text-gray-900">{post.authorName || 'Crown Dental'}</strong>
               {post.authorRole ? ` · ${post.authorRole}` : ''}
             </span>
@@ -107,12 +109,12 @@ export default function BlogPostClient({ post }: { post: any }) {
             <figure className="mb-12">
               <div className="relative aspect-video rounded-[2.5rem] overflow-hidden shadow-2xl border border-gray-100 group">
                 <Image
-                  loader={sanityImageLoader}
-                  src={post.imageUrl}
+                  loader={post.imageUrl.startsWith('https://www.crowndental.hu/images/blog/') ? undefined : sanityImageLoader}
+                  src={post.imageUrl.replace('https://www.crowndental.hu/images/', '/images/')}
                   alt={post.mainImage?.alt ?? post.title}
                   fill
                   sizes="(max-width: 767px) calc(100vw - 2rem), 896px"
-                  quality={82}
+                  quality={post.imageUrl.startsWith('https://www.crowndental.hu/images/blog/') ? 75 : 82}
                   preload
                   className="object-cover transform group-hover:scale-105 transition-transform duration-1000"
                 />
