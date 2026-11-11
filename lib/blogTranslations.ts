@@ -1,3 +1,4 @@
+import { clinicStorySlugs } from './clinicStorySlugs';
 import { openingSlugs } from './openingSlugs';
 import {
   HREFLANG_BY_LOCALE,
@@ -17,6 +18,7 @@ export type BlogTranslationGroup = Record<SupportedLocale, string>;
  */
 export const BLOG_TRANSLATION_GROUPS: readonly BlogTranslationGroup[] = [
   openingSlugs,
+  clinicStorySlugs,
   {
     hu: 'fogaszati-hej-arak-teljes-koltseg',
     sk: 'fazety-cena-celkove-naklady',

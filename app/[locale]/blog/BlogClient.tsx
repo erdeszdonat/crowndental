@@ -379,12 +379,12 @@ export default function BlogClient({ initialPosts = EMPTY_BLOG_POSTS }: { initia
                 <div className="relative h-56 w-full overflow-hidden bg-gray-100">
                   {post.imageUrl && (
                     <Image
-                      loader={sanityImageLoader}
-                      src={post.imageUrl}
+                      loader={post.imageUrl.startsWith('https://www.crowndental.hu/images/blog/') ? undefined : sanityImageLoader}
+                      src={post.imageUrl.replace('https://www.crowndental.hu/images/', '/images/')}
                       alt={post.title}
                       fill
                       sizes="(max-width: 767px) calc(100vw - 2rem), (max-width: 1023px) calc(50vw - 2.5rem), 352px"
-                      quality={76}
+                      quality={post.imageUrl.startsWith('https://www.crowndental.hu/images/blog/') ? 75 : 76}
                       loading="lazy"
                       className="object-cover transition-transform duration-700 group-hover:scale-110"
                     />

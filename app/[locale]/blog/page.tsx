@@ -1,4 +1,4 @@
-import { openingPosts } from '@/lib/openingPosts';
+import { clinicNewsPosts } from '@/lib/openingPosts';
 import type { Metadata } from 'next';
 import { buildLocalizedMetadata, normalizeLocale } from '@/lib/seo';
 import BlogClient from './BlogClient';
@@ -68,6 +68,9 @@ async function getBlogPosts() {
 }
 
 export default async function BlogPage() {
-  const posts = [...openingPosts, ...(await getBlogPosts()).filter((post: { slug: string }) => !openingPosts.some(opening => opening.slug === post.slug))];
+  // The index only needs card data; keep full multilingual article bodies on the server.
+  const newsCards = clinicNewsPosts.map(({ _id, title, slug, publishedAt, excerpt, imageUrl, language, category }) =>
+    ({ _id, title, slug, publishedAt, excerpt, imageUrl, language, category }));
+  const posts = [...newsCards, ...(await getBlogPosts()).filter((post: { slug: string }) => !clinicNewsPosts.some(opening => opening.slug === post.slug))];
   return <BlogClient initialPosts={posts} />;
 }
