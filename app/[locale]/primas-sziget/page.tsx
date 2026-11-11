@@ -1,3 +1,5 @@
+import OpeningAnnouncement from '@/components/OpeningAnnouncement';
+import openingContent from '@/lib/openingContent.json';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -18,7 +20,7 @@ type Props = { params: Promise<{ locale: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = normalizeLocale((await params).locale);
   const copy = clinicCopy[locale];
-  return buildLocalizedMetadata({ locale, path: 'primas-sziget', title: `${copy.title} | Crown Dental`, description: copy.description });
+  return buildLocalizedMetadata({ locale, path: 'primas-sziget', title: `${copy.title} | Crown Dental`, description: openingContent[locale].seoDescription });
 }
 
 const treatments: PrimasTreatmentSlug[] = ['allapotfelmeres', 'gyokerkezeles', 'fogfeherites', 'koronak-hidak', 'fogsor', 'implantatum', 'szajsebeszet', 'gyerekfogaszat', 'fogszabalyozas'];
@@ -68,10 +70,11 @@ export default async function PrimasSzigetPage({ params }: Props) {
           <div className="max-w-3xl">
             <p className="mb-7 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] backdrop-blur-sm sm:text-sm"><MapPin className="h-4 w-4 shrink-0 text-sky-300" aria-hidden="true" />Crown Dental Prímás Sziget</p>
             <h1 className="text-4xl font-black leading-[1.06] tracking-tight sm:text-6xl xl:text-7xl">{content.heroTitle}<span className="mt-3 block text-sky-300">{content.heroAccent}</span></h1>
-            <p className="mt-7 max-w-xl text-base leading-relaxed text-slate-200 sm:text-lg">{content.heroDescription}</p>
+            <p className="mt-6 text-xl font-bold text-sky-200">{openingContent[locale].bannerTitle}</p>
+            <p className="mt-4 max-w-xl text-base leading-relaxed text-slate-200 sm:text-lg">{openingContent[locale].bannerText}</p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Link href={`${prefix}/idopont`} className={primaryButton}>{copy.book}<ArrowUpRight className="h-5 w-5" aria-hidden="true" /></Link>
-              <a href="tel:+36305892468" className={`inline-flex items-center justify-center gap-3 rounded-full border border-white/35 bg-white/10 px-7 py-4 font-bold text-white backdrop-blur-sm transition-colors hover:bg-white/20 ${focusRing}`}><Phone className="h-5 w-5" aria-hidden="true" />+36 30 589 2468</a>
+              <a href="tel:+36706042500" className={`inline-flex items-center justify-center gap-3 rounded-full border border-white/35 bg-white/10 px-7 py-4 font-bold text-white backdrop-blur-sm transition-colors hover:bg-white/20 ${focusRing}`}><Phone className="h-5 w-5" aria-hidden="true" />+36 70 604 2500</a>
             </div>
             <ul className="mt-10 flex flex-wrap gap-x-6 gap-y-3 border-t border-white/20 pt-6 text-sm text-slate-100">
               {[copy.freeParking, copy.accessible, `${copy.weekend}: 08:00–20:00`].map((label) => <li key={label} className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-sky-300" aria-hidden="true" />{label}</li>)}
@@ -80,6 +83,7 @@ export default async function PrimasSzigetPage({ params }: Props) {
         </div>
       </section>
 
+      <OpeningAnnouncement locale={locale} compact />
       <section className="py-20 sm:py-24">
         <div className="container mx-auto px-5">
           <div className="grid gap-7 lg:grid-cols-2 lg:items-end lg:gap-16">
@@ -154,7 +158,7 @@ export default async function PrimasSzigetPage({ params }: Props) {
 
       <section className="py-20 sm:py-24">
         <div className="container mx-auto grid gap-10 px-5 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
-          <div><p className={eyebrow}>Crown Dental Prímás Sziget</p><h2 className={sectionTitle}>{content.faqTitle}</h2><a href="tel:+36305892468" className={`mt-7 ${textLink}`}><Phone className="h-5 w-5" aria-hidden="true" />+36 30 589 2468</a></div>
+          <div><p className={eyebrow}>Crown Dental Prímás Sziget</p><h2 className={sectionTitle}>{content.faqTitle}</h2><a href="tel:+36706042500" className={`mt-7 ${textLink}`}><Phone className="h-5 w-5" aria-hidden="true" />+36 70 604 2500</a></div>
           <div className="divide-y divide-slate-200 border-y border-slate-200">{content.faqs.map((faq) => <details key={faq.question} className="group py-1"><summary className={`flex cursor-pointer list-none items-center justify-between gap-5 rounded py-5 text-lg font-bold [&::-webkit-details-marker]:hidden ${focusRing}`}>{faq.question}<ChevronDown className="h-5 w-5 shrink-0 text-sky-600 transition-transform group-open:rotate-180" aria-hidden="true" /></summary><p className="max-w-2xl pb-6 leading-relaxed text-slate-600">{faq.answer}</p></details>)}</div>
         </div>
       </section>
@@ -163,7 +167,7 @@ export default async function PrimasSzigetPage({ params }: Props) {
         <div className="container mx-auto px-5">
           <div className="mb-12 max-w-2xl"><p className={eyebrow}>Helischer József út 6. · Esztergom</p><h2 className={sectionTitle}>{content.contactTitle}</h2><p className="mt-5 text-lg leading-relaxed text-slate-600">{content.contactDescription}</p></div>
           <div className="grid overflow-hidden rounded-[2rem] border border-sky-100 bg-white shadow-xl shadow-sky-900/5 lg:grid-cols-2">
-            <div className="p-7 sm:p-10"><MapPin className="mb-5 h-8 w-8 text-sky-600" aria-hidden="true" /><h3 className="mb-6 text-2xl font-bold">Crown Dental Prímás Sziget</h3><ClinicDetails locale={locale} index={1} showDetails={false} /><a href="tel:+36305892468" className={`mt-6 ${textLink}`}><Phone className="h-5 w-5" aria-hidden="true" />+36 30 589 2468</a><div className="mt-7"><Link href={`${prefix}/idopont`} className={primaryButton}>{copy.book}<ArrowUpRight className="h-5 w-5" aria-hidden="true" /></Link></div><p className="mt-5 text-sm leading-relaxed text-slate-500">{copy.bookingNote}</p></div>
+            <div className="p-7 sm:p-10"><MapPin className="mb-5 h-8 w-8 text-sky-600" aria-hidden="true" /><h3 className="mb-6 text-2xl font-bold">Crown Dental Prímás Sziget</h3><ClinicDetails locale={locale} index={1} showDetails={false} /><a href="tel:+36706042500" className={`mt-6 ${textLink}`}><Phone className="h-5 w-5" aria-hidden="true" />+36 70 604 2500</a><div className="mt-7"><Link href={`${prefix}/idopont`} className={primaryButton}>{copy.book}<ArrowUpRight className="h-5 w-5" aria-hidden="true" /></Link></div><p className="mt-5 text-sm leading-relaxed text-slate-500">{copy.bookingNote}</p></div>
             <iframe src={`https://maps.google.com/maps?q=${encodeURIComponent(clinic.address)}&output=embed`} title="Crown Dental Prímás Sziget — Helischer József út 6." loading="lazy" className="h-80 w-full border-0 lg:h-full lg:min-h-[30rem]" referrerPolicy="no-referrer-when-downgrade" />
           </div>
           <div className="mt-7 rounded-2xl border border-sky-100 bg-white/70 p-6"><p className="max-w-3xl leading-relaxed text-slate-600">{copy.imaging}</p><Link href={`${prefix}/esztergom`} className={`mt-3 ${textLink}`}>Crown Dental Belváros · Petőfi Sándor utca 11.<ArrowUpRight className="h-5 w-5 shrink-0" aria-hidden="true" /></Link></div>

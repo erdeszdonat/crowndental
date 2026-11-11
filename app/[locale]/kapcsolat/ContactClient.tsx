@@ -1,5 +1,6 @@
 'use client';
 
+import OpeningAnnouncement from '@/components/OpeningAnnouncement';
 import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -211,7 +212,8 @@ export default function ContactClient() {
           </div>
         </section>
 
-        <section className="pb-24 pt-4">
+        <OpeningAnnouncement locale={locale} />
+      <section className="pb-24 pt-4">
           <div className="container mx-auto px-4">
             <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] max-w-6xl mx-auto">
               <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="rounded-[2rem] border border-gray-100 bg-white p-6 shadow-xl shadow-gray-200/60 md:p-8">

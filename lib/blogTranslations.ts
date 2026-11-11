@@ -1,3 +1,4 @@
+import { openingSlugs } from './openingSlugs';
 import {
   HREFLANG_BY_LOCALE,
   SITE_URL,
@@ -15,6 +16,7 @@ export type BlogTranslationGroup = Record<SupportedLocale, string>;
  * published. The content audit script validates every entry against Sanity.
  */
 export const BLOG_TRANSLATION_GROUPS: readonly BlogTranslationGroup[] = [
+  openingSlugs,
   {
     hu: 'fogaszati-hej-arak-teljes-koltseg',
     sk: 'fazety-cena-celkove-naklady',

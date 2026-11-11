@@ -1,5 +1,6 @@
 'use client';
 
+import OpeningAnnouncement from '@/components/OpeningAnnouncement';
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
@@ -1051,10 +1052,12 @@ function FAQSection() {
 
 // ─── Főoldal export ───────────────────────────────────────────────────────────
 export default function HomeClient({ sanityImages = emptyHomeSanityImages }: { sanityImages?: HomeSanityImages }) {
+  const openingLocale = useLocale();
   return (
     <div className="bg-white min-h-screen selection:bg-sky-200 selection:text-sky-900">
       <main>
         <HeroSlider images={sanityImages.hero} />
+        <OpeningAnnouncement locale={openingLocale} />
         <div className="crown-page crown-home-sections">
         <TrustBadges />
         <SmileTreatmentsSection />

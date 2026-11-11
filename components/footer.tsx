@@ -190,7 +190,7 @@ export default function Footer() {
                 <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center flex-shrink-0">
                   <Phone className="w-5 h-5 text-sky-500" />
                 </div>
-                <a href="tel:+36305892468" className="hover:text-white transition-colors font-bold text-lg">06 30 589 2468</a>
+                <div className="space-y-3">{CLINIC_LOCATIONS.map(clinic => <div key={clinic.id}><p className="text-sm text-gray-400">{clinic.name}</p><a href={`tel:${clinic.phone}`} className="font-bold text-lg hover:text-white">{clinic.phoneLabel}</a></div>)}</div>
               </li>
               <li className="flex items-start gap-4">
                 <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center flex-shrink-0">

@@ -10,10 +10,11 @@ export default function MobileContactBar() {
   const p = locale === 'hu' ? '' : `/${locale}`;
   const copy = getSiteCopy(locale);
   const pathname = usePathname();
+  const isPrimas = pathname.includes("/primas-sziget") || pathname.includes("/blog/") && pathname.includes("primas-sziget");
   const isSmileLanding = /^\/(?:hu\/|en\/|de\/|sk\/)?hollywood-mosoly\/?$/.test(pathname);
   return (
     <aside className="crown-mobile-contact" aria-label={copy.contact} data-cta-location="mobile_bar">
-      <a href="tel:+36305892468" className="crown-button crown-button-secondary"><Phone size={18} aria-hidden="true" />{copy.call}</a>
+      <a href={isPrimas ? "tel:+36706042500" : "tel:+36305892468"} className="crown-button crown-button-secondary"><Phone size={18} aria-hidden="true" />{copy.call}</a>
       <Link href={isSmileLanding ? '#konzultacio' : `${p}/idopont`} data-booking-cta={isSmileLanding ? 'true' : undefined} className="crown-button">{copy.book}<ArrowUpRight size={18} aria-hidden="true" /></Link>
     </aside>
   );
