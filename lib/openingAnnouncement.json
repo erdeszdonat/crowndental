@@ -6,7 +6,21 @@
     "fallback": "Ha a Prímás-szigeti számot nem tudjuk felvenni, hívja a Petőfi utcai rendelőnket:",
     "book": "Gyors időpontot kérek online",
     "read": "Az új rendelő és az időpontkérés részletei",
-    "note": "Az online jelentkezés időpontkérés. A pontos időpontot és a rendelőt munkatársunk visszaigazolja."
+    "note": "Az online jelentkezés időpontkérés. A pontos időpontot és a rendelőt munkatársunk visszaigazolja.",
+    "tag": "Új rendelő · Esztergom",
+    "titleTop": "Megnyitottunk.",
+    "titleBottom": "Prímás Sziget.",
+    "availability": "Azonnali időpontok elérhetők",
+    "services": [
+      "Fogszabályozás",
+      "Általános fogászat",
+      "Fogkőleszedés",
+      "Fogfehérítés"
+    ],
+    "primaryText": "Időpontot kérek",
+    "imageAlt": "A Crown Dental Prímás Sziget rendelő belső tere",
+    "imageLabel": "Az új rendelő várja Önt",
+    "visit": "Nézze meg a rendelőt"
   },
   "sk": {
     "slug": "nova-ambulancia-crown-dental-primas-sziget-ostrihom-rychle-terminy",
@@ -15,7 +29,21 @@
     "fallback": "Ak sa na číslo Prímás Sziget nedovoláte, zavolajte do našej ambulancie na Petőfiho ulici:",
     "book": "Požiadať o skorý termín online",
     "read": "Nová ambulancia a objednávanie",
-    "note": "Online formulár je žiadosť o termín. Presný čas a ambulanciu vám potvrdí náš tím."
+    "note": "Online formulár je žiadosť o termín. Presný čas a ambulanciu vám potvrdí náš tím.",
+    "tag": "Nová ambulancia · Ostrihom",
+    "titleTop": "Už sme otvorení.",
+    "titleBottom": "Prímás Sziget.",
+    "availability": "Voľné termíny aj ihneď",
+    "services": [
+      "Ortodoncia",
+      "Všeobecná stomatológia",
+      "Odstránenie zubného kameňa",
+      "Bielenie zubov"
+    ],
+    "primaryText": "Požiadať o termín",
+    "imageAlt": "Interiér ambulancie Crown Dental Prímás Sziget",
+    "imageLabel": "Privítame vás v novej ambulancii",
+    "visit": "Pozrieť si ambulanciu"
   },
   "en": {
     "slug": "crown-dental-primas-sziget-open-esztergom-dentist-appointments",
@@ -24,7 +52,21 @@
     "fallback": "If we cannot answer the Prímás Sziget number, please call our Petőfi Street clinic:",
     "book": "Request an early appointment online",
     "read": "Explore the new clinic and booking options",
-    "note": "The online form sends an appointment request. Our team will confirm the time and clinic."
+    "note": "The online form sends an appointment request. Our team will confirm the time and clinic.",
+    "tag": "New clinic · Esztergom",
+    "titleTop": "We are open.",
+    "titleBottom": "Prímás Sziget.",
+    "availability": "Appointments available now",
+    "services": [
+      "Orthodontics",
+      "General dentistry",
+      "Dental scaling",
+      "Teeth whitening"
+    ],
+    "primaryText": "Request an appointment",
+    "imageAlt": "Interior of the Crown Dental Prímás Sziget clinic",
+    "imageLabel": "Your new clinic is ready to welcome you",
+    "visit": "Explore the clinic"
   },
   "de": {
     "slug": "crown-dental-primas-sziget-eroeffnet-zahnarzt-esztergom-termine",
@@ -33,6 +75,20 @@
     "fallback": "Falls wir unter der Nummer von Prímás Sziget nicht erreichbar sind, rufen Sie unsere Praxis in der Petőfi-Straße an:",
     "book": "Kurzfristigen Termin online anfragen",
     "read": "Neue Praxis und Terminvereinbarung",
-    "note": "Das Onlineformular sendet eine Terminanfrage. Unser Team bestätigt Ihnen Uhrzeit und Praxis."
+    "note": "Das Onlineformular sendet eine Terminanfrage. Unser Team bestätigt Ihnen Uhrzeit und Praxis.",
+    "tag": "Neue Praxis · Esztergom",
+    "titleTop": "Wir sind eröffnet.",
+    "titleBottom": "Prímás Sziget.",
+    "availability": "Termine ab sofort verfügbar",
+    "services": [
+      "Kieferorthopädie",
+      "Allgemeine Zahnmedizin",
+      "Zahnsteinentfernung",
+      "Bleaching"
+    ],
+    "primaryText": "Termin anfragen",
+    "imageAlt": "Innenansicht der Praxis Crown Dental Prímás Sziget",
+    "imageLabel": "Willkommen in unserer neuen Praxis",
+    "visit": "Praxis kennenlernen"
   }
 }

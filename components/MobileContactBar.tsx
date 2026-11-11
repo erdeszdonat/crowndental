@@ -10,7 +10,7 @@ export default function MobileContactBar() {
   const p = locale === 'hu' ? '' : `/${locale}`;
   const copy = getSiteCopy(locale);
   const pathname = usePathname();
-  const isPrimas = pathname.includes("/primas-sziget") || pathname.includes("/blog/") && pathname.includes("primas-sziget");
+  const isPrimas = /^\/(?:hu|en|sk|de)?\/?$/.test(pathname) || pathname.includes("/primas-sziget") || pathname.includes("/blog/") && pathname.includes("primas-sziget");
   const isSmileLanding = /^\/(?:hu\/|en\/|de\/|sk\/)?hollywood-mosoly\/?$/.test(pathname);
   return (
     <aside className="crown-mobile-contact" aria-label={copy.contact} data-cta-location="mobile_bar">

@@ -77,7 +77,7 @@ async function getHomeSanityImages(): Promise<HomeSanityImages> {
   }
 
   return {
-    hero,
+    hero: { ...hero, primas: locations['primas-sziget']?.imageUrl?.split('?')[0] },
     locations,
     labImage: labResult?.url ? optimizeSanityImage(labResult.url, 1200, 800) : '',
     services,

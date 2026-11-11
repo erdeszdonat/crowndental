@@ -1,5 +1,6 @@
 'use client';
 
+import openingCopy from '@/lib/openingAnnouncement.json';
 import OpeningAnnouncement from '@/components/OpeningAnnouncement';
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useReducedMotion, useScroll, useTransform } from 'framer-motion';
@@ -19,7 +20,7 @@ import { getSiteCopy } from '@/lib/siteCopy';
 import { Pause, Play } from 'lucide-react';
 
 export type HomeSanityImages = {
-  hero: Record<'fokep' | 'fokep1' | 'fokep2', string>;
+  hero: Record<'fokep' | 'fokep1' | 'fokep2', string> & { primas?: string };
   locations: Record<string, { name?: string; title?: string; address?: string; tag?: string; imageUrl?: string }>;
   labImage: string;
   services: Record<string, string>;
@@ -123,9 +124,12 @@ function HeroSlider({ images }: { images: HomeSanityImages['hero'] }) {
     de: { pause: 'Diashow pausieren', play: 'Diashow fortsetzen' },
   }[locale === 'en' || locale === 'sk' || locale === 'de' ? locale : 'hu'];
 
-  const slideData = tSlides.raw('slides') as Array<{ tag:string; titleTop:string; titleBottom:string; subtitle:string; primaryText:string }>;
+  const campaign = openingCopy[locale === 'en' || locale === 'sk' || locale === 'de' ? locale : 'hu'];
+  const originalSlides = tSlides.raw('slides') as Array<{ tag:string; titleTop:string; titleBottom:string; subtitle:string; primaryText:string }>;
+  const slideData = [{ ...campaign, subtitle: campaign.availability }, ...originalSlides];
 
   const staticSlides = [
+    { image: images.primas || images.fokep2, href: `${p}/idopont`, icon: <Calendar className="w-6 h-6" /> },
     { image: images.fokep,  href: '#arajanlat-elemzo', icon: <Upload className="w-6 h-6" /> },
     { image: images.fokep1, href: `${p}/idopont`,       icon: <Calendar className="w-6 h-6" /> },
     { image: images.fokep2, href: `${p}/idopont`,       icon: <Calendar className="w-6 h-6" /> },
@@ -133,7 +137,7 @@ function HeroSlider({ images }: { images: HomeSanityImages['hero'] }) {
 
   useEffect(() => {
     if (carouselPaused) return;
-    const t = setInterval(() => setCurrent(c => (c+1)%3), 10000);
+    const t = setInterval(() => setCurrent(c => (c+1)%4), 10000);
     return () => clearInterval(t);
   }, [carouselPaused]);
 
@@ -147,7 +151,7 @@ function HeroSlider({ images }: { images: HomeSanityImages['hero'] }) {
         if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setIsInteractionPaused(false);
       }}
       data-cta-location="home_hero"
-      className="crown-home-banner relative mt-20 h-[90svh] min-h-[700px] w-full overflow-hidden flex items-center justify-center bg-gray-950"
+      className="crown-home-banner relative mt-20 h-[90svh] min-h-[700px] w-full overflow-clip flex items-center justify-center bg-gray-950"
     >
       <motion.div style={prefersReducedMotion ? undefined : { y:imgY }} className="absolute inset-0 z-0 will-change-transform">
         <AnimatePresence mode="wait" initial={false}>
@@ -158,47 +162,51 @@ function HeroSlider({ images }: { images: HomeSanityImages['hero'] }) {
                   <Image
                     loader={sanityImageLoader}
                     src={staticSlides[current].image}
-                    alt="Crown Dental"
+                    alt={current === 0 ? campaign.imageAlt : "Crown Dental"}
                     fill
                     priority={current === 0}
                     sizes="100vw"
-                    className="object-cover"
+                    className={current === 0 ? "object-cover object-[65%_center]" : "object-cover"}
                   />
                 </div>
               )
               : <div className="w-full h-full bg-slate-800 animate-pulse" />}
-            <div className="absolute inset-0 bg-gradient-to-r from-gray-950/80 via-gray-950/50 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-gray-950/95 via-gray-950/70 to-gray-950/15" />
             <div className="absolute inset-0 bg-gradient-to-t from-gray-950/70 via-transparent to-gray-950/30" />
           </motion.div>
         </AnimatePresence>
       </motion.div>
-      <div className="absolute bottom-0 left-0 right-0 h-56 bg-gradient-to-t from-white to-transparent z-10" />
+      {current !== 0 && <div className="absolute bottom-0 left-0 right-0 h-56 bg-gradient-to-t from-white to-transparent z-10" />}
       <div className="absolute inset-0 z-[1] opacity-[0.03]" style={{ backgroundImage:'linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px)', backgroundSize:'80px 80px' }} />
 
       <motion.div style={prefersReducedMotion ? undefined : { y:textY, opacity }} className="relative z-20 container mx-auto px-4 md:px-8">
         <div className="max-w-3xl">
           <AnimatePresence mode="wait" initial={false}>
             <motion.div key={current} initial={prefersReducedMotion ? false : { opacity:0, y:24 }} animate={{ opacity:1, y:0 }} exit={{ opacity:0, y:-24 }} transition={{ duration:prefersReducedMotion ? 0 : 0.45 }}>
-              <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/10 border border-white/20 backdrop-blur-xl rounded-full text-sky-300 text-xs sm:text-sm font-bold tracking-wider uppercase mb-8">
+              <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/10 border border-white/20 backdrop-blur-xl rounded-full text-sky-300 text-xs sm:text-sm font-bold tracking-wider uppercase mb-6">
                 <Sparkles className="w-4 h-4" /> {slideData[current]?.tag}
               </div>
-              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white mb-8 leading-[0.95] tracking-tight">
+              <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white mb-6 leading-[0.95] tracking-tight">
                 {slideData[current]?.titleTop}{' '}<br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-cyan-300">{slideData[current]?.titleBottom}</span>
               </h1>
-              <p className="text-lg sm:text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed max-w-2xl font-light">{slideData[current]?.subtitle}</p>
+              <p className={current === 0 ? "mb-5 flex items-center gap-3 text-lg font-bold text-emerald-200 sm:text-2xl" : "text-lg sm:text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed max-w-2xl font-light"}>{current === 0 && <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-emerald-300" aria-hidden="true" />}{slideData[current]?.subtitle}</p>
+              {current === 0 && <>
+                <ul className="mb-5 flex max-w-xl flex-wrap gap-2">{campaign.services.map(service => <li key={service} className="rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-sm font-semibold text-white backdrop-blur-sm">{service}</li>)}</ul>
+                <p className="mb-7 flex items-start gap-2 text-sm text-slate-300"><MapPin className="h-4 w-4 shrink-0" aria-hidden="true" />2500 Esztergom, Helischer József út 6.</p>
+              </>}
               <div className="flex flex-col sm:flex-row gap-4">
                 <motion.a href={staticSlides[current].href} whileHover={prefersReducedMotion ? undefined : { scale:1.03 }} whileTap={prefersReducedMotion ? undefined : { scale:0.97 }} className="group flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-5 bg-sky-500 hover:bg-sky-400 text-white text-lg font-bold rounded-2xl shadow-[0_0_60px_rgba(14,165,233,0.4)] transition-all">
                   {staticSlides[current].icon} {slideData[current]?.primaryText} <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </motion.a>
-                <motion.a href="tel:+36305892468" whileHover={prefersReducedMotion ? undefined : { scale:1.03 }} whileTap={prefersReducedMotion ? undefined : { scale:0.97 }} className="flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-5 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white text-lg font-bold rounded-2xl transition-all border border-white/20">
-                  <Phone className="w-5 h-5" /> 06 30 589 2468
+                <motion.a href={current === 0 ? "tel:+36706042500" : "tel:+36305892468"} whileHover={prefersReducedMotion ? undefined : { scale:1.03 }} whileTap={prefersReducedMotion ? undefined : { scale:0.97 }} className="flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-5 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white text-lg font-bold rounded-2xl transition-all border border-white/20">
+                  <Phone className="w-5 h-5" /> {current === 0 ? "+36 70 604 2500" : "06 30 589 2468"}
                 </motion.a>
               </div>
             </motion.div>
           </AnimatePresence>
           <div className="flex items-center gap-2 mt-10">
-            {[0,1,2].map(i => <button key={i} onClick={() => setCurrent(i)} className={`h-1.5 rounded-full transition-all ${i===current?'w-10 bg-sky-400':'w-5 bg-white/30 hover:bg-white/50'}`} aria-label={`Slide ${i+1}`} />)}
+            {[0,1,2,3].map(i => <button key={i} onClick={() => setCurrent(i)} className={`h-1.5 rounded-full transition-all ${i===current?'w-10 bg-sky-400':'w-5 bg-white/30 hover:bg-white/50'}`} aria-label={`Slide ${i+1}`} />)}
             {!prefersReducedMotion && <button type="button" onClick={() => setIsManuallyPaused((paused) => !paused)} aria-pressed={isManuallyPaused} aria-label={isManuallyPaused ? carouselControl.play : carouselControl.pause} className="ml-2 rounded-full border border-white/20 bg-white/10 p-2 text-white/80 hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
               {isManuallyPaused ? <Play className="h-4 w-4"/> : <Pause className="h-4 w-4"/>}
             </button>}
@@ -1057,7 +1065,7 @@ export default function HomeClient({ sanityImages = emptyHomeSanityImages }: { s
     <div className="bg-white min-h-screen selection:bg-sky-200 selection:text-sky-900">
       <main>
         <HeroSlider images={sanityImages.hero} />
-        <OpeningAnnouncement locale={openingLocale} />
+        <OpeningAnnouncement locale={openingLocale} imageUrl={sanityImages.hero.primas} />
         <div className="crown-page crown-home-sections">
         <TrustBadges />
         <SmileTreatmentsSection />
