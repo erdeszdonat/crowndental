@@ -1,10 +1,11 @@
 'use client';
 
+import ClinicPhoneLinks from '@/components/ClinicPhoneLinks';
 import React, { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { getSiteCopy } from '@/lib/siteCopy';
 import { ANALYTICS_READY_EVENT, rememberBookingSource, trackSiteEvent } from '@/lib/siteAnalytics';
-import { ArrowRight, ArrowLeft, Phone, Loader2 } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Loader2 } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
 import { BUDAPEST_BOOKING_OPEN_LABELS, isBudapestBookingAvailable, isBudapestCity } from '@/lib/bookingAvailability';
@@ -351,7 +352,7 @@ export function BookingForm({ directOffer, initialTreatmentSlug }: {
           )}
           {submitError && <div role="alert" className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
             <p>{submitError}</p>
-            <a href="tel:+36305892468" className="inline-flex min-h-11 items-center gap-2 underline"><Phone size={16} />06 30 589 2468</a>
+            <ClinicPhoneLinks tone="light" />
           </div>}
           <div className="flex flex-col-reverse sm:flex-row gap-3 pt-3">
             {step === 2 && <button type="button" onClick={() => { setSubmitError(null); setStep(1); }} className="crown-button crown-button-secondary"><ArrowLeft size={18} />{t('prevStep')}</button>}
@@ -387,7 +388,7 @@ export default function BookingClient({ directOffer }: { directOffer: VeneerOffe
               <p className="crown-booking-note">{copy.note}</p>
               <div className="crown-booking-contact">
                 <p className="crown-booking-note">{copy.help}</p>
-                <a href="tel:+36305892468"><Phone size={20} aria-hidden="true" />06 30 589 2468</a>
+                <ClinicPhoneLinks tone="light" />
               </div>
             </aside>
           </div>

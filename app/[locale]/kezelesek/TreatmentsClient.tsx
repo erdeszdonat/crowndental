@@ -1,4 +1,5 @@
 'use client';
+import ClinicPhoneLinks from '@/components/ClinicPhoneLinks';
 import SharedTreatmentCard from '@/components/TreatmentCard';
 import { getSiteCopy } from '@/lib/siteCopy';
 import { getVeneerOffer } from '@/lib/veneers.mjs';
@@ -9,7 +10,7 @@ type VeneerOffer = ReturnType<typeof getVeneerOffer>;
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Phone, Calendar, Sparkles, ArrowRight } from 'lucide-react';
+import { Calendar, Sparkles, ArrowRight } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
 
 
@@ -180,9 +181,7 @@ function CTASection() {
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-4 sm:mb-6 tracking-tight leading-tight">{t('ctaTitle')}</h2>
         <p className="text-lg sm:text-xl text-sky-100 mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed font-normal">{t('ctaSubtitle')}</p>
         <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-5">
-          <a href="tel:+36305892468" className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-bold rounded-full transition-all border border-white/30 text-base md:text-lg shadow-inner">
-            <Phone className="w-5 h-5" /> 06 30 589 2468
-          </a>
+          <ClinicPhoneLinks tone="dark" />
           <Link href={`${p}/idopont`} className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-white hover:bg-gray-50 text-sky-700 font-bold rounded-full transition-all shadow-xl shadow-sky-900/20 text-base md:text-lg">
             <Calendar className="w-5 h-5" /> {t('ctaBtn')}
           </Link>

@@ -272,7 +272,6 @@ export function getVeneerContent(slug: VeneerSlug, locale: string = 'hu'): Venee
 const veneerUi = {
   hu: {
     faqTitle: 'Gyakori kérdések', back: 'Vissza a kezelésekhez', book: 'Időpontot kérek',
-    phone: '06 30 589 2468',
     healthNote: 'A héjkezelés előtt a fogak és az íny állapotát, valamint a harapást is meg kell vizsgálni. A szuvasodást és az ínybetegséget előbb kezelni kell. Fogcsikorgatás esetén külön mérlegelés szükséges.',
     healthSourcePrefix: 'Általános betegtájékoztatás:', healthSource: 'American Dental Association – fogászati héjak',
     processEyebrow: 'A kezelés menete', processTitle: 'A konzultációtól a kész héjig',
@@ -289,7 +288,6 @@ const veneerUi = {
   },
   en: {
     faqTitle: 'Frequently asked questions', back: 'Back to treatments', book: 'Request an appointment',
-    phone: '+36 30 589 2468',
     healthNote: 'Before veneer treatment, your teeth, gums and bite need to be examined. Tooth decay and gum disease must be treated first. Teeth grinding requires individual assessment.',
     healthSourcePrefix: 'General patient information:', healthSource: 'American Dental Association – dental veneers',
     processEyebrow: 'The treatment process', processTitle: 'From consultation to finished veneer',
@@ -306,7 +304,6 @@ const veneerUi = {
   },
   de: {
     faqTitle: 'Häufige Fragen', back: 'Zurück zu den Behandlungen', book: 'Termin anfragen',
-    phone: '+36 30 589 2468',
     healthNote: 'Vor einer Veneer-Behandlung müssen Zähne, Zahnfleisch und Biss untersucht werden. Karies und Zahnfleischerkrankungen sind zuerst zu behandeln. Bei Zähneknirschen ist eine individuelle Abwägung erforderlich.',
     healthSourcePrefix: 'Allgemeine Patienteninformation:', healthSource: 'American Dental Association – Veneers (Englisch)',
     processEyebrow: 'Der Behandlungsablauf', processTitle: 'Von der Beratung zum fertigen Veneer',
@@ -323,7 +320,6 @@ const veneerUi = {
   },
   sk: {
     faqTitle: 'Často kladené otázky', back: 'Späť na ošetrenia', book: 'Požiadať o termín',
-    phone: '+36 30 589 2468',
     healthNote: 'Pred ošetrením fazetami je potrebné vyšetriť zuby, ďasná aj zhryz. Zubný kaz a ochorenia ďasien treba najprv liečiť. Škrípanie zubami si vyžaduje individuálne posúdenie.',
     healthSourcePrefix: 'Všeobecné informácie pre pacientov:', healthSource: 'American Dental Association – zubné fazety (anglicky)',
     processEyebrow: 'Priebeh ošetrenia', processTitle: 'Od konzultácie po hotovú fazetu',

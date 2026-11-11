@@ -1,5 +1,6 @@
 'use client';
 
+import ClinicPhoneLinks from '@/components/ClinicPhoneLinks';
 import OpeningAnnouncement from '@/components/OpeningAnnouncement';
 import React from 'react';
 import { motion } from 'framer-motion';
@@ -128,7 +129,6 @@ const copyByLocale = {
   },
 };
 
-const phone = '06 30 589 2468';
 
 function ContactAnimation() {
   return (
@@ -196,9 +196,7 @@ export default function ContactClient() {
                   {text.subtitle}
                 </p>
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                  <a href="tel:+36305892468" className="inline-flex items-center justify-center gap-3 rounded-2xl bg-sky-600 px-7 py-4 text-base font-black text-white shadow-xl shadow-sky-600/20 transition-all hover:-translate-y-0.5 hover:bg-sky-700">
-                    <Phone className="h-5 w-5" /> {text.call}
-                  </a>
+                  <ClinicPhoneLinks tone="light" />
                   <Link href={`${prefix}/idopont`} className="inline-flex items-center justify-center gap-3 rounded-2xl border border-gray-200 bg-white px-7 py-4 text-base font-black text-gray-900 shadow-sm transition-all hover:-translate-y-0.5 hover:border-sky-200 hover:bg-sky-50">
                     <Calendar className="h-5 w-5 text-sky-600" /> {text.book}
                   </Link>
@@ -236,11 +234,7 @@ export default function ContactClient() {
                   ))}
                 </div>
                 <div className="grid gap-4 sm:grid-cols-2">
-                  <a href="tel:+36305892468" className="rounded-2xl bg-sky-50 p-5 transition-all hover:-translate-y-1 hover:bg-sky-100">
-                    <Phone className="mb-4 h-6 w-6 text-sky-600" />
-                    <div className="mb-1 text-xs font-black uppercase tracking-widest text-sky-500">{text.phoneLabel}</div>
-                    <div className="font-black text-gray-950">{phone}</div>
-                  </a>
+                  <ClinicPhoneLinks tone="light" />
                   <a href={`mailto:${PATIENT_EMAIL}`} className="min-w-0 rounded-2xl bg-gray-50 p-5 transition-all hover:-translate-y-1 hover:bg-sky-50">
                     <Mail className="mb-4 h-6 w-6 text-sky-600" />
                     <div className="mb-1 text-xs font-black uppercase tracking-widest text-gray-500">{contactCopy.patientLabel}</div>
@@ -272,9 +266,7 @@ export default function ContactClient() {
                   <div className="font-black text-sky-200">{text.available}</div>
                   <div className="mt-1 text-sm text-gray-300">{text.availableNote}</div>
                 </div>
-                <a href="tel:+36305892468" className="mt-6 inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-white px-6 py-4 font-black text-sky-800 transition-all hover:bg-sky-50">
-                  <Phone className="h-5 w-5" /> {text.call}
-                </a>
+                <ClinicPhoneLinks tone="light" className="mt-6" />
               </motion.div>
             </div>
           </div>

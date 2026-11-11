@@ -1,10 +1,11 @@
 'use client';
 
+import ClinicPhoneLinks from '@/components/ClinicPhoneLinks';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useLocale } from 'next-intl';
-import { ArrowRight, CalendarCheck2, CheckCircle2, Home, Mail, Phone } from 'lucide-react';
+import { ArrowRight, CalendarCheck2, CheckCircle2, Home, Mail } from 'lucide-react';
 import {
   CONSENT_EVENT,
   CONSENT_STORAGE_KEY,
@@ -292,9 +293,7 @@ export default function BookingSuccessClient() {
                 )}
 
                 <div className="mt-8 grid gap-3 sm:grid-cols-2">
-                  <a href="tel:+36305892468" className="inline-flex items-center justify-center gap-2 rounded-2xl bg-sky-600 px-5 py-4 font-black text-white transition-all hover:bg-sky-700">
-                    <Phone className="h-5 w-5" /> {text.call}
-                  </a>
+                  <ClinicPhoneLinks tone="light" />
                   <a href="mailto:info@crowndental.hu" className="inline-flex items-center justify-center gap-2 rounded-2xl border border-gray-200 bg-white px-5 py-4 font-black text-gray-900 transition-all hover:bg-sky-50">
                     <Mail className="h-5 w-5 text-sky-600" /> {text.email}
                   </a>
