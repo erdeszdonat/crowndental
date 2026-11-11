@@ -3,12 +3,16 @@ export type AppointmentClinicId = 'belvaros' | 'primas-sziget';
 export const APPOINTMENT_CLINICS = [
   {
     id: 'belvaros',
+    phone: '+36305892468',
+    phoneLabel: '+36 30 589 2468',
     name: 'Crown Dental Belváros',
     address: '2500 Esztergom, Petőfi Sándor utca 11.',
     location: 'Crown Dental Belváros, 2500 Esztergom, Petőfi Sándor utca 11.',
   },
   {
     id: 'primas-sziget',
+    phone: '+36706042500',
+    phoneLabel: '+36 70 604 2500',
     name: 'Crown Dental Prímás Sziget',
     address: '2500 Esztergom, Helischer József út 6.',
     location: 'Crown Dental Prímás Sziget, 2500 Esztergom, Helischer József út 6.',

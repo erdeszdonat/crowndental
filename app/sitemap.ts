@@ -1,3 +1,4 @@
+import { openingPosts } from '@/lib/openingPosts';
 import type { MetadataRoute } from 'next';
 import { normalizeBlogLanguage } from '@/lib/blogConfig';
 import { canonicalBlogSlug, isMergedBlogSource } from '@/lib/blogConsolidation';
@@ -89,7 +90,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
   );
 
-  const sanityPosts = await fetchSanityPosts();
+  const sanityPosts = [...openingPosts, ...(await fetchSanityPosts()).filter(post => !openingPosts.some(opening => opening.slug === post.slug))];
   const dynamicBlogRoutes: MetadataRoute.Sitemap = sanityPosts
     .filter((post) => post.slug)
     .filter((post) => !isMergedBlogSource(post.slug!))

@@ -1,3 +1,4 @@
+import { openingPosts } from '@/lib/openingPosts';
 import type { Metadata } from 'next';
 import { cache } from 'react';
 import { notFound, permanentRedirect } from 'next/navigation';
@@ -83,10 +84,10 @@ export async function generateStaticParams(): Promise<Array<{ locale: string; sl
       const slug = canonicalBlogSlug(post.slug);
       unique.set(`${post.locale}/${slug}`, { locale: post.locale, slug });
     }
-    return [...unique.values()];
+    return [...unique.values(), ...openingPosts.map(post => ({ locale: post.language, slug: post.slug }))];
   } catch (error) {
     console.error('Blog statikus útvonalak betöltési hiba:', error);
-    return [];
+    return openingPosts.map(post => ({ locale: post.language, slug: post.slug }));
   }
 }
 
@@ -118,6 +119,8 @@ const postFields = `
 `;
 
 const getPost = cache(async (locale: string, slug: string): Promise<BlogPost | null> => {
+  const opening = openingPosts.find(post => post.language === locale && post.slug === slug);
+  if (opening) return opening;
   const query = `*[_type == "post" && !(_id in path("drafts.**")) && slug.current == $slug && coalesce(language, "hu") == $language][0]{${postFields}}`;
   return client.fetch(
     query,

@@ -9,6 +9,7 @@ export default function ClinicDetails({ locale, index, showDetails = true }: { l
   return (
     <div className="space-y-3 text-gray-700">
       <address className="not-italic font-semibold">{clinic.address}</address>
+      <a href={`tel:${clinic.phone}`} className="inline-block font-bold text-sky-700 underline underline-offset-4">{clinic.phoneLabel}</a>
       <dl className="space-y-2 text-sm">
         <div><dt className="inline">{copy.weekdays}: </dt><dd className="inline font-semibold">{clinic.weekdayOpens}–18:00</dd></div>
         <div><dt className="inline">{copy.weekend}: </dt><dd className="inline font-semibold">08:00–20:00</dd></div>

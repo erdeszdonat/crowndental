@@ -7,7 +7,7 @@ export function buildLocationSchema(locale: SupportedLocale, index: 0 | 1) {
   return {
     '@context': 'https://schema.org', '@type': 'Dentist',
     '@id': `${SITE_URL}/${clinic.path}#dentist`, name: clinic.name,
-    url: localizedUrl(locale, clinic.path), telephone: '+36305892468', email: 'info@crowndental.hu',
+    url: localizedUrl(locale, clinic.path), telephone: clinic.phone, email: 'info@crowndental.hu',
     parentOrganization: { '@id': `${SITE_URL}/#organization` },
     address: { '@type': 'PostalAddress', streetAddress: clinic.streetAddress, addressLocality: 'Esztergom', postalCode: '2500', addressCountry: 'HU' },
     hasMap: clinic.mapUrl,
