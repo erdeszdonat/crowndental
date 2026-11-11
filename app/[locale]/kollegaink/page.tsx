@@ -1,6 +1,7 @@
+import ClinicPhoneLinks from '@/components/ClinicPhoneLinks';
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowDown, ArrowRight, Phone, Plus, UsersRound } from "lucide-react";
+import { ArrowDown, ArrowRight, Plus, UsersRound } from "lucide-react";
 import {
   buildBreadcrumbJsonLd,
   buildLocalizedMetadata,
@@ -246,10 +247,7 @@ export default async function TeamPage({ params }: Props) {
             {copy.book}
             <ArrowRight size={18} />
           </Link>
-          <a href="tel:+36305892468" className={styles.phone}>
-            <Phone size={17} />
-            {copy.call}
-          </a>
+          <ClinicPhoneLinks tone="dark" />
         </div>
       </section>
     </main>

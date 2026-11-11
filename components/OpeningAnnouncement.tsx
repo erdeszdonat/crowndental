@@ -1,6 +1,7 @@
+import ClinicPhoneLinks from '@/components/ClinicPhoneLinks';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowUpRight, MapPin, Phone } from 'lucide-react';
+import { ArrowUpRight, MapPin } from 'lucide-react';
 import { sanityImageLoader } from '@/lib/sanityImage';
 import content from '@/lib/openingAnnouncement.json';
 
@@ -18,7 +19,7 @@ export default function OpeningAnnouncement({ locale, compact = false, imageUrl 
             <ul className="my-6 grid gap-2 text-sm text-slate-200 sm:grid-cols-2">{copy.services.map(service => <li key={service} className="flex items-center gap-2"><span className="text-sky-300" aria-hidden="true">✓</span>{service}</li>)}</ul>
             <div className="flex flex-col gap-3">
               <Link href={`${prefix}/idopont`} className="inline-flex min-h-14 items-center justify-between gap-3 rounded-xl bg-sky-400 px-5 py-4 font-bold text-slate-950 transition-colors hover:bg-sky-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky-300">{copy.book}<ArrowUpRight className="h-5 w-5 shrink-0" aria-hidden="true" /></Link>
-              <a href="tel:+36706042500" className="inline-flex min-h-14 items-center justify-center gap-3 rounded-xl border border-white/25 px-5 py-4 text-xl font-bold transition-colors hover:bg-white/10"><Phone className="h-5 w-5" aria-hidden="true" />+36 70 604 2500</a>
+              <ClinicPhoneLinks tone="dark" />
             </div>
             <Link href={`${prefix}/blog/${copy.slug}`} className="mt-5 inline-block text-sm font-semibold text-sky-200 underline underline-offset-4">{copy.read} →</Link>
           </div>
@@ -34,7 +35,7 @@ export default function OpeningAnnouncement({ locale, compact = false, imageUrl 
           </div>
         </div>
         <div className="border-t border-white/10 bg-white/5 px-6 py-5 text-sm leading-relaxed sm:px-10">
-          <p className="text-slate-200">{copy.fallback} <a href="tel:+36305892468" className="whitespace-nowrap font-bold text-white underline underline-offset-4">+36 30 589 2468</a> · Crown Dental Belváros</p>
+          <p className="text-slate-200">{copy.fallback}</p>
           <p className="mt-2 text-xs text-slate-400">{copy.note}</p>
         </div>
       </div>
@@ -47,10 +48,10 @@ export default function OpeningAnnouncement({ locale, compact = false, imageUrl 
         <h2 className="max-w-4xl text-2xl font-black leading-tight sm:text-3xl">{copy.bannerTitle}</h2>
         <p className="mt-3 max-w-3xl leading-relaxed text-slate-700">{copy.bannerText}</p>
         <div className="mt-5 flex flex-wrap items-center gap-3">
-          <a href="tel:+36706042500" className="inline-flex min-h-12 items-center rounded-xl bg-sky-700 px-5 py-3 font-bold text-white hover:bg-sky-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4">+36 70 604 2500</a>
+          <ClinicPhoneLinks tone="light" />
           <Link href={`${prefix}/idopont`} className="inline-flex min-h-12 items-center rounded-xl border border-sky-700 bg-white px-5 py-3 font-bold text-sky-800 hover:bg-sky-100">{copy.book}</Link>
         </div>
-        <p className="mt-4 max-w-3xl text-sm leading-relaxed">{copy.fallback} <a href="tel:+36305892468" className="whitespace-nowrap font-bold underline underline-offset-4">+36 30 589 2468</a> · Crown Dental Belváros</p>
+        <p className="mt-4 max-w-3xl text-sm leading-relaxed">{copy.fallback}</p>
         {!compact && <p className="mt-3 max-w-3xl text-sm text-slate-600">{copy.note}</p>}
         <Link href={`${prefix}/blog/${copy.slug}`} className="mt-4 inline-block font-semibold text-sky-800 underline underline-offset-4">{copy.read} →</Link>
       </div>

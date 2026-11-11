@@ -23,8 +23,8 @@ export const openingPosts = Object.entries(content).map(([language, copy]) => {
       ...copy.faqs.flatMap(([question, answer]) => [block(question, 'h3'), block(answer)]),
       block(copy.linksTitle, 'h2'),
       ...copy.links.map(([path, label]) => block(label, 'normal', `${prefix}/${path}`)),
+      block(copy.fallback),
       block('Crown Dental Prímás Sziget: +36 70 604 2500', 'normal', 'tel:+36706042500'),
-      block(copy.fallback), block('Crown Dental Belváros: +36 30 589 2468', 'normal', 'tel:+36305892468'),
     ],
   };
 });

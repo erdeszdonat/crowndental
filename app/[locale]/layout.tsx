@@ -66,7 +66,7 @@ const organizationJsonLd = {
       url: SITE_URL,
       logo: { '@type': 'ImageObject', url: `${SITE_URL}/logo.webp` },
       image: `${SITE_URL}/og-image.jpg`,
-      telephone: '+36305892468',
+      telephone: ['+36706042500', '+36305892468'],
       email: PATIENT_EMAIL,
       foundingDate: '1994',
       address: {
@@ -80,6 +80,15 @@ const organizationJsonLd = {
       department: [{ '@id': `${SITE_URL}/esztergom#dentist` }, { '@id': `${SITE_URL}/primas-sziget#dentist` }],
       contactPoint: [{
         '@type': 'ContactPoint',
+        name: 'Crown Dental Prímás Sziget',
+        telephone: '+36706042500',
+        email: PATIENT_EMAIL,
+        contactType: 'appointments',
+        availableLanguage: ['hu', 'sk', 'en', 'de'],
+        areaServed: ['HU', 'SK'],
+      }, {
+        '@type': 'ContactPoint',
+        name: 'Crown Dental Belváros — Petőfi utca',
         telephone: '+36305892468',
         email: PATIENT_EMAIL,
         contactType: 'appointments',

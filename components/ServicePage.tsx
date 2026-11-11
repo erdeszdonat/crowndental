@@ -4,6 +4,7 @@
 // Crown Dental - Sales-fókuszú szolgáltatás oldal sablon
 // Minden kezelés oldalon (implantátum, fogszabályozás, stb.) ezt használd
 
+import ClinicPhoneLinks from '@/components/ClinicPhoneLinks';
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -365,13 +366,7 @@ export default function ServicePage({
                 <Calendar className="w-5 h-5" />
                 Időpontfoglalás
               </Link>
-              <a
-                href="tel:+36305892468"
-                className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-medium rounded-xl border border-white/20 transition-all"
-              >
-                <Phone className="w-5 h-5" />
-                06 30 589 2468
-              </a>
+              <ClinicPhoneLinks tone="dark" />
             </motion.div>
 
             {/* Trust badges a hero-ban */}

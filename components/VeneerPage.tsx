@@ -1,5 +1,6 @@
+import ClinicPhoneLinks from '@/components/ClinicPhoneLinks';
 import Link from 'next/link';
-import { ArrowLeft, ArrowUpRight, Phone } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight } from 'lucide-react';
 import { getTreatmentImages } from '@/lib/treatmentImages';
 import { getVeneerOffer, VENEERS } from '@/lib/veneers.mjs';
 import { getVeneerContent, getVeneerUi, type VeneerFaq, type VeneerSlug } from './VeneerContent';
@@ -65,7 +66,7 @@ export default async function VeneerPage({ slug, locale = 'hu' }: { slug: Veneer
                 <p className="crown-lead">{content.lead}</p>
                 <div className="crown-actions">
                   <Link href={localizedPath(treatment.bookingHref)} className="crown-button">{ui.book}<ArrowUpRight size={19} aria-hidden="true" /></Link>
-                  <a href="tel:+36305892468" className="crown-button crown-button-secondary"><Phone size={18} aria-hidden="true" />{ui.phone}</a>
+                  <ClinicPhoneLinks tone="light" />
                 </div>
               </div>
               <div className="crown-hero-visual">

@@ -1,8 +1,9 @@
 'use client';
 
+import ClinicPhoneLinks from '@/components/ClinicPhoneLinks';
 import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
-import { ArrowLeft, ArrowUpRight, Phone } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight } from 'lucide-react';
 import { sanityImageUrl } from '@/lib/sanityImage';
 import { getSiteCopy } from '@/lib/siteCopy';
 
@@ -23,7 +24,7 @@ export default function TreatmentHero({ imageUrl, contentKey }: { imageUrl: stri
             <p className="crown-lead">{t('heroDesc')}</p>
             <div className="crown-actions">
               <Link href={`${p}/idopont`} className="crown-button">{copy.book}<ArrowUpRight size={19} aria-hidden="true" /></Link>
-              <a href="tel:+36305892468" className="crown-button crown-button-secondary"><Phone size={18} aria-hidden="true" />06 30 589 2468</a>
+              <ClinicPhoneLinks tone="light" />
             </div>
           </div>
           <div className="crown-hero-visual">

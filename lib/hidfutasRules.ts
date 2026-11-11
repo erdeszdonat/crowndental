@@ -1,6 +1,6 @@
 export const hidfutasRules = [
   { id: 'szervezo', title: '1. A játék szervezője', paragraphs: [
-    'A „Crown Dental × Hídfutás 2026” nyereményjáték szervezője és adatkezelője a Crown Dental Praxis és Labor Fogászati Kft. Székhely: 2500 Esztergom, Petőfi Sándor utca 11. Cégjegyzékszám: 11-09-026431. Adószám: 26537353-2-11. Kapcsolat: info@crowndental.hu; +36 30 589 2468. A játék oldala: https://www.crowndental.hu/hidfutas.'
+    'A „Crown Dental × Hídfutás 2026” nyereményjáték szervezője és adatkezelője a Crown Dental Praxis és Labor Fogászati Kft. Székhely: 2500 Esztergom, Petőfi Sándor utca 11. Cégjegyzékszám: 11-09-026431. Adószám: 26537353-2-11. Kapcsolat: info@crowndental.hu; Prímás Sziget: +36 70 604 2500; Petőfi utca: +36 30 589 2468. A játék oldala: https://www.crowndental.hu/hidfutas.'
   ] },
   { id: 'idoszak', title: '2. Időtartam és részvétel', paragraphs: [
     'A nevezés 2026. szeptember 26-án 9:00-kor kezdődik és ugyanazon a napon 13:00-kor zárul. Minden időpont magyarországi helyi idő szerint értendő (Europe/Budapest). A szerver által rögzített időpont számít; a határidő után új nevezés nem fogadható el.',

@@ -154,3 +154,30 @@ main.crown-page > section:not(.crown-clinical-hero),
 @media (prefers-reduced-motion: reduce) {
   .crown-site *, .crown-site *::before, .crown-site *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
 }
+
+/* Paired clinic calls share one order and styling across every contact surface. */
+.crown-site .crown-clinic-phones { display: inline-flex; flex-direction: column; gap: .45rem; max-width: 100%; vertical-align: middle; text-align: left; }
+.crown-site .crown-clinic-phones > a { display: flex; align-items: center; justify-content: flex-start; gap: .7rem; min-height: 48px; margin: 0; padding: .55rem .9rem; border: 1px solid #b9d5e3; border-radius: .75rem; background: #f0f9ff; color: #075985; font-size: 1rem; font-weight: 700; line-height: 1.2; text-decoration: none; transition: background .15s ease; }
+.crown-site .crown-clinic-phones > a:hover { background: #e0f2fe; }
+.crown-site .crown-clinic-phones > a:focus-visible { outline: 3px solid #38bdf8; outline-offset: 3px; }
+.crown-site .crown-clinic-phones > a > svg { flex-shrink: 0; }
+.crown-site .crown-clinic-phones__details { display: flex; flex-direction: column; gap: .15rem; }
+.crown-site .crown-clinic-phones__name { font-size: .68rem; font-weight: 600; letter-spacing: .025em; }
+.crown-site .crown-clinic-phones__number { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.crown-site .crown-clinic-phones--dark > a { background: rgb(255 255 255 / .08); border-color: rgb(255 255 255 / .3); color: white; }
+.crown-site .crown-clinic-phones--dark > a:hover { background: rgb(255 255 255 / .18); }
+.crown-site .crown-header-phones { display: none; }
+@media (min-width: 768px) {
+  .crown-site .crown-header-phones { display: inline-flex; gap: 0; margin-right: .5rem; }
+  .crown-site .crown-header-phones > a { min-height: 34px; border: 0; border-radius: .3rem; padding: .3rem .4rem; background: transparent; font-size: .88rem; }
+  .crown-site .crown-header-phones > a:hover { background: #f0f9ff; }
+  .crown-site .crown-header-phones .crown-clinic-phones__details { flex-direction: row; align-items: center; justify-content: space-between; gap: .65rem; width: 220px; }
+}
+@media (max-width: 767px) {
+  .crown-has-mobile-contact { padding-bottom: calc(120px + env(safe-area-inset-bottom)); }
+  .crown-mobile-contact { grid-template-columns: 1.25fr 1fr; align-items: stretch; gap: .6rem; padding: .5rem .75rem calc(.5rem + env(safe-area-inset-bottom)); }
+  .crown-site .crown-mobile-contact .crown-clinic-phones { gap: .2rem; }
+  .crown-site .crown-mobile-contact .crown-clinic-phones > a { min-height: 44px; padding: .3rem .5rem; gap: .45rem; font-size: .86rem; }
+  .crown-site .crown-mobile-contact .crown-clinic-phones__name { font-size: .62rem; }
+  .crown-mobile-contact > .crown-button { align-self: stretch; white-space: normal; text-align: center; }
+}

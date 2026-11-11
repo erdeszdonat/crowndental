@@ -1,10 +1,11 @@
 'use client';
 
+import ClinicPhoneLinks from '@/components/ClinicPhoneLinks';
 import React, { useState, useEffect, useId, useRef } from 'react';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Phone, Calendar, Menu, X, ChevronDown } from 'lucide-react';
+import { Calendar, Menu, X, ChevronDown } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
 import { INTERNATIONAL_PATIENT_PATHS } from '@/lib/internationalPaths';
 
@@ -310,7 +311,7 @@ export default function Navigation() {
         </a>
 
         {/* Desktop nav linkek */}
-        <div className="hidden xl:flex items-center gap-5 2xl:gap-7">
+        <div className="hidden 2xl:flex items-center gap-5 2xl:gap-7">
           {navLinks.map((link) => (
             <a
               key={link.href}
@@ -324,9 +325,7 @@ export default function Navigation() {
 
         {/* Jobb oldali gombok */}
         <div className="flex items-center gap-2 z-50">
-          <a href="tel:+36305892468" className="hidden 2xl:flex items-center gap-2 font-bold text-sky-700 hover:text-sky-600 mr-1">
-            <Phone className="w-5 h-5" /> 06 30 589 2468
-          </a>
+          <ClinicPhoneLinks tone="light" compact className="crown-header-phones" />
 
           {/* Nyelvváltó */}
           <LanguageSwitcher />
@@ -345,7 +344,7 @@ export default function Navigation() {
             aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
             aria-expanded={isOpen}
             aria-controls="mobile-navigation"
-            className="xl:hidden p-2 rounded-lg text-gray-900 bg-gray-100 hover:bg-gray-200 transition-colors"
+            className="2xl:hidden p-2 rounded-lg text-gray-900 bg-gray-100 hover:bg-gray-200 transition-colors"
           >
             {isOpen ? <X /> : <Menu />}
           </button>
@@ -360,7 +359,7 @@ export default function Navigation() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="xl:hidden bg-white border-t border-gray-100 p-6 flex flex-col gap-4 font-bold shadow-2xl absolute w-full left-0 z-40"
+            className="2xl:hidden bg-white border-t border-gray-100 p-6 flex flex-col gap-4 font-bold shadow-2xl absolute w-full left-0 z-40"
           >
             {navLinks.map((link) => (
               <a
@@ -400,9 +399,7 @@ export default function Navigation() {
             </div>
 
             {/* Telefonszám mobilon */}
-            <a href="tel:+36305892468" className="flex items-center gap-2 px-4 py-3 bg-sky-50 text-sky-700 rounded-xl">
-              <Phone className="w-5 h-5" /> 06 30 589 2468
-            </a>
+            <ClinicPhoneLinks tone="light" className="w-full" />
 
             {/* Időpontfoglalás mobilon */}
             <a

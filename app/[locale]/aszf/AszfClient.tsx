@@ -1,5 +1,6 @@
 'use client';
 
+import ClinicPhoneLinks from '@/components/ClinicPhoneLinks';
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -121,7 +122,7 @@ function TermsContent() {
                     <li><strong>Cégjegyzékszám:</strong> 11-09-026431</li>
                     <li><strong>Adószám:</strong> 26537353-2-11</li>
                     <li><strong>E-mail:</strong> <a href="mailto:info@crowndental.hu">info@crowndental.hu</a></li>
-                    <li><strong>Telefon:</strong> <a href="tel:+36305892468">06 30 589 2468</a></li>
+                    <li><strong>Telefon:</strong> <ClinicPhoneLinks tone="light" /></li>
                   </ul>
                 </div>
               </div>

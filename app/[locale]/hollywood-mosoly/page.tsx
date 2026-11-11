@@ -1,6 +1,7 @@
+import ClinicPhoneLinks from '@/components/ClinicPhoneLinks';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ArrowDown, ArrowUpRight, Check, MapPin, Phone } from 'lucide-react';
+import { ArrowDown, ArrowUpRight, Check, MapPin } from 'lucide-react';
 import { getTreatmentImages } from '@/lib/treatmentImages';
 import { getVeneerOffer, VENEERS } from '@/lib/veneers.mjs';
 import { normalizeVeneerLocale, veneerPath } from '@/lib/veneerI18n';
@@ -106,7 +107,7 @@ export default async function HollywoodMosolyPage({ params }: Props) {
               <h3>{copy.nextTitle}</h3>
               <ol className={styles.next}>{copy.next.map((step, index) => <li key={step}><span>{index + 1}</span>{step}</li>)}</ol>
               <div className={styles.contact}>
-                <p>{copy.phoneLabel}</p><a href="tel:+36305892468"><Phone size={20} aria-hidden="true" />+36 30 589 2468</a>
+                <p>{copy.phoneLabel}</p><ClinicPhoneLinks tone="light" />
                 <p className={styles.address}><MapPin size={19} aria-hidden="true" /><span>2500 Esztergom<br />Petőfi Sándor utca 11.</span></p>
                 <Link href={veneerPath(locale, '/kapcsolat')} className={styles.textLink}>{copy.directions}<ArrowUpRight size={16} aria-hidden="true" /></Link>
               </div>
