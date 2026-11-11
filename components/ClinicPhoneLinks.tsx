@@ -6,14 +6,15 @@ const contacts = [
 ] as const;
 
 /** Every general call CTA offers both clinics, with Prímás Sziget first. */
-export default function ClinicPhoneLinks({ tone = 'light', compact = false, className = '' }: {
+export default function ClinicPhoneLinks({ tone = 'light', compact = false, className = '', clinic }: {
+  clinic?: 'primas-sziget';
   tone?: 'light' | 'dark';
   compact?: boolean;
   className?: string;
 }) {
   return (
-    <span className={`crown-clinic-phones crown-clinic-phones--${tone}${compact ? ' crown-clinic-phones--compact' : ''} ${className}`} data-clinic-phones>
-      {contacts.map(contact => (
+    <span className={`crown-clinic-phones crown-clinic-phones--${tone}${compact ? ' crown-clinic-phones--compact' : ''} ${className}`} data-clinic-phones={clinic ?? 'both'}>
+      {contacts.filter(contact => !clinic || contact.id === clinic).map(contact => (
         <a key={contact.id} href={`tel:${contact.phone}`} data-clinic={contact.id}>
           <Phone size={16} aria-hidden="true" />
           <span className="crown-clinic-phones__details"><span className="crown-clinic-phones__name">{contact.name}</span><span className="crown-clinic-phones__number">{contact.display}</span></span>
