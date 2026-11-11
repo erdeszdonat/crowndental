@@ -9,12 +9,12 @@ PHONES = ['tel:+36706042500', 'tel:+36305892468']
 VOID = {'area','base','br','col','embed','hr','img','input','link','meta','param','source','track','wbr'}
 class PhoneParser(HTMLParser):
     def __init__(self):
-        super().__init__(); self.stack=[]; self.groups=[]; self.ungrouped=[]; self.header=[]; self.booking=[]
+        super().__init__(); self.stack=[]; self.groups=[]; self.primary=[]; self.ungrouped=[]; self.header=[]; self.booking=[]
     def handle_starttag(self, tag, attrs):
         attrs=dict(attrs)
         group = [] if 'data-clinic-phones' in attrs else None
         if group is not None:
-            self.groups.append(group)
+            (self.primary if attrs.get('data-clinic-phones')=='primas-sziget' else self.groups).append(group)
             if any(t=='header' for t,_,_ in self.stack): self.header.append(group)
             if any('crown-booking-contact' in a.get('class','').split() for _,a,_ in self.stack): self.booking.append(group)
         if tag=='a' and attrs.get('href','').startswith('tel:'):
@@ -41,10 +41,12 @@ def verify(path):
     assert len(parser.groups)>=2,(path,'missing phone groups')
     assert parser.header and all(g==PHONES for g in parser.header),(path,'header')
     assert all(g==PHONES for g in parser.groups),(path,'incorrect pair/order',parser.groups)
+    assert all(g==PHONES[:1] for g in parser.primary),(path,'opening banner primary phone')
+    if path in ('/','/en','/sk','/de'): assert len(parser.primary)==2,(path,'two opening banners')
     assert not parser.ungrouped,(path,'isolated phone CTA',parser.ungrouped)
     if path.endswith('/idopont'): assert parser.booking==[PHONES],(path,'phone booking help')
     assert 'MISSING_MESSAGE' not in html,path
     return len(parser.groups)
 with ThreadPoolExecutor(max_workers=4) as executor:
     counts=list(executor.map(verify,paths))
-print(json.dumps({'status':'passed','pages':len(paths),'locales':4,'phone_groups':sum(counts),'checks':'both clickable numbers, Prímás first, header, phone booking help, no isolated call CTA'},ensure_ascii=False))
+print(json.dumps({'status':'passed','pages':len(paths),'locales':4,'phone_groups':sum(counts),'checks':'both clickable numbers, Prímás first, header, phone booking help, opening banners only new phone'},ensure_ascii=False))
