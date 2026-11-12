@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import { captureAnalyticsSession } from '@/lib/analyticsServer';
 import { isBudapestBookingAvailable, isBudapestCity } from '@/lib/bookingAvailability';
 import { sendTransactionalEmail } from '@/lib/addToAudience';
 import { upsertMarketingSubscriber } from '@/lib/marketingSubscribers';
@@ -117,11 +118,15 @@ export async function POST(request: Request) {
 
     const supabase = createClient(supabaseUrl, supabaseKey, { auth: { persistSession: false } });
     const receiptEmailIdempotencyKey = `booking-receipt/${idempotencyKey}`;
+    // Analytics is optional and must never prevent a patient's request from being saved.
+    let analyticsSessionId: string | null = null;
+    try { analyticsSessionId = await captureAnalyticsSession(supabase, body.analytics); } catch {}
     const { data: appointment, error } = await supabase
       .from('appointments')
       .insert({
         name, nickname, email, phone, city, treatment, locale, idempotency_key: idempotencyKey,
         request_receipt_email_idempotency_key: receiptEmailIdempotencyKey,
+        analytics_session_id: analyticsSessionId,
       })
       .select('id')
       .single();

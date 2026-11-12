@@ -10,6 +10,7 @@ import {
   AlertTriangle, Loader2, Trash2, CheckCircle2, Clock, ListOrdered,
   Mail, ArrowRight
 } from 'lucide-react';
+import AnalyticsDashboard from './AnalyticsDashboard';
 import StatsDashboard from './StatsDashboard';
 import StaffManager from './StaffManager';
 import nextDynamic from 'next/dynamic';
@@ -62,6 +63,7 @@ export default function AdminDashboard() {
   const [isLoginLoading, setIsLoginLoading] = useState(false);
 
   const [activeTab, setActiveTab] = useState<AdminTab>('appointments');
+  const [showLegacyStats, setShowLegacyStats] = useState(false);
   const [checkingSession, setCheckingSession] = useState(true);
   const [updatedAt, setUpdatedAt] = useState<Date | null>(null);
   const [visibleLimit, setVisibleLimit] = useState(40);
@@ -544,7 +546,11 @@ export default function AdminDashboard() {
               <motion.div key="team" initial={{ opacity: 0 }} animate={{ opacity: 1 }}><TeamManager /></motion.div>
             ) : activeTab === 'stats' && identity?.role === 'admin' ? (
               <motion.div key="stats" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
-                <StatsDashboard appointments={appointments} quotes={quotes} marketingSubscriberCount={marketingSubscribers.length} />
+                <AnalyticsDashboard />
+                <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-5">
+                  <button type="button" className="text-sm font-semibold text-slate-700" aria-expanded={showLegacyStats} onClick={() => setShowLegacyStats(value => !value)}>Korábbi üzleti összesítő és Resend-eszközök {showLegacyStats ? '−' : '+'}</button>
+                  {showLegacyStats && <div className="mt-5"><p className="mb-4 text-sm text-slate-500">A korábbi felület saját szűrőkkel működik. Az új forgalmi és foglalási kimutatás fent található.</p><StatsDashboard appointments={appointments} quotes={quotes} marketingSubscriberCount={marketingSubscribers.length} /></div>}
+                </div>
               </motion.div>
             ) : activeTab === 'blog' && identity?.role === 'admin' ? (
               <motion.div key="blog" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-4">

@@ -148,7 +148,7 @@ const documents: Record<InformationalLegalLocale, Record<LegalDocument, LegalCon
       eyebrow: 'Cookie settings',
       title: 'Cookie Notice',
       lead: 'The cookies and similar browser technologies used on crowndental.hu, their purposes and the choices available to you.',
-      updated: 'Last updated: 20 July 2026',
+      updated: 'Last updated: 12 November 2026',
       sections: [
         {
           title: '1. What are cookies and similar technologies?',
@@ -167,6 +167,7 @@ const documents: Record<InformationalLegalLocale, Record<LegalDocument, LegalCon
           title: '3. Analytics and advertising',
           items: [
             'Google Analytics helps us understand aggregated website use after analytics consent.',
+            'Crown Dental also measures visits, traffic sources, campaign tags, page groups, active time and appointment conversion in its own system, only with analytics consent. Random visitor storage (crown_visitor_v1) expires after 90 days; session storage (crown_visit_v1) expires after 30 minutes of inactivity or when the tab closes. Event-level server data is retained for 25 months. Traffic events contain no form contents, contact details or IP addresses, and no session recordings are made. An appointment request can be linked to its measurement session in the internal system.',
             'Google Ads measures campaign and appointment conversions after marketing consent.',
             'Meta Pixel measures and optimises campaigns after marketing consent.',
           ],
@@ -350,7 +351,7 @@ const documents: Record<InformationalLegalLocale, Record<LegalDocument, LegalCon
       eyebrow: 'Nastavenia cookies',
       title: 'Oznámenie o používaní cookies',
       lead: 'Cookies a podobné technológie prehliadača používané na crowndental.hu, ich účel a možnosti vášho výberu.',
-      updated: 'Aktualizované: 20. júla 2026',
+      updated: 'Aktualizované: 12. novembra 2026',
       sections: [
         {
           title: '1. Čo sú cookies a podobné technológie?',
@@ -369,6 +370,7 @@ const documents: Record<InformationalLegalLocale, Record<LegalDocument, LegalCon
           title: '3. Analytika a reklama',
           items: [
             'Google Analytics nám po analytickom súhlase pomáha porozumieť súhrnnému používaniu stránky.',
+            'Crown Dental po analytickom súhlase meria aj návštevy, zdroje, kampane, skupiny stránok, aktívny čas a konverzie vo vlastnom systéme. Náhodný identifikátor crown_visitor_v1 platí 90 dní; crown_visit_v1 do 30 minút neaktivity alebo zatvorenia karty. Udalosti na serveri uchovávame 25 mesiacov. Neobsahujú obsah formulárov, kontaktné údaje ani IP adresy; nerobíme videozáznamy návštev. Žiadosť o termín môže byť v internom systéme spojená s meranou reláciou.',
             'Google Ads po marketingovom súhlase meria kampane a konverzie žiadostí o termín.',
             'Meta Pixel po marketingovom súhlase meria a optimalizuje kampane.',
           ],

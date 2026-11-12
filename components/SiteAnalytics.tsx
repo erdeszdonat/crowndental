@@ -2,6 +2,8 @@
 
 import { useEffect } from 'react';
 import { useLocale } from 'next-intl';
+import { usePathname } from 'next/navigation';
+import { startFirstPartyAnalytics } from '@/lib/firstPartyAnalytics';
 import { rememberBookingSource, trackSiteEvent, type EventOptions } from '@/lib/siteAnalytics';
 
 const placements = new Set(['home_hero', 'treatment_hero', 'mobile_bar', 'treatment_card', 'landing_hero', 'landing_offer', 'landing_form']);
@@ -9,6 +11,8 @@ const placements = new Set(['home_hero', 'treatment_hero', 'mobile_bar', 'treatm
 /** Delegation covers existing links as well as newly shared components. */
 export default function SiteAnalytics() {
   const locale = useLocale();
+  const pathname = usePathname();
+  useEffect(() => startFirstPartyAnalytics(pathname), [pathname]);
   useEffect(() => {
     const onClick = (event: MouseEvent) => {
       const link = event.target instanceof Element ? event.target.closest('a[href]') : null;

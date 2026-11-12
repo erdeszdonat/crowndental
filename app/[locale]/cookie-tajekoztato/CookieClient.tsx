@@ -39,7 +39,7 @@ function CookieHero() {
             Hogyan használjuk a sütiket a zökkenőmentes böngészés, a biztonság és a személyre szabott élmény biztosítása érdekében?
           </p>
           <p className="mt-6 text-sm font-medium uppercase tracking-widest text-slate-400">
-            Hatályos: 2026. július 20-tól
+            Hatályos: 2026. november 12-től
           </p>
         </motion.div>
       </div>
@@ -135,7 +135,7 @@ function CookieContent() {
                   </div>
                   <div className="rounded-2xl border border-sky-200 bg-sky-50 p-5">
                     <h3 className="!m-0 !text-lg">Statisztikai</h3>
-                    <p className="!mt-2 text-sm">Google Analytics mérés. Csak a „Statisztika” kategória engedélyezése után aktiválódik.</p>
+                    <p className="!mt-2 text-sm">Google Analytics és Crown Dental saját forgalommérés. Csak a „Statisztika” kategória engedélyezése után aktiválódik.</p>
                   </div>
                   <div className="rounded-2xl border border-indigo-200 bg-indigo-50 p-5">
                     <h3 className="!m-0 !text-lg">Marketing</h3>
@@ -160,6 +160,7 @@ function CookieContent() {
                     <tbody className="divide-y divide-slate-200 bg-white">
                       <tr><td className="p-4 font-mono text-xs">crown_cookie_consent</td><td className="p-4">Crown Dental / szükséges, localStorage</td><td className="p-4">Az elfogadott sütikategóriák megjegyzése.</td><td className="p-4">A böngésző helyi adatainak törléséig.</td></tr>
                       <tr><td className="p-4">Foglalási munkamenet-adatok</td><td className="p-4">Crown Dental / szükséges, sessionStorage</td><td className="p-4">A sikeresen elküldött időpontkérés visszaigazolása.</td><td className="p-4">A böngészőlap munkamenetének végéig.</td></tr>
+                      <tr><td className="p-4 font-mono text-xs">crown_visitor_v1, crown_visit_v1</td><td className="p-4">Crown Dental / statisztikai, localStorage és sessionStorage</td><td className="p-4">Véletlen látogatói azonosító, forrás, kampány, oldalcsoport, aktív idő és időpontkérési arány mérése. Csak statisztikai hozzájárulással. Nincs munkamenet-videó, űrlaptartalom vagy IP-cím a forgalmi eseményekben. Az időpontkérés belső rendszerben a mérési munkamenethez kapcsolható.</td><td className="p-4">Látogatói azonosító: 90 nap. Munkamenet: 30 perc inaktivitásig, legfeljebb a böngészőlap bezárásáig. Szerveroldali események: 25 hónap.</td></tr>
                       <tr><td className="p-4 font-mono text-xs">_ga, _ga_*</td><td className="p-4">Google Analytics / statisztikai</td><td className="p-4">Látogatások és oldalhasználat megkülönböztetése.</td><td className="p-4">Legfeljebb 2 év.</td></tr>
                       <tr><td className="p-4 font-mono text-xs">_gcl_au, _gcl_aw_*</td><td className="p-4">Google Ads / marketing</td><td className="p-4">Hirdetési konverziók és kampányeredmények mérése.</td><td className="p-4">Jellemzően legfeljebb 90 nap.</td></tr>
                       <tr><td className="p-4 font-mono text-xs">_fbp</td><td className="p-4">Meta / marketing</td><td className="p-4">Kampánymérés és hirdetési hozzárendelés.</td><td className="p-4">Jellemzően legfeljebb 90 nap.</td></tr>

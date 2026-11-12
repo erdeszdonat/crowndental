@@ -22,6 +22,7 @@ export function ensureGtag() {
 
 export function setAnalyticsConsent(consent: StoredConsent | null) {
   currentConsent = consent;
+  if (typeof window.dispatchEvent === 'function') window.dispatchEvent(new Event('crown-measurement-consent'));
   window['ga-disable-G-9BS3P1DC4T'] = !consent?.analytics;
   if (!consent?.analytics) {
     try { window.sessionStorage.removeItem(SOURCE_KEY); } catch { /* Storage is optional. */ }
@@ -46,7 +47,7 @@ export function measurementPage(pathname: string) {
   if (path === '/idopont') return 'booking';
   if (path === '/idopont/sikeres') return 'booking_success';
   if (path === '/blog' || path.startsWith('/blog/')) return 'blog';
-  if (['/esztergom', '/budapest', '/kapcsolat', '/rolunk', '/utazas-szallas', '/hollywood-mosoly'].includes(path)) return path.slice(1);
+  if (['/esztergom', '/primas-sziget', '/budapest', '/kapcsolat', '/rolunk', '/kollegaink', '/utazas-szallas', '/hollywood-mosoly'].includes(path)) return path.slice(1);
   return 'other';
 }
 
@@ -81,6 +82,7 @@ export type EventOptions = {
 export function trackSiteEvent(event: SiteEvent, locale: string, options: EventOptions = {}) {
   if (!canMeasure()) return false;
   try {
+    if (typeof window.dispatchEvent === 'function') window.dispatchEvent(new CustomEvent('crown-site-event', { detail: { event, step: options.step, placement: options.placement } }));
     ensureGtag()('event', event, {
       send_to: GOOGLE_TAG_ID,
       site_language: ['hu', 'en', 'de', 'sk'].includes(locale) ? locale : 'hu',

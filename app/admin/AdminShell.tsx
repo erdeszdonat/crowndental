@@ -43,8 +43,8 @@ const sections = [
   },
   {
     id: "stats",
-    label: "Áttekintés",
-    description: "A rendelő forgalma és eredményei.",
+    label: "Elemzések",
+    description: "Látogatottság, források és időpontkérések.",
     icon: BarChart3,
     group: "Rendelő",
   },
