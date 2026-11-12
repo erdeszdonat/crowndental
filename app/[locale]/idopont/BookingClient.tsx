@@ -5,6 +5,7 @@ import React, { Suspense, useCallback, useEffect, useRef, useState } from 'react
 import Link from 'next/link';
 import { getSiteCopy } from '@/lib/siteCopy';
 import { ANALYTICS_READY_EVENT, rememberBookingSource, trackSiteEvent } from '@/lib/siteAnalytics';
+import { bookingAnalyticsContext } from '@/lib/firstPartyAnalytics';
 import { ArrowRight, ArrowLeft, Loader2 } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
@@ -228,6 +229,7 @@ export function BookingForm({ directOffer, initialTreatmentSlug }: {
       idempotencyKeyRef.current = idempotencyKey;
       const bookingPayload = {
         ...payload,
+        analytics: bookingAnalyticsContext(),
         locale: safeLocale,
         idempotencyKey,
         marketingConsent,

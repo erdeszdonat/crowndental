@@ -27,6 +27,7 @@ const GOOGLE_ADS_ID = 'AW-16510822421';
 
 export default function ConsentScripts() {
   const [consent, setConsent] = useState<StoredConsent | null>(null);
+  const [resolved, setResolved] = useState(false);
   const configuredGoogle = useRef({ analytics: false, marketing: false });
 
   useEffect(() => {
@@ -36,6 +37,7 @@ export default function ConsentScripts() {
         try {
           setConsent(parseStoredConsent(window.localStorage.getItem(CONSENT_STORAGE_KEY)).consent);
         } catch { setConsent(null); }
+        setResolved(true);
       }
     });
 
@@ -43,12 +45,14 @@ export default function ConsentScripts() {
       consentEventReceived = true;
       const customEvent = event as CustomEvent<unknown>;
       setConsent(currentConsentFrom(customEvent.detail));
+      setResolved(true);
     };
 
     window.addEventListener(CONSENT_EVENT, handleConsent);
     const handleStorage = (event: StorageEvent) => {
       if (event.key === CONSENT_STORAGE_KEY || event.key === null) {
         setConsent(parseStoredConsent(event.newValue).consent);
+        setResolved(true);
       }
     };
     window.addEventListener('storage', handleStorage);
@@ -60,6 +64,7 @@ export default function ConsentScripts() {
   }, []);
 
   useEffect(() => {
+    if (!resolved) return;
     setAnalyticsConsent(consent);
     if (!isProductionSite()) return;
 
@@ -88,7 +93,7 @@ export default function ConsentScripts() {
       if (consent?.marketing) window.fbq('track', 'PageView');
     }
     if (consent?.analytics) window.dispatchEvent(new Event(ANALYTICS_READY_EVENT));
-  }, [consent]);
+  }, [consent, resolved]);
 
   if (!consent || !isProductionSite()) return null;
 

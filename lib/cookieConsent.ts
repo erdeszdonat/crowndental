@@ -3,7 +3,7 @@ export const CONSENT_EVENT = 'crown-cookie-consent';
 
 // Keep this aligned with the effective date shown in the cookie notice.
 // Changing it intentionally requires every browser to make a fresh decision.
-export const CONSENT_POLICY_VERSION = '2026-07-20';
+export const CONSENT_POLICY_VERSION = '2026-11-12';
 
 export type ConsentPreferences = {
   necessary: true;

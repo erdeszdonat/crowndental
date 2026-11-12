@@ -82,7 +82,7 @@ const documents: Record<GermanLegalDocument, { eyebrow: string; title: string; l
     eyebrow: 'Cookie-Einstellungen',
     title: 'Cookie-Richtlinie',
     lead: 'Welche Cookies und ähnlichen Technologien auf crowndental.hu verwendet werden und wie Sie Ihre Auswahl ändern können.',
-    updated: 'Stand: 20. Juli 2026',
+    updated: 'Stand: 12. November 2026',
     sections: [
       {
         title: '1. Was sind Cookies?',
@@ -94,7 +94,7 @@ const documents: Record<GermanLegalDocument, { eyebrow: string; title: string; l
       },
       {
         title: '3. Statistik und Marketing',
-        items: ['Google Analytics hilft uns, die Nutzung der Website in zusammengefasster Form zu verstehen.', 'Google Ads unterstützt die Messung von Werbekampagnen und Termin-Conversions.', 'Meta Pixel unterstützt – nur nach Einwilligung – die Messung und Optimierung von Kampagnen.', 'Nicht notwendige Dienste werden erst nach Ihrer entsprechenden Auswahl aktiviert.'],
+        items: ['Google Analytics hilft uns, die Nutzung der Website in zusammengefasster Form zu verstehen.', 'Crown Dental misst nach Statistik-Einwilligung außerdem Besuche, Quellen, Kampagnen, Seitengruppen, aktive Zeit und Terminanfragen im eigenen System. crown_visitor_v1 enthält eine zufällige Kennung für 90 Tage; crown_visit_v1 gilt bis zu 30 Minuten Inaktivität oder bis zum Schließen des Tabs. Server-Ereignisse werden 25 Monate gespeichert. Keine Formularinhalte, Kontaktdaten oder IP-Adressen in Verkehrsereignissen, keine Sitzungsaufzeichnungen. Terminanfragen können intern mit der gemessenen Sitzung verknüpft werden.', 'Google Ads unterstützt die Messung von Werbekampagnen und Termin-Conversions.', 'Meta Pixel unterstützt – nur nach Einwilligung – die Messung und Optimierung von Kampagnen.', 'Nicht notwendige Dienste werden erst nach Ihrer entsprechenden Auswahl aktiviert.'],
       },
       {
         title: '4. Eingesetzte Speichertechnologien',
