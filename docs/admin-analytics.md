@@ -6,7 +6,7 @@ Open `https://admin.crowndental.hu/crown-dental`, sign in with an administrator 
 
 - Date presets include yesterday, full previous Monday–Sunday week, previous calendar month/year, and arbitrary inclusive date ranges (maximum ten years).
 - All calendar boundaries use Europe/Budapest, including DST. Comparison is the preceding equal-length period, shown explicitly.
-- Online requests are non-hidden appointment rows grouped by creation time. Confirmed means their **current** status is `processed`; `special` is not confirmed. This is not attendance or revenue reporting.
+- Online requests are non-hidden appointment rows grouped by creation time. Confirmed means their **current** status is `processed` or `special`. Special consultations are included in every confirmed count and rate, while the status breakdown lists the two statuses separately without double counting. This is not attendance or revenue reporting.
 - Visitors are consented random browser identifiers (90-day lifetime); sessions expire after 30 minutes of inactivity. Foreground activity is sampled every 15 seconds; idle and hidden-tab time are excluded. No measurement can include users who decline consent or block delivery.
 - Conversion uses distinct measured booking visitors / distinct measured visitors. Repeated requests by one visitor do not inflate the numerator. The ordered funnel is evaluated within the selected period and session.
 - Source, medium and campaign are the first values of the current session. Sources for unmeasured bookings remain unknown. Phone clicks are not verified calls or bookings.

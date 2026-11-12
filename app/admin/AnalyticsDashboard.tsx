@@ -118,9 +118,9 @@ export default function AnalyticsDashboard() {
           <p className={styles.inlineNote}>{n(s.errors)} mért hiba vagy mezőellenőrzés. A teljes időpontkérésszám eltérhet: mérési hozzájárulás nélkül is lehet foglalni.</p>
         </section>
         <section className={styles.panel}><div className={styles.panelHead}><div><h3>Mi lett az időpontkérésekből?</h3><p>A kiválasztott időszakban beérkezett kérések mai állapota</p></div></div>
-          {[['Visszaigazolt időpont',s.confirmed,'#1c8876'],['Egyeztetésre vár',s.pending,'#c69a4c'],['Nem vette fel',s.noAnswer,'#d97757'],['Különleges egyeztetés',s.special,'#8b73b1'],['Sztornózva',s.cancelled,'#8b97a6']].map(([title,value,color])=><div className={styles.statusRow} key={title}><i style={{background:String(color)}}/><span>{title}</span><strong>{n(Number(value))}</strong><small>{pct(percent(Number(value),s.requests))}</small></div>)}
+          {[['Időpontot kapott',s.confirmed-s.special,'#1c8876'],['Egyeztetésre vár',s.pending,'#c69a4c'],['Nem vette fel',s.noAnswer,'#d97757'],['Különleges egyeztetés',s.special,'#8b73b1'],['Sztornózva',s.cancelled,'#8b97a6']].map(([title,value,color])=><div className={styles.statusRow} key={title}><i style={{background:String(color)}}/><span>{title}</span><strong>{n(Number(value))}</strong><small>{pct(percent(Number(value),s.requests))}</small></div>)}
           <div className={styles.highlight}><span>Kérés → visszaigazolt időpont</span><strong>{pct(percent(s.confirmed,s.requests))}</strong></div>
-          <p className={styles.inlineNote}>A különleges egyeztetés nem számít visszaigazolt időpontnak. A rejtett rekordokat a kimutatás nem tartalmazza.</p>
+          <p className={styles.inlineNote}>A különleges egyeztetés is beleszámít a visszaigazolt időpontokba és a visszaigazolási arányba. A rejtett rekordokat a kimutatás nem tartalmazza.</p>
         </section>
       </div>
       <section className={styles.panel}><div className={styles.panelHead}><div><h3>Honnan jönnek a foglalások?</h3><p>Az adott munkamenet első forrása · a nem mért kérések külön sorban</p></div><input className={styles.search} aria-label="Bontás keresése" placeholder="Keresés a bontásban…" value={query} onChange={e=>setQuery(e.target.value)}/></div>
