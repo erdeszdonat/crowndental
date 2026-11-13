@@ -6,6 +6,7 @@ import { Calendar, Loader2, Mail, MapPin } from 'lucide-react';
 import {
   APPOINTMENT_CLINICS,
   getAppointmentClinic,
+  getAppointmentContacts,
   getConsultationImagingNotice,
   type AppointmentClinicId,
 } from '@/lib/appointmentClinics';
@@ -21,6 +22,7 @@ export type AppointmentConfirmationModalState = {
   };
   dateTime: string;
   clinicId: AppointmentClinicId | '';
+  includeImagingNotice: boolean | null;
   step: 'input' | 'review';
   error: string;
 };
@@ -39,7 +41,7 @@ export default function AppointmentConfirmationDialog({ state, busy, displayDate
   const dialogRef = useRef<HTMLFormElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const selectedClinic = getAppointmentClinic(state.clinicId);
-  const imagingNotice = getConsultationImagingNotice(state.clinicId, state.appointment.treatment, 'hu');
+  const imagingNotice = getConsultationImagingNotice(state.clinicId, state.appointment.treatment, 'hu', true);
 
   useEffect(() => {
     const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
@@ -150,7 +152,7 @@ export default function AppointmentConfirmationDialog({ state, busy, displayDate
                         value={clinic.id}
                         required
                         checked={state.clinicId === clinic.id}
-                        onChange={() => onChange({ ...state, clinicId: clinic.id, error: '' })}
+                        onChange={() => onChange({ ...state, clinicId: clinic.id, includeImagingNotice: clinic.id === 'primas-sziget' ? null : false, error: '' })}
                         className="mt-1 h-5 w-5 flex-shrink-0 accent-sky-700"
                       />
                       <span className="min-w-0">
@@ -183,6 +185,7 @@ export default function AppointmentConfirmationDialog({ state, busy, displayDate
                 <div>
                   <p className="text-lg font-black">{selectedClinic?.name || 'Nincs kiválasztott rendelő'}</p>
                   <p className="mt-1 text-sm leading-relaxed text-slate-200">{selectedClinic?.address}</p>
+                  <p className="mt-2 text-sm font-bold text-sky-200">{selectedClinic?.phoneLabel}</p>
                 </div>
               </div>
               <p className="mt-4 text-sm leading-relaxed text-slate-200">Ezt a rendelőt, címet és időpontot küldjük el a páciensnek. Az e-mailben Google, Apple és Outlook naptárgomb is lesz.</p>
@@ -191,11 +194,30 @@ export default function AppointmentConfirmationDialog({ state, busy, displayDate
 
           {imagingNotice && (
             <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-amber-950">
-              <p className="mb-2 text-xs font-black uppercase tracking-widest text-amber-700">Ez a tájékoztatás is szerepel az e-mailben</p>
-              <p className="font-black">{imagingNotice.title}</p>
-              <p className="mt-2 text-sm leading-relaxed">{imagingNotice.body}</p>
+              <fieldset disabled={busy}>
+                <legend className="mb-3 font-bold">Szeretnéd behívni a pácienst az időpontja előtt röntgenre?</legend>
+                <div className="grid gap-2 sm:grid-cols-2">
+                  {[{ value: true, label: 'Igen, kérek röntgenes tájékoztatást' }, { value: false, label: 'Nem, most nem szükséges' }].map(option => (
+                    <label key={String(option.value)} className={`flex cursor-pointer items-start gap-2 rounded-xl border p-3 text-sm font-bold ${state.includeImagingNotice === option.value ? 'border-sky-600 bg-white' : 'border-amber-200'}`}>
+                      <input type="radio" name="includeImagingNotice" required checked={state.includeImagingNotice === option.value}
+                        onChange={() => onChange({ ...state, includeImagingNotice: option.value, error: '' })} className="mt-0.5 h-4 w-4 shrink-0 accent-sky-700" />
+                      {option.label}
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+              {state.includeImagingNotice ? <>
+                <p className="mt-3 font-black">{imagingNotice.title}</p>
+                <p className="mt-2 text-sm leading-relaxed">{imagingNotice.body}</p>
+              </> : state.includeImagingNotice === null ? <p className="mt-3 text-sm">Válaszd ki, szükséges-e előzetes röntgenes tájékoztatást küldeni.</p> : <p className="mt-3 text-sm">A figyelmeztetés kimarad a visszaigazoló e-mailből, a naptárból és az emlékeztetőből.</p>}
             </div>
           )}
+
+          {selectedClinic && <div className="rounded-2xl border border-sky-100 bg-sky-50 p-4 text-sm text-slate-700">
+            <p className="font-bold">A levélben szereplő elérhetőségek</p>
+            {getAppointmentContacts(state.clinicId).map(clinic => <p key={clinic.id} className="mt-1">{clinic.name}: <strong>{clinic.phoneLabel}</strong></p>)}
+            <p className="mt-3">A páciens az időpont előtti napon reggel 9 órától automatikus e-mailes emlékeztetőt kap a nevével, időpontjával és a rendelő címével.</p>
+          </div>}
 
           {state.error && <div role="alert" className="rounded-2xl border border-red-100 bg-red-50 p-4 text-sm font-bold text-red-700">{state.error}</div>}
         </div>

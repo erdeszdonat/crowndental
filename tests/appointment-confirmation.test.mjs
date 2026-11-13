@@ -643,3 +643,31 @@ test('assistant can still confirm patients through the guarded appointment flow'
   assert.equal(env.emails.length, 1);
   assert.equal(env.state.status, 'processed');
 });
+
+
+test('assistant can omit the imaging notice from email and both calendars, while keeping both clinic contacts', async () => {
+  const env = environment({ role: 'assistant', appointment: { treatment: 'Fogszabályozás' } });
+  assert.equal((await env.submit({ includeImagingNotice: false })).status, 200);
+  assert.equal(env.state.imaging_notice_enabled, false);
+  const html = env.emails[0].payload.html;
+  const links = calendarLinks(html);
+  for (const text of [visibleText(html), links.google.searchParams.get('details'), links.ics.searchParams.get('details')]) {
+    assert.doesNotMatch(text, /CBCT|teleröntgen/);
+    assert.ok(text.includes('+36 70 604 2500'));
+    assert.ok(text.includes('+36 30 589 2468'));
+    assert.ok(text.indexOf('+36 70 604 2500') < text.indexOf('+36 30 589 2468'));
+  }
+  assert.ok(html.includes('href="tel:+36706042500"'));
+});
+
+test('explicit imaging choice works for a Helischer visit and invalid choices cannot send mail', async () => {
+  const env = environment({ appointment: { treatment: 'Kontroll' } });
+  assert.equal((await env.submit({ includeImagingNotice: true })).status, 200);
+  assert.match(visibleText(env.emails[0].payload.html), /röntgen/);
+  assert.equal(env.state.imaging_notice_enabled, true);
+  for (const value of [null, 'false', 1]) {
+    const invalid = environment();
+    assert.equal((await invalid.submit({ includeImagingNotice: value })).status, 400);
+    assert.equal(invalid.emails.length, 0);
+  }
+});
