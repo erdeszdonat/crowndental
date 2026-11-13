@@ -1,3 +1,4 @@
+import { NFC_CARDS } from './nfcCards';
 import type { DateRange } from './analyticsDates';
 export type Breakdown = { name: string; sessions: number; visitors: number; requests: number; confirmed: number; booked_sessions: number };
 export type Summary = { requests: number; confirmed: number; special: number; cancelled: number; noAnswer: number; pending: number; attributed: number; sessions: number; visitors: number; bookedSessions: number; bookedVisitors: number; views: number; engagementMs: number; phoneClicks: number; ctaClicks: number; errors: number };
@@ -18,4 +19,4 @@ export type AnalyticsReport = { range: DateRange; previousRange: DateRange; curr
   meta: { installed_at: string; ga_imported_at: string | null; ga_through: string | null; firstBooking: string | null; generatedAt: string } };
 export function percent(numerator: number, denominator: number): number | null { return denominator > 0 ? numerator / denominator * 100 : null; }
 export function change(current: number, previous: number): number | null { return previous > 0 ? (current - previous) / previous * 100 : null; }
-export const PAGE_NAMES: Record<string, string> = { home: 'Főoldal', booking: 'Időpontkérés', booking_success: 'Sikeres időpontkérés', blog: 'Cikkek és magazin', other: 'Egyéb nyilvános oldal', 'primas-sziget': 'Prímás Sziget', esztergom: 'Belvárosi rendelő', 'hollywood-mosoly': 'Hollywood Smile', mobile: 'Mobil', desktop: 'Asztali gép', tablet: 'Tablet', hu: 'Magyar', en: 'Angol', de: 'Német', sk: 'Szlovák', 'petofi-utca': 'Petőfi utca' };
+export const PAGE_NAMES: Record<string, string> = { ...Object.fromEntries(NFC_CARDS.map(card => [`kartya/${card.id}`, `NFC · ${card.name}`])), home: 'Főoldal', booking: 'Időpontkérés', booking_success: 'Sikeres időpontkérés', blog: 'Cikkek és magazin', other: 'Egyéb nyilvános oldal', 'primas-sziget': 'Prímás Sziget', esztergom: 'Belvárosi rendelő', 'hollywood-mosoly': 'Hollywood Smile', mobile: 'Mobil', desktop: 'Asztali gép', tablet: 'Tablet', hu: 'Magyar', en: 'Angol', de: 'Német', sk: 'Szlovák', 'petofi-utca': 'Petőfi utca' };

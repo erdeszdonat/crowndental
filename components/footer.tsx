@@ -1,5 +1,6 @@
 'use client';
 
+import { isNfcCardPath } from '@/lib/nfcCards';
 import ClinicPhoneLinks from '@/components/ClinicPhoneLinks';
 import React from 'react';
 import { usePathname } from 'next/navigation';
@@ -118,7 +119,7 @@ export default function Footer() {
             <h4 className="text-white font-bold text-lg mb-6 uppercase tracking-wider">{t('usefulLinks')}</h4>
             <ul className="space-y-3 text-sm mb-10">
               <li><Link prefetch={false} href={`${prefix}/kezelesek`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('fullPriceList')}</Link></li>
-              <li><Link prefetch={false} href={`${prefix}/idopont`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('bookingLink')}</Link></li>
+              <li><Link prefetch={false} href={isNfcCardPath(pathname) ? '#konzultacio' : `${prefix}/idopont`} data-booking-cta={isNfcCardPath(pathname) ? 'true' : undefined} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('bookingLink')}</Link></li>
               <li><Link prefetch={false} href={`${prefix}/rolunk`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('aboutLink')}</Link></li>
               <li><Link prefetch={false} href={`${prefix}/kapcsolat`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('contactLink')}</Link></li>
               <li><Link prefetch={false} href={`${prefix}/blog`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('blogLink')}</Link></li>

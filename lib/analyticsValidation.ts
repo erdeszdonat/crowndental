@@ -1,7 +1,8 @@
+import { NFC_CARDS } from './nfcCards';
 // Shared allowlists: no contact details, full URLs, form values or arbitrary event properties.
 export const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 export const ANALYTICS_EVENTS = ['page_view', 'engagement', 'booking_cta_click', 'phone_click', 'booking_form_view', 'booking_start', 'booking_step_view', 'booking_step_complete', 'booking_submit', 'booking_error', 'booking_validation_error'] as const;
-export const PUBLIC_PAGES = new Set(['home', 'booking', 'booking_success', 'blog', 'other', 'kezelesek', 'esztergom', 'primas-sziget', 'budapest', 'kapcsolat', 'rolunk', 'kollegaink', 'utazas-szallas', 'hollywood-mosoly', ...['allapotfelmeres','esztetikai-fogaszat','fogfeherites','foghuzas','fogsor','fogszabalyozas','fogtechnikai-megoldasok','gockutatas','gyerekfogaszat','gyokerkezeles','implantatum','koronak-hidak','szajsebeszet','direkt-hej','indirekt-hej'].map(s => `kezelesek/${s}`)]);
+export const PUBLIC_PAGES = new Set([...NFC_CARDS.map(card => `kartya/${card.id}`), 'home', 'booking', 'booking_success', 'blog', 'other', 'kezelesek', 'esztergom', 'primas-sziget', 'budapest', 'kapcsolat', 'rolunk', 'kollegaink', 'utazas-szallas', 'hollywood-mosoly', ...['allapotfelmeres','esztetikai-fogaszat','fogfeherites','foghuzas','fogsor','fogszabalyozas','fogtechnikai-megoldasok','gockutatas','gyerekfogaszat','gyokerkezeles','implantatum','koronak-hidak','szajsebeszet','direkt-hej','indirekt-hej'].map(s => `kezelesek/${s}`)]);
 export function safeTag(value: unknown, fallback = ''): string {
   return typeof value === 'string' && /^[a-z0-9][a-z0-9_.-]{0,79}$/i.test(value) && !/\d{7,}/.test(value) ? value.toLowerCase() : fallback;
 }
@@ -30,5 +31,5 @@ export function cleanAnalyticsEvent(value: unknown): AnalyticsEvent | null {
     at: typeof v.at === 'number' && v.at >= now - 300000 && v.at <= now ? v.at : now,
     duration: v.event === 'engagement' && Number.isFinite(v.duration) ? Math.max(0, Math.min(30000, Math.round(Number(v.duration)))) : 0,
     step: v.step === 1 || v.step === 2 ? v.step : 0,
-    placement: ['navigation','footer','content','home_hero','treatment_hero','mobile_bar','treatment_card','landing_hero','landing_offer','landing_form','quote_result'].includes(String(v.placement)) ? String(v.placement) : '' };
+    placement: ['navigation','footer','content','home_hero','treatment_hero','mobile_bar','treatment_card','landing_hero','landing_offer','landing_form','quote_result','nfc_card'].includes(String(v.placement)) ? String(v.placement) : '' };
 }
