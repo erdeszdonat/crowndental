@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { startFirstPartyAnalytics } from '@/lib/firstPartyAnalytics';
 import { rememberBookingSource, trackSiteEvent, type EventOptions } from '@/lib/siteAnalytics';
 
-const placements = new Set(['home_hero', 'treatment_hero', 'mobile_bar', 'treatment_card', 'landing_hero', 'landing_offer', 'landing_form']);
+const placements = new Set(['home_hero', 'treatment_hero', 'mobile_bar', 'treatment_card', 'landing_hero', 'landing_offer', 'landing_form','quote_result']);
 
 /** Delegation covers existing links as well as newly shared components. */
 export default function SiteAnalytics() {

@@ -30,5 +30,5 @@ export function cleanAnalyticsEvent(value: unknown): AnalyticsEvent | null {
     at: typeof v.at === 'number' && v.at >= now - 300000 && v.at <= now ? v.at : now,
     duration: v.event === 'engagement' && Number.isFinite(v.duration) ? Math.max(0, Math.min(30000, Math.round(Number(v.duration)))) : 0,
     step: v.step === 1 || v.step === 2 ? v.step : 0,
-    placement: ['navigation','footer','content','home_hero','treatment_hero','mobile_bar','treatment_card','landing_hero','landing_offer','landing_form'].includes(String(v.placement)) ? String(v.placement) : '' };
+    placement: ['navigation','footer','content','home_hero','treatment_hero','mobile_bar','treatment_card','landing_hero','landing_offer','landing_form','quote_result'].includes(String(v.placement)) ? String(v.placement) : '' };
 }

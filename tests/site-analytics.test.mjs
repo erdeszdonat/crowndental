@@ -163,3 +163,12 @@ test('Sanity image transformations preserve existing crop parameters', () => {
   assert.equal(transformed.split('?').length, 2);
   assert.equal(sanityImageUrl('', 720), '');
 });
+
+
+test('quote consultation CTA is attributed in GA and accepted by first-party analytics', () => {
+  const e = environment(); e.grant();
+  assert.equal(e.analytics.trackSiteEvent('booking_cta_click', 'hu', { placement: 'quote_result' }), true);
+  assert.equal(e.window.dataLayer[0][2].cta_location, 'quote_result');
+  const event = e.load('analyticsValidation').cleanAnalyticsEvent({ id: '11111111-1111-4111-8111-111111111111', event: 'booking_cta_click', page: 'home', placement: 'quote_result' });
+  assert.equal(event.placement, 'quote_result');
+});
