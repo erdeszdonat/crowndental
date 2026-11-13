@@ -515,7 +515,13 @@
           { "name": "Apical resection", "price": "55,000 HUF" },
           { "name": "DIO Implant", "price": "240,000 HUF", "highlight": true },
           { "name": "ALPHA BIO Implant", "price": "180,000 HUF" },
-          { "name": "Bone graft", "price": "190,000 HUF" }
+          { "name": "Bone graft (including the associated sinus lift)", "price": "200,000 HUF" },
+          {"name": "Implant abutment", "price": "15,000–30,000 HUF"},
+          {"name": "Major surgical fee", "price": "Free of charge"},
+          {"name": "Healing screw", "price": "Free of charge"},
+          {"name": "Laboratory analog", "price": "Free of charge"},
+          {"name": "Digital scanning", "price": "Free of charge"},
+          {"name": "Screw access hole closure", "price": "Free of charge"}
         ]
       },
       {
@@ -1059,7 +1065,7 @@
         { "title": "Simple Extraction", "desc": "Gentle removal of severely damaged, unsalvageable teeth under full anaesthesia.", "price": "from 25,000 HUF" },
         { "title": "Wisdom Tooth Removal", "desc": "Expert surgical removal of even fully impacted wisdom teeth.", "price": "55,000 HUF" },
         { "title": "Apical Resection", "desc": "Surgical removal of the inflamed root apex, saving the problematic tooth.", "price": "55,000 HUF" },
-        { "title": "Bone Grafting", "desc": "Pre-implant bone augmentation where the jawbone is insufficient for an implant.", "price": "190,000 HUF" }
+        { "title": "Bone Grafting (including the associated sinus lift)", "desc": "Pre-implant bone augmentation where the jawbone is insufficient for an implant.", "price": "200,000 HUF" }
       ],
       "benefitsTitle": "Safe Oral Surgery",
       "benefitItems": [

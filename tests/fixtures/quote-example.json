@@ -1,0 +1,17 @@
+{
+  "currency": "HUF",
+  "documentTotal": 734000,
+  "items": [
+    { "name": "Komplikált sebészeti foghúzás", "competitorPrice": 55000, "quantity": 1, "priceListKey": "Foghúzás műtéttel" },
+    { "name": "CT-felvétel (2 db)", "competitorPrice": 40000, "quantity": 2, "priceListKey": "3D CT felvétel" },
+    { "name": "Nagy műtéti díj", "competitorPrice": 40000, "quantity": 1, "priceListKey": "Nagy műtéti díj" },
+    { "name": "Csontpótlás / arcüregemelés", "competitorPrice": 250000, "quantity": 1, "priceListKey": "Csontpótlás", "boneGraftGroup": "single-site" },
+    { "name": "Implantátum", "competitorPrice": 210000, "quantity": 1, "priceListKey": "ALPHA BIO Implantátum" },
+    { "name": "Gyógyulási csavar", "competitorPrice": 15000, "quantity": 1, "priceListKey": "Gyógyulási csavar" },
+    { "name": "Technikai analóg", "competitorPrice": 10000, "quantity": 1, "priceListKey": "Technikai analóg" },
+    { "name": "Digitális szkennelés", "competitorPrice": 10000, "quantity": 1, "priceListKey": "Digitális szkennelés" },
+    { "name": "Implantátumfelépítmény", "competitorPrice": 25000, "quantity": 1, "priceListKey": "Implantátumfelépítmény" },
+    { "name": "Cirkóniumkorona", "competitorPrice": 69000, "quantity": 1, "priceListKey": "Cirkónium korona (fémmentes)" },
+    { "name": "Csavarfurat fedése", "competitorPrice": 10000, "quantity": 1, "priceListKey": "Csavarfurat fedése" }
+  ]
+}

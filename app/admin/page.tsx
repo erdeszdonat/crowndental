@@ -750,7 +750,7 @@ export default function AdminDashboard() {
                           <p className="text-base font-semibold tracking-tight text-slate-900 break-words">{item.name}</p>
                           <p className={`font-black text-lg mt-0.5 ${requiresManualReview ? 'text-amber-600' : savingsLabel ? 'text-green-600' : 'text-gray-500'}`}>
                             {requiresManualReview
-                              ? 'Kézi ellenőrzés szükséges'
+                              ? 'Ár személyes konzultáción pontosítható'
                               : savingsLabel
                                 ? `${savingsLabel} becsült megtakarítás`
                                 : 'Nem állapítható meg biztos megtakarítás'}
@@ -769,7 +769,7 @@ export default function AdminDashboard() {
                             </div>
                             <div className="bg-white rounded-xl p-3 border border-green-100 ring-2 ring-green-100 text-center">
                               <p className="text-[10px] font-black text-green-500 uppercase tracking-widest mb-1 flex items-center gap-1 justify-center"><DollarSign className="w-3 h-3" /> Crown Ár</p>
-                              <p className="text-xl font-black text-sky-700">{crownTotalLabel || 'Kézi ellenőrzés'}</p>
+                              <p className="text-xl font-black text-sky-700">{crownTotalLabel || 'Személyes konzultáción pontosítható'}</p>
                             </div>
                           </div>
                           <div className="bg-white rounded-xl p-3 border border-green-100 space-y-2">
@@ -803,7 +803,7 @@ export default function AdminDashboard() {
                                       <span className="font-bold text-gray-800 text-sm flex-1">{qItem.name}</span>
                                       <div className="text-right text-xs flex-shrink-0">
                                         <p className="text-gray-400 line-through">{competitorPrice !== null ? `${competitorPrice.toLocaleString('hu-HU')} Ft` : '-'}</p>
-                                        <p className="font-black text-sky-600">{itemRangeLabel || 'Kézi ellenőrzés'}</p>
+                                        <p className="font-black text-sky-600">{qItem.includedInPackage ? 'A csontpótlás / sinus lift árában' : itemRange?.max === 0 ? 'Díjmentes' : itemRangeLabel || 'Személyes konzultáción pontosítható'}</p>
                                         {itemSavingLabel && <p className="font-black text-green-500">{itemSavingLabel} becsült megtakarítás</p>}
                                       </div>
                                     </div>
@@ -813,9 +813,9 @@ export default function AdminDashboard() {
                                   <span className="font-black text-gray-900 text-xs uppercase tracking-wider">Összesen</span>
                                   <div className="text-right text-xs">
                                     <p className="text-gray-400 line-through">{item.original_total?.toLocaleString('hu-HU')} Ft</p>
-                                    <p className="font-black text-sky-700">{crownTotalLabel || 'Kézi ellenőrzés'}</p>
+                                    <p className="font-black text-sky-700">{crownTotalLabel || 'Személyes konzultáción pontosítható'}</p>
                                     <p className={`font-black text-sm ${savingsLabel ? 'text-green-600' : 'text-amber-600'}`}>
-                                      {requiresManualReview ? 'Kézi ellenőrzés szükséges' : savingsLabel ? `${savingsLabel} becsült megtakarítás` : 'Nincs biztos megtakarítás'}
+                                      {requiresManualReview ? 'Ár személyes konzultáción pontosítható' : savingsLabel ? `${savingsLabel} becsült megtakarítás` : 'Nincs biztos megtakarítás'}
                                     </p>
                                   </div>
                                 </div>

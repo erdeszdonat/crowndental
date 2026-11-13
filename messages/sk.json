@@ -515,7 +515,13 @@
           { "name": "Resekcia koreňového hrotu", "price": "55 000 Ft" },
           { "name": "DIO Implantát", "price": "240 000 Ft", "highlight": true },
           { "name": "ALPHA BIO Implantát", "price": "180 000 Ft" },
-          { "name": "Kostná augmentácia", "price": "190 000 Ft" }
+          { "name": "Kostná augmentácia (vrátane súvisiaceho sinus liftu)", "price": "200 000 Ft" },
+          {"name": "Implantátový nadstavec", "price": "15 000–30 000 Ft"},
+          {"name": "Poplatok za veľký chirurgický zákrok", "price": "Bezplatne"},
+          {"name": "Hojivá skrutka", "price": "Bezplatne"},
+          {"name": "Laboratórny analóg", "price": "Bezplatne"},
+          {"name": "Digitálne skenovanie", "price": "Bezplatne"},
+          {"name": "Uzavretie otvoru skrutky", "price": "Bezplatne"}
         ]
       },
       {
@@ -1059,7 +1065,7 @@
         { "title": "Jednoduchá extrakcia", "desc": "Šetrné odstránenie silne poškodených, nezachrániteľných zubov v plnej anestéze.", "price": "od 25 000 Ft" },
         { "title": "Odstránenie zuba múdrosti", "desc": "Odborné chirurgické odstránenie dokonca úplne zaklesnených zubov múdrosti.", "price": "55 000 Ft" },
         { "title": "Resekcia koreňového hrotu", "desc": "Chirurgické odstránenie zapáleného koreňového hrotu, čím sa zachráni problematický zub.", "price": "55 000 Ft" },
-        { "title": "Kostná augmentácia", "desc": "Pred-implantačná augmentácia kosti, keď čeľustná kosť nie je dostatočná pre implantát.", "price": "190 000 Ft" }
+        { "title": "Kostná augmentácia (vrátane súvisiaceho sinus liftu)", "desc": "Pred-implantačná augmentácia kosti, keď čeľustná kosť nie je dostatočná pre implantát.", "price": "200 000 Ft" }
       ],
       "benefitsTitle": "Bezpečná orálna chirurgia",
       "benefitItems": [

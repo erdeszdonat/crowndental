@@ -30,7 +30,7 @@ for (const [locale, crownName] of Object.entries(crownNames)) {
 }
 
 test('quote comparison uses the same metal-ceramic crown price', () => {
-  assert.match(read('app/api/analyze-quote/route.ts'), /'Fémkerámia korona': '55 000 Ft'/);
+  assert.match(read('lib/quotePricing.ts'), /'Fémkerámia korona': '55 000 Ft'/);
 });
 
 test('homepage restores original banner sources while retaining CTA attribution', () => {

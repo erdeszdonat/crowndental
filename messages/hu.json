@@ -517,7 +517,13 @@
           { "name": "Gyökércsúcs rezekció", "price": "55.000 Ft" },
           { "name": "DIO Implantátum", "price": "240.000 Ft", "highlight": true },
           { "name": "ALPHA BIO Implantátum", "price": "180.000 Ft" },
-          { "name": "Csontpótlás", "price": "190.000 Ft" }
+          { "name": "Csontpótlás (az ellátáshoz tartozó sinus lifttel)", "price": "200.000 Ft" },
+          {"name": "Implantátumfelépítmény", "price": "15.000–30.000 Ft"},
+          {"name": "Nagy műtéti díj", "price": "Díjmentes"},
+          {"name": "Gyógyulási csavar", "price": "Díjmentes"},
+          {"name": "Technikai analóg", "price": "Díjmentes"},
+          {"name": "Digitális szkennelés", "price": "Díjmentes"},
+          {"name": "Csavarfurat fedése", "price": "Díjmentes"}
         ]
       },
       {
@@ -1061,7 +1067,7 @@
         { "title": "Egyszerű foghúzás", "desc": "Súlyosan károsodott, menthetetlen fogak kíméletes eltávolítása teljes érzéstelenítésben.", "price": "25.000 Ft-tól" },
         { "title": "Bölcsességfog eltávolítás", "desc": "Akár impaktált bölcsességfogak szakszerű, műtéti feltárásból történő eltávolítása.", "price": "55.000 Ft" },
         { "title": "Gyökércsúcs rezekció", "desc": "A gyulladt gyökércsúcs sebészi eltávolítása, amellyel a problémás fog megmenthetővé válik.", "price": "55.000 Ft" },
-        { "title": "Csontpótlás", "desc": "Implantáció előtti csontfelépítés, ha az állkapocs csontállománya nem elegendő az implantátumhoz.", "price": "190.000 Ft" }
+        { "title": "Csontpótlás (az ellátáshoz tartozó sinus lifttel)", "desc": "Implantáció előtti csontfelépítés, ha az állkapocs csontállománya nem elegendő az implantátumhoz.", "price": "200.000 Ft" }
       ],
       "benefitsTitle": "A biztonságos szájsebészet",
       "benefitItems": [

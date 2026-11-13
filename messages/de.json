@@ -746,9 +746,15 @@
             "price": "180.000 HUF"
           },
           {
-            "name": "Knochentransplantation",
-            "price": "190.000 HUF"
-          }
+            "name": "Knochenaufbau (einschließlich zugehörigem Sinuslift)",
+            "price": "200.000 HUF"
+          },
+          {"name": "Implantataufbau", "price": "15.000–30.000 HUF"},
+          {"name": "Zusätzliche Gebühr für große Operationen", "price": "Kostenfrei"},
+          {"name": "Heilungsschraube", "price": "Kostenfrei"},
+          {"name": "Laboranalog", "price": "Kostenfrei"},
+          {"name": "Digitaler Scan", "price": "Kostenfrei"},
+          {"name": "Verschluss des Schraubenkanals", "price": "Kostenfrei"}
         ]
       },
       {
@@ -1991,9 +1997,9 @@
           "price": "55.000 HUF"
         },
         {
-          "title": "Knochentransplantation",
+          "title": "Knochenaufbau (einschließlich zugehörigem Sinuslift)",
           "desc": "Knochenaufbau vor der Implantation, wenn der Kieferknochen für ein Implantat nicht ausreicht.",
-          "price": "190.000 HUF"
+          "price": "200.000 HUF"
         }
       ],
       "benefitsTitle": "Sichere Oralchirurgie",

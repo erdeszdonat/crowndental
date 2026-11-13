@@ -1,5 +1,8 @@
 'use client';
 
+import QuoteComparison from '@/components/QuoteComparison';
+import { quoteResultCopy } from '@/lib/quoteCopy';
+import type { QuoteResult } from '@/lib/quotePricing';
 import ClinicPhoneLinks from '@/components/ClinicPhoneLinks';
 import openingCopy from '@/lib/openingAnnouncement.json';
 import OpeningAnnouncement from '@/components/OpeningAnnouncement';
@@ -82,24 +85,25 @@ function escapePdfHtml(value: unknown) {
 
 function buildPDF(result: QuoteAnalysisResult, name: string, phone: string, email: string, nickname: string, locale: QuoteLocale) {
   const copy = {
-    hu: { title: 'Automatikus előzetes ár-összehasonlítás', difference: 'Becsült megtakarítási tartomány', treatment: 'Kezelés', other: 'Másik árajánlat', crown: 'Crown Dental tájékoztató ártartomány', total: 'Összesen', manual: 'Kézi ellenőrzés szükséges', noSaving: 'Biztos megtakarítás nem állapítható meg', notice: 'Ez automatikus, tájékoztató becslés; nem diagnózis és nem kötelező érvényű ajánlat. A végleges kezelési tervet és árat személyes vizsgálat után adjuk meg.' },
-    en: { title: 'Automated preliminary price comparison', difference: 'Estimated savings range', treatment: 'Treatment', other: 'Other quote', crown: 'Crown Dental guide range', total: 'Total', manual: 'Manual review required', noSaving: 'No guaranteed saving can be stated', notice: 'This automated estimate is for guidance only; it is not a diagnosis or a binding quote. A final treatment plan and price require an in-person examination.' },
-    sk: { title: 'Automatické predbežné porovnanie cien', difference: 'Odhadované rozpätie úspory', treatment: 'Ošetrenie', other: 'Iná ponuka', crown: 'Orientačné cenové rozpätie Crown Dental', total: 'Celkom', manual: 'Potrebná manuálna kontrola', noSaving: 'Zaručenú úsporu nemožno určiť', notice: 'Ide o automatický orientačný odhad; nejde o diagnózu ani záväznú ponuku. Konečný plán ošetrenia a cenu určíme po osobnom vyšetrení.' },
-    de: { title: 'Automatisierter vorläufiger Preisvergleich', difference: 'Geschätzte Ersparnisspanne', treatment: 'Behandlung', other: 'Anderes Angebot', crown: 'Crown Dental Richtpreisspanne', total: 'Gesamt', manual: 'Manuelle Prüfung erforderlich', noSaving: 'Keine sichere Ersparnis feststellbar', notice: 'Diese automatisierte Schätzung dient nur zur Orientierung; sie ist weder Diagnose noch verbindliches Angebot. Behandlungsplan und Endpreis werden nach einer persönlichen Untersuchung festgelegt.' },
+    hu: { title: 'Automatikus előzetes ár-összehasonlítás', difference: 'Becsült megtakarítási tartomány', treatment: 'Kezelés', other: 'Másik árajánlat', crown: 'Crown Dental tájékoztató ártartomány', total: 'Összesen', manual: 'Ár személyes konzultáción pontosítható', noSaving: 'Biztos megtakarítás nem állapítható meg', notice: 'Ez automatikus, tájékoztató becslés; nem diagnózis és nem kötelező érvényű ajánlat. A végleges kezelési tervet és árat személyes vizsgálat után adjuk meg.' },
+    en: { title: 'Automated preliminary price comparison', difference: 'Estimated savings range', treatment: 'Treatment', other: 'Other quote', crown: 'Crown Dental guide range', total: 'Total', manual: 'Price to be confirmed at an in-person consultation', noSaving: 'No guaranteed saving can be stated', notice: 'This automated estimate is for guidance only; it is not a diagnosis or a binding quote. A final treatment plan and price require an in-person examination.' },
+    sk: { title: 'Automatické predbežné porovnanie cien', difference: 'Odhadované rozpätie úspory', treatment: 'Ošetrenie', other: 'Iná ponuka', crown: 'Orientačné cenové rozpätie Crown Dental', total: 'Celkom', manual: 'Cenu upresníme pri osobnej konzultácii', noSaving: 'Zaručenú úsporu nemožno určiť', notice: 'Ide o automatický orientačný odhad; nejde o diagnózu ani záväznú ponuku. Konečný plán ošetrenia a cenu určíme po osobnom vyšetrení.' },
+    de: { title: 'Automatisierter vorläufiger Preisvergleich', difference: 'Geschätzte Ersparnisspanne', treatment: 'Behandlung', other: 'Anderes Angebot', crown: 'Crown Dental Richtpreisspanne', total: 'Gesamt', manual: 'Preis wird bei der persönlichen Beratung geklärt', noSaving: 'Keine sichere Ersparnis feststellbar', notice: 'Diese automatisierte Schätzung dient nur zur Orientierung; sie ist weder Diagnose noch verbindliches Angebot. Behandlungsplan und Endpreis werden nach einer persönlichen Untersuchung festgelegt.' },
   }[locale];
+  const resultCopy = quoteResultCopy[locale];
   const number = new Intl.NumberFormat(locale === 'hu' ? 'hu-HU' : locale === 'sk' ? 'sk-SK' : locale === 'de' ? 'de-DE' : 'en-GB');
   const money = (value: number) => `${number.format(value)} HUF`;
   const range = (min: number | null, max: number | null) => min === null || max === null
-    ? copy.manual
-    : min === max ? money(min) : `${number.format(min)}–${number.format(max)} HUF`;
+    ? resultCopy.pending
+    : min === 0 && max === 0 ? resultCopy.free : min === max ? money(min) : `${number.format(min)}–${number.format(max)} HUF`;
   const date = new Date().toLocaleDateString(locale === 'hu' ? 'hu-HU' : locale === 'sk' ? 'sk-SK' : locale === 'de' ? 'de-DE' : 'en-GB');
   const patientLine = [nickname || name, phone, email].map(escapePdfHtml).join(' | ');
-  const rows = result.items.map((item) => `<tr><td>${escapePdfHtml(item.name)}</td><td class="number">${money(item.competitorPrice)}</td><td class="number crown">${range(item.ourPriceMin, item.ourPriceMax)}</td></tr>`).join('');
+  const rows = result.items.map((item) => `<tr><td>${escapePdfHtml(item.name)}</td><td class="number">${money(item.competitorPrice)}</td><td class="number crown">${item.includedInPackage ? resultCopy.included : range(item.ourPriceMin, item.ourPriceMax)}</td></tr>`).join('');
   const summary = result.savingsMin !== null && result.savingsMax !== null
     ? range(result.savingsMin, result.savingsMax)
     : result.requiresManualReview ? copy.manual : copy.noSaving;
 
-  return `<!doctype html><html lang="${locale}"><head><meta charset="utf-8"><title>${copy.title}</title><style>@page{size:A4;margin:16mm 18mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#0f172a;margin:0}.header{display:flex;justify-content:space-between;border-bottom:3px solid #0284c7;padding-bottom:14px}.brand{font-size:26px;font-weight:900;color:#0369a1}.meta{font-size:11px;color:#64748b;text-align:right}h1{font-size:22px;margin:24px 0 6px}.patient{font-size:12px;color:#64748b}.summary{background:#f0f9ff;border:1px solid #bae6fd;border-radius:12px;padding:18px;text-align:center;margin:22px 0}.summary strong{display:block;font-size:22px;color:#0369a1;margin-top:5px}table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:10px;border-bottom:1px solid #e2e8f0;text-align:left}.number{text-align:right}.crown{color:#0369a1;font-weight:800}tfoot td{border-top:2px solid #0284c7;font-weight:900}.notice{margin-top:24px;padding:14px;border:1px solid #fbbf24;background:#fffbeb;border-radius:10px;font-size:11px;line-height:1.55;color:#78350f}</style></head><body><div class="header"><div><div class="brand">CROWN DENTAL</div><div class="meta">Praxis és Labor · Esztergom · Budapest</div></div><div class="meta">${date}<br>Prímás Sziget: +36 70 604 2500<br>Petőfi utca: +36 30 589 2468</div></div><h1>${copy.title}</h1><div class="patient">${patientLine}</div><div class="summary">${copy.difference}<strong>${summary}</strong></div><table><thead><tr><th>${copy.treatment}</th><th class="number">${copy.other}</th><th class="number">${copy.crown}</th></tr></thead><tbody>${rows}</tbody><tfoot><tr><td>${copy.total}</td><td class="number">${money(result.competitorTotal)}</td><td class="number crown">${range(result.ourTotalMin, result.ourTotalMax)}</td></tr></tfoot></table><div class="notice">${copy.notice}</div></body></html>`;
+  return `<!doctype html><html lang="${locale}"><head><meta charset="utf-8"><title>${copy.title}</title><style>@page{size:A4;margin:16mm 18mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#0f172a;margin:0}.header{display:flex;justify-content:space-between;border-bottom:3px solid #0284c7;padding-bottom:14px}.brand{font-size:26px;font-weight:900;color:#0369a1}.meta{font-size:11px;color:#64748b;text-align:right}h1{font-size:22px;margin:24px 0 6px}.patient{font-size:12px;color:#64748b}.summary{background:#f0f9ff;border:1px solid #bae6fd;border-radius:12px;padding:18px;text-align:center;margin:22px 0}.summary strong{display:block;font-size:22px;color:#0369a1;margin-top:5px}table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:10px;border-bottom:1px solid #e2e8f0;text-align:left}.number{text-align:right}.crown{color:#0369a1;font-weight:800}tfoot td{border-top:2px solid #0284c7;font-weight:900}.notice{margin-top:24px;padding:14px;border:1px solid #fbbf24;background:#fffbeb;border-radius:10px;font-size:11px;line-height:1.55;color:#78350f}</style></head><body><div class="header"><div><div class="brand">CROWN DENTAL</div><div class="meta">Praxis és Labor · Esztergom · Budapest</div></div><div class="meta">${date}<br>Prímás Sziget: +36 70 604 2500<br>Petőfi utca: +36 30 589 2468</div></div><h1>${resultCopy.title}</h1><div class="patient">${patientLine}</div><div class="summary">${resultCopy.saving}<strong>${summary}</strong></div><table><thead><tr><th>${copy.treatment}</th><th class="number">${copy.other}</th><th class="number">${copy.crown}</th></tr></thead><tbody>${rows}</tbody><tfoot><tr><td>${resultCopy.total}</td><td class="number">${money(result.competitorTotal)}</td><td class="number crown">${range(result.ourTotalMin, result.ourTotalMax)}</td></tr></tfoot></table><div class="notice">${resultCopy.disclaimer}<br><br>${resultCopy.details}</div><p><a href="https://www.crowndental.hu${locale === 'hu' ? '' : `/${locale}`}/idopont">${resultCopy.book}</a></p></body></html>`;
 }
 
 // ─── Original three-slide homepage banners ─────────────────────────────────────
@@ -435,21 +439,7 @@ function StatsSection() {
 
 // ─── AI Quote Analyzer ────────────────────────────────────────────────────────
 type QuoteLocale = 'hu' | 'en' | 'sk' | 'de';
-type QuoteAnalysisResult = {
-  items: Array<{
-    name: string;
-    competitorPrice: number;
-    ourPriceMin: number | null;
-    ourPriceMax: number | null;
-    manualReview: boolean;
-  }>;
-  competitorTotal: number;
-  ourTotalMin: number | null;
-  ourTotalMax: number | null;
-  savingsMin: number | null;
-  savingsMax: number | null;
-  requiresManualReview: boolean;
-};
+type QuoteAnalysisResult = QuoteResult;
 
 const quoteFeedback: Record<QuoteLocale, {
   unsupportedFile: string;
@@ -474,7 +464,7 @@ const quoteFeedback: Record<QuoteLocale, {
     network: 'Nincs hálózati kapcsolat. Ellenőrizze az internetkapcsolatot, majd próbálja újra.',
     rateLimited: 'Túl sok elemzési kérés érkezett rövid időn belül. Kérjük, várjon néhány percet.',
     unavailable: 'Az elemző szolgáltatás átmenetileg nem érhető el. Kérjük, próbálja újra később.',
-    manualReview: 'Kézi ár-ellenőrzés szükséges', noGuaranteedSaving: 'Az ártartomány alapján biztos megtakarítás nem állapítható meg.',
+    manualReview: 'Ár személyes konzultáción pontosítható', noGuaranteedSaving: 'Az ártartomány alapján biztos megtakarítás nem állapítható meg.',
     retryEmail: 'E-mail újraküldése', emailNotSent: 'Az elemzés elkészült, de az e-mailt most nem sikerült elküldeni.', emailRetryFailed: 'Az e-mail újraküldése most sem sikerült.',
     resultIntro: 'Az előzetes összehasonlítás eredménye:', total: 'Összesen',
     imageProcessingFailed: 'A képet nem sikerült biztonságosan feldolgozni. Kérjük, válasszon másik JPG, PNG vagy WebP fájlt.',
@@ -486,7 +476,7 @@ const quoteFeedback: Record<QuoteLocale, {
     network: 'You appear to be offline. Check your connection and try again.',
     rateLimited: 'Too many analysis requests were sent in a short time. Please wait a few minutes.',
     unavailable: 'The analysis service is temporarily unavailable. Please try again later.',
-    manualReview: 'Manual price review required', noGuaranteedSaving: 'No guaranteed saving can be stated from the available price range.',
+    manualReview: 'Price to be confirmed at an in-person consultation', noGuaranteedSaving: 'No guaranteed saving can be stated from the available price range.',
     retryEmail: 'Retry email', emailNotSent: 'The analysis is ready, but the email could not be sent.', emailRetryFailed: 'The email retry was not successful.',
     resultIntro: 'Preliminary comparison result:', total: 'Total',
     imageProcessingFailed: 'The image could not be processed safely. Please choose a different JPG, PNG or WebP file.',
@@ -498,7 +488,7 @@ const quoteFeedback: Record<QuoteLocale, {
     network: 'Nie ste pripojení k internetu. Skontrolujte pripojenie a skúste to znova.',
     rateLimited: 'Za krátky čas bolo odoslaných priveľa žiadostí o analýzu. Počkajte prosím niekoľko minút.',
     unavailable: 'Služba analýzy je dočasne nedostupná. Skúste to prosím neskôr.',
-    manualReview: 'Potrebná manuálna kontrola ceny', noGuaranteedSaving: 'Z dostupného cenového rozpätia nemožno určiť zaručenú úsporu.',
+    manualReview: 'Cenu upresníme pri osobnej konzultácii', noGuaranteedSaving: 'Z dostupného cenového rozpätia nemožno určiť zaručenú úsporu.',
     retryEmail: 'Znova odoslať e-mail', emailNotSent: 'Analýza je hotová, ale e-mail sa nepodarilo odoslať.', emailRetryFailed: 'E-mail sa nepodarilo odoslať ani opakovane.',
     resultIntro: 'Výsledok predbežného porovnania:', total: 'Celkom',
     imageProcessingFailed: 'Obrázok sa nepodarilo bezpečne spracovať. Vyberte iný súbor JPG, PNG alebo WebP.',
@@ -510,7 +500,7 @@ const quoteFeedback: Record<QuoteLocale, {
     network: 'Sie scheinen offline zu sein. Prüfen Sie Ihre Verbindung und versuchen Sie es erneut.',
     rateLimited: 'In kurzer Zeit wurden zu viele Analyseanfragen gesendet. Bitte warten Sie einige Minuten.',
     unavailable: 'Der Analysedienst ist vorübergehend nicht erreichbar. Bitte versuchen Sie es später erneut.',
-    manualReview: 'Manuelle Preisprüfung erforderlich', noGuaranteedSaving: 'Aus der verfügbaren Preisspanne lässt sich keine sichere Ersparnis ableiten.',
+    manualReview: 'Preis wird bei der persönlichen Beratung geklärt', noGuaranteedSaving: 'Aus der verfügbaren Preisspanne lässt sich keine sichere Ersparnis ableiten.',
     retryEmail: 'E-Mail erneut senden', emailNotSent: 'Die Analyse ist fertig, aber die E-Mail konnte nicht gesendet werden.', emailRetryFailed: 'Die E-Mail konnte auch beim erneuten Versuch nicht gesendet werden.',
     resultIntro: 'Ergebnis des vorläufigen Vergleichs:', total: 'Gesamt',
     imageProcessingFailed: 'Das Bild konnte nicht sicher verarbeitet werden. Bitte wählen Sie eine andere JPG-, PNG- oder WebP-Datei.',
@@ -562,7 +552,7 @@ function isQuoteAnalysisResult(value: unknown): value is QuoteAnalysisResult {
     && number >= 0
     && number <= 100_000_000;
   const validNullablePrice = (number: unknown) => number === null || (
-    typeof number === 'number' && validNumber(number) && number > 0
+    typeof number === 'number' && validNumber(number)
   );
   const validItems = Array.isArray(candidate.items)
     && candidate.items.length > 0
@@ -772,17 +762,6 @@ function QuoteAnalyzerSection() {
     }
   };
 
-  const formatResultRange = (min: number | null, max: number | null) => {
-    if (min === null || max === null) return feedback.manualReview;
-    if (min === max) return `${min.toLocaleString()} HUF`;
-    return `${min.toLocaleString()}–${max.toLocaleString()} HUF`;
-  };
-  const resultSummary = result
-    ? result.savingsMin !== null && result.savingsMax !== null
-      ? formatResultRange(result.savingsMin, result.savingsMax)
-      : result.requiresManualReview ? feedback.manualReview : feedback.noGuaranteedSaving
-    : '';
-
   const downloadPDF = () => {
     if (!result) return;
     const html = buildPDF(result, formData.name, formData.phone, formData.email, formData.nickname, safeLocale);
@@ -892,31 +871,18 @@ function QuoteAnalyzerSection() {
 
                 {step===4&&result&&(
                   <motion.div key="s4" initial={{ opacity:0, scale:0.95 }} animate={{ opacity:1, scale:1 }} className="bg-white flex flex-col h-full">
-                    <div className="bg-gradient-to-br from-sky-500 to-sky-700 p-8 text-center text-white relative overflow-hidden">
-                      <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-2xl"/>
-                      <CheckCircle2 className="w-12 h-12 mx-auto mb-3 text-green-300 drop-shadow-md"/>
-                      <h3 className="text-2xl font-bold mb-1">{t('step4.doneTitle', { name: getPreferredGreetingName(formData.name, formData.nickname) })}</h3>
-                      <p className="text-sky-100 mb-3 text-sm">{feedback.resultIntro}</p>
-                      <div className="text-2xl md:text-3xl font-extrabold drop-shadow-md text-green-200">{resultSummary}</div>
-                    </div>
-                    <div className="p-6 flex-1 flex flex-col">
-                      <div className="max-h-[180px] overflow-y-auto mb-6 pr-2">
-                        <table className="w-full text-left text-sm">
-                          <thead><tr className="border-b border-gray-200 text-gray-500"><th className="pb-2 font-medium">{t('step4.treatment')}</th><th className="pb-2 font-medium text-right">{t('step4.original')}</th><th className="pb-2 font-bold text-sky-600 text-right">Crown</th></tr></thead>
-                          <tbody>{result.items.map((item, i)=><tr key={`${item.name}-${i}`} className="border-b border-gray-50"><td className="py-2 font-medium text-gray-900">{item.name}</td><td className="py-2 text-right text-gray-400 line-through">{item.competitorPrice.toLocaleString()} HUF</td><td className={`py-2 text-right font-bold ${item.manualReview ? 'text-amber-600' : 'text-sky-600'}`}>{formatResultRange(item.ourPriceMin, item.ourPriceMax)}</td></tr>)}</tbody>
-                          <tfoot><tr className="border-t-2 border-sky-100"><td className="pt-3 font-bold text-gray-900">{feedback.total}</td><td className="pt-3 text-right font-bold text-gray-500">{result.competitorTotal.toLocaleString()} HUF</td><td className="pt-3 text-right font-bold text-sky-700">{formatResultRange(result.ourTotalMin, result.ourTotalMax)}</td></tr></tfoot>
-                        </table>
-                      </div>
+                    <QuoteComparison result={result} locale={safeLocale}
+                      heading={t('step4.doneTitle', { name: getPreferredGreetingName(formData.name, formData.nickname) })}
+                      treatmentLabel={t('step4.treatment')} originalLabel={t('step4.original')}>
                       <div className="mt-auto space-y-3">
                         <button onClick={downloadPDF} className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl transition-colors"><Download className="w-5 h-5"/>{t('step4.downloadPDF')}</button>
-                        <a href={`${p}/idopont`} className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow-lg shadow-sky-600/30 transition-all"><Calendar className="w-5 h-5"/>{t('step4.bookConsultation')}</a>
                         {emailSent === false && <button type="button" disabled={isEmailRetrying} onClick={retryQuoteEmail} className="w-full py-2.5 text-amber-700 bg-amber-50 hover:bg-amber-100 disabled:opacity-60 text-sm font-bold rounded-xl transition-colors">{isEmailRetrying ? <Loader2 className="w-4 h-4 animate-spin mx-auto"/> : feedback.retryEmail}</button>}
                         <button onClick={()=>{setStep(1);setFile(null);setResult(null);resetQuoteSubmission();}} className="w-full py-2 text-gray-400 hover:text-gray-600 text-xs font-bold uppercase tracking-widest transition-colors mt-2">{t('step4.newAnalysis')}</button>
                         {emailSent === true
                           ? <p className="text-center text-xs text-gray-400 pt-2">{t('step4.emailSent', { email: formData.email })}</p>
                           : <p role="status" className="text-center text-xs text-amber-700 pt-2">{emailRetryFailed ? feedback.emailRetryFailed : feedback.emailNotSent}</p>}
                       </div>
-                    </div>
+                    </QuoteComparison>
                   </motion.div>
                 )}
               </AnimatePresence>
