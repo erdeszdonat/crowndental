@@ -1,3 +1,4 @@
+import { NFC_CARDS } from './nfcCards';
 import { CONSENT_STORAGE_KEY, parseStoredConsent, type StoredConsent } from './cookieConsent';
 
 export const GOOGLE_TAG_ID = 'G-9BS3P1DC4T';
@@ -43,6 +44,7 @@ export function canMeasure() {
 export function measurementPage(pathname: string) {
   const path = pathname.split(/[?#]/)[0].replace(/^\/(hu|en|de|sk)(?=\/|$)/, '').replace(/\/$/, '') || '/';
   if (path === '/') return 'home';
+  if (NFC_CARDS.some(card => path === `/kartya/${card.id}`)) return path.slice(1);
   if (path === '/kezelesek' || (path.startsWith('/kezelesek/') && TREATMENT_SLUGS.has(path.slice(11)))) return path.slice(1);
   if (path === '/idopont') return 'booking';
   if (path === '/idopont/sikeres') return 'booking_success';
@@ -75,7 +77,7 @@ export type SiteEvent = 'booking_cta_click' | 'phone_click' | 'booking_form_view
   | 'booking_submit' | 'booking_success' | 'booking_error' | 'booking_validation_error';
 export type EventOptions = {
   step?: 1 | 2;
-  placement?: 'navigation' | 'footer' | 'content' | 'home_hero' | 'treatment_hero' | 'mobile_bar' | 'treatment_card' | 'landing_hero' | 'landing_offer' | 'landing_form' | 'quote_result';
+  placement?: 'navigation' | 'footer' | 'content' | 'home_hero' | 'treatment_hero' | 'mobile_bar' | 'treatment_card' | 'landing_hero' | 'landing_offer' | 'landing_form' | 'quote_result' | 'nfc_card';
   error?: 'validation' | 'rate_limited' | 'service' | 'network' | 'unknown';
 };
 
