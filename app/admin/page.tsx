@@ -241,6 +241,7 @@ export default function AdminDashboard() {
         appointment,
         dateTime: '',
         clinicId: '',
+        includeImagingNotice: null,
         step: 'input',
         error: '',
       });
@@ -275,6 +276,11 @@ export default function AdminDashboard() {
       return;
     }
 
+    if (appointmentConfirmModal.clinicId === 'primas-sziget' && appointmentConfirmModal.includeImagingNotice === null) {
+      setAppointmentConfirmModal({ ...appointmentConfirmModal, error: 'Válaszd ki, szeretnéd-e behívni a pácienst előzetes röntgenre.' });
+      return;
+    }
+
     if (!formatAppointmentDateTime(appointmentConfirmModal.dateTime)) {
       setAppointmentConfirmModal({
         ...appointmentConfirmModal,
@@ -303,7 +309,7 @@ export default function AdminDashboard() {
         appointmentConfirmModal.appointment.id,
         'update_status',
         'processed',
-        { appointmentDateTime: appointmentConfirmModal.dateTime, appointmentClinicId: appointmentConfirmModal.clinicId }
+        { appointmentDateTime: appointmentConfirmModal.dateTime, appointmentClinicId: appointmentConfirmModal.clinicId, includeImagingNotice: appointmentConfirmModal.includeImagingNotice }
       );
       if (success) setAppointmentConfirmModal(null);
     } finally {
@@ -609,6 +615,7 @@ export default function AdminDashboard() {
                         <p className="text-base font-semibold tracking-tight text-slate-900 break-words">{item.name}</p>
                         <span className="mt-2 block text-sm leading-relaxed text-slate-500">{item.treatment}</span>
                         {item.confirmed_appointment_local && <p className="mt-2 flex items-center gap-1.5 text-xs font-semibold text-emerald-800"><Clock className="h-3.5 w-3.5" aria-hidden="true" />{formatAppointmentDateTime(item.confirmed_appointment_local) || item.confirmed_appointment_local}</p>}
+                        {item.reminder_email_sent_at && <p className="mt-2 text-xs text-emerald-700">Emlékeztető elküldve: {formatDate(item.reminder_email_sent_at)}</p>}
                         {item.status === 'special' && item.special_note && <p className="mt-2 flex items-start gap-1.5 text-xs leading-relaxed text-purple-700"><Sparkles className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" />{item.special_note}</p>}
                         {(item.confirmed_appointment_local || item.status === 'processed') && (
                           <p className={`mt-2 flex items-start gap-1 text-sm font-bold ${getAppointmentClinic(item.confirmed_clinic_id) ? 'text-emerald-800' : 'text-amber-800'}`}>
@@ -644,6 +651,7 @@ export default function AdminDashboard() {
                               )}
                             </div>
                           )}
+                          {item.reminder_email_sent_at && <p className="mt-2 text-xs text-emerald-700">Emlékeztető elküldve: {formatDate(item.reminder_email_sent_at)}</p>}
                           {item.status === 'special' && item.special_note && (
                             <div className="col-span-2 bg-purple-50 rounded-xl p-3 border border-purple-100">
                               <p className="text-[10px] font-black text-purple-500 uppercase tracking-widest mb-1 flex items-center gap-1"><Sparkles className="w-3 h-3" /> Különleges egyeztetés megjegyzés</p>

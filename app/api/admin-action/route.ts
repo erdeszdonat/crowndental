@@ -3,7 +3,7 @@ import { createHash, randomUUID } from 'node:crypto';
 import { getPreferredGreetingName } from '@/lib/names';
 import { authorizeStaff, requireStaffOrigin } from '@/lib/staffAuth';
 import { normalizeLocale, noStoreJson, type SupportedLocale } from '@/lib/serverSecurity';
-import { getAppointmentClinic, getConsultationImagingNotice, type AppointmentClinicId } from '@/lib/appointmentClinics';
+import { getAppointmentClinic, getAppointmentContacts, getConsultationImagingNotice, type AppointmentClinicId } from '@/lib/appointmentClinics';
 
 const ALLOWED_TABLES = new Set(['appointments', 'career_applications', 'quote_leads']);
 const ALLOWED_STATUSES = new Set(['new', 'no_answer', 'processed', 'cancelled', 'special']);
@@ -36,6 +36,7 @@ type AppointmentDateTimeMeta = {
   googleCalendarUrl: string;
   appleCalendarUrl: string;
   location: string;
+  clinic: NonNullable<ReturnType<typeof getAppointmentClinic>>;
   imagingNotice: ReturnType<typeof getConsultationImagingNotice>;
   isConsultationPolicyApplicable: boolean;
 };
@@ -176,13 +177,15 @@ function buildAppointmentDateTimeMeta(
   appointment: AppointmentForConfirmationEmail,
   appointmentDateTime: unknown,
   clinic: NonNullable<ReturnType<typeof getAppointmentClinic>>,
+  includeImagingNotice = true,
+  explicitlyRequested = false,
 ): AppointmentDateTimeMeta | null {
   const parsed = parseAppointmentDateTime(appointmentDateTime);
   if (!parsed) return null;
 
   const location = clinic.location;
   const locale = getAppointmentLocale(appointment);
-  const imagingNotice = getConsultationImagingNotice(clinic.id, appointment.treatment, locale);
+  const imagingNotice = includeImagingNotice ? getConsultationImagingNotice(clinic.id, appointment.treatment, locale, explicitlyRequested) : null;
   const calendarCopy: Record<SupportedLocale, { title: string; appointment: string; treatment: string; phone: string }> = {
     hu: { title: 'Crown Dental fogászati időpont', appointment: 'Időpont', treatment: 'Kezelés', phone: 'Telefon' },
     en: { title: 'Crown Dental dental appointment', appointment: 'Appointment', treatment: 'Treatment', phone: 'Phone' },
@@ -193,7 +196,7 @@ function buildAppointmentDateTimeMeta(
   const details = [
     `${copy.appointment}: ${parsed.displayDateTime}`,
     appointment.treatment ? `${copy.treatment}: ${appointment.treatment}` : '',
-    `${copy.phone}: ${CLINIC_PHONE_DISPLAY}`,
+    ...getAppointmentContacts(clinic.id).map(contact => `${copy.phone} — ${contact.name}: ${contact.phoneLabel}`),
     imagingNotice ? `${imagingNotice.title}: ${imagingNotice.body}` : '',
   ].filter(Boolean).join('\n');
   const encodedTitle = encodeURIComponent(copy.title);
@@ -203,6 +206,7 @@ function buildAppointmentDateTimeMeta(
   return {
     displayDateTime: parsed.displayDateTime,
     location,
+    clinic,
     imagingNotice,
     isConsultationPolicyApplicable: isConsultationTreatment(appointment.treatment) && parsed.dateKey >= '2026-07-01',
     googleCalendarUrl: `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodedTitle}&dates=${parsed.startCompact}/${parsed.endCompact}&ctz=Europe%2FBudapest&details=${encodedDetails}&location=${encodedLocation}`,
@@ -492,6 +496,8 @@ async function sendAppointmentConfirmationEmail(
   const appointmentLocale = getAppointmentLocale(appointment);
   const isGerman = appointmentLocale === 'de';
   const greetingName = escapeHtml(getPreferredGreetingName(appointment.name, appointment.nickname));
+  const contactsHtml = getAppointmentContacts(appointmentMeta.clinic.id).map(clinic =>
+    `<p style="margin:8px 0;color:#334155;font-size:14px">${escapeHtml(clinic.name)}: <a href="tel:${clinic.phone}" style="color:#0369a1;font-weight:700">${clinic.phoneLabel}</a></p>`).join('');
   const customerPhone = escapeHtml(appointment.phone || '');
   const treatment = escapeHtml(appointment.treatment || (isGerman ? 'Zahnarzttermin' : 'Fogászati időpont'));
   const location = escapeHtml(appointmentMeta.location);
@@ -532,7 +538,7 @@ async function sendAppointmentConfirmationEmail(
     try {
       await resend.emails.send({
         from: 'Crown Dental <info@crowndental.hu>', to: email, subject: copy.subject,
-        html: `<div style="font-family:'Segoe UI',sans-serif;max-width:640px;margin:auto;border:1px solid #e2e8f0;border-radius:20px;overflow:hidden"><div style="background:linear-gradient(135deg,#0284c7,#0f172a);padding:36px 30px;text-align:center;color:white"><p>${copy.eyebrow}</p><h1>${copy.greeting}</h1><p>${copy.intro}</p></div><div style="padding:34px 30px"><div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:16px;padding:24px"><p>${copy.appointment}</p><p style="font-size:30px;font-weight:900">${displayDateTime}</p><p><strong>${copy.treatment}:</strong> ${treatment}<br><strong>${copy.location}:</strong> ${location}</p></div>${imagingNotice}<p style="font-size:16px;line-height:1.65;color:#334155">${copy.arrive}</p><a href="${googleCalendarUrl}" style="display:block;text-align:center;background:#0284c7;color:white;text-decoration:none;font-weight:900;padding:16px;border-radius:14px;margin:12px 0">${copy.google}</a><a href="${appleCalendarUrl}" style="display:block;text-align:center;background:#0f172a;color:white;text-decoration:none;font-weight:900;padding:16px;border-radius:14px">${copy.apple}</a><p style="color:#64748b">${copy.fallback} <strong>${displayDateTime}</strong></p></div><div style="background:#f8fafc;padding:20px;text-align:center;color:#64748b">${copy.signoff},<br><strong>Crown Dental</strong></div></div>`,
+        html: `<div style="font-family:'Segoe UI',sans-serif;max-width:640px;margin:auto;border:1px solid #e2e8f0;border-radius:20px;overflow:hidden"><div style="background:linear-gradient(135deg,#0284c7,#0f172a);padding:36px 30px;text-align:center;color:white"><p>${copy.eyebrow}</p><h1>${copy.greeting}</h1><p>${copy.intro}</p></div><div style="padding:34px 30px"><div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:16px;padding:24px"><p>${copy.appointment}</p><p style="font-size:30px;font-weight:900">${displayDateTime}</p><p><strong>${copy.treatment}:</strong> ${treatment}<br><strong>${copy.location}:</strong> ${location}</p></div>${contactsHtml}${imagingNotice}<p style="font-size:16px;line-height:1.65;color:#334155">${copy.arrive}</p><a href="${googleCalendarUrl}" style="display:block;text-align:center;background:#0284c7;color:white;text-decoration:none;font-weight:900;padding:16px;border-radius:14px;margin:12px 0">${copy.google}</a><a href="${appleCalendarUrl}" style="display:block;text-align:center;background:#0f172a;color:white;text-decoration:none;font-weight:900;padding:16px;border-radius:14px">${copy.apple}</a><p style="color:#64748b">${copy.fallback} <strong>${displayDateTime}</strong></p></div><div style="background:#f8fafc;padding:20px;text-align:center;color:#64748b">${copy.signoff},<br><strong>Crown Dental</strong></div></div>`,
       });
       return { sent: true };
     } catch (mailErr) {
@@ -562,7 +568,7 @@ async function sendAppointmentConfirmationEmail(
                 <p style="margin:18px 0 0; color:#334155; font-size:15px; line-height:1.6;"><strong>Behandlung:</strong> ${treatment}<br><strong>Ort:</strong> ${location}</p>
                 ${customerPhone ? `<p style="margin:14px 0 0; color:#64748b; font-size:14px; line-height:1.6;">Ihre Telefonnummer: <strong style="color:#0f172a;">${customerPhone}</strong></p>` : ''}
               </div>
-              ${imagingNotice}
+              ${contactsHtml}${imagingNotice}
               <p style="font-size:16px; color:#334155; line-height:1.65; margin:0 0 18px;">Bitte kommen Sie nach Möglichkeit 5 Minuten vor Ihrem Termin. So können Sie die kurze Wartezeit entspannt in unserem komfortablen Praxiswartebereich verbringen. Falls Sie den Termin nicht wahrnehmen können, bitten wir Sie, uns spätestens 24 Stunden vor der Behandlung telefonisch zu informieren, damit wir den frei gewordenen Termin einem anderen Patienten anbieten können.</p>
               <div style="display:block; margin:26px 0;">
                 <a href="${googleCalendarUrl}" style="display:block; text-align:center; background:#0284c7; color:#ffffff; text-decoration:none; font-size:17px; font-weight:900; padding:16px 22px; border-radius:14px; margin-bottom:12px;">Zu Google Kalender hinzufügen</a>
@@ -573,7 +579,7 @@ async function sendAppointmentConfirmationEmail(
             </div>
             <div style="background:#f8fafc; padding:22px 30px; border-top:1px solid #e2e8f0; text-align:center;">
               <p style="font-size:14px; color:#64748b; margin:0; line-height:1.5;">Mit freundlichen Grüßen<br><strong style="color:#0f172a;">Ihr Crown Dental Team</strong></p>
-              <p style="font-size:12px; color:#94a3b8; margin:10px 0 0;">${CLINIC_PHONE_DISPLAY} | info@crowndental.hu</p>
+              <p style="font-size:12px; color:#94a3b8; margin:10px 0 0;">${appointmentMeta.clinic.phoneLabel} | info@crowndental.hu</p>
             </div>
           </div>`,
       });
@@ -611,7 +617,7 @@ async function sendAppointmentConfirmationEmail(
               ${customerPhone ? `<p style="margin:14px 0 0 0; color:#64748b; font-size:14px; line-height:1.6;">Megadott telefonszám: <strong style="color:#0f172a;">${customerPhone}</strong></p>` : ''}
             </div>
 
-            ${imagingNotice}
+            ${contactsHtml}${imagingNotice}
             <p style="font-size:16px; color:#334155; line-height:1.65; margin:0 0 18px 0;">
               Kérjük, lehetőség szerint érkezzen 5 perccel korábban az időpontjához képest, így kényelmesen, nyugodt környezetben töltheti a várakozási időt a prémium rendelői várónkban. Amennyiben az időpont mégsem alkalmas, kérjük, legkésőbb 24 órával a kezelés előtt jelezze nekünk telefonon, hogy más páciensnek is fel tudjuk ajánlani a felszabaduló időpontot.
             </p>
@@ -633,7 +639,7 @@ async function sendAppointmentConfirmationEmail(
 
           <div style="background:#f8fafc; padding:22px 30px; border-top:1px solid #e2e8f0; text-align:center;">
             <p style="font-size:14px; color:#64748b; margin:0; line-height:1.5;">Üdvözlettel,<br><strong style="color:#0f172a;">A Crown Dental csapata</strong></p>
-            <p style="font-size:12px; color:#94a3b8; margin:10px 0 0 0;">${CLINIC_PHONE_DISPLAY} | info@crowndental.hu</p>
+            <p style="font-size:12px; color:#94a3b8; margin:10px 0 0 0;">${appointmentMeta.clinic.phoneLabel} | info@crowndental.hu</p>
           </div>
         </div>
       `,
@@ -655,7 +661,7 @@ export async function POST(req: Request) {
   let statusMutationLock: { token: string; release: () => PromiseLike<{ error: unknown }> } | null = null;
 
   try {
-    const { action, table, id, value, appointmentDateTime, appointmentClinicId, statusNote } = await req.json();
+    const { action, table, id, value, appointmentDateTime, appointmentClinicId, statusNote, includeImagingNotice } = await req.json();
 
     const safeTable = String(table || '');
     if (access.context.role === 'assistant' && safeTable !== 'appointments') {
@@ -677,6 +683,7 @@ export async function POST(req: Request) {
     let cancellationEmailIdempotencyKey: string | undefined;
     let cancellationEmailSentAt: string | undefined;
     let appointmentConfirmationEmailSent = false;
+    let appointmentConfirmationImagingNotice = false;
     let appointmentConfirmationDateTime: string | undefined;
     let appointmentConfirmationIdempotencyKey: string | undefined;
     let appointmentConfirmationSentAt: string | undefined;
@@ -793,6 +800,7 @@ export async function POST(req: Request) {
       }
 
       if (safeTable === 'appointments' && value === 'processed') {
+        if (includeImagingNotice !== undefined && typeof includeImagingNotice !== 'boolean') return noStoreJson({ error: 'Érvénytelen figyelmeztetés-beállítás.' }, { status: 400 });
         const clinic = getAppointmentClinic(appointmentClinicId);
         if (!clinic) {
           return noStoreJson({ error: 'Kérjük, válassza ki az időpont rendelőjét: Crown Dental Belváros vagy Crown Dental Prímás Sziget.' }, { status: 400 });
@@ -812,7 +820,7 @@ export async function POST(req: Request) {
         }
 
         {
-          const appointmentMeta = buildAppointmentDateTimeMeta(data, appointmentDateTime, clinic);
+          const appointmentMeta = buildAppointmentDateTimeMeta(data, appointmentDateTime, clinic, includeImagingNotice !== false, includeImagingNotice === true);
 
           if (!appointmentMeta) {
             return NextResponse.json({ error: 'Kérjük, adja meg a pontos időpontot év-hónap-nap óra:perc formátumban.' }, { status: 400 });
@@ -862,6 +870,7 @@ export async function POST(req: Request) {
           }
 
           appointmentConfirmationEmailSent = true;
+          appointmentConfirmationImagingNotice = Boolean(appointmentMeta.imagingNotice);
           appointmentConfirmationDateTime = appointmentMeta.displayDateTime;
           appointmentConfirmationSentAt = new Date().toISOString();
           appointmentConfirmationClinicId = clinic.id;
@@ -893,6 +902,7 @@ export async function POST(req: Request) {
         appointmentConfirmationClinicId &&
         appointmentConfirmationSentAt
       ) {
+        updatePayload.imaging_notice_enabled = appointmentConfirmationImagingNotice;
         updatePayload.confirmed_clinic_id = appointmentConfirmationClinicId;
         updatePayload.confirmed_appointment_local = appointmentConfirmationDateTime;
         updatePayload.confirmation_email_sent_at = appointmentConfirmationSentAt;
