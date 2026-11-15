@@ -1,5 +1,6 @@
 'use client';
 
+import { isNfcCardPath } from '@/lib/nfcCards';
 import ClinicPhoneLinks from '@/components/ClinicPhoneLinks';
 import React, { useState, useEffect, useId, useRef } from 'react';
 import Image from 'next/image';
@@ -271,6 +272,7 @@ export default function Navigation() {
   // Locale-függő prefix az URL-ekhez
   const prefix = locale === 'hu' ? '' : `/${locale}`;
   const homeHref = prefix || '/';
+  const isNfc = isNfcCardPath(pathname);
 
   const navLinks = [
     { name: t('home'), href: homeHref },
@@ -332,7 +334,8 @@ export default function Navigation() {
 
           {/* Időpontfoglalás gomb */}
           <a
-            href={`${prefix}/idopont`}
+            href={isNfc ? '#konzultacio' : `${prefix}/idopont`}
+              data-booking-cta={isNfc ? 'true' : undefined}
             className="crown-button hidden sm:inline-flex"
           >
             <Calendar className="w-4 h-4 md:w-5 md:h-5" /> {t('bookAppointment')}
@@ -403,7 +406,8 @@ export default function Navigation() {
 
             {/* Időpontfoglalás mobilon */}
             <a
-              href={`${prefix}/idopont`}
+              href={isNfc ? '#konzultacio' : `${prefix}/idopont`}
+              data-booking-cta={isNfc ? 'true' : undefined}
               onClick={() => setIsOpen(false)}
               className="flex items-center justify-center gap-2 px-5 py-3 bg-sky-600 text-white font-bold rounded-full shadow-md"
             >

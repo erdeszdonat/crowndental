@@ -10,6 +10,8 @@ import {
   AlertTriangle, Loader2, Trash2, CheckCircle2, Clock, ListOrdered,
   Mail, ArrowRight
 } from 'lucide-react';
+import NfcDashboard from './NfcDashboard';
+import { nfcBookingLabel, HYGIENISTS } from '@/lib/nfcCards';
 import AnalyticsDashboard from './AnalyticsDashboard';
 import StatsDashboard from './StatsDashboard';
 import StaffManager from './StaffManager';
@@ -62,6 +64,7 @@ export default function AdminDashboard() {
   const [passwordInput, setPasswordInput] = useState('');
   const [isLoginLoading, setIsLoginLoading] = useState(false);
 
+  const [hygienistFilter, setHygienistFilter] = useState('all');
   const [activeTab, setActiveTab] = useState<AdminTab>('appointments');
   const [showLegacyStats, setShowLegacyStats] = useState(false);
   const [checkingSession, setCheckingSession] = useState(true);
@@ -232,6 +235,8 @@ export default function AdminDashboard() {
     if (appointment?.confirmed_appointment_local || appointment?.status === 'processed') {
       return 'A visszaigazolt rendelő nincs külön rögzítve (korábbi időpont).';
     }
+    const requested = getAppointmentClinic(appointment?.requested_clinic_id);
+    if (requested) return `Kért rendelő: ${requested.location}`;
     return 'Rendelő még nincs kiválasztva.';
   };
 
@@ -240,7 +245,7 @@ export default function AdminDashboard() {
       setAppointmentConfirmModal({
         appointment,
         dateTime: '',
-        clinicId: '',
+        clinicId: getAppointmentClinic(appointment.requested_clinic_id)?.id || '',
         includeImagingNotice: null,
         step: 'input',
         error: '',
@@ -518,9 +523,9 @@ export default function AdminDashboard() {
     BLOG_LANGUAGES.find(item => item.id === normalizeBlogLanguage(language))?.label ?? 'Magyar';
   const getBlogCategoryLabel = (category: string | undefined) =>
     BLOG_CATEGORIES.find(item => item.id === normalizeBlogCategory(category))?.shortLabel ?? 'Szakmai';
-  const appointmentClinic = (record: any) => getAppointmentClinic(record.confirmed_clinic_id)?.name || (record.city ? `Kérés: ${record.city}` : 'Rendelő még nincs megadva');
+  const appointmentClinic = (record: any) => getAppointmentClinic(record.confirmed_clinic_id)?.name || getAppointmentClinic(record.requested_clinic_id)?.name || (record.city ? `Kérés: ${record.city}` : 'Rendelő még nincs megadva');
   const clinics = Array.from(new Set(appointments.map(appointmentClinic))).sort((a, b) => a.localeCompare(b, 'hu'));
-  const visibleAppointments = filterAdminRecords(appointments, filters.appointments, ['name', 'email', 'phone', 'treatment', 'city', 'special_note']).filter(record => clinicFilter === 'all' || appointmentClinic(record) === clinicFilter);
+  const visibleAppointments = filterAdminRecords(appointments.map(record => ({ ...record, nfcLabel: nfcBookingLabel(record) })), filters.appointments, ['name', 'email', 'phone', 'treatment', 'city', 'special_note', 'nfcLabel']).filter(record => hygienistFilter === 'all' || (hygienistFilter === 'nfc' ? Boolean(record.nfc_card_id) : record.requested_hygienist_id === hygienistFilter)).filter(record => clinicFilter === 'all' || appointmentClinic(record) === clinicFilter);
   const visibleApplications = filterAdminRecords(applications, filters.career, ['name', 'email', 'phone', 'position', 'location']);
   const visibleQuotes = filterAdminRecords(quotes, filters.quotes, ['name', 'email', 'phone']);
   const visibleMarketing = filterAdminRecords(marketingSubscribers, filters.marketing, ['name', 'nickname', 'email', 'phone', 'clinic']);
@@ -539,12 +544,13 @@ export default function AdminDashboard() {
             </div>
           )}
 
+          {activeTab === 'appointments' && <label className="mb-4 block text-sm font-semibold text-slate-600">Dentálhigiénikus / kártya<select value={hygienistFilter} onChange={e=>{setHygienistFilter(e.target.value);setVisibleLimit(40);}} className="ml-3 rounded-xl border border-slate-200 bg-white p-2"><option value="all">Minden megkeresés</option><option value="nfc">Minden kártyás megkeresés</option>{HYGIENISTS.map(p=><option key={p.id} value={p.id}>{p.name}</option>)}</select></label>}
           {dataTab && <AdminListFilters value={filters[dataTab]} onChange={updateFilter} total={totalRecords} visible={records.length} statuses={activeTab === 'marketing' ? undefined : statusOptions} clinics={activeTab === 'appointments' ? clinics : undefined} clinic={activeTab === 'appointments' ? clinicFilter : 'all'} onClinicChange={activeTab === 'appointments' ? value => { setClinicFilter(value); setVisibleLimit(40); } : undefined} />}
 
           <AnimatePresence mode="wait">
 
             {/* STATS */}
-            {activeTab === 'security' && identity ? (
+            {activeTab === 'nfc' && identity?.role === 'admin' ? <NfcDashboard /> : activeTab === 'security' && identity ? (
               <motion.div key="security" initial={{ opacity: 0 }} animate={{ opacity: 1 }}><AccountSecurity identity={identity} onReady={fetchSecureData} onLogout={handleLogout} /></motion.div>
             ) : activeTab === 'staff' && identity?.role === 'admin' ? (
               <motion.div key="staff" initial={{ opacity: 0 }} animate={{ opacity: 1 }}><StaffManager identity={identity} /></motion.div>
@@ -614,6 +620,7 @@ export default function AdminDashboard() {
                         </div>
                         <p className="text-base font-semibold tracking-tight text-slate-900 break-words">{item.name}</p>
                         <span className="mt-2 block text-sm leading-relaxed text-slate-500">{item.treatment}</span>
+                        {item.nfc_card_id && <span className="mt-2 inline-block rounded-lg bg-sky-50 px-3 py-2 text-xs font-semibold leading-relaxed text-sky-800">{nfcBookingLabel(item)}</span>}
                         {item.confirmed_appointment_local && <p className="mt-2 flex items-center gap-1.5 text-xs font-semibold text-emerald-800"><Clock className="h-3.5 w-3.5" aria-hidden="true" />{formatAppointmentDateTime(item.confirmed_appointment_local) || item.confirmed_appointment_local}</p>}
                         {item.reminder_email_sent_at && <p className="mt-2 text-xs text-emerald-700">Emlékeztető elküldve: {formatDate(item.reminder_email_sent_at)}</p>}
                         {item.status === 'special' && item.special_note && <p className="mt-2 flex items-start gap-1.5 text-xs leading-relaxed text-purple-700"><Sparkles className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" />{item.special_note}</p>}

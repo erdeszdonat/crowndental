@@ -24,6 +24,7 @@ import type { StaffIdentity } from "@/lib/staffAuth";
 import styles from "./admin-ui.module.css";
 
 export type AdminTab =
+  | "nfc"
   | "stats"
   | "appointments"
   | "career"
@@ -34,6 +35,7 @@ export type AdminTab =
   | "staff"
   | "security";
 const sections = [
+  { id: "nfc", label: "NFC-kártyák", description: "Kártyák, kollégák és időpontkérések kimutatása.", icon: BarChart3, group: "Rendelő" },
   {
     id: "appointments",
     label: "Páciensek",

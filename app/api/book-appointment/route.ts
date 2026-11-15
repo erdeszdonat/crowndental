@@ -1,3 +1,6 @@
+import { resolveNfcBooking, getHygienist, HYGIENE_TREATMENTS } from '@/lib/nfcCards';
+import { getAppointmentClinic, getAppointmentContacts } from '@/lib/appointmentClinics';
+import { nfcCopy } from '@/lib/nfcCopy';
 import { createClient } from '@supabase/supabase-js';
 import { captureAnalyticsSession } from '@/lib/analyticsServer';
 import { isBudapestBookingAvailable, isBudapestCity } from '@/lib/bookingAvailability';
@@ -54,6 +57,8 @@ type BookingReceipt = {
   city: string;
   treatment: string;
   locale?: string | null;
+  requested_hygienist_id?: string | null;
+  requested_clinic_id?: string | null;
   request_receipt_email_sent_at?: string | null;
   request_receipt_email_idempotency_key?: string | null;
 };
@@ -61,12 +66,15 @@ type BookingReceipt = {
 async function sendBookingReceipt(booking: BookingReceipt, providerKey: string) {
   const locale = normalizeLocale(booking.locale);
   const copy = EMAIL_COPY[locale];
+  const clinic = getAppointmentClinic(booking.requested_clinic_id);
+  const hygienist = getHygienist(booking.requested_hygienist_id);
+  const contacts = getAppointmentContacts(booking.requested_clinic_id);
   const greeting = copy.greeting(escapeHtml(getPreferredGreetingName(booking.name, booking.nickname || '')));
   return sendTransactionalEmail({
     from: 'Crown Dental <info@crowndental.hu>',
     to: booking.email,
     subject: copy.subject,
-    html: `<div style="font-family:'Segoe UI',sans-serif;max-width:600px;margin:auto;border:1px solid #e2e8f0;border-radius:16px;overflow:hidden"><div style="background:#0284c7;padding:35px 30px;text-align:center"><h1 style="color:white">${greeting}</h1></div><div style="padding:35px 30px"><p style="font-size:16px;line-height:1.6">${copy.intro}</p><div style="background:#f0f9ff;padding:20px 25px;border-radius:12px"><h3>${copy.details}</h3><p><strong>${copy.clinic}:</strong> ${escapeHtml(booking.city)}</p><p><strong>${copy.treatment}:</strong> ${escapeHtml(booking.treatment)}</p><p><strong>${copy.phone}:</strong> ${escapeHtml(booking.phone)}</p></div><p style="font-size:16px;line-height:1.6">${copy.next}</p></div><div style="background:#f8fafc;padding:20px;text-align:center;color:#64748b">${copy.signoff},<br><strong>${copy.team}</strong><br>06 30 589 2468 | info@crowndental.hu</div></div>`,
+    html: `<div style="font-family:'Segoe UI',sans-serif;max-width:600px;margin:auto;border:1px solid #e2e8f0;border-radius:16px;overflow:hidden"><div style="background:#0284c7;padding:35px 30px;text-align:center"><h1 style="color:white">${greeting}</h1></div><div style="padding:35px 30px"><p style="font-size:16px;line-height:1.6">${copy.intro}</p><div style="background:#f0f9ff;padding:20px 25px;border-radius:12px"><h3>${copy.details}</h3><p><strong>${copy.clinic}:</strong> ${escapeHtml(clinic?.location || booking.city)}</p>${hygienist ? `<p><strong>${nfcCopy[locale].selected}:</strong> ${escapeHtml(hygienist.name)}</p>` : ''}<p><strong>${copy.treatment}:</strong> ${escapeHtml(booking.treatment)}</p><p><strong>${copy.phone}:</strong> ${escapeHtml(booking.phone)}</p></div><p style="font-size:16px;line-height:1.6">${copy.next}</p></div><div style="background:#f8fafc;padding:20px;text-align:center;color:#64748b">${copy.signoff},<br><strong>${copy.team}</strong><br>${contacts.map(contact => `<a href="tel:${contact.phone}">${escapeHtml(contact.name)}: ${contact.phoneLabel}</a>`).join('<br>')}<br>info@crowndental.hu</div></div>`,
   }, providerKey);
 }
 
@@ -91,13 +99,18 @@ export async function POST(request: Request) {
       return noStoreJson({ error: 'Ezt a foglalási kérést már feldolgoztuk.' }, { status: 409 });
     }
 
-    const city = cleanText(body.city, 80);
+    const nfc = body.nfcCardId === undefined ? null : resolveNfcBooking(body.nfcCardId, body.requestedHygienistId, body.hygieneTreatmentId);
+    if (body.nfcCardId !== undefined && (!nfc || body.privacyAcknowledged !== true)) {
+      releaseIdempotency('booking', idempotencyKey);
+      return noStoreJson({ error: 'Érvénytelen kártya, kolléga, kezelés vagy adatkezelési visszajelzés.' }, { status: 400 });
+    }
+    const city = nfc ? 'Esztergom' : cleanText(body.city, 80);
     const name = cleanText(body.name, 120);
     const nickname = cleanText(body.nickname, 80);
     const email = normalizeEmail(body.email);
     const phone = cleanText(body.phone, 40);
-    const treatment = cleanText(body.treatment, 280);
     const locale = normalizeLocale(body.locale || body.marketingConsentLocale);
+    const treatment = nfc ? HYGIENE_TREATMENTS[nfc.hygiene_treatment_id][locale] : cleanText(body.treatment, 280);
     const marketingConsent = body.marketingConsent === true;
 
     if (!name || !BOOKING_CITIES.has(city) || !treatment || !isValidEmail(email) || !isValidPhone(phone)) {
@@ -127,6 +140,7 @@ export async function POST(request: Request) {
         name, nickname, email, phone, city, treatment, locale, idempotency_key: idempotencyKey,
         request_receipt_email_idempotency_key: receiptEmailIdempotencyKey,
         analytics_session_id: analyticsSessionId,
+        ...(nfc || {}),
       })
       .select('id')
       .single();
@@ -135,7 +149,7 @@ export async function POST(request: Request) {
       if (error?.code === '23505') {
         const { data: existing, error: existingError } = await supabase
           .from('appointments')
-          .select('id,name,nickname,email,phone,city,treatment,locale,request_receipt_email_sent_at,request_receipt_email_idempotency_key')
+          .select('id,name,nickname,email,phone,city,treatment,locale,requested_hygienist_id,requested_clinic_id,request_receipt_email_sent_at,request_receipt_email_idempotency_key')
           .eq('idempotency_key', idempotencyKey)
           .maybeSingle();
         if (existing?.id) {
@@ -170,7 +184,7 @@ export async function POST(request: Request) {
     }
 
     const emailResult = await sendBookingReceipt({
-      id: String(appointment.id), name, nickname, email, phone, city, treatment, locale,
+      id: String(appointment.id), name, nickname, email, phone, city, treatment, locale, ...(nfc || {}),
     }, receiptEmailIdempotencyKey);
     const emailSent = emailResult.ok;
     if (emailSent) {
