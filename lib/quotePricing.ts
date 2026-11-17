@@ -18,7 +18,7 @@ export const PRICE_LIST: Record<string, string> = {
   'Implantátumfelépítmény': '15 000–30 000 Ft',
   'Nagy műtéti díj': 'Díjmentes', 'Gyógyulási csavar': 'Díjmentes', 'Technikai analóg': 'Díjmentes',
   'Digitális szkennelés': 'Díjmentes', 'Csavarfurat fedése': 'Díjmentes', 'Tömés tejfogakba': '15 000 Ft',
-  'Barázdazárás': '15 000 Ft', 'Rögzített készülék': '190 000–285 000 Ft', 'Kivehető készülék': '60 000–90 000 Ft',
+  'Barázdazárás': '15 000 Ft', 'Rögzített készülék': '190 000–285 000 Ft', 'Kivehető készülék': '65 000–155 000 Ft',
   'Rögzített készülék aktiválása': '10 000–15 000 Ft', 'Kivehető készülék aktiválása': '5 000–8 000 Ft',
 };
 
