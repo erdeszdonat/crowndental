@@ -122,6 +122,9 @@ export function BookingForm({ directOffer, initialTreatmentSlug }: BookingFormPr
   const router = useRouter();
   const p = safeLocale === 'hu' ? '' : `/${safeLocale}`;
   const [step, setStep] = useState<1 | 2 | 3>(1);
+  // A native submit before hydration would navigate away from the form.
+  const [interactive, setInteractive] = useState(false);
+  useEffect(() => { setInteractive(true); }, []);
   const copy = getSiteCopy(safeLocale);
   const busyRef = useRef(false);
   const startedRef = useRef(false);
@@ -277,7 +280,7 @@ export function BookingForm({ directOffer, initialTreatmentSlug }: BookingFormPr
       <form key={step} onSubmit={step === 3 ? handleSubmit : handleNext} onChange={markStarted}
         onInvalidCapture={() => trackSiteEvent('booking_validation_error', safeLocale, { step, error: 'validation' })}
         aria-busy={isSubmitting}>
-        <fieldset disabled={isSubmitting} className="space-y-5">
+        <fieldset disabled={!interactive || isSubmitting} className="space-y-5">
           {step === 1 && <>
               <div>
                 <label htmlFor="booking-treatment" className="crown-field-label">{t('treatment')} *</label>

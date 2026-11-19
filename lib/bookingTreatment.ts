@@ -19,12 +19,12 @@ const articleTopics: [BookingTreatmentId, RegExp][] = [
   ['fogfeherites', /feherit|whiten|bleach|bielen|zahnaufhell/],
   ['gyokerkezeles', /gyokerkezel|root canal|wurzelkanal|endodon|korenov.{0,5} (liec|oset)/],
   ['fogsor', /fogsor|denture|prothes|protez/],
-  ['koronak-hidak', /korona|korunk|\bcrowns?\b|krone|bridge|mostik|brucke|cirkon|zircon|zirkon/],
-  ['fogko', /fogko|tartar|scaling|zahnstein|zubn.{0,3} kamen/],
+  ['koronak-hidak', /korona|korunk|\bcrowns?\b|krone|bridge|\bhid(?:ak)?\b|mostik|brucke|cirkon|zircon|zirkon/],
+  ['fogko', /fogko(?!ron)|tartar|scaling|zahnstein|zubn.{0,3} kamen/],
   ['szajsebeszet', /foghuz|szajsebesz|tooth extraction|oral surgery|oralchirurg|zahnextraktion|extrakci/],
-  ['gyerekfogaszat', /gyerekfog|gyermekfog|pediatric dent|paediatric dent|kinderzahn|detska stomat/],
+  ['gyerekfogaszat', /gyerekfogasz|gyermekfogasz|pediatric dent|paediatric dent|kinderzahn|detska stomat/],
   ['gockutatas', /gockutat|focal infect|herdsuche|lozisk/],
-  ['fogtechnikai-megoldasok', /fogtechn|dental technician|zahntechnik|zubny technik/],
+  ['fogtechnikai-megoldasok', /fogtechn|dental technician|zahntechnik|zubn\w* technik/],
   ['fogtomes', /fogtomes|dental filling|zahnfull|zubna vypln/],
   ['cbct', /\bcbct\b|\bdvt\b/],
   ['panorama', /panoram/],
@@ -36,6 +36,8 @@ export function articleBookingTreatment(slug: string, title = ''): BookingTreatm
     .replace(/[-_]/g, ' ').replace(/crown dental\w*/g, '');
   // Prefer the editorial title: older Sanity slugs can be truncated or describe an earlier title.
   for (const text of [title, slug].map(normalize)) {
+    if (/all on (4|four)\b/.test(text)) return 'implantatum';
+    if (/pattintos fogsor|snap in dentur|druckknopfprothes|nacvakavaci\w* protez/.test(text)) return 'fogsor';
     if (/\bhej(ak)?\b|veneer|fazet/.test(text)) {
       if (/hollywood/.test(text)) return 'hollywood-mosoly';
       const composite = /\bdire(k|c)t|kompozit|composite|komposit|priame/.test(text);
