@@ -49,7 +49,7 @@ export default function GoogleReviewsCta() {
             href={GOOGLE_BUSINESS_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-8 inline-flex items-center justify-center gap-2 rounded-full bg-sky-600 px-7 py-4 font-black text-white shadow-lg shadow-sky-600/20 transition hover:bg-sky-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2"
+            className="mt-8 inline-flex items-center justify-center gap-2 rounded-full bg-sky-700 px-7 py-4 font-black text-white shadow-lg shadow-sky-600/20 transition hover:bg-sky-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2"
           >
             {text.action}
             <ExternalLink className="h-4 w-4" aria-hidden="true" />
