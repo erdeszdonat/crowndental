@@ -32,14 +32,7 @@ export function normalizeEmail(value: unknown): string {
   return cleanText(value, 254).toLowerCase();
 }
 
-export function isValidEmail(value: string): boolean {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value) && value.length <= 254;
-}
-
-export function isValidPhone(value: string): boolean {
-  const digits = value.replace(/\D/g, '');
-  return /^[+()\d\s./-]+$/.test(value) && digits.length >= 7 && digits.length <= 16;
-}
+export { isValidEmail, isValidPhone } from './contactValidation';
 
 export function getClientIp(request: Request): string {
   const forwarded = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim();

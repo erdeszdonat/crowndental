@@ -1,4 +1,5 @@
 'use client';
+import { bookingHref } from '@/lib/bookingTreatment';
 import { isNfcCardPath } from '@/lib/nfcCards';
 import ClinicPhoneLinks from '@/components/ClinicPhoneLinks';
 import Link from 'next/link';
@@ -17,7 +18,7 @@ export default function MobileContactBar() {
   return (
     <aside className="crown-mobile-contact" aria-label={copy.contact} data-cta-location="mobile_bar">
       <ClinicPhoneLinks tone="light" compact />
-      <Link href={hasLocalBooking ? '#konzultacio' : `${p}/idopont`} data-booking-cta={hasLocalBooking ? 'true' : undefined} className="crown-button">{copy.book}<ArrowUpRight size={18} aria-hidden="true" /></Link>
+      <Link href={hasLocalBooking ? '#konzultacio' : bookingHref(p, pathname)} data-booking-cta={hasLocalBooking ? 'true' : undefined} className="crown-button">{copy.book}<ArrowUpRight size={18} aria-hidden="true" /></Link>
     </aside>
   );
 }

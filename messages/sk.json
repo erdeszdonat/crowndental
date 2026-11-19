@@ -254,8 +254,8 @@
   "booking": {
     "title": "Objednať sa",
     "subtitle": "Vyplňte svoje údaje a náš kolega vás čoskoro kontaktuje.",
-    "step1Title": "Vaše údaje",
-    "step2Title": "Výber ošetrenia",
+    "contactHeading": "Vaše údaje",
+    "treatmentHeading": "Výber ošetrenia",
     "fullName": "Celé meno",
     "salutation": "Meno / Oslovenie",
     "email": "E-mailová adresa",
@@ -271,22 +271,26 @@
     "submitting": "Odosielam...",
     "marketingOptInTitle": "Chcem dostávať akčné ponuky a extra možnosti e-mailom",
     "marketingOptInText": "Nie je povinné pre rezerváciu. Občas pošleme zľavy, možnosti bezplatného ošetrenia a užitočné tipy o zuboch. Kedykoľvek sa môžete odhlásiť.",
-    "treatments": [
-      "Vyšetrenie a konzultácia",
-      "Zubný implantát",
-      "Zirkónová alebo keramokovová korunka",
-      "Ortodontia",
-      "Ortodontická konzultácia",
-      "Bielenie zubov",
-      "Odstránenie zubného kameňa",
-      "Panoramatický RTG",
-      "CBCT (3D) snímka",
-      "Výroba / oprava protézy",
-      "Orálna chirurgia / Extrakcia",
-      "Koreňová liečba",
-      "Plomba / Výplň",
-      "Iné / Neviem presne"
-    ]
+    "treatments": {
+      "allapotfelmeres": "Vyšetrenie a konzultácia",
+      "implantatum": "Zubný implantát",
+      "koronak-hidak": "Zirkónová alebo keramokovová korunka",
+      "fogszabalyozo-kezeles": "Ortodontia",
+      "fogszabalyozas": "Ortodontická konzultácia",
+      "fogfeherites": "Bielenie zubov",
+      "fogko": "Odstránenie zubného kameňa",
+      "panorama": "Panoramatický RTG",
+      "cbct": "CBCT (3D) snímka",
+      "fogsor": "Výroba / oprava protézy",
+      "szajsebeszet": "Orálna chirurgia / Extrakcia",
+      "gyokerkezeles": "Koreňová liečba",
+      "fogtomes": "Plomba / Výplň",
+      "egyeb": "Iné / Neviem presne",
+      "gyerekfogaszat": "Detská stomatológia",
+      "gockutatas": "Vyšetrenie zubných ložísk",
+      "esztetikai-fogaszat": "Estetická stomatológia",
+      "fogtechnikai-megoldasok": "Zubná technika"
+    }
   },
 
   "about": {

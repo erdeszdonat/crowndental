@@ -1,5 +1,6 @@
 'use client';
 
+import { articleBookingTreatment, contextualArticleLink } from '@/lib/bookingTreatment';
 import ClinicPhoneLinks from '@/components/ClinicPhoneLinks';
 import React from 'react';
 import {
@@ -14,20 +15,6 @@ import Image from 'next/image';
 import { INTERNATIONAL_PATIENT_PATHS } from '@/lib/internationalPaths';
 import { sanityImageLoader } from '@/lib/sanityImage';
 import GoogleReviewsCta from '@/components/GoogleReviewsCta';
-
-function relatedTreatmentSlug(post: any): string {
-  const haystack = `${post?.title ?? ''} ${post?.excerpt ?? ''} ${post?.slug ?? ''}`.toLocaleLowerCase();
-  if (/implant|all-on-4/.test(haystack)) return 'implantatum';
-  if (/protez|denture|zahnersatz|fogsor|műfogsor|zubn[aé] n[aá]hrad/.test(haystack)) return 'fogsor';
-  if (/h[eé]j|fazet|veneer/.test(haystack)) return 'direkt-hej';
-  if (/ortodon|orthodon|aligner|stroj[cč]ek|braces|zahnspang|fogszab/.test(haystack)) return 'fogszabalyozas';
-  if (/koron|crown|krone|most[ií]k|bridge|brücke|cirk|zircon|zirkon/.test(haystack)) return 'koronak-hidak';
-  if (/whiten|bleach|bielen|feh[eé]r[ií]t/.test(haystack)) return 'fogfeherites';
-  if (/root canal|wurzel|gy[oö]k[eé]r|endodon/.test(haystack)) return 'gyokerkezeles';
-  if (/g[oó]c|focal|ohnisk/.test(haystack)) return 'gockutatas';
-  if (/extract|elt[aá]vol|h[uú]z[aá]s|entfern|extrak/.test(haystack)) return 'foghuzas';
-  return 'allapotfelmeres';
-}
 
 const articleLinkCopy = {
   hu: { heading: 'Kapcsolódó következő lépések', treatment: 'Kapcsolódó kezelés', all: 'Kezelések és árak', international: 'Utazás és szállás' },
@@ -69,7 +56,12 @@ export default function BlogPostClient({ post }: { post: any }) {
   const dateLocale = locale === 'sk' ? 'sk-SK' : locale === 'en' ? 'en-GB' : locale === 'de' ? 'de-DE' : 'hu-HU';
   const linkCopy = articleLinkCopy[locale as keyof typeof articleLinkCopy] ?? articleLinkCopy.hu;
   const sourceLabel = locale === 'sk' ? 'Zdroj fotografie' : locale === 'en' ? 'Image source' : locale === 'de' ? 'Bildquelle' : 'Kép forrása';
-  const treatmentSlug = relatedTreatmentSlug(post);
+  const slug = post?.slug || '';
+  const topic = articleBookingTreatment(slug, post?.title);
+  const bookingLink = contextualArticleLink('/idopont', p, slug, topic);
+  const treatmentSlug = topic && ['implantatum', 'koronak-hidak', 'fogszabalyozas', 'fogfeherites', 'fogsor', 'gyokerkezeles',
+    'direkt-hej', 'indirekt-hej', 'szajsebeszet', 'gockutatas', 'gyerekfogaszat', 'esztetikai-fogaszat',
+    'fogtechnikai-megoldasok'].includes(topic) ? topic : 'allapotfelmeres';
   const internationalPath = INTERNATIONAL_PATIENT_PATHS[locale as keyof typeof INTERNATIONAL_PATIENT_PATHS] ?? INTERNATIONAL_PATIENT_PATHS.hu;
 
   if (!post) return (
@@ -142,7 +134,7 @@ export default function BlogPostClient({ post }: { post: any }) {
                 if (c.marks?.includes('em')) el = <em key={`e${j}`}>{el}</em>;
                 const linkMark = c.marks?.find((mk: string) => linkMap[mk]);
                 if (linkMark) {
-                  const href = linkMap[linkMark];
+                  const href = contextualArticleLink(linkMap[linkMark], p, slug, topic);
                   const isClinicPhone = /^tel:(?:\+36|06)(?:305892468|706042500)$/.test(href.replace(/[\s()-]/g, ''));
                   el = isClinicPhone
                     ? <ClinicPhoneLinks key={`l${j}`} />
@@ -255,7 +247,7 @@ export default function BlogPostClient({ post }: { post: any }) {
             </div>
             <h3 className="text-3xl md:text-5xl font-extrabold mb-6 tracking-tight">{t('ctaTitle')}</h3>
             <p className="text-xl text-sky-100 mb-10 max-w-2xl mx-auto font-light leading-relaxed">{t('ctaSubtitle')}</p>
-            <a href={`${p}/idopont`} className="inline-flex items-center gap-3 px-10 py-5 bg-white text-sky-700 font-extrabold rounded-full shadow-xl hover:scale-105 transition-all text-lg tracking-wide group">
+            <a href={bookingLink} className="inline-flex items-center gap-3 px-10 py-5 bg-white text-sky-700 font-extrabold rounded-full shadow-xl hover:scale-105 transition-all text-lg tracking-wide group">
               {t('ctaBtn')} <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </a>
           </div>

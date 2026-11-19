@@ -76,7 +76,7 @@ export type SiteEvent = 'booking_cta_click' | 'phone_click' | 'booking_form_view
   | 'booking_start' | 'booking_step_view' | 'booking_step_complete'
   | 'booking_submit' | 'booking_success' | 'booking_error' | 'booking_validation_error';
 export type EventOptions = {
-  step?: 1 | 2;
+  step?: 1 | 2 | 3;
   placement?: 'navigation' | 'footer' | 'content' | 'home_hero' | 'treatment_hero' | 'mobile_bar' | 'treatment_card' | 'landing_hero' | 'landing_offer' | 'landing_form' | 'quote_result' | 'nfc_card';
   error?: 'validation' | 'rate_limited' | 'service' | 'network' | 'unknown';
 };

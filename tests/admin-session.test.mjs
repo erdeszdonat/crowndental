@@ -19,7 +19,7 @@ function environment() {
     } });
     return module.exports;
   }
-  const security = load('lib/serverSecurity.ts', { 'node:crypto': crypto, 'next/server': next, '@supabase/supabase-js': { createClient() { throw new Error('No real database in auth tests'); } } });
+  const security = load('lib/serverSecurity.ts', { './contactValidation': load('lib/contactValidation.ts', {}), 'node:crypto': crypto, 'next/server': next, '@supabase/supabase-js': { createClient() { throw new Error('No real database in auth tests'); } } });
   const auth = load('lib/adminAuth.ts', { 'node:crypto': crypto, 'next/server': next, './serverSecurity': security });
   const staffAuth = load('lib/staffAuth.ts', { '@supabase/supabase-js': { createClient() { throw new Error('No real database in auth tests'); } }, 'next/server': next, './adminAuth': auth, './serverSecurity': security });
   let owner = null;

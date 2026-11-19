@@ -1,22 +1,25 @@
 'use client';
 
 import ClinicPhoneLinks from '@/components/ClinicPhoneLinks';
-import React, { Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { getSiteCopy } from '@/lib/siteCopy';
 import { ANALYTICS_READY_EVENT, rememberBookingSource, trackSiteEvent } from '@/lib/siteAnalytics';
 import { bookingAnalyticsContext } from '@/lib/firstPartyAnalytics';
 import { ArrowRight, ArrowLeft, Loader2 } from 'lucide-react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
-import { BUDAPEST_BOOKING_OPEN_LABELS, isBudapestBookingAvailable, isBudapestCity } from '@/lib/bookingAvailability';
+import { BUDAPEST_BOOKING_OPEN_LABELS, isBudapestBookingAvailable } from '@/lib/bookingAvailability';
 import GoogleReviewsCta from '@/components/GoogleReviewsCta';
 import { getVeneerOffer } from '@/lib/veneers.mjs';
 import { getVeneerLabels } from '@/lib/veneerI18n';
+import { APPOINTMENT_CLINICS } from '@/lib/appointmentClinics';
+import { bookingTreatmentIds, type BookingTreatmentId } from '@/lib/bookingTreatment';
+import { isValidEmail, isValidPhone } from '@/lib/contactValidation';
 import VeneerOfferCard from '@/components/VeneerOffer';
 
 type VeneerOffer = ReturnType<typeof getVeneerOffer>;
-type BookingTreatmentSlug = 'direkt-hej' | 'indirekt-hej' | 'hollywood-mosoly';
+type VeneerTreatmentSlug = 'direkt-hej' | 'indirekt-hej' | 'hollywood-mosoly';
 
 const BOOKING_SUCCESS_STORAGE_KEY = 'crown_booking_success';
 const BOOKING_SUCCESS_CONTACT_KEY = 'crown_booking_contact';
@@ -78,7 +81,7 @@ function createIdempotencyKey(prefix: string) {
   return `${prefix}-${value}`;
 }
 
-function veneerBookingLabels(locale: string): Record<BookingTreatmentSlug, string> {
+function veneerBookingLabels(locale: string): Record<VeneerTreatmentSlug, string> {
   const labels = getVeneerLabels(locale);
   return {
     'direkt-hej': labels.directName,
@@ -106,29 +109,19 @@ const veneerBookingNotes: Record<SupportedLocale, { confirmation: string; consul
   },
 };
 
-// Only this invisible helper reads URL data; the complete form stays prerendered.
-function TreatmentPrefill({ locale, onSelect }: { locale: string; onSelect: (treatment: string) => void }) {
-  const searchParams = useSearchParams();
-  const slug = searchParams.get('kezeles');
-  const treatment = slug === 'direkt-hej' || slug === 'indirekt-hej' || slug === 'hollywood-mosoly'
-    ? veneerBookingLabels(locale)[slug] : undefined;
-  useEffect(() => {
-    if (treatment) onSelect(treatment);
-  }, [treatment, onSelect]);
-  return null;
-}
-
-export function BookingForm({ directOffer, initialTreatmentSlug }: {
+type BookingFormProps = {
   directOffer: VeneerOffer;
-  initialTreatmentSlug?: BookingTreatmentSlug;
-}) {
+  initialTreatmentSlug?: BookingTreatmentId;
+};
+
+export function BookingForm({ directOffer, initialTreatmentSlug }: BookingFormProps) {
   const t = useTranslations('booking');
   const locale = useLocale();
   const safeLocale = normalizeLocale(locale);
   const veneerLabels = veneerBookingLabels(safeLocale);
   const router = useRouter();
   const p = safeLocale === 'hu' ? '' : `/${safeLocale}`;
-  const [step, setStep] = useState<1 | 2>(1);
+  const [step, setStep] = useState<1 | 2 | 3>(1);
   const copy = getSiteCopy(safeLocale);
   const busyRef = useRef(false);
   const startedRef = useRef(false);
@@ -140,14 +133,10 @@ export function BookingForm({ directOffer, initialTreatmentSlug }: {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [formData, setFormData] = useState({ city:'Esztergom', name:'', nickname:'', email:'', phone:'', treatment: initialTreatmentSlug ? veneerLabels[initialTreatmentSlug] : '' });
+  const [formData, setFormData] = useState({ clinic: '', name: '', nickname: '', email: '', phone: '', treatment: initialTreatmentSlug ?? '' });
   const [otherNote, setOtherNote] = useState('');
   const [marketingConsent, setMarketingConsent] = useState(false);
   const idempotencyKeyRef = useRef<string | null>(null);
-  const prefillTreatment = useCallback((treatment: string) => {
-    setFormData(previous => ({ ...previous, treatment }));
-    idempotencyKeyRef.current = null;
-  }, []);
   const isBudapestOpen = isBudapestBookingAvailable();
   const budapestOpenLabel = BUDAPEST_BOOKING_OPEN_LABELS[safeLocale] ?? BUDAPEST_BOOKING_OPEN_LABELS.hu;
   const otherNotePlaceholders: Record<string, string> = {
@@ -159,13 +148,9 @@ export function BookingForm({ directOffer, initialTreatmentSlug }: {
   const otherNotePlaceholder = otherNotePlaceholders[safeLocale] ?? otherNotePlaceholders.hu;
   const feedback = bookingFeedback[safeLocale];
 
-  const translatedTreatments = t.raw('treatments') as string[];
-  const otherLabel = translatedTreatments[translatedTreatments.length - 1];
-  const existingTreatments = translatedTreatments.slice(0, -1)
-    .map(treatment => treatment === 'Direkt kompozit héj' ? veneerLabels['direkt-hej'] : treatment);
-  const treatments = [...new Set([...existingTreatments, ...Object.values(veneerLabels)]), otherLabel];
-  const isOther = formData.treatment === otherLabel;
-
+  const treatmentLabels: Record<string, string> = { ...t.raw('treatments'), ...veneerLabels };
+  const isOther = formData.treatment === 'egyeb';
+  const treatmentLabel = treatmentLabels[formData.treatment] ?? '';
 
   useEffect(() => {
     const measure = () => {
@@ -203,32 +188,42 @@ export function BookingForm({ directOffer, initialTreatmentSlug }: {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     idempotencyKeyRef.current = null;
     setSubmitError(null);
-    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.currentTarget;
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleNext = (e: React.FormEvent) => {
     e.preventDefault();
-    if (isBudapestCity(formData.city) && !isBudapestOpen) return;
-    if (formData.name.trim() && formData.phone.trim() && formData.email.trim()) {
-      trackSiteEvent('booking_step_complete', safeLocale, { step: 1 });
-      setStep(2);
-    } else { setSubmitError(feedback.invalid); }
+    if (step === 3) return;
+    if (step === 1 && !formData.treatment) return;
+    if (step === 2 && (!formData.name.trim() || !isValidEmail(formData.email.trim()) || !isValidPhone(formData.phone.trim()))) {
+      setSubmitError(feedback.invalid);
+      trackSiteEvent('booking_validation_error', safeLocale, { step, error: 'validation' });
+      return;
+    }
+    setSubmitError(null);
+    markStarted();
+    trackSiteEvent('booking_step_complete', safeLocale, { step });
+    setStep(step === 1 ? 2 : 3);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.treatment || busyRef.current) return;
+    if (step !== 3 || !formData.clinic || !formData.treatment || busyRef.current) return;
     busyRef.current = true;
-    trackSiteEvent('booking_step_complete', safeLocale, { step: 2 });
-    trackSiteEvent('booking_submit', safeLocale, { step: 2 });
+    trackSiteEvent('booking_step_complete', safeLocale, { step: 3 });
+    trackSiteEvent('booking_submit', safeLocale, { step: 3 });
     setSubmitError(null);
     setIsSubmitting(true);
     try {
-      const payload = isOther && otherNote ? { ...formData, treatment: `${formData.treatment}: ${otherNote}` } : formData;
+      const { clinic, name, nickname, email, phone } = formData;
       const idempotencyKey = idempotencyKeyRef.current ?? createIdempotencyKey('booking');
       idempotencyKeyRef.current = idempotencyKey;
       const bookingPayload = {
-        ...payload,
+        name, nickname, email, phone,
+        city: clinic === 'budapest' ? 'Budapest' : 'Esztergom',
+        requestedClinicId: clinic === 'budapest' ? undefined : clinic,
+        treatment: isOther && otherNote ? `${treatmentLabel}: ${otherNote}` : treatmentLabel,
         analytics: bookingAnalyticsContext(),
         locale: safeLocale,
         idempotencyKey,
@@ -246,7 +241,7 @@ export function BookingForm({ directOffer, initialTreatmentSlug }: {
       });
       const data = await res.json().catch(() => ({})) as BookingResponse;
       if (!res.ok || data.success !== true) {
-        trackSiteEvent('booking_error', safeLocale, { step: 2, error: res.status === 429 ? 'rate_limited' : res.status >= 500 ? 'service' : res.status === 400 || res.status === 422 ? 'validation' : 'unknown' });
+        trackSiteEvent('booking_error', safeLocale, { step: 3, error: res.status === 429 ? 'rate_limited' : res.status >= 500 ? 'service' : res.status === 400 || res.status === 422 ? 'validation' : 'unknown' });
         if (res.status === 400 || res.status === 422) setSubmitError(feedback.invalid);
         else if (res.status === 429) setSubmitError(feedback.rateLimited);
         else if (res.status >= 500) setSubmitError(feedback.unavailable);
@@ -263,10 +258,10 @@ export function BookingForm({ directOffer, initialTreatmentSlug }: {
       } catch {
         // The booking is already saved; storage is only used to enhance the success page.
       }
-      trackSiteEvent('booking_success', safeLocale, { step: 2 });
+      trackSiteEvent('booking_success', safeLocale, { step: 3 });
       router.push(`${p}/idopont/sikeres`);
     } catch {
-      trackSiteEvent('booking_error', safeLocale, { step: 2, error: 'network' });
+      trackSiteEvent('booking_error', safeLocale, { step: 3, error: 'network' });
       setSubmitError(feedback.network);
     }
     finally { busyRef.current = false; setIsSubmitting(false); }
@@ -274,37 +269,39 @@ export function BookingForm({ directOffer, initialTreatmentSlug }: {
 
   return (
     <div ref={panelRef} className="crown-booking-panel">
-      <Suspense fallback={null}><TreatmentPrefill locale={safeLocale} onSelect={prefillTreatment} /></Suspense>
       <ol className="crown-booking-progress" aria-label={t('title')}>
         {copy.steps.map((label, i) => <li key={label} aria-current={step === i + 1 ? 'step' : undefined}><span>{i + 1}</span>{label}</li>)}
       </ol>
-      <h2 ref={headingRef} tabIndex={-1} style={{ scrollMarginTop: '7rem' }}>{t(step === 1 ? 'step1Title' : 'step2Title')}</h2>
+      <h2 ref={headingRef} tabIndex={-1} style={{ scrollMarginTop: '7rem' }}>{t(step === 1 ? 'treatmentHeading' : step === 2 ? 'contactHeading' : 'city')}</h2>
       <p className="crown-booking-note mb-6">{copy.required}</p>
-      <form key={step} onSubmit={step === 1 ? handleNext : handleSubmit} onChange={markStarted}
+      <form key={step} onSubmit={step === 3 ? handleSubmit : handleNext} onChange={markStarted}
         onInvalidCapture={() => trackSiteEvent('booking_validation_error', safeLocale, { step, error: 'validation' })}
         aria-busy={isSubmitting}>
         <fieldset disabled={isSubmitting} className="space-y-5">
-          {step === 1 ? (
-            <>
-              <fieldset>
-                <legend className="crown-field-label">{copy.location}</legend>
-                <div className="grid sm:grid-cols-2 gap-3">
-                  {['Esztergom', 'Budapest'].map(city => {
-                    const unavailable = city === 'Budapest' && !isBudapestOpen;
-                    return (
-                      <label key={city} className={`flex gap-3 items-start rounded-xl border p-4 ${unavailable ? 'bg-gray-50 text-gray-500' : 'cursor-pointer'} ${formData.city === city ? 'border-sky-600 bg-sky-50' : 'border-gray-200'}`}>
-                        <input type="radio" name="city" value={city} checked={formData.city === city} disabled={unavailable} onChange={handleChange} className="mt-1 h-4 w-4 accent-sky-700 shrink-0" />
-                        <span className="min-w-0">
-                          <strong className="block text-sm">{city}</strong>
-                          <span className="mt-1 block text-xs leading-relaxed">{city === 'Esztergom' ? 'Belváros: Petőfi Sándor utca 11. · Prímás Sziget: Helischer József út 6.' : 'Királyok útja 55.'}</span>
-                          {city === 'Esztergom' && <span className="mt-2 block text-xs leading-relaxed">{locale === 'en' ? 'We confirm the clinic when calling you back.' : locale === 'de' ? 'Die Praxis stimmen wir beim Rückruf mit Ihnen ab.' : locale === 'sk' ? 'Presnú ambulanciu potvrdíme pri spätnom telefonáte.' : 'A pontos rendelőt visszahíváskor egyeztetjük.'}</span>}
-                          {unavailable && <span className="mt-2 block text-xs">{budapestOpenLabel}</span>}
-                        </span>
-                      </label>
-                    );
-                  })}
+          {step === 1 && <>
+              <div>
+                <label htmlFor="booking-treatment" className="crown-field-label">{t('treatment')} *</label>
+                <select id="booking-treatment" name="treatment" value={formData.treatment} onChange={handleChange} required className="crown-input">
+                  <option value="" disabled>{t('selectTreatment')}</option>
+                  {bookingTreatmentIds.map(id => <option key={id} value={id}>{treatmentLabels[id]}</option>)}
+                </select>
+              </div>
+              {(['direkt-hej', 'indirekt-hej'] as const).map(slug => formData.treatment === slug && (
+                <div key={slug} className="space-y-3 rounded-xl border border-sky-100 bg-sky-50 p-4">
+                  <VeneerOfferCard slug={slug} initialOffer={slug === 'direkt-hej' ? directOffer : getVeneerOffer(slug)} locale={safeLocale} compact />
+                  <p className="crown-booking-note">{veneerBookingNotes[safeLocale].confirmation}</p>
                 </div>
-              </fieldset>
+              ))}
+              {formData.treatment === 'hollywood-mosoly' && (
+                <p className="crown-booking-note">{veneerBookingNotes[safeLocale].consultation} {veneerBookingNotes[safeLocale].confirmation}</p>
+              )}
+              {isOther && <div>
+                <label htmlFor="booking-note" className="crown-field-label">{copy.optional}</label>
+                <textarea id="booking-note" value={otherNote} rows={4} maxLength={Math.max(0, 280 - treatmentLabel.length - 2)} className="crown-input" placeholder={otherNotePlaceholder}
+                  onChange={event => { idempotencyKeyRef.current = null; setSubmitError(null); setOtherNote(event.target.value); }} />
+              </div>}
+          </>}
+          {step === 2 && <>
               <div>
                 <label htmlFor="booking-name" className="crown-field-label">{t('fullName')} *</label>
                 <input id="booking-name" required maxLength={120} autoComplete="name" name="name" value={formData.name} onChange={handleChange} className="crown-input" />
@@ -317,30 +314,6 @@ export function BookingForm({ directOffer, initialTreatmentSlug }: {
                 <label htmlFor="booking-email" className="crown-field-label">{t('email')} *</label>
                 <input id="booking-email" required maxLength={254} autoComplete="email" name="email" type="email" value={formData.email} onChange={handleChange} className="crown-input" />
               </div>
-            </>
-          ) : (
-            <>
-              <div>
-                <label htmlFor="booking-treatment" className="crown-field-label">{t('step2Title')} *</label>
-                <select id="booking-treatment" name="treatment" value={formData.treatment} onChange={handleChange} required className="crown-input">
-                  <option value="" disabled>— {t('step2Title')} —</option>
-                  {treatments.map(treatment => <option key={treatment} value={treatment}>{treatment}</option>)}
-                </select>
-              </div>
-              {(['direkt-hej', 'indirekt-hej'] as const).map(slug => formData.treatment === veneerLabels[slug] && (
-                <div key={slug} className="space-y-3 rounded-xl border border-sky-100 bg-sky-50 p-4">
-                  <VeneerOfferCard slug={slug} initialOffer={slug === 'direkt-hej' ? directOffer : getVeneerOffer(slug)} locale={safeLocale} compact />
-                  <p className="crown-booking-note">{veneerBookingNotes[safeLocale].confirmation}</p>
-                </div>
-              ))}
-              {formData.treatment === veneerLabels['hollywood-mosoly'] && (
-                <p className="crown-booking-note">{veneerBookingNotes[safeLocale].consultation} {veneerBookingNotes[safeLocale].confirmation}</p>
-              )}
-              {isOther && <div>
-                <label htmlFor="booking-note" className="crown-field-label">{copy.optional}</label>
-                <textarea id="booking-note" value={otherNote} rows={4} maxLength={Math.max(0, 280 - formData.treatment.length - 2)} className="crown-input" placeholder={otherNotePlaceholder}
-                  onChange={event => { idempotencyKeyRef.current = null; setSubmitError(null); setOtherNote(event.target.value); }} />
-              </div>}
               <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-gray-200 bg-gray-50 p-4">
                 <input type="checkbox" checked={marketingConsent} className="mt-1 h-5 w-5 shrink-0 accent-sky-700"
                   onChange={event => { idempotencyKeyRef.current = null; setSubmitError(null); setMarketingConsent(event.target.checked); }} />
@@ -349,17 +322,34 @@ export function BookingForm({ directOffer, initialTreatmentSlug }: {
                   <span className="mt-1 block text-xs leading-relaxed text-gray-600">{t('marketingOptInText')}</span>
                 </span>
               </label>
-              <p className="crown-booking-note">{copy.note}</p>
-            </>
-          )}
+          </>}
+          {step === 3 && <>
+            <fieldset>
+              <legend className="crown-field-label">{copy.location} *</legend>
+              <div className="grid gap-3">
+                {[...APPOINTMENT_CLINICS, { id: 'budapest', name: 'Budapest', address: 'Királyok útja 55.' }].map(clinic => {
+                  const unavailable = clinic.id === 'budapest' && !isBudapestOpen;
+                  return <label key={clinic.id} className={`flex items-start gap-3 rounded-xl border p-4 ${unavailable ? 'bg-gray-50 text-gray-500' : 'cursor-pointer'} ${formData.clinic === clinic.id ? 'border-sky-600 bg-sky-50' : 'border-gray-200'}`}>
+                    <input type="radio" name="clinic" value={clinic.id} checked={formData.clinic === clinic.id}
+                      required={!unavailable} disabled={unavailable} onChange={handleChange} className="mt-1 h-4 w-4 shrink-0 accent-sky-700" />
+                    <span><strong className="block text-sm">{clinic.name}</strong>
+                      <span className="block text-xs">{clinic.address}</span>
+                      {unavailable && <span className="block text-xs">{budapestOpenLabel}</span>}
+                    </span>
+                  </label>;
+                })}
+              </div>
+            </fieldset>
+            <p className="crown-booking-note">{copy.note}</p>
+          </>}
           {submitError && <div role="alert" className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
             <p>{submitError}</p>
             <ClinicPhoneLinks tone="light" />
           </div>}
           <div className="flex flex-col-reverse sm:flex-row gap-3 pt-3">
-            {step === 2 && <button type="button" onClick={() => { setSubmitError(null); setStep(1); }} className="crown-button crown-button-secondary"><ArrowLeft size={18} />{t('prevStep')}</button>}
+            {step > 1 && <button type="button" onClick={() => { setSubmitError(null); setStep(step === 3 ? 2 : 1); }} className="crown-button crown-button-secondary"><ArrowLeft size={18} />{t('prevStep')}</button>}
             <button type="submit" className="crown-button flex-1" disabled={isSubmitting}>
-              {isSubmitting ? <><Loader2 size={18} className="animate-spin" aria-hidden="true" />{t('submitting')}</> : <>{t(step === 1 ? 'nextStep' : 'submit')}<ArrowRight size={18} aria-hidden="true" /></>}
+              {isSubmitting ? <><Loader2 size={18} className="animate-spin" aria-hidden="true" />{t('submitting')}</> : <>{t(step === 3 ? 'submit' : 'nextStep')}<ArrowRight size={18} aria-hidden="true" /></>}
             </button>
           </div>
         </fieldset>
@@ -369,7 +359,7 @@ export function BookingForm({ directOffer, initialTreatmentSlug }: {
   );
 }
 
-export default function BookingClient({ directOffer }: { directOffer: VeneerOffer }) {
+export default function BookingClient({ directOffer, initialTreatmentSlug }: BookingFormProps) {
   const t = useTranslations('booking');
   const locale = useLocale();
   const copy = getSiteCopy(locale);
@@ -383,7 +373,7 @@ export default function BookingClient({ directOffer }: { directOffer: VeneerOffe
             <p className="crown-lead">{copy.bookingIntro}</p>
           </header>
           <div className="crown-booking-layout">
-            <BookingForm directOffer={directOffer} />
+            <BookingForm directOffer={directOffer} initialTreatmentSlug={initialTreatmentSlug} />
             <aside className="crown-booking-help">
               <h2>{copy.nextTitle}</h2>
               <ol>{copy.next.map(item => <li key={item}>{item}</li>)}</ol>
