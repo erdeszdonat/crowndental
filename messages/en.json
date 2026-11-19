@@ -278,7 +278,9 @@
       "fogszabalyozo-kezeles": "Orthodontics",
       "fogszabalyozas": "Orthodontics Consultation",
       "fogfeherites": "Teeth Whitening",
-      "fogko": "Scaling (Tartar Removal)",
+      "fogko": "Ultrasonic scaling",
+      "air-polishing": "Scaling and air polishing",
+      "premium-biofilm-terapia": "Premium biofilm therapy",
       "panorama": "Panoramic X-ray",
       "cbct": "CBCT (3D) Scan",
       "fogsor": "Denture Making / Repair",
@@ -445,6 +447,8 @@
     "veneerPriceNote": "The final treatment plan and the cost of any additional care are agreed during your consultation. Prices are in Hungarian forints (HUF).",
     "veneerBeforeAfterAlt": "Smile before and after direct composite veneer treatment – Hollywood Smile",
     "cards": [
+      {"id": "air-polishing", "title": "Scaling and air polishing", "description": "Ultrasonic scaling and air polishing for tartar and external stains."},
+      {"id": "premium-biofilm-terapia", "title": "Premium biofilm therapy", "description": "Plaque disclosure and air polishing, with tartar removal where needed."},
       { "id": "implantatum", "title": "Dental Implants", "description": "Lifelike tooth replacement with titanium implants, in as little as one day." },
       { "id": "fogszabalyozas", "title": "Orthodontics", "description": "Fixed and removable braces for children and adults." },
       { "id": "koronak-hidak", "title": "Crowns & Bridges", "description": "Metal-ceramic and zirconia crowns in premium quality, from our own lab." },
@@ -490,7 +494,9 @@
         "id": "esztetika",
         "title": "Preservation & Aesthetics",
         "items": [
-          { "name": "Scale & polish (per jaw)", "price": "15,000 HUF" },
+          {"name": "Ultrasonic scaling (per arch)", "price": "15,000 HUF"},
+          {"name": "Scaling and air polishing (per arch)", "price": "20,000 HUF", "slug": "air-polishing"},
+          {"name": "Premium biofilm therapy (per arch)", "price": "25,000 HUF", "slug": "premium-biofilm-terapia"},
           { "name": "Whitening with silicone tray (home) / per arch", "price": "30,000 HUF" },
           { "name": "In-clinic whitening (lamp) / per arch", "price": "45,000 HUF", "highlight": true }
         ]
@@ -823,12 +829,12 @@
       "servicesBadge": "Our Services",
       "servicesTitle": "Aesthetic Solutions",
       "services": [
-        { "title": "Professional Teeth Whitening", "desc": "Up to 8 shades lighter teeth after a single treatment.", "price": "from 35,000 HUF" },
-        { "title": "Porcelain Veneers", "desc": "Ultra-thin porcelain veneers — perfect shape and colour.", "price": "75,000 HUF / tooth (was 120,000 HUF)" },
-        { "title": "Scale & Polish", "desc": "Ultrasonic descaling and polishing for healthy gums.", "price": "from 15,000 HUF" },
-        { "title": "Tooth-Coloured Fillings", "desc": "Composite fillings matching the tooth colour — virtually invisible.", "price": "from 25,000 HUF" },
-        { "title": "Smile Makeover", "desc": "Comprehensive smile transformation: whitening, veneers, tooth reshaping.", "price": "Individual quote" },
-        { "title": "Gum Contouring", "desc": "Aesthetic correction of the gum line for a harmonious smile.", "price": "from 45,000 HUF" }
+        {"title": "Professional Teeth Whitening", "desc": "Up to 8 shades lighter teeth after a single treatment.", "price": "from 35,000 HUF"},
+        {"title": "Porcelain Veneers", "desc": "Ultra-thin porcelain veneers — perfect shape and colour.", "price": "75,000 HUF / tooth (was 120,000 HUF)"},
+        {"title": "Ultrasonic scaling", "desc": "Ultrasonic descaling and polishing for healthy gums.", "price": "15,000 HUF (per arch)"},
+        {"title": "Tooth-Coloured Fillings", "desc": "Composite fillings matching the tooth colour — virtually invisible.", "price": "from 25,000 HUF"},
+        {"title": "Smile Makeover", "desc": "Comprehensive smile transformation: whitening, veneers, tooth reshaping.", "price": "Individual quote"},
+        {"title": "Gum Contouring", "desc": "Aesthetic correction of the gum line for a harmonious smile.", "price": "from 45,000 HUF"}
       ],
       "benefitsTitle": "Beauty Is in the Details",
       "benefitItems": [

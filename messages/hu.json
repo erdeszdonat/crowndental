@@ -278,7 +278,9 @@
       "fogszabalyozo-kezeles": "Fogszabályozás",
       "fogszabalyozas": "Fogszabályozás konzultáció",
       "fogfeherites": "Fogfehérítés",
-      "fogko": "Fogkő eltávolítás",
+      "fogko": "Ultrahangos fogkőeltávolítás",
+      "air-polishing": "Fogkőeltávolítás és air polishing",
+      "premium-biofilm-terapia": "Prémium biofilm-terápia",
       "panorama": "Panoráma röntgen",
       "cbct": "CBCT (3D) felvétel",
       "fogsor": "Fogsor készítés / Javítás",
@@ -445,6 +447,8 @@
     "veneerPriceNote": "A végleges kezelési tervet és az esetleg szükséges további ellátás költségét konzultáción egyeztetjük.",
     "veneerBeforeAfterAlt": "Mosoly a direkt héjkezelés előtt és után – Hollywood smile",
     "cards": [
+      {"id": "air-polishing", "title": "Fogkőeltávolítás és air polishing", "description": "Fogkő és külső elszíneződések eltávolítása ultrahanggal és finom porral."},
+      {"id": "premium-biofilm-terapia", "title": "Prémium biofilm-terápia", "description": "Lepedékfestés és air polishing, szükség szerint fogkőeltávolítással."},
       { "id": "implantatum", "title": "Implantátum", "description": "Élethű fogpótlás titánium implantátummal, akár egy nap alatt." },
       { "id": "fogszabalyozas", "title": "Fogszabályozás", "description": "Rögzített és kivehető készülékek gyerekeknek és felnőtteknek." },
       { "id": "koronak-hidak", "title": "Koronák és Hidak", "description": "Fémkerámia és cirkónium koronák prémium minőségben, saját laborból." },
@@ -490,7 +494,9 @@
         "id": "esztetika",
         "title": "Fogmegőrzés és Esztétika",
         "items": [
-          { "name": "Fogkőeltávolítás (állcsontonként)", "price": "15.000 Ft" },
+          {"name": "Ultrahangos fogkőeltávolítás (állcsontonként)", "price": "15 000 Ft"},
+          {"name": "Fogkőeltávolítás és air polishing (állcsontonként)", "price": "20 000 Ft", "slug": "air-polishing"},
+          {"name": "Prémium biofilm-terápia (állcsontonként)", "price": "25 000 Ft", "slug": "premium-biofilm-terapia"},
           { "name": "Fogfehérítés szilikon sínnel (otthoni) / fogívenként", "price": "30.000 Ft" },
           { "name": "Fogfehérítés rendelői (lámpás) / fogívenként", "price": "45.000 Ft", "highlight": true }
         ]
@@ -823,12 +829,12 @@
       "servicesBadge": "Szolgáltatásaink",
       "servicesTitle": "Esztétikai megoldások",
       "services": [
-        { "title": "Professzionális Fogfehérítés", "desc": "Akár 8 árnyalattal világosabb fogak egyetlen kezelés után.", "price": "35.000 Ft-tól" },
-        { "title": "Indirekt porcelán héj", "desc": "Prémium kerámiahéj saját fogtechnikai laborunkból, személyre szabott formával és színnel.", "price": "75.000 Ft / fog – 120.000 Ft helyett", "href": "/kezelesek/indirekt-hej" },
-        { "title": "Fogkő Eltávolítás", "desc": "Ultrahangos depuráció és polírozás az egészséges ínyért.", "price": "15.000 Ft-tól" },
-        { "title": "Esztétikus Tömések", "desc": "Fog színű kompozit tömések, amelyek szinte láthatatlanok.", "price": "25.000 Ft-tól" },
-        { "title": "Hollywood smile – hollywoodi mosoly", "desc": "Ismerje meg a direkt és indirekt héj közötti különbséget és a személyre szabott mosolytervezés lehetőségeit.", "price": "Kezelések és árak", "href": "/hollywood-mosoly" },
-        { "title": "Ínykorrekció", "desc": "Az ínyvonal esztétikai korrekciója a harmonikus mosolyért.", "price": "45.000 Ft-tól" }
+        {"title": "Professzionális Fogfehérítés", "desc": "Akár 8 árnyalattal világosabb fogak egyetlen kezelés után.", "price": "35.000 Ft-tól"},
+        {"title": "Indirekt porcelán héj", "desc": "Prémium kerámiahéj saját fogtechnikai laborunkból, személyre szabott formával és színnel.", "price": "75.000 Ft / fog – 120.000 Ft helyett", "href": "/kezelesek/indirekt-hej"},
+        {"title": "Ultrahangos fogkőeltávolítás", "desc": "Ultrahangos depuráció és polírozás az egészséges ínyért.", "price": "15 000 Ft (állcsontonként)"},
+        {"title": "Esztétikus Tömések", "desc": "Fog színű kompozit tömések, amelyek szinte láthatatlanok.", "price": "25.000 Ft-tól"},
+        {"title": "Hollywood smile – hollywoodi mosoly", "desc": "Ismerje meg a direkt és indirekt héj közötti különbséget és a személyre szabott mosolytervezés lehetőségeit.", "price": "Kezelések és árak", "href": "/hollywood-mosoly"},
+        {"title": "Ínykorrekció", "desc": "Az ínyvonal esztétikai korrekciója a harmonikus mosolyért.", "price": "45.000 Ft-tól"}
       ],
       "benefitsTitle": "A szépség részletekben rejlik",
       "benefitItems": [

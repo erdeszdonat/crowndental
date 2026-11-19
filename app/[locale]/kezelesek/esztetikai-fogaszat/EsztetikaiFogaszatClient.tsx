@@ -1,4 +1,6 @@
 'use client';
+import { hygieneCopy, hygieneFee, hygienePrices, hygieneSlugs } from '@/lib/hygiene';
+import { getSiteCopy } from '@/lib/siteCopy';
 import TreatmentHero from '@/components/TreatmentHero';
 import { getVeneerOffer } from '@/lib/veneers.mjs';
 import { useVeneerOffer } from '@/components/VeneerOffer';
@@ -44,12 +46,18 @@ function ServicesSection({ directOffer: initialDirectOffer }: { directOffer: Ven
   const locale = useLocale();
   const icons = [<Sparkles className="w-8 h-8" />, <Gem className="w-8 h-8" />, <Zap className="w-8 h-8" />, <Palette className="w-8 h-8" />, <Award className="w-8 h-8" />, <Smile className="w-8 h-8" />];
   const existingServices = t.raw('services') as Array<{ title: string; desc: string; price: string; href?: string }>;
-  const services = locale === 'hu' ? [...existingServices, {
+  const originalServices = locale === 'hu' ? [...existingServices, {
     title: 'Direkt kompozit héj',
     desc: `Rendelőben formázott kompozit héj, egyénre szabott fogszínnel és formával. ${directOffer.availabilityCopy}`,
     price: `${directOffer.formattedPrice} / fog${directOffer.isPromotion ? ` – ${directOffer.formattedRegularPrice} helyett` : ''}`,
     href: '/kezelesek/direkt-hej',
   }] : existingServices;
+  const lang = locale === 'en' || locale === 'de' || locale === 'sk' ? locale : 'hu';
+  const services = [...originalServices, ...hygieneSlugs.map(slug => {
+    const { service, copy } = hygieneCopy(lang, slug);
+    return { title: service.name, desc: service.lead, price: hygieneFee(lang, hygienePrices[slug]) + ' / ' + copy.unit,
+      href: (lang === 'hu' ? '' : '/' + lang) + '/kezelesek/' + slug };
+  })];
   return (
     <section className="py-24 bg-gray-50 border-t border-gray-100">
       <div className="container mx-auto px-4">
@@ -65,7 +73,7 @@ function ServicesSection({ directOffer: initialDirectOffer }: { directOffer: Ven
               <h4 className="text-xl font-bold text-gray-900 mb-3">{s.title}</h4>
               <p className="text-slate-600 leading-relaxed mb-6 flex-1">{s.desc}</p>
               <div className="text-sky-600 font-bold text-lg">{s.price}</div>
-              {s.href && <Link href={s.href} prefetch={false} className="inline-flex items-center gap-2 mt-4 text-sky-700 font-semibold underline underline-offset-4">Részletek <ArrowRight className="w-4 h-4" aria-hidden="true" /></Link>}
+              {s.href && <Link href={s.href} prefetch={false} className="inline-flex items-center gap-2 mt-4 text-sky-700 font-semibold underline underline-offset-4">{getSiteCopy(lang).details} <ArrowRight className="w-4 h-4" aria-hidden="true" /></Link>}
             </motion.div>
           ))}
         </div>

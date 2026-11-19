@@ -322,7 +322,9 @@
       "fogszabalyozo-kezeles": "Kieferorthopädie",
       "fogszabalyozas": "Kieferorthopädische Beratung",
       "fogfeherites": "Zahnaufhellung",
-      "fogko": "Professionelle Zahnsteinentfernung",
+      "fogko": "Zahnsteinentfernung mit Ultraschall",
+      "air-polishing": "Zahnsteinentfernung mit Air-Polishing",
+      "premium-biofilm-terapia": "Premium-Biofilmtherapie",
       "panorama": "Panoramaröntgen",
       "cbct": "DVT-Aufnahme (3D)",
       "fogsor": "Herstellung/Reparatur von Zahnprothesen",
@@ -523,6 +525,8 @@
     "ctaSubtitle": "Vereinbaren Sie einen Termin für eine persönliche Beurteilung, bei der wir Ihnen einen detaillierten Behandlungsplan erstellen.",
     "ctaBtn": "Fachberatung buchen",
     "cards": [
+      {"id": "air-polishing", "title": "Zahnsteinentfernung mit Air-Polishing", "description": "Ultraschall und Pulver-Wasser-Strahl bei Zahnstein und äußeren Verfärbungen."},
+      {"id": "premium-biofilm-terapia", "title": "Premium-Biofilmtherapie", "description": "Plaqueanfärbung und Air-Polishing, bei Bedarf mit Zahnsteinentfernung."},
       {
         "id": "implantatum",
         "title": "Zahnimplantate",
@@ -666,10 +670,9 @@
         "id": "esztetika",
         "title": "Konservierung & Ästhetik",
         "items": [
-          {
-            "name": "Skalieren und Polieren (pro Kiefer)",
-            "price": "15.000 HUF"
-          },
+          {"name": "Zahnsteinentfernung mit Ultraschall (pro Kiefer)", "price": "15.000 HUF"},
+          {"name": "Zahnsteinentfernung mit Air-Polishing (pro Kiefer)", "price": "20.000 HUF", "slug": "air-polishing"},
+          {"name": "Premium-Biofilmtherapie (pro Kiefer)", "price": "25.000 HUF", "slug": "premium-biofilm-terapia"},
           {
             "name": "Aufhellung mit Silikonschiene (zu Hause) / pro Zahnbogen",
             "price": "30.000 HUF"
@@ -1428,36 +1431,12 @@
       "servicesBadge": "Unsere Leistungen",
       "servicesTitle": "Ästhetische Lösungen",
       "services": [
-        {
-          "title": "Professionelle Zahnaufhellung",
-          "desc": "Bis zu 8 Nuancen hellere Zähne nach einer einzigen Behandlung.",
-          "price": "ab 35.000 HUF"
-        },
-        {
-          "title": "Porzellanfurniere",
-          "desc": "Ultradünne Porzellanveneers – perfekte Form und Farbe.",
-          "price": "75.000 HUF / Zahn (statt 120.000 HUF)"
-        },
-        {
-          "title": "Maßstab und Politur",
-          "desc": "Ultraschall-Entkalkung und Politur für gesundes Zahnfleisch.",
-          "price": "ab 15.000 HUF"
-        },
-        {
-          "title": "Zahnfarbene Füllungen",
-          "desc": "Zur Zahnfarbe passende Kompositfüllungen – nahezu unsichtbar.",
-          "price": "ab 25.000 HUF"
-        },
-        {
-          "title": "Lächeln-Makeover",
-          "desc": "Umfassende Transformation des Lächelns: Bleaching, Veneers, Zahnumformung.",
-          "price": "Individuelles Angebot"
-        },
-        {
-          "title": "Zahnfleischkonturierung",
-          "desc": "Ästhetische Korrektur des Zahnfleischrandes für ein harmonisches Lächeln.",
-          "price": "ab 45.000 HUF"
-        }
+        {"title": "Professionelle Zahnaufhellung", "desc": "Bis zu 8 Nuancen hellere Zähne nach einer einzigen Behandlung.", "price": "ab 35.000 HUF"},
+        {"title": "Porzellanfurniere", "desc": "Ultradünne Porzellanveneers – perfekte Form und Farbe.", "price": "75.000 HUF / Zahn (statt 120.000 HUF)"},
+        {"title": "Zahnsteinentfernung mit Ultraschall", "desc": "Ultraschall-Entkalkung und Politur für gesundes Zahnfleisch.", "price": "15.000 HUF (pro Kiefer)"},
+        {"title": "Zahnfarbene Füllungen", "desc": "Zur Zahnfarbe passende Kompositfüllungen – nahezu unsichtbar.", "price": "ab 25.000 HUF"},
+        {"title": "Lächeln-Makeover", "desc": "Umfassende Transformation des Lächelns: Bleaching, Veneers, Zahnumformung.", "price": "Individuelles Angebot"},
+        {"title": "Zahnfleischkonturierung", "desc": "Ästhetische Korrektur des Zahnfleischrandes für ein harmonisches Lächeln.", "price": "ab 45.000 HUF"}
       ],
       "benefitsTitle": "Schönheit liegt im Detail",
       "benefitItems": [

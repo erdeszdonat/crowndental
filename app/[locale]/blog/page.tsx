@@ -1,3 +1,4 @@
+import { blogCoverProjection } from '@/lib/blogConfig';
 import { clinicNewsPosts } from '@/lib/openingPosts';
 import type { Metadata } from 'next';
 import { buildLocalizedMetadata, normalizeLocale } from '@/lib/seo';
@@ -47,7 +48,7 @@ async function getBlogPosts() {
       "slug": slug.current,
       publishedAt,
       excerpt,
-      "imageUrl": mainImage.asset->url,
+      "imageUrl": ${blogCoverProjection},
       "language": coalesce(language, "hu"),
       "category": coalesce(category, "professional")
     }`);

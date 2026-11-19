@@ -61,7 +61,7 @@ export default function BlogPostClient({ post }: { post: any }) {
   const bookingLink = contextualArticleLink('/idopont', p, slug, topic);
   const treatmentSlug = topic && ['implantatum', 'koronak-hidak', 'fogszabalyozas', 'fogfeherites', 'fogsor', 'gyokerkezeles',
     'direkt-hej', 'indirekt-hej', 'szajsebeszet', 'gockutatas', 'gyerekfogaszat', 'esztetikai-fogaszat',
-    'fogtechnikai-megoldasok'].includes(topic) ? topic : 'allapotfelmeres';
+    'fogtechnikai-megoldasok', 'air-polishing', 'premium-biofilm-terapia'].includes(topic) ? topic : 'allapotfelmeres';
   const internationalPath = INTERNATIONAL_PATIENT_PATHS[locale as keyof typeof INTERNATIONAL_PATIENT_PATHS] ?? INTERNATIONAL_PATIENT_PATHS.hu;
 
   if (!post) return (

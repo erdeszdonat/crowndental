@@ -2,7 +2,7 @@ const articleImageFields = [
   { name: 'alt', title: 'Képleírás (akadálymentesítés)', type: 'string' },
   { name: 'caption', title: 'Képaláírás', type: 'text', rows: 2 },
   { name: 'sourceName', title: 'Kép készítője / forrása', type: 'string' },
-  { name: 'sourceUrl', title: 'Kép forrásának hivatkozása', type: 'url' },
+  { name: 'sourceUrl', title: 'Kép forrásának hivatkozása', type: 'url', description: 'Kiemelt képnél saját, a crowndental.hu/images/blog/ alatt elérhető képfájl is megadható. A feltöltött Sanity-kép elsőbbséget élvez.' },
 ];
 
 export default {

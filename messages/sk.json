@@ -278,7 +278,9 @@
       "fogszabalyozo-kezeles": "Ortodontia",
       "fogszabalyozas": "Ortodontická konzultácia",
       "fogfeherites": "Bielenie zubov",
-      "fogko": "Odstránenie zubného kameňa",
+      "fogko": "Ultrazvukové odstránenie zubného kameňa",
+      "air-polishing": "Odstránenie zubného kameňa a pieskovanie",
+      "premium-biofilm-terapia": "Prémiová terapia biofilmu",
       "panorama": "Panoramatický RTG",
       "cbct": "CBCT (3D) snímka",
       "fogsor": "Výroba / oprava protézy",
@@ -445,6 +447,8 @@
     "veneerPriceNote": "Konečný liečebný plán a cenu prípadných ďalších ošetrení dohodneme počas konzultácie. Ceny sú uvedené v maďarských forintoch (HUF).",
     "veneerBeforeAfterAlt": "Úsmev pred ošetrením priamymi kompozitnými fazetami a po ňom – Hollywood Smile",
     "cards": [
+      {"id": "air-polishing", "title": "Odstránenie zubného kameňa a pieskovanie", "description": "Ultrazvukové odstránenie zubného kameňa a pieskovanie povrchových škvŕn."},
+      {"id": "premium-biofilm-terapia", "title": "Prémiová terapia biofilmu", "description": "Farbenie povlaku, pieskovanie a podľa potreby odstránenie zubného kameňa."},
       { "id": "implantatum", "title": "Zubné implantáty", "description": "Prirodzená náhrada zubu titánovým implantátom, niekedy za jediný deň." },
       { "id": "fogszabalyozas", "title": "Ortodontia", "description": "Fixné a snímateľné aparáty pre deti aj dospelých." },
       { "id": "koronak-hidak", "title": "Korunky a mosty", "description": "Kovo-keramické a zirkónové korunky prémiové kvality z vlastného laboratória." },
@@ -490,7 +494,9 @@
         "id": "esztetika",
         "title": "Zachovanie zubov a estetika",
         "items": [
-          { "name": "Odstránenie zubného kameňa (na čeľusť)", "price": "15 000 Ft" },
+          {"name": "Ultrazvukové odstránenie zubného kameňa (za jeden zubný oblúk)", "price": "15 000 HUF"},
+          {"name": "Odstránenie zubného kameňa a pieskovanie (za jeden zubný oblúk)", "price": "20 000 HUF", "slug": "air-polishing"},
+          {"name": "Prémiová terapia biofilmu (za jeden zubný oblúk)", "price": "25 000 HUF", "slug": "premium-biofilm-terapia"},
           { "name": "Bielenie silikónovou dlahou (domáce) / na oblúk", "price": "30 000 Ft" },
           { "name": "Bielenie v ambulancii (lampou) / na oblúk", "price": "45 000 Ft", "highlight": true }
         ]
@@ -823,12 +829,12 @@
       "servicesBadge": "Naše služby",
       "servicesTitle": "Estetické riešenia",
       "services": [
-        { "title": "Profesionálne bielenie zubov", "desc": "Zuby až o 8 odtieňov svetlejšie po jednom ošetrení.", "price": "od 35 000 Ft" },
-        { "title": "Porcelánové fazety (Veneer)", "desc": "Ultratenkí porcelánové fazety – dokonalý tvar a farba.", "price": "75 000 Ft / zub (pôvodne 120 000 Ft)" },
-        { "title": "Odstránenie zubného kameňa", "desc": "Ultrazvukový scaling a leštenie pre zdravé ďasná.", "price": "od 15 000 Ft" },
-        { "title": "Farebne zhodné výplne", "desc": "Kompozitné výplne zodpovedajúce farbe zuba – prakticky neviditeľné.", "price": "od 25 000 Ft" },
-        { "title": "Kompletná premena úsmevu", "desc": "Komplexná premena úsmevu: bielenie, fazety, tvarovanie zubov.", "price": "Individuálna ponuka" },
-        { "title": "Korekcia ďasien", "desc": "Estetická korekcia línie ďasien pre harmonický úsmev.", "price": "od 45 000 Ft" }
+        {"title": "Profesionálne bielenie zubov", "desc": "Zuby až o 8 odtieňov svetlejšie po jednom ošetrení.", "price": "od 35 000 Ft"},
+        {"title": "Porcelánové fazety (Veneer)", "desc": "Ultratenkí porcelánové fazety – dokonalý tvar a farba.", "price": "75 000 Ft / zub (pôvodne 120 000 Ft)"},
+        {"title": "Ultrazvukové odstránenie zubného kameňa", "desc": "Ultrazvukový scaling a leštenie pre zdravé ďasná.", "price": "15 000 HUF (za jeden zubný oblúk)"},
+        {"title": "Farebne zhodné výplne", "desc": "Kompozitné výplne zodpovedajúce farbe zuba – prakticky neviditeľné.", "price": "od 25 000 Ft"},
+        {"title": "Kompletná premena úsmevu", "desc": "Komplexná premena úsmevu: bielenie, fazety, tvarovanie zubov.", "price": "Individuálna ponuka"},
+        {"title": "Korekcia ďasien", "desc": "Estetická korekcia línie ďasien pre harmonický úsmev.", "price": "od 45 000 Ft"}
       ],
       "benefitsTitle": "Krása je v detailoch",
       "benefitItems": [

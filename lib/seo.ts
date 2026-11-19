@@ -102,6 +102,7 @@ export function buildLocalizedMetadata({
   description,
   keywords,
   image = '/og-image.jpg',
+  imageHeight = 630,
 }: {
   locale: string;
   path?: string;
@@ -109,6 +110,7 @@ export function buildLocalizedMetadata({
   description: string;
   keywords?: string[];
   image?: string;
+  imageHeight?: number;
 }): Metadata {
   const normalizedLocale = normalizeLocale(locale);
   const canonical = localizedUrl(normalizedLocale, path);
@@ -147,7 +149,7 @@ export function buildLocalizedMetadata({
         .filter((candidate) => candidate !== normalizedLocale)
         .map((candidate) => openGraphLocales[candidate]),
       type: 'website',
-      images: [{ url: imageUrl, width: 1200, height: 630, alt: title }],
+      images: [{ url: imageUrl, width: 1200, height: imageHeight, alt: title }],
     },
     twitter: {
       card: 'summary_large_image',

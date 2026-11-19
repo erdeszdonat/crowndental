@@ -1,5 +1,6 @@
 'use client';
 
+import { blogCoverProjection } from '@/lib/blogConfig';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Clock, BookOpen, Globe2, Layers3 } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
@@ -202,7 +203,7 @@ export default function BlogClient({ initialPosts = EMPTY_BLOG_POSTS }: { initia
       try {
         const id = 'h68mmabs';
         const dataSet = 'production';
-        const query = encodeURIComponent(`*[_type == "post"] | order(publishedAt desc) { _id, title, "slug": slug.current, publishedAt, excerpt, "imageUrl": mainImage.asset->url, "language": coalesce(language, "hu"), "category": coalesce(category, "professional") }`);
+        const query = encodeURIComponent(`*[_type == "post"] | order(publishedAt desc) { _id, title, "slug": slug.current, publishedAt, excerpt, "imageUrl": ${blogCoverProjection}, "language": coalesce(language, "hu"), "category": coalesce(category, "professional") }`);
         const url = `https://${id}.api.sanity.io/v2024-03-08/data/query/${dataSet}?query=${query}`;
         const response = await fetch(url, { cache: 'no-store' });
         const data = await response.json();
