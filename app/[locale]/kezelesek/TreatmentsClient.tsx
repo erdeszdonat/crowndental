@@ -43,17 +43,19 @@ function TreatmentCard({ card, imageUrl, imageIsBeforeAfter }: { card: { id: str
 function TreatmentCardsSection({ sanityImages }: { sanityImages: Record<string, string> }) {
   const t = useTranslations('treatments');
   const cards = t.raw('cards') as Array<{ id: string; title: string; description: string; href?: string }>;
+  const hygieneImages: Record<string, string> = { 'air-polishing': '/images/hygiene/air-polishing.webp', 'premium-biofilm-terapia': '/images/hygiene/premium-biofilm-terapia.webp' };
   const directImage = sanityImages['direkt-hej'] || sanityImages['hollywood-mosoly'];
   return (
     <section className="py-12 sm:py-16 bg-white">
       <div className="container mx-auto px-4">
+        <h2 className="sr-only">{t('heroTitle1')} {t('heroTitle2')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {cards.map((card, index) => (
             <TreatmentCard
               key={card.id}
               card={card}
               index={index}
-              imageUrl={(card.id === 'direkt-hej' ? directImage : sanityImages[card.id]) || (['direkt-hej', 'indirekt-hej'].includes(card.id) ? sanityImages['esztetikai-fogaszat'] : undefined)}
+              imageUrl={hygieneImages[card.id] || (card.id === 'direkt-hej' ? directImage : sanityImages[card.id]) || (['direkt-hej', 'indirekt-hej'].includes(card.id) ? sanityImages['esztetikai-fogaszat'] : undefined)}
               imageIsBeforeAfter={Boolean(card.id === 'direkt-hej' ? directImage : card.id === 'hollywood-mosoly' && sanityImages[card.id])}
             />
           ))}
@@ -85,7 +87,7 @@ function PriceListSection({ directOffer: initialDirectOffer }: { directOffer: Ve
   const locale = useLocale();
   const showEur = locale === 'en' || locale === 'sk' || locale === 'de';
   // @ts-ignore
-  const priceCategories = t.raw('priceCategories') as Array<{ id: string; title: string; items: Array<{ name: string; price: string; highlight?: boolean }> }>;
+  const priceCategories = t.raw('priceCategories') as Array<{ id: string; title: string; items: Array<{ name: string; price: string; highlight?: boolean; slug?: string }> }>;
   const labels = getVeneerLabels(locale);
   const veneerOffers = [
     { slug: 'direkt-hej' as const, title: labels.directName, offer: directOffer },
@@ -134,7 +136,7 @@ function PriceListSection({ directOffer: initialDirectOffer }: { directOffer: Ve
                 {category.items.map((item, itemIndex) => (
                   <div key={itemIndex} className={`flex flex-col sm:flex-row sm:items-center justify-between px-6 sm:px-8 py-4 sm:py-5 transition-colors ${item.highlight ? 'bg-gradient-to-r from-sky-50 to-sky-50' : 'bg-white hover:bg-gray-50'}`}>
                     <span className={`text-base sm:text-lg mb-2 sm:mb-0 pr-4 ${item.highlight ? 'font-semibold text-gray-900' : 'text-gray-700'}`}>
-                      {item.name}
+                      {item.slug ? <Link className="underline underline-offset-4" href={veneerPath(locale, '/kezelesek/' + item.slug)}>{item.name}</Link> : item.name}
                     </span>
                     <div className="flex flex-col items-end gap-0.5">
                       <span className={`text-lg sm:text-xl font-bold whitespace-nowrap ${item.highlight ? 'bg-gradient-to-r from-sky-600 to-sky-600 bg-clip-text text-transparent' : 'text-gray-900'}`}>

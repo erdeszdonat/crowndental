@@ -1,7 +1,7 @@
 // These IDs are shared by all four locales. The appointment keeps the translated label.
 export const bookingTreatmentIds = [
   'allapotfelmeres', 'fogszabalyozas', 'implantatum', 'koronak-hidak', 'fogfeherites',
-  'direkt-hej', 'indirekt-hej', 'hollywood-mosoly', 'fogko', 'panorama', 'cbct',
+  'direkt-hej', 'indirekt-hej', 'hollywood-mosoly', 'fogko', 'air-polishing', 'premium-biofilm-terapia', 'panorama', 'cbct',
   'fogsor', 'szajsebeszet', 'gyokerkezeles', 'fogtomes', 'fogszabalyozo-kezeles',
   'gyerekfogaszat', 'gockutatas', 'esztetikai-fogaszat', 'fogtechnikai-megoldasok', 'egyeb',
 ] as const;
@@ -36,6 +36,8 @@ export function articleBookingTreatment(slug: string, title = ''): BookingTreatm
     .replace(/[-_]/g, ' ').replace(/crown dental\w*/g, '');
   // Prefer the editorial title: older Sanity slugs can be truncated or describe an earlier title.
   for (const text of [title, slug].map(normalize)) {
+    if (/biofilm|lepedekfest|plaque disclos|plaqueanfarb|farbenie povlaku/.test(text)) return 'premium-biofilm-terapia';
+    if (/air[ -]?polish|pieskovanie/.test(text)) return 'air-polishing';
     if (/all on (4|four)\b/.test(text)) return 'implantatum';
     if (/pattintos fogsor|snap in dentur|druckknopfprothes|nacvakavaci\w* protez/.test(text)) return 'fogsor';
     if (/\bhej(ak)?\b|veneer|fazet/.test(text)) {

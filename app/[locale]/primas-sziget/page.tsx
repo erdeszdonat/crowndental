@@ -21,7 +21,7 @@ type Props = { params: Promise<{ locale: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = normalizeLocale((await params).locale);
   const copy = clinicCopy[locale];
-  return buildLocalizedMetadata({ locale, path: 'primas-sziget', title: `${copy.title} | Crown Dental`, description: openingContent[locale].seoDescription });
+  return buildLocalizedMetadata({ locale, path: 'primas-sziget', title: `${copy.title} | Crown Dental`, description: copy.description });
 }
 
 const treatments: PrimasTreatmentSlug[] = ['allapotfelmeres', 'gyokerkezeles', 'fogfeherites', 'koronak-hidak', 'fogsor', 'implantatum', 'szajsebeszet', 'gyerekfogaszat', 'fogszabalyozas'];

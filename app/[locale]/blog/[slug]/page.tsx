@@ -1,3 +1,4 @@
+import { blogCoverProjection } from '@/lib/blogConfig';
 import { clinicNewsPosts } from '@/lib/openingPosts';
 import type { Metadata } from 'next';
 import { cache } from 'react';
@@ -70,7 +71,7 @@ export const revalidate = 604800;
 export async function generateStaticParams(): Promise<Array<{ locale: string; slug: string }>> {
   try {
     const posts = await client.fetch<Array<{ slug?: string; locale?: string }>>(
-      `*[_type == "post" && !(_id in path("drafts.**")) && defined(slug.current)]{
+      `*[_type == "post" && !(_id in path("drafts.**")) && defined(slug.current) && defined(title)]{
         "slug": slug.current,
         "locale": coalesce(language, "hu")
       }`,
@@ -86,8 +87,7 @@ export async function generateStaticParams(): Promise<Array<{ locale: string; sl
     }
     return [...unique.values(), ...clinicNewsPosts.map(post => ({ locale: post.language, slug: post.slug }))];
   } catch (error) {
-    console.error('Blog statikus útvonalak betöltési hiba:', error);
-    return clinicNewsPosts.map(post => ({ locale: post.language, slug: post.slug }));
+    throw new Error('A publikált cikkek útvonalai nem tölthetők be.', { cause: error });
   }
 }
 
@@ -100,7 +100,7 @@ const postFields = `
   excerpt,
   "language": coalesce(language, "hu"),
   "category": coalesce(category, "professional"),
-  "imageUrl": mainImage.asset->url,
+  "imageUrl": ${blogCoverProjection},
   mainImage { alt, caption, sourceName, sourceUrl },
   content[] {
     ...,

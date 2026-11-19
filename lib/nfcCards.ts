@@ -43,6 +43,14 @@ export const HYGIENE_TREATMENTS = {
     sk: "Odstránenie zubného kameňa",
     de: "Professionelle Zahnreinigung",
   },
+  'air-polishing': {
+    hu: 'Fogkőeltávolítás és air polishing', en: 'Scaling and air polishing',
+    sk: 'Odstránenie zubného kameňa a pieskovanie', de: 'Zahnsteinentfernung mit Air-Polishing',
+  },
+  'premium-biofilm-terapia': {
+    hu: 'Prémium biofilm-terápia', en: 'Premium biofilm therapy',
+    sk: 'Prémiová terapia biofilmu', de: 'Premium-Biofilmtherapie',
+  },
   fogekszer: {
     hu: "Fogékszer-felhelyezés",
     en: "Tooth gem placement",

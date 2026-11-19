@@ -1,3 +1,6 @@
+// Studio can reference a Crown Dental-hosted cover in the image source field.
+export const blogCoverProjection = 'coalesce(mainImage.asset->url, select(string::startsWith(mainImage.sourceUrl, "https://www.crowndental.hu/images/blog/") => mainImage.sourceUrl))';
+
 export const BLOG_LANGUAGES = [
   { id: 'hu', label: 'Magyar', shortLabel: 'HU' },
   { id: 'sk', label: 'Szlovák', shortLabel: 'SK' },

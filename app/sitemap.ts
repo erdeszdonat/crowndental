@@ -21,24 +21,22 @@ const fetchSanityPosts = async (): Promise<SanityPost[]> => {
   const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'h68mmabs';
   const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
   const query = encodeURIComponent(
-    `*[_type == "post" && !(_id in path("drafts.**"))]{ "slug": slug.current, _updatedAt, "language": coalesce(language, "hu") }`,
+    `*[_type == "post" && !(_id in path("drafts.**")) && defined(slug.current) && defined(title)]{ "slug": slug.current, _updatedAt, "language": coalesce(language, "hu") }`,
   );
   const url = `https://${projectId}.api.sanity.io/v2024-03-08/data/query/${dataset}?query=${query}`;
 
-  try {
-    const response = await fetch(url, { next: { revalidate } });
-    if (!response.ok) return [];
-    const data = await response.json();
-    return data.result || [];
-  } catch (error) {
-    console.error('Sitemap: a blogbejegyzések lekérése sikertelen:', error);
-    return [];
-  }
+  const response = await fetch(url, { next: { revalidate } });
+  if (!response.ok) throw new Error(`Sanity sitemap request failed (${response.status})`);
+  const data = await response.json();
+  if (!Array.isArray(data.result)) throw new Error('Missing Sanity sitemap result');
+  return data.result;
 };
 
 const staticPaths = [
   '',
   'kezelesek',
+  'kezelesek/air-polishing',
+  'kezelesek/premium-biofilm-terapia',
   ...TREATMENT_SLUGS.map((slug) => `kezelesek/${slug}`),
   'esztergom',
   'primas-sziget',
@@ -120,4 +118,4 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 }
 
 export const dynamic = 'force-static';
-export const revalidate = 604800;
+export const revalidate = 3600;

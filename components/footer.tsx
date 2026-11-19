@@ -96,7 +96,7 @@ export default function Footer() {
 
           {/* 2. OSZLOP: KEZELÉSEK */}
           <div>
-            <h4 className="text-white font-bold text-lg mb-6 uppercase tracking-wider">{t('treatments')}</h4>
+            <h2 className="text-white font-bold text-lg mb-6 uppercase tracking-wider">{t('treatments')}</h2>
             <ul className="space-y-3 text-sm">
               <li><Link prefetch={false} href={`${prefix}/kezelesek/implantatum`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('treatmentLinks.implant')}</Link></li>
               <li><Link prefetch={false} href={`${prefix}/kezelesek/koronak-hidak`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('treatmentLinks.crowns')}</Link></li>
@@ -117,7 +117,7 @@ export default function Footer() {
 
           {/* 3. OSZLOP: HASZNOS LINKEK & JOGI */}
           <div>
-            <h4 className="text-white font-bold text-lg mb-6 uppercase tracking-wider">{t('usefulLinks')}</h4>
+            <h2 className="text-white font-bold text-lg mb-6 uppercase tracking-wider">{t('usefulLinks')}</h2>
             <ul className="space-y-3 text-sm mb-10">
               <li><Link prefetch={false} href={`${prefix}/kezelesek`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('fullPriceList')}</Link></li>
               <li><Link prefetch={false} href={isNfcCardPath(pathname) ? '#konzultacio' : bookingHref(prefix, pathname)} data-booking-cta={isNfcCardPath(pathname) ? 'true' : undefined} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('bookingLink')}</Link></li>
@@ -132,7 +132,7 @@ export default function Footer() {
               <li><Link prefetch={false} href={`${prefix}/karrier`} className="hover:text-sky-400 transition-colors flex items-center gap-2"><ChevronRight className="w-3 h-3 text-sky-600" /> {t('careerLink')}</Link></li>
             </ul>
 
-            <h4 className="text-white font-bold text-lg mb-6 uppercase tracking-wider">{t('legalInfo')}</h4>
+            <h2 className="text-white font-bold text-lg mb-6 uppercase tracking-wider">{t('legalInfo')}</h2>
             <ul className="space-y-3 text-sm">
               <li><Link prefetch={false} href={`${prefix}/aszf`} className="text-gray-400 hover:text-white transition-colors">{t('aszf')}</Link></li>
               <li><Link prefetch={false} href={`${prefix}/adatkezeles`} className="text-gray-400 hover:text-white transition-colors">{t('privacy')}</Link></li>
@@ -142,7 +142,7 @@ export default function Footer() {
                 <button
                   type="button"
                   onClick={openCookieBanner}
-                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 bg-sky-600 hover:bg-sky-500 text-white transition-colors rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider shadow-lg"
+                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 bg-sky-700 hover:bg-sky-800 text-white transition-colors rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider shadow-lg"
                 >
                   <Settings className="w-4 h-4" /> {t('cookieSettings')}
                 </button>
@@ -152,7 +152,7 @@ export default function Footer() {
 
           {/* 4. OSZLOP: KAPCSOLAT */}
           <div>
-            <h4 className="text-white font-bold text-lg mb-6 uppercase tracking-wider">{t('contact')}</h4>
+            <h2 className="text-white font-bold text-lg mb-6 uppercase tracking-wider">{t('contact')}</h2>
             <ul className="space-y-6 text-sm">
               <li className="flex items-start gap-4">
                 <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center flex-shrink-0">
@@ -218,7 +218,7 @@ export default function Footer() {
         </div>
 
         {/* LÁBLÉC ALJA */}
-        <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
+        <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-400">
           <p>{t('copyright')}</p>
         </div>
       </div>

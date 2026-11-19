@@ -114,7 +114,7 @@ export default function CookieBanner() {
                     <p className="text-gray-600 text-xs leading-relaxed">
                       <span className="font-bold text-gray-900">{t('bannerTitle')}</span>{' '}
                       {t('message')}
-                      <Link href={`${p}/cookie-tajekoztato`} className="text-sky-600 font-bold hover:underline ml-1">{t('bannerLink')}</Link>
+                      <Link href={`${p}/cookie-tajekoztato`} className="text-sky-700 font-bold hover:underline ml-1">{t('bannerLink')}</Link>
                     </p>
                   </div>
                 </div>
@@ -125,7 +125,7 @@ export default function CookieBanner() {
                   <button onClick={handleRejectAll} className="px-3 py-2 bg-white text-sky-700 border border-sky-200 font-bold rounded-xl hover:bg-sky-50 transition-colors text-xs">
                     {t('necessaryOnly')}
                   </button>
-                  <button onClick={handleAcceptAll} className="px-3 py-2 bg-sky-600 text-white font-bold rounded-xl hover:bg-sky-700 transition-all shadow-lg shadow-sky-600/20 text-xs flex items-center justify-center gap-1.5">
+                  <button onClick={handleAcceptAll} className="px-3 py-2 bg-sky-700 text-white font-bold rounded-xl hover:bg-sky-800 transition-all shadow-lg shadow-sky-600/20 text-xs flex items-center justify-center gap-1.5">
                     <Check className="w-4 h-4" /> {t('acceptAll')}
                   </button>
                 </div>

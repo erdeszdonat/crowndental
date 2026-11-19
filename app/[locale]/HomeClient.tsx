@@ -201,7 +201,7 @@ function HeroSlider({ images }: { images: HomeSanityImages['hero'] }) {
                 <p className="mb-7 flex items-start gap-2 text-sm text-slate-300"><MapPin className="h-4 w-4 shrink-0" aria-hidden="true" />2500 Esztergom, Helischer József út 6.</p>
               </>}
               <div className="flex flex-col sm:flex-row gap-4">
-                <motion.a href={staticSlides[current].href} whileHover={prefersReducedMotion ? undefined : { scale:1.03 }} whileTap={prefersReducedMotion ? undefined : { scale:0.97 }} className="group flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-5 bg-sky-500 hover:bg-sky-400 text-white text-lg font-bold rounded-2xl shadow-[0_0_60px_rgba(14,165,233,0.4)] transition-all">
+                <motion.a href={staticSlides[current].href} whileHover={prefersReducedMotion ? undefined : { scale:1.03 }} whileTap={prefersReducedMotion ? undefined : { scale:0.97 }} className="group flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-5 bg-sky-700 hover:bg-sky-800 text-white text-lg font-bold rounded-2xl shadow-[0_0_60px_rgba(14,165,233,0.4)] transition-all">
                   {staticSlides[current].icon} {slideData[current]?.primaryText} <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </motion.a>
                 <ClinicPhoneLinks tone="dark" clinic={current === 0 ? "primas-sziget" : undefined} />

@@ -58,3 +58,22 @@ test('article topics use the title even for opaque slugs, with a neutral result 
     ['opaque', 'Composite vs. porcelain veneers', 'esztetikai-fogaszat'],
   ]) assert.equal(articleBookingTreatment(slug, title), expected, slug + ' ' + title);
 });
+
+test('each hygiene service remains separately bookable from its article, treatment page and localized price list', () => {
+  for (const [slug, article, price] of [
+    ['air-polishing', 'Kávéfolt vagy fogkő? Mit tisztít le az air polishing a fogakról?', 20000],
+    ['premium-biofilm-terapia', 'Mit mutat meg a lepedékfestés, ha már megmosta a fogát?', 25000],
+  ]) {
+    assert.equal(articleBookingTreatment('opaque', article), slug);
+    assert.equal(bookingTreatmentId(slug), slug);
+    for (const lang of ['hu','de','en','sk']) {
+      const prefix = lang === 'hu' ? '' : '/' + lang;
+      assert.equal(bookingHref(prefix, prefix + '/kezelesek/' + slug), prefix + '/idopont?kezeles=' + slug);
+      const { treatments, booking } = JSON.parse(read('messages/' + lang + '.json'));
+      const row = treatments.priceCategories.flatMap(group => group.items).find(item => item.slug === slug);
+      assert.equal(Number(row.price.replace(/\D/g, '')), price);
+      assert.ok(row.name.includes(booking.treatments[slug]));
+      assert.equal(treatments.cards.filter(card => card.id === slug).length, 1);
+    }
+  }
+});
