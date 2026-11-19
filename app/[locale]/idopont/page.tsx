@@ -2,7 +2,10 @@ import type { Metadata } from 'next';
 import BookingClient from './BookingClient';
 import { getVeneerOffer } from '@/lib/veneers.mjs';
 
-export const revalidate = 3600;
+import { createClient } from 'next-sanity';
+import { projectId, dataset } from '@/sanity/env';
+import { articleBookingTreatment, bookingTreatmentId } from '@/lib/bookingTreatment';
+import { canonicalBlogSlug } from '@/lib/blogConsolidation';
 import {
   buildLocalizedMetadata,
   localizedUrl,
@@ -11,7 +14,24 @@ import {
   type SupportedLocale,
 } from '@/lib/seo';
 
-type BookingPageProps = { params: Promise<{ locale: string }> };
+type BookingPageProps = { params: Promise<{ locale: string }>; searchParams: Promise<{ kezeles?: string | string[]; cikk?: string | string[] }> };
+
+const client = createClient({ projectId, dataset, apiVersion: '2024-03-08', useCdn: true });
+
+async function treatmentFromArticle(locale: string, slug: string) {
+  if (!slug || slug.length > 240) return;
+  // Cache one public title list per language, independent of visitor-provided query strings.
+  try {
+    const posts = await client.fetch<{ slug: string; title: string }[]>(
+      '*[_type == "post" && defined(slug.current) && coalesce(language, "hu") == $locale]{"slug":slug.current,title}',
+      { locale }, { next: { revalidate: 3600 }, timeout: 2500 },
+    );
+    const post = posts.find(post => canonicalBlogSlug(post.slug) === slug);
+    return articleBookingTreatment(slug, post?.title);
+  } catch {
+    return articleBookingTreatment(slug);
+  }
+}
 
 const metadataByLocale: Record<SupportedLocale, { title: string; description: string; keywords: string[] }> = {
   hu: {
@@ -45,6 +65,10 @@ export async function generateMetadata(props: BookingPageProps): Promise<Metadat
 export default async function BookingPage(props: BookingPageProps) {
   const params = await props.params;
   const locale = normalizeLocale(params.locale);
+  const query = await props.searchParams;
+  const article = typeof query.cikk === 'string' ? query.cikk : '';
+  const explicit = typeof query.kezeles === 'string' ? query.kezeles : null;
+  const treatment = bookingTreatmentId(explicit) ?? await treatmentFromArticle(locale, article);
   const url = localizedUrl(locale, 'idopont');
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -72,7 +96,7 @@ export default async function BookingPage(props: BookingPageProps) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
-      <BookingClient directOffer={getVeneerOffer('direkt-hej')} />
+      <BookingClient key={JSON.stringify([locale, explicit, article])} directOffer={getVeneerOffer('direkt-hej')} initialTreatmentSlug={treatment} />
     </>
   );
 }

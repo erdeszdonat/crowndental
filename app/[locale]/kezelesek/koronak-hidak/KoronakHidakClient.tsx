@@ -99,7 +99,7 @@ function AppointmentCTASection() {
           <div className="bg-gradient-to-br from-sky-600 to-sky-800 rounded-[2.5rem] p-10 md:p-16 text-center shadow-2xl relative overflow-hidden">
             <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-6">{t('ctaTitle')}</h2>
             <p className="text-lg text-sky-100 mb-10 max-w-2xl mx-auto">{t('ctaDesc')}</p>
-            <Link href={`${p}/idopont`} className="crown-button crown-button-secondary">
+            <Link href={`${p}/idopont?kezeles=koronak-hidak`} className="crown-button crown-button-secondary">
               <span className="text-lg">{ts('consultationBtn')}</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>

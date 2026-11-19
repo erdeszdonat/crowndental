@@ -254,8 +254,8 @@
   "booking": {
     "title": "Foglaljon Időpontot",
     "subtitle": "Töltse ki az alábbi adatokat, és egy kollégánk hamarosan felveszi Önnel a kapcsolatot.",
-    "step1Title": "Az Ön adatai",
-    "step2Title": "Kezelés kiválasztása",
+    "contactHeading": "Az Ön adatai",
+    "treatmentHeading": "Kezelés kiválasztása",
     "fullName": "Teljes Név",
     "salutation": "Megszólítás (pl. Péter)",
     "email": "Email cím",
@@ -271,24 +271,26 @@
     "submitting": "Küldés...",
     "marketingOptInTitle": "Kérek akciós ajánlatokat és extra lehetőségeket e-mailben",
     "marketingOptInText": "Nem kötelező a foglaláshoz. Időnként kedvezményekről, ingyenes kezelési lehetőségekről és hasznos fogászati tippekről írunk. Bármikor leiratkozhat.",
-    "treatments": [
-      "Állapotfelmérés és Konzultáció",
-      "Fogimplantátum",
-      "Cirkónium vagy Fémkerámia Korona",
-      "Fogszabályozás",
-      "Fogszabályozás konzultáció",
-      "Fogfehérítés",
-      "Direkt kompozit héj",
-      "Indirekt porcelán héj",
-      "Fogkő eltávolítás",
-      "Panoráma röntgen",
-      "CBCT (3D) felvétel",
-      "Fogsor készítés / Javítás",
-      "Szájsebészet / Foghúzás",
-      "Gyökérkezelés",
-      "Fogtömés",
-      "Egyéb / Nem tudom pontosan"
-    ]
+    "treatments": {
+      "allapotfelmeres": "Konzultáció és állapotfelmérés",
+      "implantatum": "Fogimplantátum",
+      "koronak-hidak": "Cirkónium vagy Fémkerámia Korona",
+      "fogszabalyozo-kezeles": "Fogszabályozás",
+      "fogszabalyozas": "Fogszabályozás konzultáció",
+      "fogfeherites": "Fogfehérítés",
+      "fogko": "Fogkő eltávolítás",
+      "panorama": "Panoráma röntgen",
+      "cbct": "CBCT (3D) felvétel",
+      "fogsor": "Fogsor készítés / Javítás",
+      "szajsebeszet": "Szájsebészet / Foghúzás",
+      "gyokerkezeles": "Gyökérkezelés",
+      "fogtomes": "Fogtömés",
+      "egyeb": "Egyéb / Nem tudom pontosan",
+      "gyerekfogaszat": "Gyermekfogászat",
+      "gockutatas": "Góckutatás",
+      "esztetikai-fogaszat": "Esztétikai fogászat",
+      "fogtechnikai-megoldasok": "Fogtechnikai megoldások"
+    }
   },
 
   "about": {

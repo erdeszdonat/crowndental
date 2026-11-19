@@ -254,8 +254,8 @@
   "booking": {
     "title": "Book an Appointment",
     "subtitle": "Fill in your details and one of our colleagues will contact you shortly.",
-    "step1Title": "Your Details",
-    "step2Title": "Select Treatment",
+    "contactHeading": "Your Details",
+    "treatmentHeading": "Select Treatment",
     "fullName": "Full Name",
     "salutation": "First name / Salutation",
     "email": "Email address",
@@ -271,22 +271,26 @@
     "submitting": "Sending...",
     "marketingOptInTitle": "Send me special offers and extra opportunities by email",
     "marketingOptInText": "Optional for booking. From time to time we send discounts, free treatment opportunities and useful dental tips. You can unsubscribe anytime.",
-    "treatments": [
-      "Assessment & Consultation",
-      "Dental Implant",
-      "Zirconia or Metal-Ceramic Crown",
-      "Orthodontics",
-      "Orthodontics Consultation",
-      "Teeth Whitening",
-      "Scaling (Tartar Removal)",
-      "Panoramic X-ray",
-      "CBCT (3D) Scan",
-      "Denture Making / Repair",
-      "Oral Surgery / Extraction",
-      "Root Canal Treatment",
-      "Dental Filling",
-      "Other / Not sure"
-    ]
+    "treatments": {
+      "allapotfelmeres": "Assessment & Consultation",
+      "implantatum": "Dental Implant",
+      "koronak-hidak": "Zirconia or Metal-Ceramic Crown",
+      "fogszabalyozo-kezeles": "Orthodontics",
+      "fogszabalyozas": "Orthodontics Consultation",
+      "fogfeherites": "Teeth Whitening",
+      "fogko": "Scaling (Tartar Removal)",
+      "panorama": "Panoramic X-ray",
+      "cbct": "CBCT (3D) Scan",
+      "fogsor": "Denture Making / Repair",
+      "szajsebeszet": "Oral Surgery / Extraction",
+      "gyokerkezeles": "Root Canal Treatment",
+      "fogtomes": "Dental Filling",
+      "egyeb": "Other / Not sure",
+      "gyerekfogaszat": "Children’s dentistry",
+      "gockutatas": "Dental focal infection screening",
+      "esztetikai-fogaszat": "Cosmetic dentistry",
+      "fogtechnikai-megoldasok": "Dental laboratory services"
+    }
   },
 
   "about": {

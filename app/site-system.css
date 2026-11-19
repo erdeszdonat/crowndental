@@ -89,7 +89,7 @@ main.crown-page > section:not(.crown-clinical-hero),
 .crown-booking-panel { padding: clamp(1.25rem, 3vw, 2.5rem); border: 1px solid var(--crown-line); border-radius: var(--crown-radius); background: white; }
 .crown-booking-panel { scroll-margin-top: 6rem; }
 .crown-booking-panel h2 { font-size: 1.4rem; margin-bottom: .7rem; }
-.crown-booking-progress { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; padding-bottom: 1.5rem; margin-bottom: 1.75rem; border-bottom: 1px solid var(--crown-line); }
+.crown-booking-progress { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; padding-bottom: 1.5rem; margin-bottom: 1.75rem; border-bottom: 1px solid var(--crown-line); }
 .crown-booking-progress li { display: flex; align-items: center; gap: .65rem; color: var(--crown-muted); font-size: .8rem; font-weight: 600; }
 .crown-booking-progress li > span { display: grid; place-items: center; flex-shrink: 0; width: 32px; height: 32px; border: 1px solid var(--crown-line); border-radius: 50%; }
 .crown-booking-progress li[aria-current="step"] { color: var(--crown-blue); }
@@ -149,7 +149,7 @@ main.crown-page > section:not(.crown-clinical-hero),
   .crown-cards-grid { grid-template-columns: 1fr; }
   .crown-treatment-body { padding: 1.3rem; }
   .crown-booking-progress { gap: .6rem; }
-  .crown-booking-progress li { font-size: .72rem; gap: .4rem; }
+  .crown-booking-progress li { flex-direction: column; text-align: center; font-size: .72rem; gap: .4rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   .crown-site *, .crown-site *::before, .crown-site *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }

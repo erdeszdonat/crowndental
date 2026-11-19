@@ -105,6 +105,12 @@ export async function POST(request: Request) {
       return noStoreJson({ error: 'Érvénytelen kártya, kolléga, kezelés vagy adatkezelési visszajelzés.' }, { status: 400 });
     }
     const city = nfc ? 'Esztergom' : cleanText(body.city, 80);
+    const clinic = getAppointmentClinic(body.requestedClinicId);
+    if (!nfc && body.requestedClinicId !== undefined && (!clinic || city !== 'Esztergom')) {
+      releaseIdempotency('booking', idempotencyKey);
+      return noStoreJson({ error: 'Érvénytelen rendelő.' }, { status: 400 });
+    }
+    const clinicFields = nfc ?? (clinic ? { requested_clinic_id: clinic.id } : {});
     const name = cleanText(body.name, 120);
     const nickname = cleanText(body.nickname, 80);
     const email = normalizeEmail(body.email);
@@ -140,7 +146,7 @@ export async function POST(request: Request) {
         name, nickname, email, phone, city, treatment, locale, idempotency_key: idempotencyKey,
         request_receipt_email_idempotency_key: receiptEmailIdempotencyKey,
         analytics_session_id: analyticsSessionId,
-        ...(nfc || {}),
+        ...clinicFields,
       })
       .select('id')
       .single();
@@ -184,7 +190,7 @@ export async function POST(request: Request) {
     }
 
     const emailResult = await sendBookingReceipt({
-      id: String(appointment.id), name, nickname, email, phone, city, treatment, locale, ...(nfc || {}),
+      id: String(appointment.id), name, nickname, email, phone, city, treatment, locale, ...clinicFields,
     }, receiptEmailIdempotencyKey);
     const emailSent = emailResult.ok;
     if (emailSent) {

@@ -30,6 +30,6 @@ export function cleanAnalyticsEvent(value: unknown): AnalyticsEvent | null {
   return { id: v.id, event: String(v.event), page: PUBLIC_PAGES.has(String(v.page)) ? String(v.page) : 'other',
     at: typeof v.at === 'number' && v.at >= now - 300000 && v.at <= now ? v.at : now,
     duration: v.event === 'engagement' && Number.isFinite(v.duration) ? Math.max(0, Math.min(30000, Math.round(Number(v.duration)))) : 0,
-    step: v.step === 1 || v.step === 2 ? v.step : 0,
+    step: v.step === 1 || v.step === 2 || v.step === 3 ? v.step : 0,
     placement: ['navigation','footer','content','home_hero','treatment_hero','mobile_bar','treatment_card','landing_hero','landing_offer','landing_form','quote_result','nfc_card'].includes(String(v.placement)) ? String(v.placement) : '' };
 }

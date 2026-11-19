@@ -298,8 +298,8 @@
   "booking": {
     "title": "Termin anfragen",
     "subtitle": "Geben Sie Ihre Daten ein und einer unserer Kollegen wird sich in Kürze mit Ihnen in Verbindung setzen.",
-    "step1Title": "Ihre Daten",
-    "step2Title": "Behandlung auswählen",
+    "contactHeading": "Ihre Daten",
+    "treatmentHeading": "Behandlung auswählen",
     "fullName": "Vollständiger Name",
     "salutation": "Vorname / Anrede",
     "email": "E-Mail-Adresse",
@@ -315,22 +315,26 @@
     "submitting": "Senden...",
     "marketingOptInTitle": "Ich möchte Sonderangebote und zusätzliche Möglichkeiten per E-Mail erhalten",
     "marketingOptInText": "Optional buchbar. Von Zeit zu Zeit senden wir Ihnen Rabatte, kostenlose Behandlungsmöglichkeiten und nützliche Zahntipps. Sie können sich jederzeit abmelden.",
-    "treatments": [
-      "Beurteilung und Beratung",
-      "Zahnimplantat",
-      "Zirkonoxid- oder Metallkeramikkrone",
-      "Kieferorthopädie",
-      "Kieferorthopädische Beratung",
-      "Zahnaufhellung",
-      "Professionelle Zahnsteinentfernung",
-      "Panoramaröntgen",
-      "DVT-Aufnahme (3D)",
-      "Herstellung/Reparatur von Zahnprothesen",
-      "Oralchirurgie / Extraktion",
-      "Wurzelkanalbehandlung",
-      "Zahnfüllung",
-      "Sonstiges / Nicht sicher"
-    ]
+    "treatments": {
+      "allapotfelmeres": "Beurteilung und Beratung",
+      "implantatum": "Zahnimplantat",
+      "koronak-hidak": "Zirkonoxid- oder Metallkeramikkrone",
+      "fogszabalyozo-kezeles": "Kieferorthopädie",
+      "fogszabalyozas": "Kieferorthopädische Beratung",
+      "fogfeherites": "Zahnaufhellung",
+      "fogko": "Professionelle Zahnsteinentfernung",
+      "panorama": "Panoramaröntgen",
+      "cbct": "DVT-Aufnahme (3D)",
+      "fogsor": "Herstellung/Reparatur von Zahnprothesen",
+      "szajsebeszet": "Oralchirurgie / Extraktion",
+      "gyokerkezeles": "Wurzelkanalbehandlung",
+      "fogtomes": "Zahnfüllung",
+      "egyeb": "Sonstiges / Nicht sicher",
+      "gyerekfogaszat": "Kinderzahnheilkunde",
+      "gockutatas": "Dentale Herdsuche",
+      "esztetikai-fogaszat": "Ästhetische Zahnmedizin",
+      "fogtechnikai-megoldasok": "Zahntechnische Leistungen"
+    }
   },
   "about": {
     "badge": "Mehr als Zahnmedizin",

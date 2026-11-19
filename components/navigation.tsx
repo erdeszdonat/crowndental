@@ -1,5 +1,6 @@
 'use client';
 
+import { bookingHref } from '@/lib/bookingTreatment';
 import { isNfcCardPath } from '@/lib/nfcCards';
 import ClinicPhoneLinks from '@/components/ClinicPhoneLinks';
 import React, { useState, useEffect, useId, useRef } from 'react';
@@ -334,7 +335,7 @@ export default function Navigation() {
 
           {/* Időpontfoglalás gomb */}
           <a
-            href={isNfc ? '#konzultacio' : `${prefix}/idopont`}
+            href={isNfc ? '#konzultacio' : bookingHref(prefix, pathname)}
               data-booking-cta={isNfc ? 'true' : undefined}
             className="crown-button hidden sm:inline-flex"
           >
@@ -406,7 +407,7 @@ export default function Navigation() {
 
             {/* Időpontfoglalás mobilon */}
             <a
-              href={isNfc ? '#konzultacio' : `${prefix}/idopont`}
+              href={isNfc ? '#konzultacio' : bookingHref(prefix, pathname)}
               data-booking-cta={isNfc ? 'true' : undefined}
               onClick={() => setIsOpen(false)}
               className="flex items-center justify-center gap-2 px-5 py-3 bg-sky-600 text-white font-bold rounded-full shadow-md"

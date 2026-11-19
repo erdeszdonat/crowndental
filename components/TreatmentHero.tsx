@@ -1,5 +1,6 @@
 'use client';
 
+import { bookingHref } from '@/lib/bookingTreatment';
 import ClinicPhoneLinks from '@/components/ClinicPhoneLinks';
 import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
@@ -23,7 +24,7 @@ export default function TreatmentHero({ imageUrl, contentKey }: { imageUrl: stri
             <h1>{t('heroTitle').replace(/\n/g, ' ')}</h1>
             <p className="crown-lead">{t('heroDesc')}</p>
             <div className="crown-actions">
-              <Link href={`${p}/idopont`} className="crown-button">{copy.book}<ArrowUpRight size={19} aria-hidden="true" /></Link>
+              <Link href={bookingHref(p, '/kezelesek/' + contentKey)} className="crown-button">{copy.book}<ArrowUpRight size={19} aria-hidden="true" /></Link>
               <ClinicPhoneLinks tone="light" />
             </div>
           </div>
