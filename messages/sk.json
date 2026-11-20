@@ -16,7 +16,6 @@
     "email": "info@crowndental.hu",
     "openingHours": "Po–Pia: 08:00–18:00"
   },
-
   "nav": {
     "home": "Domov",
     "services": "Ošetrenia & Ceny",
@@ -26,7 +25,6 @@
     "career": "Kariéra",
     "bookAppointment": "Objednať sa"
   },
-
   "footer": {
     "tagline": "Crown Dental dáva vášmu úsmevu slobodu.",
     "description": "Prémiová stomatológia s vlastným zubnotechnickým laboratóriom – bez kompromisov. Ošetrenia v Ostrihome a čoskoro aj v Budapešti.",
@@ -66,8 +64,8 @@
       "hollywoodSmile": "Hollywood Smile"
     }
   },
-
   "home": {
+    "clinicHeading": "Zubné ambulancie Crown Dental v Ostrihome",
     "floatingCta": {
       "callNow": "Zavolajte teraz",
       "bookAppointment": "Objednať sa"
@@ -184,19 +182,20 @@
     },
     "services": {
       "label": "Vybrané ošetrenia",
-      "title": "Prémiové ošetrenia,",
-      "titleHighlight": "za dostupné ceny.",
-      "subtitle": "Vďaka vlastnému laboratóriu poskytujeme vynikajúcu kvalitu bez kompromisov.",
+      "title": "Zubné ošetrenia",
+      "titleHighlight": "v Ostrihome",
+      "subtitle": "Pozrite si postup a ceny ošetrení od strojčekov až po zubné náhrady.",
       "bookConsultation": "Objednať sa na konzultáciu",
       "clickForAppointment": "Kliknite pre objednanie",
       "viewAllPrices": "Zobraziť úplný cenník",
       "cards": [
-        { "title": "Diagnostika & Základy", "subtitle": "Prehliadky, RTG, plomby", "price": "Od 10 000 HUF" },
-        { "title": "Koreňová liečba", "subtitle": "Bezbolestná záchrana zuba", "price": "Od 10 000 HUF" },
-        { "title": "Estetika & Prevencia", "subtitle": "Čistenie zubného kameňa, bielenie", "price": "Od 15 000 HUF" },
-        { "title": "Protetika & Korunky", "subtitle": "Zirkón, keramika, protézy", "price": "Od 55 000 HUF" },
-        { "title": "Chirurgia & Implantáty", "subtitle": "Extrakcie, prémiové implantáty", "price": "Od 55 000 HUF" },
-        { "title": "Deti & Ortodontia", "subtitle": "Fixné a snímateľné aparáty", "price": "Od 15 000 HUF" }
+        { "slug": "fogszabalyozas", "title": "Ortodoncia", "subtitle": "Snímateľné a fixné strojčeky aj priehľadné dlahy" },
+        { "title": "Všeobecná stomatológia", "subtitle": "Vyšetrenie, liečebný plán a kontrola výplní", "price": "Od 10 000 HUF", "slug": "allapotfelmeres" },
+        { "title": "Korunky a mostíky", "subtitle": "Kovokeramické a zirkónové korunky z vlastného laboratória", "price": "Od 55 000 HUF", "slug": "koronak-hidak" },
+        { "title": "Koreňová liečba", "subtitle": "Bezbolestná záchrana zuba", "price": "Od 10 000 HUF", "slug": "gyokerkezeles" },
+        { "title": "Estetika & Prevencia", "subtitle": "Čistenie zubného kameňa, bielenie", "price": "Od 15 000 HUF", "slug": "esztetikai-fogaszat" },
+        { "title": "Chirurgia & Implantáty", "subtitle": "Extrakcie, prémiové implantáty", "price": "Od 55 000 HUF", "slug": "szajsebeszet" },
+        {"title": "Detská stomatológia", "subtitle": "Výplne mliečnych zubov a pečatenie fisúr", "price": "Od 15 000 HUF", "slug": "gyerekfogaszat"}
       ]
     },
     "reviews": {
@@ -250,7 +249,6 @@
       ]
     }
   },
-
   "booking": {
     "title": "Objednať sa",
     "subtitle": "Vyplňte svoje údaje a náš kolega vás čoskoro kontaktuje.",
@@ -294,7 +292,6 @@
       "fogtechnikai-megoldasok": "Zubná technika"
     }
   },
-
   "about": {
     "badge": "Viac ako stomatológia",
     "title": "Spoznajte",
@@ -322,7 +319,6 @@
     "story3Part2": "počas každého individuálneho liečebného plánu.",
     "storySince": "Pre váš úsmev od samého začiatku."
   },
-
   "career": {
     "badge": "Pridajte sa k nám",
     "title": "Pracujte s nami na",
@@ -360,7 +356,6 @@
     "formSuccess": "Ďakujeme za vašu prihlášku!",
     "formError": "Vyskytla sa chyba. Skúste to znova."
   },
-
   "blog": {
     "title": "Blog & Magazín",
     "subtitle": "Stomatologické tipy, správy a odborné články pre našich pacientov.",
@@ -388,7 +383,6 @@
     ],
     "reviewsTitle": "Povedali naši pacienti"
   },
-
   "contact": {
     "title": "Kontakt",
     "subtitle": "Neváhajte nás kontaktovať — odpovieme a pomôžeme!",
@@ -397,7 +391,6 @@
     "openingHours": "Otváracie hodiny",
     "weekdays": "Pondelok – Piatok"
   },
-
   "cookie": {
     "message": "Naša webová stránka používa súbory cookie na zlepšenie vášho zážitku.",
     "accept": "Prijať",
@@ -421,7 +414,6 @@
     "acceptAllBtn": "Prijať všetky",
     "saveSelectionBtn": "Uložiť nastavenia"
   },
-
   "treatments": {
     "pageTitle": "Ošetrenia & Ceny",
     "pageSubtitle": "Prémiové stomatologické ošetrenia s vlastným laboratóriom za dostupné ceny.",
@@ -447,16 +439,16 @@
     "veneerPriceNote": "Konečný liečebný plán a cenu prípadných ďalších ošetrení dohodneme počas konzultácie. Ceny sú uvedené v maďarských forintoch (HUF).",
     "veneerBeforeAfterAlt": "Úsmev pred ošetrením priamymi kompozitnými fazetami a po ňom – Hollywood Smile",
     "cards": [
-      {"id": "air-polishing", "title": "Odstránenie zubného kameňa a pieskovanie", "description": "Ultrazvukové odstránenie zubného kameňa a pieskovanie povrchových škvŕn."},
-      {"id": "premium-biofilm-terapia", "title": "Prémiová terapia biofilmu", "description": "Farbenie povlaku, pieskovanie a podľa potreby odstránenie zubného kameňa."},
-      { "id": "implantatum", "title": "Zubné implantáty", "description": "Prirodzená náhrada zubu titánovým implantátom, niekedy za jediný deň." },
       { "id": "fogszabalyozas", "title": "Ortodontia", "description": "Fixné a snímateľné aparáty pre deti aj dospelých." },
+      { "id": "allapotfelmeres", "title": "Vstupné vyšetrenie", "description": "Podrobná konzultácia, panoramatický RTG a individuálny liečebný plán." },
       { "id": "koronak-hidak", "title": "Korunky a mosty", "description": "Kovo-keramické a zirkónové korunky prémiové kvality z vlastného laboratória." },
-      { "id": "fogfeherites", "title": "Bielenie zubov", "description": "Profesionálne bielenie domácou alebo ambulantnou metódou." },
       { "id": "fogsor", "title": "Zubné protézy", "description": "Snímateľné a fixné protézy, presné osadenie, podbitie." },
+      { "id": "air-polishing", "title": "Odstránenie zubného kameňa a pieskovanie", "description": "Ultrazvukové odstránenie zubného kameňa a pieskovanie povrchových škvŕn." },
+      { "id": "premium-biofilm-terapia", "title": "Prémiová terapia biofilmu", "description": "Farbenie povlaku, pieskovanie a podľa potreby odstránenie zubného kameňa." },
+      { "id": "implantatum", "title": "Zubné implantáty", "description": "Prirodzená náhrada zubu titánovým implantátom, niekedy za jediný deň." },
+      { "id": "fogfeherites", "title": "Bielenie zubov", "description": "Profesionálne bielenie domácou alebo ambulantnou metódou." },
       { "id": "gyokerkezeles", "title": "Koreňová liečba", "description": "Bezbolestná strojová koreňová výplň najmodernejšou technikou." },
       { "id": "szajsebeszet", "title": "Orálna chirurgia", "description": "Extrakcia múdrosti a resekcia koreňového hrotu s odbornou starostlivosťou." },
-      { "id": "allapotfelmeres", "title": "Vstupné vyšetrenie", "description": "Podrobná konzultácia, panoramatický RTG a individuálny liečebný plán." },
       { "id": "esztetikai-fogaszat", "title": "Estetická stomatológia", "description": "Keramické fazety a neviditeľné výplne pre dokonalý úsmev." },
       { "id": "hollywood-mosoly", "title": "Hollywood Smile – hollywoodsky úsmev", "description": "Individuálny návrh úsmevu: spoznajte kompozitné a keramické fazety, porovnajte možnosti a objednajte sa na konzultáciu.", "href": "/hollywood-mosoly" },
       { "id": "direkt-hej", "title": "Priame kompozitné fazety", "description": "Kompozitné fazety modelované priamo v ambulancii s individuálnym odtieňom a tvarom. Ceny, priebeh ošetrenia a objednanie." },
@@ -470,9 +462,9 @@
         "id": "diagnosztika",
         "title": "Diagnostika a základné ošetrenia",
         "items": [
-          { "name": "Vstupné vyšetrenie, písomné stanovisko, hľadanie ložísk, liečebný plán", "price": "10 000 Ft" },
+          { "name": "Vstupné vyšetrenie, písomné stanovisko, hľadanie ložísk, liečebný plán", "price": "10 000 Ft", "slug": "allapotfelmeres" },
           { "name": "Výplne", "price": "30 000 – 35 000 Ft" },
-          { "name": "Extrakcia zuba", "price": "25 000 – 35 000 Ft" },
+          { "name": "Extrakcia zuba", "price": "25 000 – 35 000 Ft", "slug": "foghuzas" },
           { "name": "RTG snímka (malá / jeden zub)", "price": "5 000 Ft" },
           { "name": "Panoramatický RTG", "price": "8 000 Ft" },
           { "name": "Teleröntgen / cefalometrický RTG", "price": "10 000 Ft", "highlight": true },
@@ -483,11 +475,11 @@
         "id": "gyokerkezeles",
         "title": "Koreňová liečba",
         "items": [
-          { "name": "Koreňová výplň (jednokorienková)", "price": "25 000 Ft" },
-          { "name": "Koreňová výplň (dvojkorienková)", "price": "30 000 Ft" },
-          { "name": "Koreňová výplň (trojkorienková)", "price": "33 000 Ft" },
-          { "name": "Odstránenie koreňovej výplne", "price": "20 000 Ft" },
-          { "name": "Koreňová liečba za sedenie", "price": "10 000 Ft" }
+          { "name": "Koreňová výplň (jednokorienková)", "price": "25 000 Ft", "slug": "gyokerkezeles" },
+          { "name": "Koreňová výplň (dvojkorienková)", "price": "30 000 Ft", "slug": "gyokerkezeles" },
+          { "name": "Koreňová výplň (trojkorienková)", "price": "33 000 Ft", "slug": "gyokerkezeles" },
+          { "name": "Odstránenie koreňovej výplne", "price": "20 000 Ft", "slug": "gyokerkezeles" },
+          { "name": "Koreňová liečba za sedenie", "price": "10 000 Ft", "slug": "gyokerkezeles" }
         ]
       },
       {
@@ -497,34 +489,34 @@
           {"name": "Ultrazvukové odstránenie zubného kameňa (za jeden zubný oblúk)", "price": "15 000 HUF"},
           {"name": "Odstránenie zubného kameňa a pieskovanie (za jeden zubný oblúk)", "price": "20 000 HUF", "slug": "air-polishing"},
           {"name": "Prémiová terapia biofilmu (za jeden zubný oblúk)", "price": "25 000 HUF", "slug": "premium-biofilm-terapia"},
-          { "name": "Bielenie silikónovou dlahou (domáce) / na oblúk", "price": "30 000 Ft" },
-          { "name": "Bielenie v ambulancii (lampou) / na oblúk", "price": "45 000 Ft", "highlight": true }
+          { "name": "Bielenie silikónovou dlahou (domáce) / na oblúk", "price": "30 000 Ft", "slug": "fogfeherites" },
+          { "name": "Bielenie v ambulancii (lampou) / na oblúk", "price": "45 000 Ft", "highlight": true, "slug": "fogfeherites" }
         ]
       },
       {
         "id": "fogpotlas",
         "title": "Protetika a korunky",
         "items": [
-          { "name": "Dočasná korunka (krátkodobá, 1–2 týždne)", "price": "6 000 Ft" },
-          { "name": "Dočasná korunka (dlhodobá, max. 1 rok)", "price": "15 000 Ft" },
-          { "name": "Kovo-keramická korunka", "price": "55 000 Ft" },
-          { "name": "Zirkónová korunka (bez kovu)", "price": "65 000 Ft", "highlight": true },
+          { "name": "Dočasná korunka (krátkodobá, 1–2 týždne)", "price": "6 000 Ft", "slug": "koronak-hidak" },
+          { "name": "Dočasná korunka (dlhodobá, max. 1 rok)", "price": "15 000 Ft", "slug": "koronak-hidak" },
+          { "name": "Kovo-keramická korunka", "price": "55 000 Ft", "slug": "koronak-hidak" },
+          { "name": "Zirkónová korunka (bez kovu)", "price": "65 000 Ft", "highlight": true, "slug": "koronak-hidak" },
           { "name": "Individuálne tieňovanie (za zub)", "price": "15 000 Ft" },
-          { "name": "Snímateľná protéza na jednu čeľusť (kompozitná)", "price": "110 000 Ft" },
-          { "name": "Kovovová platničková protéza na jednu čeľusť", "price": "150 000 Ft" },
-          { "name": "Odstránenie starého mosta (za pilierový zub)", "price": "12 000 Ft" },
-          { "name": "Podbitie protézy", "price": "25 000 Ft" }
+          { "name": "Snímateľná protéza na jednu čeľusť (kompozitná)", "price": "110 000 Ft", "slug": "fogsor" },
+          { "name": "Kovovová platničková protéza na jednu čeľusť", "price": "150 000 Ft", "slug": "fogsor" },
+          { "name": "Odstránenie starého mosta (za pilierový zub)", "price": "12 000 Ft", "slug": "koronak-hidak" },
+          { "name": "Podbitie protézy", "price": "25 000 Ft", "slug": "fogsor" }
         ]
       },
       {
         "id": "szajsebeszet",
         "title": "Orálna chirurgia a implantológia",
         "items": [
-          { "name": "Chirurgická extrakcia zuba", "price": "55 000 Ft" },
-          { "name": "Odstránenie múdrosti", "price": "55 000 Ft" },
-          { "name": "Resekcia koreňového hrotu", "price": "55 000 Ft" },
-          { "name": "DIO Implantát", "price": "240 000 Ft", "highlight": true },
-          { "name": "ALPHA BIO Implantát", "price": "180 000 Ft" },
+          { "name": "Chirurgická extrakcia zuba", "price": "55 000 Ft", "slug": "szajsebeszet" },
+          { "name": "Odstránenie múdrosti", "price": "55 000 Ft", "slug": "szajsebeszet" },
+          { "name": "Resekcia koreňového hrotu", "price": "55 000 Ft", "slug": "szajsebeszet" },
+          { "name": "DIO Implantát", "price": "240 000 Ft", "highlight": true, "slug": "implantatum" },
+          { "name": "ALPHA BIO Implantát", "price": "180 000 Ft", "slug": "implantatum" },
           { "name": "Kostná augmentácia (vrátane súvisiaceho sinus liftu)", "price": "200 000 Ft" },
           {"name": "Implantátový nadstavec", "price": "15 000–30 000 Ft"},
           {"name": "Poplatok za veľký chirurgický zákrok", "price": "Bezplatne"},
@@ -538,24 +530,22 @@
         "id": "gyermek",
         "title": "Detská stomatológia a ortodontia",
         "items": [
-          { "name": "Výplň mliečneho zuba", "price": "15 000 Ft" },
-          { "name": "Zapečatenie fisúr", "price": "15 000 Ft" },
-          { "name": "Fixný aparát", "price": "190 000 – 285 000 Ft", "highlight": true },
-          { "name": "Snímateľný aparát", "price": "65 000 – 155 000 Ft" },
-          { "name": "Aktivácia fixného aparátu", "price": "10 000 – 15 000 Ft" },
-          { "name": "Aktivácia snímateľného aparátu", "price": "5 000 – 8 000 Ft" }
+          { "name": "Výplň mliečneho zuba", "price": "15 000 Ft", "slug": "gyerekfogaszat" },
+          { "name": "Zapečatenie fisúr", "price": "15 000 Ft", "slug": "gyerekfogaszat" },
+          { "name": "Fixný aparát", "price": "190 000 – 285 000 Ft", "highlight": true, "slug": "fogszabalyozas" },
+          { "name": "Snímateľný aparát", "price": "65 000 – 155 000 Ft", "slug": "fogszabalyozas" },
+          { "name": "Aktivácia fixného aparátu", "price": "10 000 – 15 000 Ft", "slug": "fogszabalyozas" },
+          { "name": "Aktivácia snímateľného aparátu", "price": "5 000 – 8 000 Ft", "slug": "fogszabalyozas" }
         ]
       }
     ]
   },
-
   "langSwitch": {
     "hu": "Magyar",
     "en": "English",
     "sk": "Slovenčina",
     "ariaLabel": "Zmeniť jazyk"
   },
-
   "treatmentPages": {
     "shared": {
       "consultationBtn": "Lekárska konzultácia",
@@ -568,8 +558,8 @@
     },
     "allapotfelmeres": {
       "heroBadge": "Komplexná diagnostika",
-      "heroTitle": "Vstupné vyšetrenie podľa Crown Dental",
-      "heroDesc": "Stav vašich zubov a ústnej dutiny mapujeme modernými diagnostickými nástrojmi. Presná diagnóza, personalizovaný liečebný plán.",
+      "heroTitle": "Všeobecná stomatológia a vstupné vyšetrenie",
+      "heroDesc": "Preberieme vaše ťažkosti, vyšetríme zuby aj existujúce výplne a pripravíme písomný liečebný plán s navrhovaným postupom a cenami.",
       "heroPriceLabel": "Konzultácia",
       "heroPriceValue": "Špecialistická",
       "problemTitle": "Problém: Skryté zubné ťažkosti",
@@ -611,14 +601,15 @@
         { "q": "Ako dlho trvá vyšetrenie?", "a": "Komplexné vstupné vyšetrenie trvá 30–45 minút." },
         { "q": "Čo ak sa bojím zubára?", "a": "Náš tím je trpezlivý a empatický – každý krok vopred vysvetlíme." },
         { "q": "Dostanem písomnú dokumentáciu?", "a": "Áno, vypracujeme podrobnú písomnú diagnózu a liečebný plán." }
-      ]
+      ],
+      "metaDescription": "Preberieme vaše ťažkosti, vyšetríme zuby aj existujúce výplne a pripravíme písomný liečebný plán s navrhovaným postupom a cenami."
     },
     "implantatum": {
       "heroBadge": "Prémiová služba",
       "heroTitle": "Zubné implantáty",
       "heroDesc": "Trvalé riešenie chýbajúcich zubov so systémami Alpha Bio a DIO podľa individuálneho liečebného plánu.",
       "heroPriceLabel": "Ceny od",
-      "heroPriceValue": "190 000 Ft",
+      "heroPriceValue": "180 000 Ft",
       "quoteAnalyzerBadge": "AI kalkulačka cien",
       "quoteAnalyzerTitle": "Zdá sa vám cenová ponuka príliš vysoká?",
       "quoteAnalyzerDesc": "Nahrajte liečebný plán, ktorý ste dostali inde, a AI ukáže, koľko môžete ušetriť u nás!",
@@ -648,7 +639,7 @@
         { "title": "Odovzdanie", "desc": "Upevníme definitívnu korunku. Môžete ju používať ako váš pôvodný zub!", "time": "30 min" }
       ],
       "faqs": [
-        { "q": "Koľko stojí implantát?", "a": "Zavedenie implantátov Alpha Bio a DIO začína od 190 000 Ft. Presnú cenu môžeme stanoviť po 3D CT snímke." },
+        { "q": "Koľko stojí implantát?", "a": "Implantát Alpha Bio stojí 180 000 Ft a implantát DIO 240 000 Ft. Nadstavba a zubná náhrada sa účtujú samostatne. Celkovú cenu uvedieme v liečebnom pláne." },
         { "q": "Bolí zavedenie?", "a": "Používame lokálnu anestéziu na minimalizáciu bolesti počas zákroku. Tlak a prechodné ťažkosti po zákroku sa môžu objaviť." },
         { "q": "Ako dlho trvá hojenie?", "a": "Oseointegrácia zvyčajne trvá 3–6 mesiacov." },
         { "q": "Prečo je Crown Dental lacnejší?", "a": "Pretože naše laboratórium je priamo v ordinácii, neplatíte sprostredkovateľské poplatky – táto úspora sa prenáša na vás." }
@@ -656,8 +647,8 @@
     },
     "fogsor": {
       "heroBadge": "Vlastné zubnotechnické laboratórium",
-      "heroTitle": "Pohodlné a estetické zubné náhrady",
-      "heroDesc": "Vďaka vlastnému laboratóriu vyrábame dokonale priliehajúce, životné snímateľné a fixné protézy, oveľa rýchlejšie ako obvykle.",
+      "heroTitle": "Čiastočné a celkové snímateľné náhrady",
+      "heroDesc": "Snímateľné zubné náhrady pripravujeme s naším laboratóriom. Preberieme spôsob upevnenia, skúšky aj možnosti následnej úpravy.",
       "heroPriceLabel": "Prémiová kvalita",
       "heroPriceValue": "od 110 000 Ft",
       "problemTitle": "Problém: Čiastočná alebo úplná strata zubov",
@@ -693,12 +684,13 @@
         { "q": "Ako dlho trvá zhotovenie celej protézy?", "a": "Keďže máme vlastné laboratórium, protéza vrátane skúšok je zvyčajne hotová za 1–2 týždne." },
         { "q": "Čo mám robiť, ak mi stará protéza povolila?", "a": "Naše laboratórium rýchlo vykoná podloženie, aby znovu presne a pevne priliehala." },
         { "q": "Bude protéza vyzerať prirodzene?", "a": "Áno! V laboratóriu pracujeme s prémiovými, životnými zubmi, prispôsobenými vašim rysm tváre farbou aj tvarom." }
-      ]
+      ],
+      "metaDescription": "Snímateľné zubné náhrady pripravujeme s naším laboratóriom. Preberieme spôsob upevnenia, skúšky aj možnosti následnej úpravy."
     },
     "koronak-hidak": {
       "heroBadge": "Vlastné zubnotechnické laboratórium",
-      "heroTitle": "Zirkónové a keramické korunky",
-      "heroDesc": "Trvanlivé a estetické korunky a mostíky pri chýbajúcich zuboch. Vďaka vlastnému laboratóriu – bleskovo rýchlo, bez kompromisov.",
+      "heroTitle": "Zubné korunky a mostíky",
+      "heroDesc": "Kovokeramické a zirkónové korunky a mostíky v spolupráci s vlastným zubným laboratóriom. Na konzultácii preberieme materiál, návrh a cenu.",
       "heroPriceLabel": "Prémiové korunky",
       "heroPriceValue": "od 55 000 Ft",
       "problemTitle": "Problém: Poškodené alebo chýbajúce zuby",
@@ -729,7 +721,8 @@
         { "q": "Bolí brúsenie zuba?", "a": "Nie. Robíme to v lokálnej anestéze, takže počas celého procesu nič necítite." },
         { "q": "Budem mať zub počas čakania na definitívnu náhradu?", "a": "Áno! Ihneď nasadíme dočasnú korunku, takže neodídete s medzerou." },
         { "q": "Ako dlho vydrží korunka?", "a": "Pri dobrej ústnej hygiene 10–15 rokov, no môže vydržať celý život." }
-      ]
+      ],
+      "metaDescription": "Kovokeramické a zirkónové korunky a mostíky v spolupráci s vlastným zubným laboratóriom. Na konzultácii preberieme materiál, návrh a cenu."
     },
     "gyokerkezeles": {
       "heroBadge": "Zubozáchranné postupy",
@@ -905,14 +898,14 @@
     },
     "fogszabalyozas": {
       "heroBadge": "Estetický a zdravý chrup",
-      "heroTitle": "Ortodontia podľa Crown Dental",
-      "heroDesc": "Moderné ortodontické riešenia pre deti aj dospelých s teleröntgenovou diagnostikou priamo u nás. Rovný chrup, sebavedomý úsmev.",
-      "heroPriceLabel": "Aparáty",
-      "heroPriceValue": "od 190 000 Ft",
+      "heroTitle": "Ortodoncia pre deti a dospelých",
+      "heroDesc": "Snímateľný strojček, fixný aparát alebo priehľadné dlahy? Na konzultácii v Ostrihome preberieme možnosti, kontroly aj predpokladané náklady.",
+      "heroPriceLabel": "Snímateľný aparát",
+      "heroPriceValue": "65 000–155 000 Ft",
       "problemTitle": "Problém: Stlačené zuby",
       "problemDesc": "Nepravidelné, stlačené zuby nielen spôsobujú nedostatok sebavedomia, ale predstavujú aj zdravotné riziko. Ťažko čistiteľné medzery umožňujú hromadenie plaku, čo vedie ku kazivosti a zápalogám ďasien.",
-      "solutionTitle": "Riešenie: Ortodontická liečba",
-      "solutionDesc": "Ortodontia naviguje zuby do ideálnej polohy. Potrebný teleröntgen vykonáme priamo u nás, takže diagnostika aj liečebný plán vzniknú rýchlo a koordinovane.",
+      "solutionTitle": "Ktorý strojček prichádza do úvahy?",
+      "solutionDesc": "Po vyšetrení zubov a zhryzu vám ortodontista vysvetlí, aký aparát prichádza do úvahy, či sú potrebné snímky a ako prebiehajú kontroly.",
       "benefitsTitle": "Tajomstvo dokonalého úsmevu",
       "benefitItems": [
         { "title": "Široký výber", "desc": "Od tradičných kovových aparátov po estetické zafírové a neviditeľné dlahy – ponúkame každé riešenie." },
@@ -920,25 +913,31 @@
         { "title": "Flexibilné platby", "desc": "Vieme, že ortodontia je investícia. Flexibilné platobné plány pomáhajú rozložiť náklady." },
         { "title": "Vlastné laboratórium", "desc": "Snímateľné aparáty a dlahy sa vyrábajú vo vlastnom laboratóriu." },
         { "title": "Zameranie na estetiku tváre", "desc": "Nepresúvame len zuby – dbáme aj na harmonický vzhľad vašej tváre." },
-        { "title": "Moderná technológia", "desc": "Digitálne plánovanie, teleröntgen priamo u nás a moderné materiály skracujú čas liečby." }
+        { "title": "Moderná technológia", "desc": "Potrebné snímky zhotovujeme v ambulancii Crown Dental Belváros na adrese Petőfi Sándor utca 11, aj keď máte konzultáciu v ambulancii Prímás Sziget." }
       ],
       "processTitle": "Cesta k rovnému úsmevu",
       "processSteps": [
-        { "title": "Konzultácia a diagnostika", "desc": "Komplexné vyšetrenie, panoramatický röntgen, teleröntgen priamo u nás a digitálne odtlačky na posúdenie chrupu.", "time": "45 min" },
+        { "title": "Konzultácia a diagnostika", "desc": "Po vyšetrení zubov a zhryzu vám ortodontista vysvetlí, aký aparát prichádza do úvahy, či sú potrebné snímky a ako prebiehajú kontroly.", "time": "45 min" },
         { "title": "Liečebný plán", "desc": "Ukážeme vám očakávaný výsledok pomocou vizuálnej ukážky a prediskutujeme typ aparátu a trvanie.", "time": "1 týždeň" },
         { "title": "Nasadenie aparátu", "desc": "Presné a bezbolestné nasadenie s inštrukciami na nosenie a čistenie.", "time": "60–90 min" },
         { "title": "Aktivácia a kontroly", "desc": "Pravidelné (zvyčajne mesačné) kontroly na úpravu aparátu.", "time": "12–24 mesiacov" },
         { "title": "Retencia", "desc": "Po sňatí fixného aparátu stabilizujeme výsledok tenkou retainerom.", "time": "Priebežne" }
       ],
-      "ctaTitle": "Ste pripravení na dokonalý úsmev?",
-      "ctaDesc": "Nečakajte dlhšie! Požiadajte o špecialistickú konzultáciu na podrobné prediskutovanie vašich možností.",
+      "ctaTitle": "Ortodontická konzultácia",
+      "ctaDesc": "Po vyšetrení zubov a zhryzu vám ortodontista vysvetlí, aký aparát prichádza do úvahy, či sú potrebné snímky a ako prebiehajú kontroly.",
       "faqs": [
         { "q": "Je ortodontická liečba bolestivá?", "a": "Samotné nasadenie nie je bolestivé. Po aktiváciách sa môže 2–3 dni objaviť mierne napätie." },
         { "q": "Môžu dospelí začať liečbu?", "a": "Určite! Dnes takmer polovica našich pacientov sú dospelí. Osobitne im odporúčame naše estetické keramické alebo prakticky neviditeľné systémy dlah." },
-        { "q": "Je pri ortodoncii potrebný teleröntgen?", "a": "Áno, presná ortodontická diagnostika často vyžaduje teleröntgen. Vykonáme ho priamo u nás, takže nemusíte chodiť do samostatného zobrazovacieho centra." },
+        { "q": "Je pri ortodoncii potrebný teleröntgen?", "a": "Potrebné snímky zhotovujeme v ambulancii Crown Dental Belváros na adrese Petőfi Sándor utca 11, aj keď máte konzultáciu v ambulancii Prímás Sziget." },
         { "q": "Ako dlho trvá liečba?", "a": "Zvyčajne 1,5–2 roky. Menšie estetické korekcie možno vykonať za 6–10 mesiacov." },
         { "q": "Ako čistiť aparát?", "a": "Pre fixné aparáty odporúčame špeciálnu kefku a medzizubnú kefku, ktorých použitie dôkladne ukážeme pri nasadení." }
-      ]
+      ],
+      "metaDescription": "Snímateľný strojček, fixný aparát alebo priehľadné dlahy? Na konzultácii v Ostrihome preberieme možnosti, kontroly aj predpokladané náklady.",
+      "pricesTitle": "Ceny strojčekov a kontrol",
+      "priceNote": "Aparát a jeho aktivácie sa účtujú samostatne. Celkové náklady závisia od typu aparátu a počtu kontrol.",
+      "teamLink": "Naši ortodontisti",
+      "guideLink": "Priehľadné dlahy alebo fixný strojček pre dospelých",
+      "guideSlug": "neviditelny-alebo-fixny-strojcek-v-dospelosti"
     },
     "fogtechnikai-megoldasok": {
       "heroBadge": "Motor za úsmevmi",

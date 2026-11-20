@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildLocalizedMetadata({ locale, path: 'primas-sziget', title: `${copy.title} | Crown Dental`, description: copy.description });
 }
 
-const treatments: PrimasTreatmentSlug[] = ['allapotfelmeres', 'gyokerkezeles', 'fogfeherites', 'koronak-hidak', 'fogsor', 'implantatum', 'szajsebeszet', 'gyerekfogaszat', 'fogszabalyozas'];
+const treatments: PrimasTreatmentSlug[] = ['fogszabalyozas', 'allapotfelmeres', 'koronak-hidak', 'fogsor', 'gyokerkezeles', 'fogfeherites', 'implantatum', 'szajsebeszet', 'gyerekfogaszat'];
 const benefitIcons = [ParkingCircle, Accessibility, CalendarDays];
 const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-4';
 const primaryButton = `inline-flex items-center justify-center gap-3 rounded-full bg-sky-600 px-7 py-4 font-bold text-white shadow-lg shadow-sky-900/10 transition-colors hover:bg-sky-700 ${focusRing}`;
