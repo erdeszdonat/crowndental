@@ -1,23 +1,7 @@
-export const BLOG_SLUG_MIGRATIONS: Readonly<Record<string, string>> = {
-  'ko-ko-stoja-umele-zuby-v-ma-arsku-v-roku-2026-kompletn-sprievodca-cenami':
-    'kolko-stoja-umele-zuby-v-madarsku-2026',
-  'zubn-implantat-v-ma-arsku-ko-ko-m-ete-u-etri-a-pre-o-je-crown-dental-najlep-ou-vo-bou':
-    'zubny-implantat-v-madarsku-cena-a-vyhody',
-  'zubar-v-ma-arsku-pre-o-si-slovenski-pacienti-vyberaju-esztergom':
-    'zubar-v-madarsku-preco-si-slovenski-pacienti-vyberaju-ostrihom',
-  'ko-ko-stoji-zubna-korunka-v-roku-2026-kompletn-sprievodca-cenami':
-    'kolko-stoji-zubna-korunka-2026',
-};
+import { oldArticleSlugs, mergedArticleSlugs } from './blogRouteData.mjs';
 
-export const BLOG_MERGE_TARGETS: Readonly<Record<string, string>> = {
-  hetvege: 'fogaszati-ugyelet-esztergomban-2026',
-  'vikendovy-zubar-preco-je-dolezite-osetrenie-v-sobotu-a-nedelu':
-    'zubna-pohotovost-ostrihom-2026-ordinacne-hodiny',
-  'weekend-dentist-why-saturday-and-sunday-care-matters':
-    'emergency-dentist-esztergom-2026-weekend-hours',
-  'zahnarzt-am-wochenende-samstag-sonntag-esztergom':
-    'zahnaerztlicher-notdienst-esztergom-2026-wochenende',
-};
+export const BLOG_SLUG_MIGRATIONS: Readonly<Record<string, string>> = oldArticleSlugs;
+export const BLOG_MERGE_TARGETS: Readonly<Record<string, string>> = mergedArticleSlugs;
 
 const SANITY_SLUG_BY_CANONICAL = Object.fromEntries(
   Object.entries(BLOG_SLUG_MIGRATIONS).map(([oldSlug, canonicalSlug]) => [canonicalSlug, oldSlug]),

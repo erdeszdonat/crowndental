@@ -128,7 +128,7 @@ function PriceListSection({ directOffer: initialDirectOffer }: { directOffer: Ve
             <p className="px-6 sm:px-8 py-4 text-sm text-gray-600"><Link href={veneerPath(locale, "/hollywood-mosoly")} prefetch={false} className="underline underline-offset-4">{t('veneerComparison')}</Link> {t('veneerPriceNote')}</p>
           </div>
           {priceCategories.map((category, catIndex) => (
-            <motion.div key={category.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ delay: catIndex * 0.1 }} className="bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl shadow-gray-200/50 border border-gray-100">
+            <motion.div id={category.id} key={category.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ delay: catIndex * 0.1 }} className="bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl shadow-gray-200/50 border border-gray-100">
               <div className="bg-gradient-to-r from-gray-800 to-gray-900 px-6 sm:px-8 py-5 sm:py-6">
                 <h3 className="text-xl sm:text-2xl font-bold text-white">{category.title}</h3>
               </div>
