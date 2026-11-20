@@ -65,6 +65,7 @@
     }
   },
   "home": {
+    "clinicHeading": "Crown Dental Zahnarztpraxen in Esztergom",
     "floatingCta": {
       "callNow": "Rufen Sie jetzt an",
       "bookAppointment": "Termin buchen"
@@ -204,44 +205,50 @@
       "learnMore": "Entdecken Sie unser Labor"
     },
     "services": {
-      "label": "Empfohlene Behandlungen",
-      "title": "Premium-Behandlungen,",
-      "titleHighlight": "zu erschwinglichen Preisen.",
-      "subtitle": "Durch unser hauseigenes Labor können wir herausragende Qualität ohne Kompromisse liefern.",
+      "label": "Behandlungsschwerpunkte",
+      "title": "Zahnbehandlungen",
+      "titleHighlight": "in Esztergom",
+      "subtitle": "Von Zahnspangen bis Zahnersatz finden Sie hier die einzelnen Behandlungsschritte und Preise.",
       "bookConsultation": "Beratung buchen",
       "clickForAppointment": "Klicken Sie hier, um zu buchen",
       "viewAllPrices": "Vollständige Preisliste anzeigen",
       "cards": [
         {
-          "title": "Diagnostik & Grundlagen",
-          "subtitle": "Kontrolluntersuchungen, Röntgenaufnahmen, Füllungen",
-          "price": "Ab 10.000 HUF"
+          "slug": "fogszabalyozas",
+          "title": "Kieferorthopädie",
+          "subtitle": "Herausnehmbare und feste Zahnspangen sowie Aligner"
+        },
+        {
+          "title": "Allgemeine Zahnmedizin",
+          "subtitle": "Untersuchung, Behandlungsplan und Kontrolle von Füllungen",
+          "price": "Ab 10.000 HUF",
+          "slug": "allapotfelmeres"
+        },
+        {
+          "title": "Kronen und Brücken",
+          "subtitle": "Metallkeramik- und Zirkonkronen aus eigenem Labor",
+          "price": "Ab 55.000 HUF",
+          "slug": "koronak-hidak"
         },
         {
           "title": "Wurzelkanalbehandlung",
           "subtitle": "Schmerzfreie Zahnerhaltung",
-          "price": "Ab 10.000 HUF"
+          "price": "Ab 10.000 HUF",
+          "slug": "gyokerkezeles"
         },
         {
           "title": "Ästhetik & Prävention",
           "subtitle": "Zahnsteinentfernung, Zahnaufhellung",
-          "price": "Ab 15.000 HUF"
-        },
-        {
-          "title": "Prothetik und Kronen",
-          "subtitle": "Zirkonoxid, Metallkeramik, Zahnersatz",
-          "price": "Ab 55.000 HUF"
+          "price": "Ab 15.000 HUF",
+          "slug": "esztetikai-fogaszat"
         },
         {
           "title": "Chirurgie und Implantate",
           "subtitle": "Extraktionen, Premium-Implantate",
-          "price": "Ab 55.000 HUF"
+          "price": "Ab 55.000 HUF",
+          "slug": "szajsebeszet"
         },
-        {
-          "title": "Kinder & Kieferorthopädie",
-          "subtitle": "Feste und herausnehmbare Geräte",
-          "price": "Ab 15.000 HUF"
-        }
+        {"title": "Kinderzahnmedizin", "subtitle": "Milchzahnfüllungen und Fissurenversiegelung", "price": "Ab 15.000 HUF", "slug": "gyerekfogaszat"}
       ]
     },
     "reviews": {
@@ -511,7 +518,7 @@
     "from": "Ab:",
     "allTreatments": "Alle Behandlungen",
     "heroBadge": "Eigenes Labor = niedrigere Preise",
-      "heroTitle1": "Zahnmedizinische",
+    "heroTitle1": "Zahnmedizinische",
     "heroTitle2": "Behandlungen",
     "heroSubtitleStart": "Wählen Sie eine Behandlung aus den folgenden Karten oder scrollen Sie nach unten, um die vollständige Preisliste anzuzeigen. Dank unseres hauseigenen Dentallabors bieten wir Preise an",
     "heroSavings": "transparente, direkt abgestimmte",
@@ -525,32 +532,37 @@
     "ctaSubtitle": "Vereinbaren Sie einen Termin für eine persönliche Beurteilung, bei der wir Ihnen einen detaillierten Behandlungsplan erstellen.",
     "ctaBtn": "Fachberatung buchen",
     "cards": [
-      {"id": "air-polishing", "title": "Zahnsteinentfernung mit Air-Polishing", "description": "Ultraschall und Pulver-Wasser-Strahl bei Zahnstein und äußeren Verfärbungen."},
-      {"id": "premium-biofilm-terapia", "title": "Premium-Biofilmtherapie", "description": "Plaqueanfärbung und Air-Polishing, bei Bedarf mit Zahnsteinentfernung."},
-      {
-        "id": "implantatum",
-        "title": "Zahnimplantate",
-        "description": "Lebensechter Zahnersatz mit Titanimplantaten in nur einem Tag."
-      },
-      {
-        "id": "fogszabalyozas",
-        "title": "Kieferorthopädie",
-        "description": "Feste und herausnehmbare Zahnspangen für Kinder und Erwachsene."
-      },
+      { "id": "fogszabalyozas", "title": "Kieferorthopädie", "description": "Feste und herausnehmbare Zahnspangen für Kinder und Erwachsene." },
+      { "id": "allapotfelmeres", "title": "Zahnärztliche Beurteilung", "description": "Ausführliche Beratung, Panoramaröntgen und individueller Behandlungsplan." },
       {
         "id": "koronak-hidak",
         "title": "Kronen und Brücken",
         "description": "Metallkeramik- und Zirkonkronen in Premiumqualität aus unserem eigenen Labor."
       },
       {
-        "id": "fogfeherites",
-        "title": "Zahnaufhellung",
-        "description": "Professionelles Bleaching mit Methoden zu Hause oder in der Klinik."
-      },
-      {
         "id": "fogsor",
         "title": "Zahnersatz",
         "description": "Herausnehmbarer und festsitzender Zahnersatz, passgenau, Unterfütterung."
+      },
+      {
+        "id": "air-polishing",
+        "title": "Zahnsteinentfernung mit Air-Polishing",
+        "description": "Ultraschall und Pulver-Wasser-Strahl bei Zahnstein und äußeren Verfärbungen."
+      },
+      {
+        "id": "premium-biofilm-terapia",
+        "title": "Premium-Biofilmtherapie",
+        "description": "Plaqueanfärbung und Air-Polishing, bei Bedarf mit Zahnsteinentfernung."
+      },
+      {
+        "id": "implantatum",
+        "title": "Zahnimplantate",
+        "description": "Lebensechter Zahnersatz mit Titanimplantaten in nur einem Tag."
+      },
+      {
+        "id": "fogfeherites",
+        "title": "Zahnaufhellung",
+        "description": "Professionelles Bleaching mit Methoden zu Hause oder in der Klinik."
       },
       {
         "id": "gyokerkezeles",
@@ -561,11 +573,6 @@
         "id": "szajsebeszet",
         "title": "Oralchirurgie",
         "description": "Weisheitszahnextraktion und apikale Resektion mit Fachwissen durchgeführt."
-      },
-      {
-        "id": "allapotfelmeres",
-        "title": "Zahnärztliche Beurteilung",
-        "description": "Ausführliche Beratung, Panoramaröntgen und individueller Behandlungsplan."
       },
       {
         "id": "esztetikai-fogaszat",
@@ -611,7 +618,8 @@
         "items": [
           {
             "name": "Erstuntersuchung, schriftliche Beurteilung, Suche nach Infektionsherden, Behandlungsplan",
-            "price": "10.000 HUF"
+            "price": "10.000 HUF",
+            "slug": "allapotfelmeres"
           },
           {
             "name": "Füllungen",
@@ -619,7 +627,8 @@
           },
           {
             "name": "Zahnextraktion",
-            "price": "25.000 – 35.000 HUF"
+            "price": "25.000 – 35.000 HUF",
+            "slug": "foghuzas"
           },
           {
             "name": "Röntgen (kleiner / einzelner Zahn)",
@@ -646,23 +655,28 @@
         "items": [
           {
             "name": "Wurzelfüllung (einwurzelig)",
-            "price": "25.000 HUF"
+            "price": "25.000 HUF",
+            "slug": "gyokerkezeles"
           },
           {
             "name": "Wurzelfüllung (zweiwurzelig)",
-            "price": "30.000 HUF"
+            "price": "30.000 HUF",
+            "slug": "gyokerkezeles"
           },
           {
             "name": "Wurzelfüllung (dreiwurzelig)",
-            "price": "33.000 HUF"
+            "price": "33.000 HUF",
+            "slug": "gyokerkezeles"
           },
           {
             "name": "Entfernung der Wurzelfüllung",
-            "price": "20.000 HUF"
+            "price": "20.000 HUF",
+            "slug": "gyokerkezeles"
           },
           {
             "name": "Wurzelkanalbehandlung pro Sitzung",
-            "price": "10.000 HUF"
+            "price": "10.000 HUF",
+            "slug": "gyokerkezeles"
           }
         ]
       },
@@ -675,12 +689,14 @@
           {"name": "Premium-Biofilmtherapie (pro Kiefer)", "price": "25.000 HUF", "slug": "premium-biofilm-terapia"},
           {
             "name": "Aufhellung mit Silikonschiene (zu Hause) / pro Zahnbogen",
-            "price": "30.000 HUF"
+            "price": "30.000 HUF",
+            "slug": "fogfeherites"
           },
           {
             "name": "Aufhellung in der Klinik (Lampe) / pro Zahnbogen",
             "price": "45.000 HUF",
-            "highlight": true
+            "highlight": true,
+            "slug": "fogfeherites"
           }
         ]
       },
@@ -690,20 +706,24 @@
         "items": [
           {
             "name": "Provisorische Krone (kurzfristig, 1–2 Wochen)",
-            "price": "6.000 HUF"
+            "price": "6.000 HUF",
+            "slug": "koronak-hidak"
           },
           {
             "name": "Provisorische Krone (langfristig, bis zu 1 Jahr)",
-            "price": "15.000 HUF"
+            "price": "15.000 HUF",
+            "slug": "koronak-hidak"
           },
           {
             "name": "Metallkeramikkrone",
-            "price": "55.000 HUF"
+            "price": "55.000 HUF",
+            "slug": "koronak-hidak"
           },
           {
             "name": "Zirkonkrone (metallfrei)",
             "price": "65.000 HUF",
-            "highlight": true
+            "highlight": true,
+            "slug": "koronak-hidak"
           },
           {
             "name": "Individuelle Farbanpassung (pro Zahn)",
@@ -711,19 +731,23 @@
           },
           {
             "name": "Herausnehmbarer Zahnersatz für einen Kiefer (Komposit)",
-            "price": "110.000 HUF"
+            "price": "110.000 HUF",
+            "slug": "fogsor"
           },
           {
             "name": "Metallrahmenprothese für einen Kiefer",
-            "price": "150.000 HUF"
+            "price": "150.000 HUF",
+            "slug": "fogsor"
           },
           {
             "name": "Entfernung alter Brücken (pro Pfeilerzahn)",
-            "price": "12.000 HUF"
+            "price": "12.000 HUF",
+            "slug": "koronak-hidak"
           },
           {
             "name": "Unterfütterung von Prothesen",
-            "price": "25.000 HUF"
+            "price": "25.000 HUF",
+            "slug": "fogsor"
           }
         ]
       },
@@ -733,24 +757,29 @@
         "items": [
           {
             "name": "Chirurgische Zahnextraktion",
-            "price": "55.000 HUF"
+            "price": "55.000 HUF",
+            "slug": "szajsebeszet"
           },
           {
             "name": "Weisheitszahnentfernung",
-            "price": "55.000 HUF"
+            "price": "55.000 HUF",
+            "slug": "szajsebeszet"
           },
           {
             "name": "Apikale Resektion",
-            "price": "55.000 HUF"
+            "price": "55.000 HUF",
+            "slug": "szajsebeszet"
           },
           {
             "name": "DIO Implantat",
             "price": "240.000 HUF",
-            "highlight": true
+            "highlight": true,
+            "slug": "implantatum"
           },
           {
             "name": "ALPHA BIO Implantat",
-            "price": "180.000 HUF"
+            "price": "180.000 HUF",
+            "slug": "implantatum"
           },
           {
             "name": "Knochenaufbau (einschließlich zugehörigem Sinuslift)",
@@ -770,28 +799,34 @@
         "items": [
           {
             "name": "Milchzahnfüllung",
-            "price": "15.000 HUF"
+            "price": "15.000 HUF",
+            "slug": "gyerekfogaszat"
           },
           {
             "name": "Fissurenversiegelung",
-            "price": "15.000 HUF"
+            "price": "15.000 HUF",
+            "slug": "gyerekfogaszat"
           },
           {
             "name": "Feste Zahnspange",
             "price": "190.000 – 285.000 HUF",
-            "highlight": true
+            "highlight": true,
+            "slug": "fogszabalyozas"
           },
           {
             "name": "Herausnehmbare Zahnspangen",
-            "price": "65.000 – 155.000 HUF"
+            "price": "65.000 – 155.000 HUF",
+            "slug": "fogszabalyozas"
           },
           {
-            "name": "Aktivierung der Zahnspange behoben",
-            "price": "10.000 – 15.000 HUF"
+            "name": "Nachstellung der festen Zahnspange",
+            "price": "10.000 – 15.000 HUF",
+            "slug": "fogszabalyozas"
           },
           {
             "name": "Aktivierung der abnehmbaren Zahnspange",
-            "price": "5.000 – 8.000 HUF"
+            "price": "5.000 – 8.000 HUF",
+            "slug": "fogszabalyozas"
           }
         ]
       }
@@ -819,8 +854,8 @@
     },
     "allapotfelmeres": {
       "heroBadge": "Umfassende Diagnostik",
-      "heroTitle": "Umfassende zahnärztliche Untersuchung",
-      "heroDesc": "Mit modernen Diagnosegeräten erfassen wir den Zustand Ihrer Zähne und Ihrer Mundhöhle. Genaue Diagnose, personalisierter Behandlungsplan.",
+      "heroTitle": "Allgemeine Zahnmedizin und Untersuchung",
+      "heroDesc": "Wir besprechen Ihre Beschwerden, untersuchen die Zähne und vorhandenen Füllungen und erstellen einen schriftlichen Behandlungsplan mit den nächsten Schritten und Kosten.",
       "heroPriceLabel": "Beratung",
       "heroPriceValue": "Spezialist",
       "problemTitle": "Das Problem: Versteckte Zahnprobleme",
@@ -932,14 +967,15 @@
           "q": "Erhalte ich eine schriftliche Dokumentation?",
           "a": "Ja, wir erstellen einen detaillierten schriftlichen Diagnose- und Behandlungsplan."
         }
-      ]
+      ],
+      "metaDescription": "Wir besprechen Ihre Beschwerden, untersuchen die Zähne und vorhandenen Füllungen und erstellen einen schriftlichen Behandlungsplan mit den nächsten Schritten und Kosten."
     },
     "implantatum": {
       "heroBadge": "Premium-Service",
       "heroTitle": "Zahnimplantate",
       "heroDesc": "Eine dauerhafte Möglichkeit bei fehlenden Zähnen mit Alpha-Bio- und DIO-Systemen auf Grundlage eines individuellen Behandlungsplans.",
       "heroPriceLabel": "Preise ab",
-      "heroPriceValue": "190.000 HUF",
+      "heroPriceValue": "180.000 HUF",
       "quoteAnalyzerBadge": "KI-Preisrechner",
       "quoteAnalyzerTitle": "Denken Sie, dass das Angebot zu teuer ist?",
       "quoteAnalyzerDesc": "Laden Sie den Behandlungsplan hoch, den Sie woanders erhalten haben, und die KI zeigt Ihnen, wie viel Sie bei uns sparen können!",
@@ -1009,7 +1045,7 @@
       "faqs": [
         {
           "q": "Wie viel kostet ein Implantat?",
-          "a": "Die Implantatinsertion Alpha Bio und DIO beginnt bei 190.000 HUF. Ein genauer Preis kann nach dem 3D-CT-Scan bekannt gegeben werden."
+          "a": "Ein Alpha Bio Implantat kostet 180.000 HUF, ein DIO Implantat 240.000 HUF. Aufbau und Zahnersatz werden gesondert berechnet. Die Gesamtkosten stehen im Behandlungsplan."
         },
         {
           "q": "Tut die Platzierung weh?",
@@ -1027,8 +1063,8 @@
     },
     "fogsor": {
       "heroBadge": "Eigenes Dentallabor",
-      "heroTitle": "Bequemer und ästhetischer Zahnersatz",
-      "heroDesc": "Dank unseres eigenen Labors fertigen wir viel schneller als erwartet passgenaue, lebensechte herausnehmbare und festsitzende Prothesen.",
+      "heroTitle": "Herausnehmbare Teil- und Vollprothesen",
+      "heroDesc": "Teil- und Vollprothesen aus unserem eigenen Dentallabor. Im Beratungsgespräch klären wir Befestigung, Anproben und spätere Anpassungen.",
       "heroPriceLabel": "Premium-Qualität",
       "heroPriceValue": "ab 110.000 HUF",
       "problemTitle": "Das Problem: Teilweiser oder vollständiger Zahnverlust",
@@ -1124,12 +1160,13 @@
           "q": "Wird die Prothese natürlich aussehen?",
           "a": "Ja! Unser Labor arbeitet mit hochwertigen, naturgetreuen Zähnen, die in Farbe und Form auf Ihre Gesichtszüge abgestimmt sind."
         }
-      ]
+      ],
+      "metaDescription": "Teil- und Vollprothesen aus unserem eigenen Dentallabor. Im Beratungsgespräch klären wir Befestigung, Anproben und spätere Anpassungen."
     },
     "koronak-hidak": {
       "heroBadge": "Eigenes Dentallabor",
-      "heroTitle": "Zirkonoxid- und Keramikkronen",
-      "heroDesc": "Langlebige und ästhetische Kronen und Brücken für fehlende Zähne. Dank unseres eigenen Labors – blitzschnell, ohne Kompromisse.",
+      "heroTitle": "Zahnersatz mit Kronen und Brücken",
+      "heroDesc": "Metallkeramik- und Zirkonkronen sowie Brücken aus unserem eigenen Dentallabor. Material, Gestaltung und Kosten besprechen wir nach der Untersuchung.",
       "heroPriceLabel": "Premium-Kronen",
       "heroPriceValue": "ab 55.000 HUF",
       "problemTitle": "Das Problem: Beschädigte oder fehlende Zähne",
@@ -1210,7 +1247,8 @@
           "q": "Wie lange hält eine Krone?",
           "a": "Bei guter Mundhygiene 10–15 Jahre, kann aber ein Leben lang anhalten."
         }
-      ]
+      ],
+      "metaDescription": "Metallkeramik- und Zirkonkronen sowie Brücken aus unserem eigenen Dentallabor. Material, Gestaltung und Kosten besprechen wir nach der Untersuchung."
     },
     "gyokerkezeles": {
       "heroBadge": "Zahnerhaltende Verfahren",
@@ -1612,14 +1650,14 @@
     },
     "fogszabalyozas": {
       "heroBadge": "Ästhetisches und gesundes Gebiss",
-      "heroTitle": "Moderne Kieferorthopädie",
-      "heroDesc": "Moderne kieferorthopädische Lösungen für Kinder und Erwachsene mit kephalometrischer Röntgendiagnostik vor Ort. Gerade Zähne, ein selbstbewusstes Lächeln.",
-      "heroPriceLabel": "Zahnspangen",
-      "heroPriceValue": "ab 190.000 HUF",
+      "heroTitle": "Kieferorthopädie für Kinder und Erwachsene",
+      "heroDesc": "Herausnehmbare Zahnspange, feste Spange oder transparente Aligner? Bei der Beratung in Esztergom besprechen wir Möglichkeiten, Kontrolltermine und Kosten.",
+      "heroPriceLabel": "Herausnehmbare Zahnspange",
+      "heroPriceValue": "65.000–155.000 HUF",
       "problemTitle": "Das Problem: Enge Zähne",
       "problemDesc": "Schiefe, enge Zähne führen nicht nur zu einem Mangel an Selbstvertrauen, sondern stellen auch ein Gesundheitsrisiko dar. In schwer zu reinigenden Lücken kann sich Plaque ansammeln, was zu Karies und Zahnfleischerkrankungen führt.",
-      "solutionTitle": "Die Lösung: Kieferorthopädische Behandlung",
-      "solutionDesc": "Die Kieferorthopädie führt die Zähne in ihre ideale Position. Das erforderliche kephalometrische Röntgen wird vor Ort durchgeführt, sodass Diagnostik und Behandlungsplanung schnell und koordiniert erfolgen können.",
+      "solutionTitle": "Welche Zahnspange kommt infrage?",
+      "solutionDesc": "Nach der Untersuchung von Zähnen und Biss besprechen wir, welche Spange infrage kommt, ob Aufnahmen nötig sind und wie die Kontrollen ablaufen.",
       "benefitsTitle": "Das Geheimnis eines perfekten Lächelns",
       "benefitItems": [
         {
@@ -1644,14 +1682,14 @@
         },
         {
           "title": "Moderne Technologie",
-          "desc": "Digitale Planung, kephalometrisches Röntgen vor Ort und moderne Materialien tragen dazu bei, die Behandlungszeit zu verkürzen."
+          "desc": "Erforderliche Röntgenaufnahmen entstehen in der Praxis Crown Dental Belváros, Petőfi Sándor utca 11. Das gilt auch für Beratungstermine in Prímás Sziget."
         }
       ],
       "processTitle": "Der Weg zu einem geraden Lächeln",
       "processSteps": [
         {
           "title": "Beratung & Diagnostik",
-          "desc": "Umfassende Untersuchung, Panorama-Röntgenaufnahme, kephalometrische Röntgenaufnahme vor Ort und digitaler Abdruck zur Beurteilung des Gebisses.",
+          "desc": "Nach der Untersuchung von Zähnen und Biss besprechen wir, welche Spange infrage kommt, ob Aufnahmen nötig sind und wie die Kontrollen ablaufen.",
           "time": "45 Min"
         },
         {
@@ -1675,8 +1713,8 @@
           "time": "Laufend"
         }
       ],
-      "ctaTitle": "Bereit für das perfekte Lächeln?",
-      "ctaDesc": "Warten Sie nicht länger! Fordern Sie eine Fachberatung an, um alle Ihre Optionen im Detail zu besprechen.",
+      "ctaTitle": "Kieferorthopädische Beratung",
+      "ctaDesc": "Nach der Untersuchung von Zähnen und Biss besprechen wir, welche Spange infrage kommt, ob Aufnahmen nötig sind und wie die Kontrollen ablaufen.",
       "faqs": [
         {
           "q": "Ist eine kieferorthopädische Behandlung schmerzhaft?",
@@ -1688,7 +1726,7 @@
         },
         {
           "q": "Ist für die Kieferorthopädie ein kephalometrisches Röntgen erforderlich?",
-          "a": "Ja, für eine präzise kieferorthopädische Diagnostik ist häufig ein kephalometrisches Röntgen erforderlich. Wir führen es vor Ort durch, sodass Sie kein separates Bildgebungszentrum aufsuchen müssen."
+          "a": "Erforderliche Röntgenaufnahmen entstehen in der Praxis Crown Dental Belváros, Petőfi Sándor utca 11. Das gilt auch für Beratungstermine in Prímás Sziget."
         },
         {
           "q": "Wie lange dauert die Behandlung?",
@@ -1698,7 +1736,13 @@
           "q": "Wie reinige ich das Gerät?",
           "a": "Für festsitzende Zahnspangen empfehlen wir eine spezielle Bürste und Interdentalreiniger, die wir Ihnen bei der Anprobe ausführlich vorführen."
         }
-      ]
+      ],
+      "metaDescription": "Herausnehmbare Zahnspange, feste Spange oder transparente Aligner? Bei der Beratung in Esztergom besprechen wir Möglichkeiten, Kontrolltermine und Kosten.",
+      "pricesTitle": "Preise für Zahnspangen und Kontrolltermine",
+      "priceNote": "Zahnspange und Nachstellungen werden getrennt berechnet. Die Gesamtkosten hängen von der Spange und der Zahl der Kontrolltermine ab.",
+      "teamLink": "Unser Kieferorthopädie-Team",
+      "guideLink": "Aligner oder feste Zahnspange für Erwachsene",
+      "guideSlug": "aligner-oder-feste-zahnspange-erwachsene"
     },
     "fogtechnikai-megoldasok": {
       "heroBadge": "Der Motor hinter dem Lächeln",

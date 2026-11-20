@@ -38,6 +38,7 @@ export type TreatmentSlug = (typeof TREATMENT_SLUGS)[number];
 type TreatmentMessage = {
   heroTitle: string;
   heroDesc: string;
+  metaDescription?: string;
   faqs?: Array<{ q: string; a: string }>;
 };
 
@@ -165,22 +166,22 @@ export function buildHomeMetadata(locale: string): Metadata {
   const content: Record<SupportedLocale, { title: string; description: string; keywords: string[] }> = {
     hu: {
       title: 'Crown Dental Esztergom | Fogászat saját fogtechnikai laborral',
-      description: 'Crown Dental fogászat Esztergomban: Belváros és Prímás Sziget. Saját laborháttér, hétvégi és ünnepnapi rendelés, online időpontkérés.',
+      description: 'Fogszabályozás, általános fogászat és fogpótlás saját laborral Esztergomban. Ismerje meg a Belváros és a Prímás Sziget rendelőt, az árakat és az időpontkérést.',
       keywords: ['Crown Dental Esztergom', 'fogászat Esztergom', 'fogorvos Esztergom', 'fogorvos Komárom-Esztergom'],
     },
     en: {
       title: 'Crown Dental Esztergom | Dentistry with an in-house laboratory',
-      description: 'Crown Dental in Esztergom: Belváros and Prímás Sziget clinics, in-house laboratory support, weekend and holiday appointments and online booking.',
+      description: 'Orthodontics, general dentistry and tooth replacement in Esztergom with our own dental lab. Find prices, appointments and directions to Belváros and Prímás Sziget.',
       keywords: ['dentist Esztergom', 'dental clinic Esztergom', 'dentist Hungary', 'Crown Dental'],
     },
     sk: {
       title: 'Crown Dental Ostrihom | Zubár pre pacientov zo Slovenska',
-      description: 'Crown Dental v Ostrihome: ambulancie Belváros a Prímás Sziget, vlastné laboratórium, ošetrenia cez víkendy a sviatky, online žiadosť o termín.',
+      description: 'Ortodoncia, všeobecná stomatológia a zubné náhrady z vlastného laboratória v Ostrihome. Cenník, objednanie a cesta do ambulancií Belváros a Prímás Sziget.',
       keywords: ['zubár Ostrihom', 'zubná klinika Ostrihom', 'zubár Maďarsko', 'zubár pri Štúrove'],
     },
     de: {
       title: 'Crown Dental Esztergom | Zahnarztpraxis mit eigenem Dentallabor',
-      description: 'Crown Dental Esztergom: Praxen Belváros und Prímás Sziget, eigenes Dentallabor, Wochenend- und Feiertagstermine sowie Online-Terminanfragen.',
+      description: 'Kieferorthopädie, allgemeine Zahnmedizin und Zahnersatz aus eigenem Labor in Esztergom. Preise, Termine und Anfahrt zu den Praxen Belváros und Prímás Sziget.',
       keywords: ['Zahnarzt Esztergom', 'Zahnarzt Ungarn', 'Zahnklinik Esztergom', 'Crown Dental Esztergom'],
     },
   };
@@ -252,7 +253,7 @@ export function buildTreatmentMetadata(locale: string, slug: TreatmentSlug): Met
     locale: normalizedLocale,
     path: `kezelesek/${slug}`,
     title: localTitle[normalizedLocale],
-    description: `${localLead[normalizedLocale]} ${treatment.heroDesc}`,
+    description: treatment.metaDescription ?? `${localLead[normalizedLocale]} ${treatment.heroDesc}`,
     keywords: keywordBase[normalizedLocale],
   });
 }
@@ -264,13 +265,15 @@ export function buildTreatmentJsonLd(locale: string, slug: TreatmentSlug) {
 
   return {
     '@context': 'https://schema.org',
-    '@type': 'MedicalProcedure',
+    '@type': slug === 'fogszabalyozas' ? 'Service' : 'MedicalProcedure',
     '@id': `${url}#procedure`,
     name: treatment.heroTitle,
     description: treatment.heroDesc,
     url,
     inLanguage: normalizedLocale,
-    provider: { '@id': `${SITE_URL}/esztergom#dentist` },
+    provider: slug === 'fogszabalyozas'
+      ? [{ '@id': `${SITE_URL}/esztergom#dentist` }, { '@id': `${SITE_URL}/primas-sziget#dentist` }]
+      : { '@id': `${SITE_URL}/esztergom#dentist` },
     mainEntityOfPage: { '@id': url },
   };
 }

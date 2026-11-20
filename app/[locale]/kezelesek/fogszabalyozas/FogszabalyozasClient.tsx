@@ -12,6 +12,39 @@ function ServiceHero({ imageUrl }: { imageUrl: string }) {
   return <TreatmentHero imageUrl={imageUrl} contentKey="fogszabalyozas" />;
 }
 
+function PricesAndPlanning() {
+  const locale = useLocale();
+  const prefix = locale === 'hu' ? '' : `/${locale}`;
+  const t = useTranslations('treatmentPages.fogszabalyozas');
+  const treatments = useTranslations('treatments');
+  const categories = treatments.raw('priceCategories') as Array<{
+    items: Array<{ name: string; price: string; slug?: string }>;
+  }>;
+  const prices = categories.flatMap(category => category.items).filter(item => item.slug === 'fogszabalyozas');
+  return (
+    <section className="bg-sky-50 py-12 sm:py-16">
+      <div className="crown-container max-w-4xl">
+        <h2 className="text-3xl font-bold">{t('pricesTitle')}</h2>
+        <dl className="mt-6 divide-y divide-sky-200">
+          {prices.map(item => (
+            <div key={item.name} className="flex flex-wrap justify-between gap-x-6 gap-y-1 py-3">
+              <dt>{item.name}</dt>
+              <dd className="font-semibold">{item.price}</dd>
+            </div>
+          ))}
+        </dl>
+        <p className="mt-4 text-slate-700">{t('priceNote')}</p>
+        <div className="mt-6 flex flex-wrap gap-x-6 gap-y-3 text-sky-800 underline underline-offset-4">
+          <Link href={`${prefix}/blog/${t('guideSlug')}`}>{t('guideLink')}</Link>
+          <Link href={`${prefix}/kollegaink`}>{t('teamLink')}</Link>
+          <Link href={`${prefix}/primas-sziget`}>Crown Dental Prímás Sziget</Link>
+          <Link href={`${prefix}/esztergom`}>Crown Dental Belváros</Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function ProblemSolution() {
   const t = useTranslations('treatmentPages.fogszabalyozas');
   return (
@@ -20,12 +53,12 @@ function ProblemSolution() {
         <div className="grid md:grid-cols-2 gap-12 lg:gap-20">
           <div className="p-8 md:p-10 bg-gray-50 rounded-3xl border border-gray-100">
             <div className="w-14 h-14 bg-red-100 text-red-600 rounded-2xl flex items-center justify-center mb-6"><Minus className="w-8 h-8" /></div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">{t('problemTitle')}</h3>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('problemTitle')}</h2>
             <p className="text-gray-600 leading-relaxed text-lg">{t('problemDesc')}</p>
           </div>
           <div className="p-8 md:p-10 bg-sky-50 rounded-3xl border border-sky-100 shadow-[0_8px_30px_rgb(139,92,246,0.1)]">
             <div className="w-14 h-14 bg-sky-600 text-white rounded-2xl flex items-center justify-center mb-6 shadow-md"><Plus className="w-8 h-8" /></div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">{t('solutionTitle')}</h3>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('solutionTitle')}</h2>
             <p className="text-gray-700 leading-relaxed text-lg">{t('solutionDesc')}</p>
           </div>
         </div>
@@ -157,6 +190,7 @@ export default function FogszabalyozasClient({ imageUrl }: { imageUrl: string })
     <div className="crown-page bg-white min-h-screen selection:bg-sky-200 selection:text-sky-900">
       <main>
         <ServiceHero imageUrl={imageUrl} />
+        <PricesAndPlanning />
         <ProblemSolution />
         <Benefits />
         <ProcessSection />

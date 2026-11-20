@@ -102,10 +102,10 @@ const servicesBase = [
 ];
 
 const servicesHu = [
-  { title: 'Fogimplantátum', description: 'Tartós megoldás foghiányra. Alpha Bio és DIO implantátumok, írásos garanciális feltételekkel.', price: '190.000 Ft-tól' },
+  { title: 'Fogimplantátum', description: 'Tartós megoldás foghiányra. Alpha Bio és DIO implantátumok, írásos garanciális feltételekkel.', price: '180.000 Ft-tól' },
   { title: 'Cirkónium Korona', description: 'Fémmentes koronák és hidak saját fogtechnikai laborunk közreműködésével.', price: '65.000 Ft' },
   { title: 'Fogfehérítés', description: 'Professzionális fogfehérítés állapotfelmérés és egyéni konzultáció alapján.', price: '30.000 Ft-tól' },
-  { title: 'Fogszabályozás', description: 'Láthatatlan sínek és esztétikus készülékek gyerekeknek és felnőtteknek.', price: '60.000 Ft-tól' },
+  { title: 'Fogszabályozás', description: 'Láthatatlan sínek és esztétikus készülékek gyerekeknek és felnőtteknek.', price: 'Kivehető készülék 65 000 Ft-tól' },
   { title: 'Kivehető Fogsorok', description: 'Egyénre szabott megoldások saját laborháttérrel és helyi korrekciós lehetőséggel.', price: '110.000 Ft-tól' },
   { title: 'Szájsebészet', description: 'Bölcsességfog, csontpótlás, szájsebészeti beavatkozások biztos kézzel.', price: 'Egyéni árazás' },
   { title: 'Gyökérkezelés', description: 'A fog megtartását célzó kezelés helyi érzéstelenítésben, egyéni kezelési terv alapján.', price: '25.000 Ft-tól' },
@@ -120,10 +120,10 @@ const servicesHu = [
 ];
 
 const servicesEn = [
-  { title: 'Dental Implant', description: 'A durable option for missing teeth using Alpha Bio and DIO systems, subject to written guarantee terms.', price: 'from 190,000 HUF (~€543)' },
+  { title: 'Dental Implant', description: 'A durable option for missing teeth using Alpha Bio and DIO systems, subject to written guarantee terms.', price: 'from 180,000 HUF' },
   { title: 'Zirconia Crown', description: 'Metal-free crowns and bridges made with support from our in-house dental laboratory.', price: '65,000 HUF' },
   { title: 'Teeth Whitening', description: 'Professional whitening — up to 8 shades brighter in just 1 hour.', price: 'from 30,000 HUF (~€86)' },
-  { title: 'Orthodontics', description: 'Invisible aligners and aesthetic braces for children and adults.', price: 'from 60,000 HUF (~€172)' },
+  { title: 'Orthodontics', description: 'Invisible aligners and aesthetic braces for children and adults.', price: 'Removable braces from 65,000 HUF' },
   { title: 'Removable Dentures', description: 'Perfect fit from our in-house lab, with immediate adjustment options.', price: 'from 110,000 HUF (~€314)' },
   { title: 'Oral Surgery', description: 'Wisdom tooth removal, bone grafting, and surgical procedures by expert hands.', price: 'Individual pricing' },
   { title: 'Root Canal Treatment', description: 'Treatment aimed at retaining the tooth, performed with local anaesthesia and an individual plan.', price: 'from 25,000 HUF (~€71)' },
@@ -138,10 +138,10 @@ const servicesEn = [
 ];
 
 const servicesSk = [
-  { title: 'Zubný implantát', description: 'Trvalé riešenie chýbajúcich zubov so systémami Alpha Bio a DIO podľa písomných záručných podmienok.', price: 'od 190 000 Ft (~€543)' },
+  { title: 'Zubný implantát', description: 'Trvalé riešenie chýbajúcich zubov so systémami Alpha Bio a DIO podľa písomných záručných podmienok.', price: 'od 180 000 Ft' },
   { title: 'Zirkónová korunka', description: 'Bezkovové korunky a mostíky s podporou nášho vlastného zubnotechnického laboratória.', price: '65 000 Ft' },
   { title: 'Bielenie zubov', description: 'Profesionálne bielenie — až o 8 odtieňov svetlejšie za 1 hodinu.', price: 'od 30 000 Ft (~€86)' },
-  { title: 'Ortodontia', description: 'Neviditeľné dlahičky a estetické aparáty pre deti aj dospelých.', price: 'od 60 000 Ft (~€172)' },
+  { title: 'Ortodontia', description: 'Neviditeľné dlahičky a estetické aparáty pre deti aj dospelých.', price: 'Snímateľný aparát od 65 000 Ft' },
   { title: 'Snímateľná protéza', description: 'Dokonalé prispôsobenie z vlastného laboratória, okamžitá oprava na mieste.', price: 'od 110 000 Ft (~€314)' },
   { title: 'Orálna chirurgia', description: 'Extrakcia zubov múdrosti, augmentácia kosti, chirurgické zákroky v skúsených rukách.', price: 'Individuálna cena' },
   { title: 'Ošetrenie koreňových kanálikov', description: 'Ošetrenie zamerané na zachovanie zuba v lokálnej anestézii podľa individuálneho plánu.', price: 'od 25 000 Ft (~€71)' },

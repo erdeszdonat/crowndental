@@ -16,7 +16,6 @@
     "email": "info@crowndental.hu",
     "openingHours": "Mon–Fri: 08:00–18:00"
   },
-
   "nav": {
     "home": "Home",
     "services": "Treatments & Prices",
@@ -26,7 +25,6 @@
     "career": "Career",
     "bookAppointment": "Book Appointment"
   },
-
   "footer": {
     "tagline": "Crown Dental gives your smile the freedom it deserves.",
     "description": "Premium dentistry with our own dental lab — no compromises. Treatments in Esztergom, and soon in Budapest.",
@@ -66,8 +64,8 @@
       "hollywoodSmile": "Hollywood Smile"
     }
   },
-
   "home": {
+    "clinicHeading": "Crown Dental clinics in Esztergom",
     "floatingCta": {
       "callNow": "Call Now",
       "bookAppointment": "Book Appointment"
@@ -183,20 +181,21 @@
       "learnMore": "Discover our lab"
     },
     "services": {
-      "label": "Featured Treatments",
-      "title": "Premium treatments,",
-      "titleHighlight": "at affordable prices.",
-      "subtitle": "Our in-house lab lets us deliver outstanding quality without compromise.",
+      "label": "Featured treatments",
+      "title": "Dental treatments",
+      "titleHighlight": "in Esztergom",
+      "subtitle": "Explore how treatment works and what it costs, from braces to replacement teeth.",
       "bookConsultation": "Book Consultation",
       "clickForAppointment": "Click here to book",
       "viewAllPrices": "View full price list",
       "cards": [
-        { "title": "Diagnostics & Basics", "subtitle": "Check-ups, X-rays, fillings", "price": "From 10,000 HUF" },
-        { "title": "Root Canal Treatment", "subtitle": "Painless tooth preservation", "price": "From 10,000 HUF" },
-        { "title": "Aesthetics & Prevention", "subtitle": "Scaling, teeth whitening", "price": "From 15,000 HUF" },
-        { "title": "Prosthetics & Crowns", "subtitle": "Zirconia, metal-ceramic, dentures", "price": "From 55,000 HUF" },
-        { "title": "Surgery & Implants", "subtitle": "Extractions, premium implants", "price": "From 55,000 HUF" },
-        { "title": "Children & Orthodontics", "subtitle": "Fixed and removable appliances", "price": "From 15,000 HUF" }
+        { "slug": "fogszabalyozas", "title": "Orthodontics", "subtitle": "Removable braces, fixed braces and clear aligners" },
+        { "title": "General dentistry", "subtitle": "Examination, treatment plan and assessment of fillings", "price": "From 10,000 HUF", "slug": "allapotfelmeres" },
+        { "title": "Crowns and bridges", "subtitle": "Metal-ceramic and zirconia crowns with our own laboratory", "price": "From 55,000 HUF", "slug": "koronak-hidak" },
+        { "title": "Root Canal Treatment", "subtitle": "Painless tooth preservation", "price": "From 10,000 HUF", "slug": "gyokerkezeles" },
+        { "title": "Aesthetics & Prevention", "subtitle": "Scaling, teeth whitening", "price": "From 15,000 HUF", "slug": "esztetikai-fogaszat" },
+        { "title": "Surgery & Implants", "subtitle": "Extractions, premium implants", "price": "From 55,000 HUF", "slug": "szajsebeszet" },
+        {"title": "Children’s dentistry", "subtitle": "Fillings for baby teeth and fissure sealing", "price": "From 15,000 HUF", "slug": "gyerekfogaszat"}
       ]
     },
     "reviews": {
@@ -250,7 +249,6 @@
       ]
     }
   },
-
   "booking": {
     "title": "Book an Appointment",
     "subtitle": "Fill in your details and one of our colleagues will contact you shortly.",
@@ -294,7 +292,6 @@
       "fogtechnikai-megoldasok": "Dental laboratory services"
     }
   },
-
   "about": {
     "badge": "More than dentistry",
     "title": "Get to know",
@@ -322,7 +319,6 @@
     "story3Part2": "throughout each individual treatment plan.",
     "storySince": "For your smile, since the very beginning."
   },
-
   "career": {
     "badge": "Join our team",
     "title": "Work with us on",
@@ -360,7 +356,6 @@
     "formSuccess": "Thank you for your application!",
     "formError": "An error occurred. Please try again."
   },
-
   "blog": {
     "title": "Blog & Magazine",
     "subtitle": "Dental tips, news and expert articles for our patients.",
@@ -388,7 +383,6 @@
     ],
     "reviewsTitle": "Our patients said"
   },
-
   "contact": {
     "title": "Contact",
     "subtitle": "Feel free to reach out — we answer and help!",
@@ -397,7 +391,6 @@
     "openingHours": "Opening Hours",
     "weekdays": "Monday – Friday"
   },
-
   "cookie": {
     "message": "Our website uses cookies to improve your experience.",
     "accept": "Accept",
@@ -421,7 +414,6 @@
     "acceptAllBtn": "Accept all",
     "saveSelectionBtn": "Save settings"
   },
-
   "treatments": {
     "pageTitle": "Treatments & Prices",
     "pageSubtitle": "Premium dental treatments with our own lab, at accessible prices.",
@@ -447,16 +439,16 @@
     "veneerPriceNote": "The final treatment plan and the cost of any additional care are agreed during your consultation. Prices are in Hungarian forints (HUF).",
     "veneerBeforeAfterAlt": "Smile before and after direct composite veneer treatment – Hollywood Smile",
     "cards": [
-      {"id": "air-polishing", "title": "Scaling and air polishing", "description": "Ultrasonic scaling and air polishing for tartar and external stains."},
-      {"id": "premium-biofilm-terapia", "title": "Premium biofilm therapy", "description": "Plaque disclosure and air polishing, with tartar removal where needed."},
-      { "id": "implantatum", "title": "Dental Implants", "description": "Lifelike tooth replacement with titanium implants, in as little as one day." },
       { "id": "fogszabalyozas", "title": "Orthodontics", "description": "Fixed and removable braces for children and adults." },
+      { "id": "allapotfelmeres", "title": "Dental Assessment", "description": "Detailed consultation, panoramic X-ray and personalised treatment plan." },
       { "id": "koronak-hidak", "title": "Crowns & Bridges", "description": "Metal-ceramic and zirconia crowns in premium quality, from our own lab." },
-      { "id": "fogfeherites", "title": "Teeth Whitening", "description": "Professional whitening with at-home or in-clinic methods." },
       { "id": "fogsor", "title": "Dentures", "description": "Removable and fixed dentures, precise fit, relining." },
+      { "id": "air-polishing", "title": "Scaling and air polishing", "description": "Ultrasonic scaling and air polishing for tartar and external stains." },
+      { "id": "premium-biofilm-terapia", "title": "Premium biofilm therapy", "description": "Plaque disclosure and air polishing, with tartar removal where needed." },
+      { "id": "implantatum", "title": "Dental Implants", "description": "Lifelike tooth replacement with titanium implants, in as little as one day." },
+      { "id": "fogfeherites", "title": "Teeth Whitening", "description": "Professional whitening with at-home or in-clinic methods." },
       { "id": "gyokerkezeles", "title": "Root Canal", "description": "Painless machine root canal filling with the latest technology." },
       { "id": "szajsebeszet", "title": "Oral Surgery", "description": "Wisdom tooth extraction and apical resection performed with expertise." },
-      { "id": "allapotfelmeres", "title": "Dental Assessment", "description": "Detailed consultation, panoramic X-ray and personalised treatment plan." },
       { "id": "esztetikai-fogaszat", "title": "Aesthetic Dentistry", "description": "Ceramic veneers and invisible fillings for a perfect smile." },
       { "id": "hollywood-mosoly", "title": "Hollywood Smile – your smile makeover", "description": "Personalised smile design: explore composite and porcelain veneers, compare your options and request a consultation.", "href": "/hollywood-mosoly" },
       { "id": "direkt-hej", "title": "Direct composite veneers", "description": "Composite veneers shaped in the clinic with an individual shade and shape. Prices, treatment steps and appointment requests." },
@@ -470,9 +462,9 @@
         "id": "diagnosztika",
         "title": "Diagnostics & Basic Treatments",
         "items": [
-          { "name": "Initial examination, written assessment, focal infection search, treatment plan", "price": "10,000 HUF" },
+          { "name": "Initial examination, written assessment, focal infection search, treatment plan", "price": "10,000 HUF", "slug": "allapotfelmeres" },
           { "name": "Fillings", "price": "30,000 – 35,000 HUF" },
-          { "name": "Tooth extraction", "price": "25,000 – 35,000 HUF" },
+          { "name": "Tooth extraction", "price": "25,000 – 35,000 HUF", "slug": "foghuzas" },
           { "name": "X-ray (small / single tooth)", "price": "5,000 HUF" },
           { "name": "Panoramic X-ray", "price": "8,000 HUF" },
           { "name": "Cephalometric X-ray", "price": "10,000 HUF", "highlight": true },
@@ -483,11 +475,11 @@
         "id": "gyokerkezeles",
         "title": "Root Canal Treatment",
         "items": [
-          { "name": "Root filling (single-rooted)", "price": "25,000 HUF" },
-          { "name": "Root filling (two-rooted)", "price": "30,000 HUF" },
-          { "name": "Root filling (three-rooted)", "price": "33,000 HUF" },
-          { "name": "Root filling removal", "price": "20,000 HUF" },
-          { "name": "Root canal treatment per session", "price": "10,000 HUF" }
+          { "name": "Root filling (single-rooted)", "price": "25,000 HUF", "slug": "gyokerkezeles" },
+          { "name": "Root filling (two-rooted)", "price": "30,000 HUF", "slug": "gyokerkezeles" },
+          { "name": "Root filling (three-rooted)", "price": "33,000 HUF", "slug": "gyokerkezeles" },
+          { "name": "Root filling removal", "price": "20,000 HUF", "slug": "gyokerkezeles" },
+          { "name": "Root canal treatment per session", "price": "10,000 HUF", "slug": "gyokerkezeles" }
         ]
       },
       {
@@ -497,34 +489,34 @@
           {"name": "Ultrasonic scaling (per arch)", "price": "15,000 HUF"},
           {"name": "Scaling and air polishing (per arch)", "price": "20,000 HUF", "slug": "air-polishing"},
           {"name": "Premium biofilm therapy (per arch)", "price": "25,000 HUF", "slug": "premium-biofilm-terapia"},
-          { "name": "Whitening with silicone tray (home) / per arch", "price": "30,000 HUF" },
-          { "name": "In-clinic whitening (lamp) / per arch", "price": "45,000 HUF", "highlight": true }
+          { "name": "Whitening with silicone tray (home) / per arch", "price": "30,000 HUF", "slug": "fogfeherites" },
+          { "name": "In-clinic whitening (lamp) / per arch", "price": "45,000 HUF", "highlight": true, "slug": "fogfeherites" }
         ]
       },
       {
         "id": "fogpotlas",
         "title": "Prosthetics & Crowns",
         "items": [
-          { "name": "Temporary crown (short-term, 1–2 weeks)", "price": "6,000 HUF" },
-          { "name": "Temporary crown (long-term, up to 1 year)", "price": "15,000 HUF" },
-          { "name": "Metal-ceramic crown", "price": "55,000 HUF" },
-          { "name": "Zirconia crown (metal-free)", "price": "65,000 HUF", "highlight": true },
+          { "name": "Temporary crown (short-term, 1–2 weeks)", "price": "6,000 HUF", "slug": "koronak-hidak" },
+          { "name": "Temporary crown (long-term, up to 1 year)", "price": "15,000 HUF", "slug": "koronak-hidak" },
+          { "name": "Metal-ceramic crown", "price": "55,000 HUF", "slug": "koronak-hidak" },
+          { "name": "Zirconia crown (metal-free)", "price": "65,000 HUF", "highlight": true, "slug": "koronak-hidak" },
           { "name": "Custom shade matching (per tooth)", "price": "15,000 HUF" },
-          { "name": "Removable denture for one jaw (composite)", "price": "110,000 HUF" },
-          { "name": "Metal-frame denture for one jaw", "price": "150,000 HUF" },
-          { "name": "Old bridge removal (per abutment tooth)", "price": "12,000 HUF" },
-          { "name": "Denture relining", "price": "25,000 HUF" }
+          { "name": "Removable denture for one jaw (composite)", "price": "110,000 HUF", "slug": "fogsor" },
+          { "name": "Metal-frame denture for one jaw", "price": "150,000 HUF", "slug": "fogsor" },
+          { "name": "Old bridge removal (per abutment tooth)", "price": "12,000 HUF", "slug": "koronak-hidak" },
+          { "name": "Denture relining", "price": "25,000 HUF", "slug": "fogsor" }
         ]
       },
       {
         "id": "szajsebeszet",
         "title": "Oral Surgery & Implantology",
         "items": [
-          { "name": "Surgical tooth extraction", "price": "55,000 HUF" },
-          { "name": "Wisdom tooth removal", "price": "55,000 HUF" },
-          { "name": "Apical resection", "price": "55,000 HUF" },
-          { "name": "DIO Implant", "price": "240,000 HUF", "highlight": true },
-          { "name": "ALPHA BIO Implant", "price": "180,000 HUF" },
+          { "name": "Surgical tooth extraction", "price": "55,000 HUF", "slug": "szajsebeszet" },
+          { "name": "Wisdom tooth removal", "price": "55,000 HUF", "slug": "szajsebeszet" },
+          { "name": "Apical resection", "price": "55,000 HUF", "slug": "szajsebeszet" },
+          { "name": "DIO Implant", "price": "240,000 HUF", "highlight": true, "slug": "implantatum" },
+          { "name": "ALPHA BIO Implant", "price": "180,000 HUF", "slug": "implantatum" },
           { "name": "Bone graft (including the associated sinus lift)", "price": "200,000 HUF" },
           {"name": "Implant abutment", "price": "15,000–30,000 HUF"},
           {"name": "Major surgical fee", "price": "Free of charge"},
@@ -538,24 +530,22 @@
         "id": "gyermek",
         "title": "Paediatric Dentistry & Orthodontics",
         "items": [
-          { "name": "Baby tooth filling", "price": "15,000 HUF" },
-          { "name": "Fissure sealing", "price": "15,000 HUF" },
-          { "name": "Fixed braces", "price": "190,000 – 285,000 HUF", "highlight": true },
-          { "name": "Removable braces", "price": "65,000 – 155,000 HUF" },
-          { "name": "Fixed brace activation", "price": "10,000 – 15,000 HUF" },
-          { "name": "Removable brace activation", "price": "5,000 – 8,000 HUF" }
+          { "name": "Baby tooth filling", "price": "15,000 HUF", "slug": "gyerekfogaszat" },
+          { "name": "Fissure sealing", "price": "15,000 HUF", "slug": "gyerekfogaszat" },
+          { "name": "Fixed braces", "price": "190,000 – 285,000 HUF", "highlight": true, "slug": "fogszabalyozas" },
+          { "name": "Removable braces", "price": "65,000 – 155,000 HUF", "slug": "fogszabalyozas" },
+          { "name": "Fixed brace activation", "price": "10,000 – 15,000 HUF", "slug": "fogszabalyozas" },
+          { "name": "Removable brace activation", "price": "5,000 – 8,000 HUF", "slug": "fogszabalyozas" }
         ]
       }
     ]
   },
-
   "langSwitch": {
     "hu": "Magyar",
     "en": "English",
     "sk": "Slovenčina",
     "ariaLabel": "Switch language"
   },
-
   "treatmentPages": {
     "shared": {
       "consultationBtn": "Medical Consultation",
@@ -568,8 +558,8 @@
     },
     "allapotfelmeres": {
       "heroBadge": "Comprehensive Diagnostics",
-      "heroTitle": "Dental Assessment the Crown Dental Way",
-      "heroDesc": "We map out the condition of your teeth and oral cavity using modern diagnostic tools. Accurate diagnosis, personalised treatment plan.",
+      "heroTitle": "General dentistry and dental check-ups",
+      "heroDesc": "We discuss your concerns, examine your teeth and existing fillings, and provide a written treatment plan with the proposed steps and costs.",
       "heroPriceLabel": "Consultation",
       "heroPriceValue": "Specialist",
       "problemTitle": "The Problem: Hidden Dental Issues",
@@ -611,14 +601,15 @@
         { "q": "How long does the assessment take?", "a": "The comprehensive assessment takes 30–45 minutes." },
         { "q": "What if I'm afraid of the dentist?", "a": "Our team is patient and empathetic — we explain every step in advance." },
         { "q": "Will I receive written documentation?", "a": "Yes, we prepare a detailed written diagnosis and treatment plan." }
-      ]
+      ],
+      "metaDescription": "We discuss your concerns, examine your teeth and existing fillings, and provide a written treatment plan with the proposed steps and costs."
     },
     "implantatum": {
       "heroBadge": "Premium Service",
       "heroTitle": "Dental Implants",
       "heroDesc": "A durable option for missing teeth using Alpha Bio and DIO implant systems, based on an individual treatment plan.",
       "heroPriceLabel": "Prices from",
-      "heroPriceValue": "190,000 HUF",
+      "heroPriceValue": "180,000 HUF",
       "quoteAnalyzerBadge": "AI Price Calculator",
       "quoteAnalyzerTitle": "Think the quote is too expensive?",
       "quoteAnalyzerDesc": "Upload the treatment plan you received elsewhere, and the AI will show how much you can save with us!",
@@ -648,7 +639,7 @@
         { "title": "Delivery", "desc": "We fix the final crown. Use it just like your original tooth!", "time": "30 min" }
       ],
       "faqs": [
-        { "q": "How much does an implant cost?", "a": "Alpha Bio and DIO implant placement starts from 190,000 HUF. An exact price can be given after the 3D CT scan." },
+        { "q": "How much does an implant cost?", "a": "An Alpha Bio implant costs 180,000 HUF and a DIO implant 240,000 HUF. The abutment and restoration are priced separately. Your treatment plan sets out the total cost." },
         { "q": "Does the placement hurt?", "a": "We use local anaesthesia to minimise pain during the procedure. Pressure and temporary discomfort afterwards may occur." },
         { "q": "How long does healing take?", "a": "Osseointegration generally takes 3–6 months." },
         { "q": "Why is Crown Dental cheaper?", "a": "Because our lab is on-site, you don't pay intermediary fees — that saving is passed on to you." }
@@ -656,8 +647,8 @@
     },
     "fogsor": {
       "heroBadge": "Own Dental Laboratory",
-      "heroTitle": "Comfortable and Aesthetic Dentures",
-      "heroDesc": "Thanks to our own laboratory we manufacture perfectly fitting, lifelike removable and fixed prostheses, much faster than you'd expect.",
+      "heroTitle": "Removable partial and complete dentures",
+      "heroDesc": "Explore partial and complete dentures made with our in-house laboratory. We discuss support, fitting appointments and adjustments at your consultation.",
       "heroPriceLabel": "Premium quality",
       "heroPriceValue": "from 110,000 HUF",
       "problemTitle": "The Problem: Partial or Complete Tooth Loss",
@@ -693,12 +684,13 @@
         { "q": "How long does a full denture take?", "a": "Because we have our own dental lab, the prosthesis including try-ins is typically finished within 1–2 weeks." },
         { "q": "What should I do if my old denture is loose?", "a": "Our lab can reline the denture quickly so it fits snugly and stably again." },
         { "q": "Will the denture look natural?", "a": "Yes! Our laboratory works with premium, lifelike teeth matched to your facial features in colour and shape." }
-      ]
+      ],
+      "metaDescription": "Explore partial and complete dentures made with our in-house laboratory. We discuss support, fitting appointments and adjustments at your consultation."
     },
     "koronak-hidak": {
       "heroBadge": "Own Dental Laboratory",
-      "heroTitle": "Zirconia and Ceramic Crowns",
-      "heroDesc": "Durable and aesthetic crowns and bridges for missing teeth. Thanks to our own laboratory — lightning fast, without compromise.",
+      "heroTitle": "Dental crowns and bridges",
+      "heroDesc": "Metal-ceramic and zirconia crowns and bridges with an in-house dental laboratory. At your visit we discuss the material, design and cost.",
       "heroPriceLabel": "Premium Crowns",
       "heroPriceValue": "from 55,000 HUF",
       "problemTitle": "The Problem: Damaged or Missing Teeth",
@@ -729,7 +721,8 @@
         { "q": "Is tooth preparation painful?", "a": "No. We perform it under local anaesthesia, so you won't feel anything during the process." },
         { "q": "Will I have a tooth while waiting for the final restoration?", "a": "Yes! We fit a temporary crown immediately, so you won't leave with a gap." },
         { "q": "How long does a crown last?", "a": "With good oral hygiene, 10–15 years, but it can last a lifetime." }
-      ]
+      ],
+      "metaDescription": "Metal-ceramic and zirconia crowns and bridges with an in-house dental laboratory. At your visit we discuss the material, design and cost."
     },
     "gyokerkezeles": {
       "heroBadge": "Tooth-Saving Procedures",
@@ -905,14 +898,14 @@
     },
     "fogszabalyozas": {
       "heroBadge": "Aesthetic and Healthy Dentition",
-      "heroTitle": "Orthodontics the Crown Dental Way",
-      "heroDesc": "Modern orthodontic solutions for children and adults, with on-site cephalometric X-ray diagnostics. Straight teeth, a confident smile.",
-      "heroPriceLabel": "Appliances",
-      "heroPriceValue": "from 190,000 HUF",
+      "heroTitle": "Orthodontics for children and adults",
+      "heroDesc": "Compare removable braces, fixed braces and clear aligners. At your consultation in Esztergom we discuss appliance options, follow-up visits and likely costs.",
+      "heroPriceLabel": "Removable braces",
+      "heroPriceValue": "65,000–155,000 HUF",
       "problemTitle": "The Problem: Crowded Teeth",
       "problemDesc": "Crooked, crowded teeth not only cause a lack of self-confidence but also pose a health risk. Hard-to-clean gaps allow plaque to accumulate, leading to cavities and gum disease.",
-      "solutionTitle": "The Solution: Orthodontic Treatment",
-      "solutionDesc": "Orthodontics guides teeth into their ideal position. The required cephalometric X-ray is performed on site, so diagnostics and treatment planning stay fast and coordinated.",
+      "solutionTitle": "Which appliance might suit me?",
+      "solutionDesc": "After examining your teeth and bite, the orthodontist explains which appliances may suit you, whether imaging is needed and what follow-up involves.",
       "benefitsTitle": "The Secret to a Perfect Smile",
       "benefitItems": [
         { "title": "Wide Choice", "desc": "From traditional metal braces to aesthetic sapphire crystal and invisible aligners — we offer every solution." },
@@ -920,25 +913,31 @@
         { "title": "Flexible Payment", "desc": "We know orthodontics is an investment. Flexible payment plans help spread the cost." },
         { "title": "Own Lab Support", "desc": "Removable appliances and aligners are manufactured in our own dental laboratory." },
         { "title": "Facial Aesthetics Focus", "desc": "We don't just move teeth — we keep the harmonious appearance of your face in mind." },
-        { "title": "Modern Technology", "desc": "Digital planning, on-site cephalometric X-ray and modern materials help shorten treatment time." }
+        { "title": "Modern Technology", "desc": "Any imaging needed is arranged at Crown Dental Belváros, Petőfi Sándor utca 11, including for patients seen at Prímás Sziget." }
       ],
       "processTitle": "The Path to a Straight Smile",
       "processSteps": [
-        { "title": "Consultation & Diagnostics", "desc": "Comprehensive examination, panoramic X-ray, on-site cephalometric X-ray and digital impression to assess the dentition.", "time": "45 min" },
+        { "title": "Consultation & Diagnostics", "desc": "After examining your teeth and bite, the orthodontist explains which appliances may suit you, whether imaging is needed and what follow-up involves.", "time": "45 min" },
         { "title": "Treatment Plan", "desc": "We show you the expected result with a visual preview and discuss appliance type and duration.", "time": "1 week" },
         { "title": "Appliance Fitting", "desc": "Precise and painless fitting, with instruction on wearing and cleaning.", "time": "60–90 min" },
         { "title": "Activation & Check-ups", "desc": "Regular (usually monthly) check-ups to adjust the appliance.", "time": "12–24 months" },
         { "title": "Retention", "desc": "After the fixed appliance is removed, we stabilise the result with a thin retainer.", "time": "Ongoing" }
       ],
-      "ctaTitle": "Ready for the Perfect Smile?",
-      "ctaDesc": "Don't wait any longer! Request a specialist consultation to discuss all your options in detail.",
+      "ctaTitle": "Orthodontic consultation",
+      "ctaDesc": "After examining your teeth and bite, the orthodontist explains which appliances may suit you, whether imaging is needed and what follow-up involves.",
       "faqs": [
         { "q": "Is orthodontic treatment painful?", "a": "The fitting itself is not painful. Mild tension may be felt for 2–3 days after activations." },
         { "q": "Can adults start treatment?", "a": "Absolutely! Today nearly half our patients are adults. We especially recommend our aesthetic ceramic or virtually invisible aligner systems for them." },
-        { "q": "Is cephalometric X-ray needed for orthodontics?", "a": "Yes, precise orthodontic diagnostics often require a cephalometric X-ray. We perform it on site, so you do not need to visit a separate imaging centre." },
+        { "q": "Is cephalometric X-ray needed for orthodontics?", "a": "Any imaging needed is arranged at Crown Dental Belváros, Petőfi Sándor utca 11, including for patients seen at Prímás Sziget." },
         { "q": "How long does treatment take?", "a": "Generally 1.5–2 years. Minor aesthetic corrections can be done in as little as 6–10 months." },
         { "q": "How do I clean the appliance?", "a": "For fixed braces we recommend a special brush and interdental cleaner, which we demonstrate thoroughly at the fitting." }
-      ]
+      ],
+      "metaDescription": "Compare removable braces, fixed braces and clear aligners. At your consultation in Esztergom we discuss appliance options, follow-up visits and likely costs.",
+      "pricesTitle": "Braces and adjustment fees",
+      "priceNote": "Appliances and adjustment visits are priced separately. The overall cost depends on the appliance and the number of visits.",
+      "teamLink": "Meet our orthodontists",
+      "guideLink": "Clear aligners or fixed braces for adults",
+      "guideSlug": "clear-aligners-or-fixed-braces-adults"
     },
     "fogtechnikai-megoldasok": {
       "heroBadge": "The Engine Behind the Smiles",

@@ -16,7 +16,6 @@
     "email": "info@crowndental.hu",
     "openingHours": "H–P: 08:00–18:00"
   },
-
   "nav": {
     "home": "Főoldal",
     "services": "Szolgáltatások & Árak",
@@ -26,7 +25,6 @@
     "career": "Karrier",
     "bookAppointment": "Időpontot kérek"
   },
-
   "footer": {
     "tagline": "A Crown Dental szabadságot ad a mosolyodnak.",
     "description": "Kiváló minőségű fogászat saját fogtechnikai laborral, kompromisszumok nélkül. Kezelések Esztergomban, és hamarosan Budapesten is.",
@@ -66,8 +64,8 @@
       "hollywoodSmile": "Hollywood Smile"
     }
   },
-
   "home": {
+    "clinicHeading": "Crown Dental fogászat Esztergomban",
     "floatingCta": {
       "callNow": "Hívjon most",
       "bookAppointment": "Időpontfoglalás"
@@ -183,20 +181,21 @@
       "learnMore": "Ismerje meg laborunkat"
     },
     "services": {
-      "label": "Kiemelt ajánlataink",
-      "title": "Prémium kezelések,",
-      "titleHighlight": "elérhető áron.",
-      "subtitle": "Saját laborunknak köszönhetően kimagasló minőséget nyújtunk kompromisszumok nélkül.",
+      "label": "Kiemelt kezeléseink",
+      "title": "Fogászati kezelések",
+      "titleHighlight": "Esztergomban",
+      "subtitle": "A fogszabályozástól a fogpótlásig megtalálja a kezelések menetét és az árakat.",
       "bookConsultation": "Konzultáció Foglalása",
       "clickForAppointment": "Kattintson ide az időponthoz",
       "viewAllPrices": "Teljes árlista megtekintése",
       "cards": [
-        { "title": "Diagnosztika & Alap", "subtitle": "Vizsgálat, röntgen, tömések", "price": "10.000 Ft-tól" },
-        { "title": "Gyökérkezelés", "subtitle": "Fájdalommentes fogmegmentés", "price": "10.000 Ft-tól" },
-        { "title": "Esztétika & Prevenció", "subtitle": "Fogkőeltávolítás, fogfehérítés", "price": "15.000 Ft-tól" },
-        { "title": "Fogpótlás & Koronák", "subtitle": "Cirkónium, fémkerámia, fogsorok", "price": "55.000 Ft-tól" },
-        { "title": "Sebészet & Implantáció", "subtitle": "Húzások, prémium implantátumok", "price": "55.000 Ft-tól" },
-        { "title": "Gyermek & Fogszabályozás", "subtitle": "Rögzített és kivehető készülékek", "price": "15.000 Ft-tól" }
+        { "slug": "fogszabalyozas", "title": "Fogszabályozás", "subtitle": "Kivehető és rögzített készülékek, átlátszó sínek" },
+        { "title": "Általános fogászat", "subtitle": "Vizsgálat, kezelési terv és a tömések ellenőrzése", "price": "10.000 Ft-tól", "slug": "allapotfelmeres" },
+        { "title": "Fogpótlás koronával vagy híddal", "subtitle": "Fémkerámia és cirkónium koronák saját laborral", "price": "55.000 Ft-tól", "slug": "koronak-hidak" },
+        { "title": "Gyökérkezelés", "subtitle": "Fájdalommentes fogmegmentés", "price": "10.000 Ft-tól", "slug": "gyokerkezeles" },
+        { "title": "Esztétika & Prevenció", "subtitle": "Fogkőeltávolítás, fogfehérítés", "price": "15.000 Ft-tól", "slug": "esztetikai-fogaszat" },
+        { "title": "Sebészet & Implantáció", "subtitle": "Húzások, prémium implantátumok", "price": "55.000 Ft-tól", "slug": "szajsebeszet" },
+        {"title": "Gyermekfogászat", "subtitle": "Tejfogtömés és barázdazárás", "price": "15.000 Ft-tól", "slug": "gyerekfogaszat"}
       ]
     },
     "reviews": {
@@ -250,7 +249,6 @@
       ]
     }
   },
-
   "booking": {
     "title": "Foglaljon Időpontot",
     "subtitle": "Töltse ki az alábbi adatokat, és egy kollégánk hamarosan felveszi Önnel a kapcsolatot.",
@@ -294,7 +292,6 @@
       "fogtechnikai-megoldasok": "Fogtechnikai megoldások"
     }
   },
-
   "about": {
     "badge": "Több mint fogászat",
     "title": "Ismerd meg a",
@@ -322,7 +319,6 @@
     "story3Part2": "az egyéni kezelési terv minden lépésében.",
     "storySince": "Óta a te mosolyodért."
   },
-
   "career": {
     "badge": "Csatlakozz hozzánk",
     "title": "Dolgozz velünk a",
@@ -360,7 +356,6 @@
     "formSuccess": "Köszönjük a jelentkezését!",
     "formError": "Hiba történt. Kérjük próbálja újra."
   },
-
   "blog": {
     "title": "Blog & Magazin",
     "subtitle": "Fogászati tippek, hírek és szakmai cikkek pácienseinknek.",
@@ -388,7 +383,6 @@
     ],
     "reviewsTitle": "Pácienseink mondták"
   },
-
   "contact": {
     "title": "Kapcsolat",
     "subtitle": "Keressen minket bizalommal – válaszolunk és segítünk!",
@@ -397,7 +391,6 @@
     "openingHours": "Nyitvatartás",
     "weekdays": "Hétfő – Péntek"
   },
-
   "cookie": {
     "message": "Weboldalunk sütiket (cookie-kat) használ a jobb felhasználói élmény érdekében.",
     "accept": "Elfogadom",
@@ -421,7 +414,6 @@
     "acceptAllBtn": "Összes elfogadása",
     "saveSelectionBtn": "Beállítások mentése"
   },
-
   "treatments": {
     "pageTitle": "Kezelések & Árak",
     "pageSubtitle": "Prémium fogászati kezelések saját laborral, elérhető áron.",
@@ -447,16 +439,16 @@
     "veneerPriceNote": "A végleges kezelési tervet és az esetleg szükséges további ellátás költségét konzultáción egyeztetjük.",
     "veneerBeforeAfterAlt": "Mosoly a direkt héjkezelés előtt és után – Hollywood smile",
     "cards": [
-      {"id": "air-polishing", "title": "Fogkőeltávolítás és air polishing", "description": "Fogkő és külső elszíneződések eltávolítása ultrahanggal és finom porral."},
-      {"id": "premium-biofilm-terapia", "title": "Prémium biofilm-terápia", "description": "Lepedékfestés és air polishing, szükség szerint fogkőeltávolítással."},
-      { "id": "implantatum", "title": "Implantátum", "description": "Élethű fogpótlás titánium implantátummal, akár egy nap alatt." },
       { "id": "fogszabalyozas", "title": "Fogszabályozás", "description": "Rögzített és kivehető készülékek gyerekeknek és felnőtteknek." },
+      { "id": "allapotfelmeres", "title": "Állapotfelmérés", "description": "Részletes konzultáció, panoráma röntgen és személyre szabott kezelési terv." },
       { "id": "koronak-hidak", "title": "Koronák és Hidak", "description": "Fémkerámia és cirkónium koronák prémium minőségben, saját laborból." },
-      { "id": "fogfeherites", "title": "Fogfehérítés", "description": "Professzionális fehérítés otthoni vagy rendelői módszerrel." },
       { "id": "fogsor", "title": "Fogsorok", "description": "Kivehető és rögzített fogsorok, precíz illeszkedés, alábélelés." },
+      { "id": "air-polishing", "title": "Fogkőeltávolítás és air polishing", "description": "Fogkő és külső elszíneződések eltávolítása ultrahanggal és finom porral." },
+      { "id": "premium-biofilm-terapia", "title": "Prémium biofilm-terápia", "description": "Lepedékfestés és air polishing, szükség szerint fogkőeltávolítással." },
+      { "id": "implantatum", "title": "Implantátum", "description": "Élethű fogpótlás titánium implantátummal, akár egy nap alatt." },
+      { "id": "fogfeherites", "title": "Fogfehérítés", "description": "Professzionális fehérítés otthoni vagy rendelői módszerrel." },
       { "id": "gyokerkezeles", "title": "Gyökérkezelés", "description": "Fájdalommentes gépi gyökértömés a legmodernebb technikával." },
       { "id": "szajsebeszet", "title": "Szájsebészet", "description": "Bölcsességfog eltávolítás és gyökércsúcs rezekció szakértelemmel." },
-      { "id": "allapotfelmeres", "title": "Állapotfelmérés", "description": "Részletes konzultáció, panoráma röntgen és személyre szabott kezelési terv." },
       { "id": "esztetikai-fogaszat", "title": "Esztétikai Fogászat", "description": "Kerámia héjak és láthatatlan tömések a tökéletes mosolyért." },
       { "id": "hollywood-mosoly", "title": "Hollywood smile – hollywoodi mosoly", "description": "Személyre szabott mosolytervezés: ismerje meg a direkt és porcelán héjak lehetőségeit, a különbségeket és az árakat.", "href": "/hollywood-mosoly" },
       { "id": "direkt-hej", "title": "Direkt héj", "description": "A rendelőben formázott kompozit héj, személyre szabott fogszínnel és formával. Árak, kezelési lépések és időpontkérés." },
@@ -470,9 +462,9 @@
         "id": "diagnosztika",
         "title": "Diagnosztika és Alapkezelések",
         "items": [
-          { "name": "Elő-vizsgálat, írásos vélemény, góckutatás, kezelési terv", "price": "10.000 Ft" },
+          { "name": "Elő-vizsgálat, írásos vélemény, góckutatás, kezelési terv", "price": "10.000 Ft", "slug": "allapotfelmeres" },
           { "name": "Tömések", "price": "30.000 - 35.000 Ft" },
-          { "name": "Foghúzás", "price": "25.000 - 35.000 Ft" },
+          { "name": "Foghúzás", "price": "25.000 - 35.000 Ft", "slug": "foghuzas" },
           { "name": "Röntgen felvétel (kisröntgen / egy fogról)", "price": "5.000 Ft" },
           { "name": "Panoráma röntgen", "price": "8.000 Ft" },
           { "name": "Teleröntgen", "price": "10.000 Ft", "highlight": true },
@@ -483,11 +475,11 @@
         "id": "gyokerkezeles",
         "title": "Gyökérkezelés",
         "items": [
-          { "name": "Gyökértömés (Egy gyökerű)", "price": "25.000 Ft" },
-          { "name": "Gyökértömés (Két gyökerű)", "price": "30.000 Ft" },
-          { "name": "Gyökértömés (Három gyökerű)", "price": "33.000 Ft" },
-          { "name": "Gyökértömés eltávolítása", "price": "20.000 Ft" },
-          { "name": "Gyökérkezelés alkalmanként", "price": "10.000 Ft" }
+          { "name": "Gyökértömés (Egy gyökerű)", "price": "25.000 Ft", "slug": "gyokerkezeles" },
+          { "name": "Gyökértömés (Két gyökerű)", "price": "30.000 Ft", "slug": "gyokerkezeles" },
+          { "name": "Gyökértömés (Három gyökerű)", "price": "33.000 Ft", "slug": "gyokerkezeles" },
+          { "name": "Gyökértömés eltávolítása", "price": "20.000 Ft", "slug": "gyokerkezeles" },
+          { "name": "Gyökérkezelés alkalmanként", "price": "10.000 Ft", "slug": "gyokerkezeles" }
         ]
       },
       {
@@ -497,34 +489,34 @@
           {"name": "Ultrahangos fogkőeltávolítás (állcsontonként)", "price": "15 000 Ft"},
           {"name": "Fogkőeltávolítás és air polishing (állcsontonként)", "price": "20 000 Ft", "slug": "air-polishing"},
           {"name": "Prémium biofilm-terápia (állcsontonként)", "price": "25 000 Ft", "slug": "premium-biofilm-terapia"},
-          { "name": "Fogfehérítés szilikon sínnel (otthoni) / fogívenként", "price": "30.000 Ft" },
-          { "name": "Fogfehérítés rendelői (lámpás) / fogívenként", "price": "45.000 Ft", "highlight": true }
+          { "name": "Fogfehérítés szilikon sínnel (otthoni) / fogívenként", "price": "30.000 Ft", "slug": "fogfeherites" },
+          { "name": "Fogfehérítés rendelői (lámpás) / fogívenként", "price": "45.000 Ft", "highlight": true, "slug": "fogfeherites" }
         ]
       },
       {
         "id": "fogpotlas",
         "title": "Fogpótlások és Koronák",
         "items": [
-          { "name": "Ideiglenes korona (rövidtávú, 1-2 hétre)", "price": "6.000 Ft" },
-          { "name": "Ideiglenes korona (hosszútávú, max. 1 évre)", "price": "15.000 Ft" },
-          { "name": "Fémkerámia korona", "price": "55.000 Ft" },
-          { "name": "Cirkónium korona (fémmentes)", "price": "65.000 Ft", "highlight": true },
+          { "name": "Ideiglenes korona (rövidtávú, 1-2 hétre)", "price": "6.000 Ft", "slug": "koronak-hidak" },
+          { "name": "Ideiglenes korona (hosszútávú, max. 1 évre)", "price": "15.000 Ft", "slug": "koronak-hidak" },
+          { "name": "Fémkerámia korona", "price": "55.000 Ft", "slug": "koronak-hidak" },
+          { "name": "Cirkónium korona (fémmentes)", "price": "65.000 Ft", "highlight": true, "slug": "koronak-hidak" },
           { "name": "Egyéni fogszínek készítése (foganként)", "price": "15.000 Ft" },
-          { "name": "Kivehető fogsor egy állcsontra (kompozit)", "price": "110.000 Ft" },
-          { "name": "Fémlemezes fogsor egy állcsontra", "price": "150.000 Ft" },
-          { "name": "Régi híd eltávolítása (pillér foganként)", "price": "12.000 Ft" },
-          { "name": "Fogsor alábélelés", "price": "25.000 Ft" }
+          { "name": "Kivehető fogsor egy állcsontra (kompozit)", "price": "110.000 Ft", "slug": "fogsor" },
+          { "name": "Fémlemezes fogsor egy állcsontra", "price": "150.000 Ft", "slug": "fogsor" },
+          { "name": "Régi híd eltávolítása (pillér foganként)", "price": "12.000 Ft", "slug": "koronak-hidak" },
+          { "name": "Fogsor alábélelés", "price": "25.000 Ft", "slug": "fogsor" }
         ]
       },
       {
         "id": "szajsebeszet",
         "title": "Szájsebészet és Implantáció",
         "items": [
-          { "name": "Foghúzás műtéttel", "price": "55.000 Ft" },
-          { "name": "Bölcsességfog eltávolítása", "price": "55.000 Ft" },
-          { "name": "Gyökércsúcs rezekció", "price": "55.000 Ft" },
-          { "name": "DIO Implantátum", "price": "240.000 Ft", "highlight": true },
-          { "name": "ALPHA BIO Implantátum", "price": "180.000 Ft" },
+          { "name": "Foghúzás műtéttel", "price": "55.000 Ft", "slug": "szajsebeszet" },
+          { "name": "Bölcsességfog eltávolítása", "price": "55.000 Ft", "slug": "szajsebeszet" },
+          { "name": "Gyökércsúcs rezekció", "price": "55.000 Ft", "slug": "szajsebeszet" },
+          { "name": "DIO Implantátum", "price": "240.000 Ft", "highlight": true, "slug": "implantatum" },
+          { "name": "ALPHA BIO Implantátum", "price": "180.000 Ft", "slug": "implantatum" },
           { "name": "Csontpótlás (az ellátáshoz tartozó sinus lifttel)", "price": "200.000 Ft" },
           {"name": "Implantátumfelépítmény", "price": "15.000–30.000 Ft"},
           {"name": "Nagy műtéti díj", "price": "Díjmentes"},
@@ -538,24 +530,22 @@
         "id": "gyermek",
         "title": "Gyermekfogászat és Fogszabályozás",
         "items": [
-          { "name": "Tömés tejfogakba", "price": "15.000 Ft" },
-          { "name": "Barázda zárás", "price": "15.000 Ft" },
-          { "name": "Rögzített készülékek", "price": "190.000 - 285.000 Ft", "highlight": true },
-          { "name": "Kivehető készülékek", "price": "65.000 - 155.000 Ft" },
-          { "name": "Rögzített készülék aktiválása", "price": "10.000 - 15.000 Ft" },
-          { "name": "Kivehető készülék aktiválása", "price": "5.000 - 8.000 Ft" }
+          { "name": "Tömés tejfogakba", "price": "15.000 Ft", "slug": "gyerekfogaszat" },
+          { "name": "Barázda zárás", "price": "15.000 Ft", "slug": "gyerekfogaszat" },
+          { "name": "Rögzített készülékek", "price": "190.000 - 285.000 Ft", "highlight": true, "slug": "fogszabalyozas" },
+          { "name": "Kivehető készülékek", "price": "65.000 - 155.000 Ft", "slug": "fogszabalyozas" },
+          { "name": "Rögzített készülék aktiválása", "price": "10.000 - 15.000 Ft", "slug": "fogszabalyozas" },
+          { "name": "Kivehető készülék aktiválása", "price": "5.000 - 8.000 Ft", "slug": "fogszabalyozas" }
         ]
       }
     ]
   },
-
   "langSwitch": {
     "hu": "Magyar",
     "en": "English",
     "sk": "Slovenčina",
     "ariaLabel": "Nyelv váltása"
   },
-
   "treatmentPages": {
     "shared": {
       "consultationBtn": "Szakorvosi Konzultáció",
@@ -568,8 +558,8 @@
     },
     "allapotfelmeres": {
       "heroBadge": "Átfogó diagnosztika",
-      "heroTitle": "Állapotfelmérés Crown Dental módra",
-      "heroDesc": "Modern diagnosztikai eszközökkel térképezzük fel fogai és szájürege állapotát. Pontos diagnózis, személyre szabott kezelési terv.",
+      "heroTitle": "Általános fogászat és állapotfelmérés",
+      "heroDesc": "Az első vizsgálaton átbeszéljük a panaszait, ellenőrizzük a fogakat és a korábbi töméseket. Írásos kezelési tervet adunk a javasolt lépésekkel és költségekkel.",
       "heroPriceLabel": "Konzultáció",
       "heroPriceValue": "Szakorvosi",
       "problemTitle": "A Probléma: Rejtett fogászati gondok",
@@ -611,14 +601,15 @@
         { "q": "Mennyi ideig tart az állapotfelmérés?", "a": "Az átfogó állapotfelmérés 30-45 percet vesz igénybe." },
         { "q": "Mit tegyek, ha félek a fogorvostól?", "a": "Csapatunk türelmes és empatikus, minden lépést előre elmagyarázunk." },
         { "q": "Kapok írásos dokumentációt?", "a": "Igen, részletes írásos diagnózist és kezelési tervet készítünk." }
-      ]
+      ],
+      "metaDescription": "Az első vizsgálaton átbeszéljük a panaszait, ellenőrizzük a fogakat és a korábbi töméseket. Írásos kezelési tervet adunk a javasolt lépésekkel és költségekkel."
     },
     "implantatum": {
       "heroBadge": "Prémium Szolgáltatás",
       "heroTitle": "Implantátum",
       "heroDesc": "Tartós megoldás foghiányra Alpha Bio és DIO implantációs rendszerekkel, egyéni kezelési terv alapján.",
       "heroPriceLabel": "Árak már",
-      "heroPriceValue": "190.000 Ft-tól",
+      "heroPriceValue": "180.000 Ft-tól",
       "quoteAnalyzerBadge": "AI Ár-kalkulátor",
       "quoteAnalyzerTitle": "Sokallja az árajánlatot?",
       "quoteAnalyzerDesc": "Töltse fel a máshol kapott kezelési tervet, és az AI megmutatja, mennyit spórolhat nálunk!",
@@ -648,7 +639,7 @@
         { "title": "Átadás", "desc": "Rögzítjük a végleges koronát. Úgy használhatja, mint az eredeti fogát!", "time": "30 perc" }
       ],
       "faqs": [
-        { "q": "Mennyibe kerül egy implantátum?", "a": "Az Alpha Bio és DIO implantátumok beültetése 190.000 Ft-tól indul. Pontos árat a 3D CT felvétel után tudunk adni." },
+        { "q": "Mennyibe kerül egy implantátum?", "a": "Az Alpha Bio implantátum ára 180 000 Ft, a DIO implantátumé 240 000 Ft. Az implantátumfelépítmény és a fogpótlás külön tétel. A teljes árat a kezelési tervben részletezzük." },
         { "q": "Fáj a beültetés?", "a": "Helyi érzéstelenítést alkalmazunk, ezért a beavatkozás közbeni fájdalmat igyekszünk minimálisra csökkenteni. Nyomásérzés és átmeneti utópanasz előfordulhat." },
         { "q": "Meddig tart a gyógyulás?", "a": "A csontosodás általában 3-6 hónapot vesz igénybe." },
         { "q": "Miért olcsóbb a Crown Dental?", "a": "A saját, helyben lévő laborunk miatt nem kell közvetítői díjakat fizetnie, ez Önnek megtakarítás." }
@@ -656,8 +647,8 @@
     },
     "fogsor": {
       "heroBadge": "Saját fogtechnikai labor",
-      "heroTitle": "Kényelmes és Esztétikus Fogsorok",
-      "heroDesc": "Saját laborunknak köszönhetően tökéletesen illeszkedő, élethű kivehető és rögzített protéziseket készítünk, a megszokottnál sokkal gyorsabban.",
+      "heroTitle": "Kivehető fogpótlás és fogsor",
+      "heroDesc": "Részleges és teljes fogsor készítése saját fogtechnikai laborral. A konzultáción megbeszéljük a rögzítés, a próbák és a későbbi igazítás lehetőségeit.",
       "heroPriceLabel": "Prémium minőség",
       "heroPriceValue": "110.000 Ft-tól",
       "problemTitle": "A Probléma: Részleges vagy teljes foghiány",
@@ -693,12 +684,13 @@
         { "q": "Mennyi idő alatt készül el a teljes fogsor?", "a": "Mivel saját fogtechnikai laborral rendelkezünk, általában 1-2 hét alatt teljesen elkészül a protézis a próbákkal együtt." },
         { "q": "Mit tegyek, ha a régi fogsorom már laza és mozog?", "a": "Saját laborunkban gyorsan elvégezzük a fogsor alábélelését, így újra pontosan és stabilan fog illeszkedni." },
         { "q": "Természetesen néz majd ki a műfogsor?", "a": "Igen! Laboratóriumunkban prémium, élethű fogakkal dolgozunk, amelyek színét és formáját az Ön arcvonásaihoz igazítjuk." }
-      ]
+      ],
+      "metaDescription": "Részleges és teljes fogsor készítése saját fogtechnikai laborral. A konzultáción megbeszéljük a rögzítés, a próbák és a későbbi igazítás lehetőségeit."
     },
     "koronak-hidak": {
       "heroBadge": "Saját fogtechnikai labor",
-      "heroTitle": "Cirkónium és Kerámia Koronák",
-      "heroDesc": "Tartós és esztétikus koronák, hidak foghiány esetén. Saját laborunknak köszönhetően villámgyorsan, kompromisszumok nélkül.",
+      "heroTitle": "Fogpótlás koronával vagy híddal",
+      "heroDesc": "Fémkerámia és cirkónium koronák, fogászati hidak saját fogtechnikai laborral. A vizsgálaton egyeztetjük a fogak állapotához illő megoldást, anyagot és árat.",
       "heroPriceLabel": "Prémium Koronák",
       "heroPriceValue": "55.000 Ft-tól",
       "problemTitle": "A Probléma: Sérült vagy hiányzó fogak",
@@ -729,7 +721,8 @@
         { "q": "Fájdalmas a fog csiszolása?", "a": "Nem. Helyi érzéstelenítésben végezzük, így semmit sem fog érezni a folyamat alatt." },
         { "q": "Lesz fogam a végleges pótlás elkészültéig?", "a": "Igen! Azonnal készítünk ideiglenes koronát, így nem távozik hiányzó foggal." },
         { "q": "Mennyi ideig bírja egy korona?", "a": "Jó szájhigiénia mellett 10-15 évig, de akár élethosszig is kitarthat." }
-      ]
+      ],
+      "metaDescription": "Fémkerámia és cirkónium koronák, fogászati hidak saját fogtechnikai laborral. A vizsgálaton egyeztetjük a fogak állapotához illő megoldást, anyagot és árat."
     },
     "gyokerkezeles": {
       "heroBadge": "Fogmegmentő eljárások",
@@ -905,14 +898,14 @@
     },
     "fogszabalyozas": {
       "heroBadge": "Esztétikus és egészséges fogsor",
-      "heroTitle": "Fogszabályozás Crown Dental módra",
-      "heroDesc": "Modern fogszabályozási megoldások gyermekeknek és felnőtteknek, helyben végzett teleröntgen diagnosztikával. Szabályos fogsor, magabiztos mosoly.",
-      "heroPriceLabel": "Készülékek",
-      "heroPriceValue": "190.000 Ft-tól",
+      "heroTitle": "Fogszabályozás gyermekeknek és felnőtteknek",
+      "heroDesc": "Kivehető vagy rögzített fogszabályozót, esetleg átlátszó sínt szeretne? Esztergomi konzultációnkon átbeszéljük a készüléktípusokat, a kontrollokat és a várható költségeket.",
+      "heroPriceLabel": "Kivehető készülék",
+      "heroPriceValue": "65 000–155 000 Ft",
       "problemTitle": "A Probléma: Torlódott fogak",
       "problemDesc": "A kusza, torlódott fogazat nemcsak önbizalomhiányt okoz, de egészségügyi kockázat is. A nehezen tisztítható résekben könnyebben megtelepszik a lepedék, ami fogszuvasodáshoz és ínygyulladáshoz vezet.",
-      "solutionTitle": "A Megoldás: Szabályozás",
-      "solutionDesc": "A fogszabályozás segít a fogak ideális pozícióba terelésében. A szükséges teleröntgent helyben elvégezzük, így a diagnosztika és a kezelési terv gyorsan, egy kézben készül el.",
+      "solutionTitle": "Melyik készülék jöhet szóba?",
+      "solutionDesc": "A fogak és a harapás vizsgálata után a szakorvos elmondja, melyik készülék jöhet szóba, szükséges-e felvétel, és milyen kontrollokra számíthat.",
       "benefitsTitle": "A tökéletes mosoly titka",
       "benefitItems": [
         { "title": "Széles választék", "desc": "A hagyományos fém készülékektől az esztétikus zafír kristályos és láthatatlan sínekig minden megoldást kínálunk." },
@@ -920,25 +913,31 @@
         { "title": "Részletfizetési lehetőség", "desc": "Tudjuk, hogy a fogszabályozás befektetés. Rugalmas fizetési konstrukciókkal segítünk a költségek ütemezésében." },
         { "title": "Saját labor háttér", "desc": "Saját fogtechnikai laborunkban készítjük a kivehető készülékeket és síneket." },
         { "title": "Arc-esztétikai szemlélet", "desc": "Nemcsak fogakat mozgatunk, hanem az arc harmonikus megjelenését is szem előtt tartjuk." },
-        { "title": "Modern technológia", "desc": "Digitális tervezéssel, helyben végzett teleröntgennel és modern anyagokkal rövidítjük le a kezelési időt." }
+        { "title": "Modern technológia", "desc": "A szükséges felvételeket a Crown Dental Belvárosban, a Petőfi Sándor utca 11. alatt készítjük. Prímás-szigeti konzultáció esetén is ide egyeztetjük a képalkotást." }
       ],
       "processTitle": "Út a szabályos mosolyig",
       "processSteps": [
-        { "title": "Konzultáció és Diagnosztika", "desc": "Átfogó vizsgálat, panoráma röntgen, helyben végzett teleröntgen és digitális lenyomatvétel alapján felmérjük a fogsor állapotát.", "time": "45 perc" },
+        { "title": "Konzultáció és Diagnosztika", "desc": "A fogak és a harapás vizsgálata után a szakorvos elmondja, melyik készülék jöhet szóba, szükséges-e felvétel, és milyen kontrollokra számíthat.", "time": "45 perc" },
         { "title": "Kezelési terv", "desc": "Látványtervvel bemutatjuk a várható eredményt, megbeszéljük a készülék típusát és a kezelés időtartamát.", "time": "1 hét" },
         { "title": "Készülék felhelyezése", "desc": "Precíz és fájdalommentes felhelyezés, ahol megtanítjuk a készülék viselését és tisztítását.", "time": "60-90 perc" },
         { "title": "Aktiválás és kontroll", "desc": "Rendszeres (általában havi) kontrollok során állítunk a készüléken.", "time": "12-24 hónap" },
         { "title": "Retenció", "desc": "A rögzített készülék levétele után egy vékony sínnel fixáljuk az eredményt.", "time": "Folyamatos" }
       ],
-      "ctaTitle": "Készen áll a tökéletes mosolyra?",
-      "ctaDesc": "Ne halogassa tovább! Kérjen időpontot szakorvosi konzultációra, ahol részletesen átbeszéljük a lehetőségeit.",
+      "ctaTitle": "Fogszabályozási konzultáció",
+      "ctaDesc": "A fogak és a harapás vizsgálata után a szakorvos elmondja, melyik készülék jöhet szóba, szükséges-e felvétel, és milyen kontrollokra számíthat.",
       "faqs": [
         { "q": "Fájdalmas a fogszabályozás?", "a": "Maga a felhelyezés nem fájdalmas. Az aktiválásokat követő 2-3 napban enyhe feszítő érzés jelentkezhet." },
         { "q": "Felnőttként is belekezdhetek?", "a": "Természetesen! Manapság a pácienseink közel fele felnőtt. Nekik különösen ajánljuk az esztétikus kerámia vagy a szinte láthatatlan sínrendszerű megoldásainkat." },
-        { "q": "Kell teleröntgen a fogszabályozáshoz?", "a": "Igen, a pontos fogszabályozási diagnózishoz gyakran szükséges teleröntgen. Ezt helyben elvégezzük, így nem kell külön képalkotó helyre mennie." },
+        { "q": "Kell teleröntgen a fogszabályozáshoz?", "a": "A szükséges felvételeket a Crown Dental Belvárosban, a Petőfi Sándor utca 11. alatt készítjük. Prímás-szigeti konzultáció esetén is ide egyeztetjük a képalkotást." },
         { "q": "Mennyi ideig tart a kezelés?", "a": "Általában 1.5 - 2 év. Kisebb esztétikai korrekciók akár 6-10 hónap alatt is elvégezhetőek." },
         { "q": "Hogyan kell tisztítani a készüléket?", "a": "A rögzített készülékhez speciális fogkefét és fogköztisztítót javasolunk, aminek használatát a felhelyezéskor alaposan megmutatjuk." }
-      ]
+      ],
+      "metaDescription": "Kivehető vagy rögzített fogszabályozót, esetleg átlátszó sínt szeretne? Esztergomi konzultációnkon átbeszéljük a készüléktípusokat, a kontrollokat és a várható költségeket.",
+      "pricesTitle": "Fogszabályozó készülékek és kontrollok árai",
+      "priceNote": "A készülék és a kontroll díja külön tétel. A teljes költség a választott készüléktől és a kontrollok számától függ.",
+      "teamLink": "Fogszabályozó szakorvosaink",
+      "guideLink": "Felnőtt fogszabályozás sínnel vagy rögzített készülékkel",
+      "guideSlug": "lathatatlan-sin-vagy-rogzitett-fogszabalyozo-felnottkorban"
     },
     "fogtechnikai-megoldasok": {
       "heroBadge": "A mosolyok mögötti motor",

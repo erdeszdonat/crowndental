@@ -16,7 +16,7 @@ for (const [locale, crownName] of Object.entries(crownNames)) {
   test(locale + ': metal-ceramic crown costs 55000 in every visible price location', () => {
     const items = messages.treatments.priceCategories.flatMap(category => category.items);
     assert.equal(price(items.find(item => item.name === crownName).price), 55000);
-    assert.equal(price(messages.home.services.cards[3].price), 55000);
+    assert.equal(price(messages.home.services.cards.find(card => card.slug === 'koronak-hidak').price), 55000);
     assert.equal(price(messages.treatmentPages['koronak-hidak'].heroPriceValue), 55000);
   });
   test(locale + ': all three original banner messages remain available', () => {
@@ -41,3 +41,18 @@ test('homepage restores original banner sources while retaining CTA attribution'
   assert.ok(source.includes('const carouselPaused = Boolean(prefersReducedMotion)'));
   assert.ok(!source.includes('images.locations.esztergom?.imageUrl || images.hero.fokep1'));
 });
+
+for (const locale of Object.keys(crownNames)) {
+  test(locale + ': orthodontic links and fees stay aligned with the public fee schedule', () => {
+    const { home, treatments, treatmentPages } = JSON.parse(read('messages/' + locale + '.json'));
+    assert.equal(home.services.cards[0].slug, 'fogszabalyozas');
+    assert.ok(home.services.cards.some(card => card.slug === 'gyerekfogaszat'));
+    assert.equal(treatments.cards[0].id, 'fogszabalyozas');
+    const fees = treatments.priceCategories.flatMap(group => group.items).filter(item => item.slug === 'fogszabalyozas');
+    assert.equal(fees.length, 4);
+    const amounts = value => value.match(/[0-9][\d., ]*/g).map(amount => price(amount));
+    const removable = fees.find(item => amounts(item.price)[0] === 65000);
+    assert.deepEqual(amounts(treatmentPages.fogszabalyozas.heroPriceValue), amounts(removable.price));
+    assert.ok(treatmentPages.fogszabalyozas.faqs.some(({ a }) => a.includes('Petőfi Sándor utca 11')));
+  });
+}

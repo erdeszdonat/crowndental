@@ -3,7 +3,7 @@ import { APPOINTMENT_CLINICS } from '@/lib/appointmentClinics';
 
 export const CLINIC_LOCATIONS = [
   { ...APPOINTMENT_CLINICS[0], path: 'esztergom', streetAddress: 'Petőfi Sándor utca 11.', weekdayOpens: '09:00', mapUrl: 'https://maps.app.goo.gl/Xq9V8Z7yymT5nirb9' },
-  { ...APPOINTMENT_CLINICS[1], path: 'primas-sziget', streetAddress: 'Helischer József út 6.', weekdayOpens: '08:00', mapUrl: 'https://www.google.com/maps/search/?api=1&query=2500+Esztergom+Helischer+J%C3%B3zsef+%C3%BAt+6' },
+  { ...APPOINTMENT_CLINICS[1], path: 'primas-sziget', streetAddress: 'Helischer József út 6.', weekdayOpens: '08:00', mapUrl: 'https://www.google.com/maps?cid=9944050861565713679' },
 ] as const;
 
 export const clinicCopy = {

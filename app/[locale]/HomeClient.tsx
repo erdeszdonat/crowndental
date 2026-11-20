@@ -130,6 +130,7 @@ function HeroSlider({ images }: { images: HomeSanityImages['hero'] }) {
   }[locale === 'en' || locale === 'sk' || locale === 'de' ? locale : 'hu'];
 
   const campaign = openingCopy[locale === 'en' || locale === 'sk' || locale === 'de' ? locale : 'hu'];
+  const siteHeading = useTranslations('home');
   const originalSlides = tSlides.raw('slides') as Array<{ tag:string; titleTop:string; titleBottom:string; subtitle:string; primaryText:string }>;
   const slideData = [{ ...campaign, subtitle: campaign.availability }, ...originalSlides];
 
@@ -186,15 +187,16 @@ function HeroSlider({ images }: { images: HomeSanityImages['hero'] }) {
 
       <motion.div style={prefersReducedMotion ? undefined : { y:textY, opacity }} className="relative z-20 container mx-auto px-4 md:px-8">
         <div className="max-w-3xl">
+          <h1 className="mb-3 text-base font-bold tracking-wide text-sky-200 sm:text-lg">{siteHeading('clinicHeading')}</h1>
           <AnimatePresence mode="wait" initial={false}>
             <motion.div key={current} initial={prefersReducedMotion ? false : { opacity:0, y:24 }} animate={{ opacity:1, y:0 }} exit={{ opacity:0, y:-24 }} transition={{ duration:prefersReducedMotion ? 0 : 0.45 }}>
               <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/10 border border-white/20 backdrop-blur-xl rounded-full text-sky-300 text-xs sm:text-sm font-bold tracking-wider uppercase mb-6">
                 <Sparkles className="w-4 h-4" /> {slideData[current]?.tag}
               </div>
-              <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white mb-6 leading-[0.95] tracking-tight">
+              <h2 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white mb-6 leading-[0.95] tracking-tight">
                 {slideData[current]?.titleTop}{' '}<br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-cyan-300">{slideData[current]?.titleBottom}</span>
-              </h1>
+              </h2>
               <p className={current === 0 ? "mb-5 flex items-center gap-3 text-lg font-bold text-emerald-200 sm:text-2xl" : "text-lg sm:text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed max-w-2xl font-light"}>{current === 0 && <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-emerald-300" aria-hidden="true" />}{slideData[current]?.subtitle}</p>
               {current === 0 && <>
                 <ul className="mb-5 flex max-w-xl flex-wrap gap-2">{campaign.services.map(service => <li key={service} className="rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-sm font-semibold text-white backdrop-blur-sm">{service}</li>)}</ul>
@@ -933,8 +935,7 @@ function FeaturedPricesSection({ sanityImages }: { sanityImages: Record<string, 
   const locale = useLocale();
   const p = locale === 'hu' ? '' : `/${locale}`;
   const copy = getSiteCopy(locale);
-  const slugs = ['allapotfelmeres', 'gyokerkezeles', 'esztetikai-fogaszat', 'koronak-hidak', 'implantatum', 'gyerekfogaszat'];
-  const cards = t.raw('cards') as Array<{ title: string; subtitle: string; price: string }>;
+  const cards = t.raw('cards') as Array<{ slug: string; title: string; subtitle: string; price?: string }>;
   return (
     <section className="bg-gray-50 border-t border-gray-100">
       <div className="crown-container">
@@ -944,7 +945,7 @@ function FeaturedPricesSection({ sanityImages }: { sanityImages: Record<string, 
           <p className="crown-lead">{t('subtitle')}</p>
         </div>
         <div className="crown-cards-grid">
-          {cards.map((card, idx) => <TreatmentCard key={slugs[idx]} href={`${p}/kezelesek/${slugs[idx]}`} title={card.title} description={card.subtitle} price={card.price} imageUrl={sanityImages[slugs[idx]]} linkLabel={copy.details} />)}
+          {cards.map((card) => <TreatmentCard key={card.slug} href={`${p}/kezelesek/${card.slug}`} title={card.title} description={card.subtitle} price={card.price} imageUrl={sanityImages[card.slug]} linkLabel={copy.details} />)}
         </div>
         <div className="text-center mt-10">
           <Link href={`${p}/kezelesek`} className="crown-button">{t('viewAllPrices')}<ArrowRight size={18} aria-hidden="true" /></Link>
@@ -1031,8 +1032,8 @@ export default function HomeClient({ sanityImages = emptyHomeSanityImages }: { s
         <OpeningAnnouncement locale={openingLocale} imageUrl={sanityImages.hero.primas} />
         <div className="crown-page crown-home-sections">
         <TrustBadges />
-        <SmileTreatmentsSection />
         <FeaturedPricesSection sanityImages={sanityImages.services} />
+        <SmileTreatmentsSection />
         <LocationSelector locations={sanityImages.locations} />
         <StatsSection />
         <LabShowcase imageUrl={sanityImages.labImage} />
