@@ -1,4 +1,5 @@
-import { readFile, writeFile } from 'node:fs/promises';
+import { articleTranslations, oldArticleSlugs as SLUG_MIGRATIONS, mergedArticleSlugs as MERGE_TARGETS } from '../lib/blogRouteData.mjs';
+import { writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 
@@ -6,20 +7,6 @@ const PROJECT_ID = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'h68mmabs';
 const DATASET = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
 const SITE_URL = 'https://www.crowndental.hu';
 const LOCALES = ['hu', 'sk', 'en', 'de'];
-
-const MERGE_TARGETS = {
-  hetvege: 'fogaszati-ugyelet-esztergomban-2026',
-  'vikendovy-zubar-preco-je-dolezite-osetrenie-v-sobotu-a-nedelu': 'zubna-pohotovost-ostrihom-2026-ordinacne-hodiny',
-  'weekend-dentist-why-saturday-and-sunday-care-matters': 'emergency-dentist-esztergom-2026-weekend-hours',
-  'zahnarzt-am-wochenende-samstag-sonntag-esztergom': 'zahnaerztlicher-notdienst-esztergom-2026-wochenende',
-};
-
-const SLUG_MIGRATIONS = {
-  'ko-ko-stoja-umele-zuby-v-ma-arsku-v-roku-2026-kompletn-sprievodca-cenami':
-    'kolko-stoja-umele-zuby-v-madarsku-2026',
-  'zubn-implantat-v-ma-arsku-ko-ko-m-ete-u-etri-a-pre-o-je-crown-dental-najlep-ou-vo-bou':
-    'zubny-implantat-v-madarsku-cena-a-vyhody',
-};
 
 function csvCell(value) {
   const rawValue = String(value ?? '');
@@ -32,17 +19,6 @@ function csvCell(value) {
 function postUrl(language, slug) {
   const prefix = language === 'hu' ? '' : `/${language}`;
   return `${SITE_URL}${prefix}/blog/${slug}`;
-}
-
-function parseTranslationGroups(source) {
-  const groupPattern = /\{\s*hu:\s*'([^']+)',\s*sk:\s*'([^']+)',\s*en:\s*'([^']+)',\s*de:\s*'([^']+)',\s*\}/g;
-  return [...source.matchAll(groupPattern)].map((match, index) => ({
-    id: `topic-${String(index + 1).padStart(2, '0')}`,
-    hu: match[1],
-    sk: match[2],
-    en: match[3],
-    de: match[4],
-  }));
 }
 
 async function fetchPosts() {
@@ -131,8 +107,10 @@ function assessPost(post, group) {
 async function main() {
   const outputPath = path.resolve(process.argv[2] || 'blog-audit-116.csv');
   const summaryPath = outputPath.replace(/\.csv$/i, '.summary.json');
-  const translationSource = await readFile(new URL('../lib/blogTranslations.ts', import.meta.url), 'utf8');
-  const groups = parseTranslationGroups(translationSource);
+  const groups = articleTranslations.map((group, index) => ({
+    ...group,
+    id: `topic-${String(index + 1).padStart(2, '0')}`,
+  }));
   const groupBySlug = new Map();
   for (const group of groups) {
     for (const locale of LOCALES) groupBySlug.set(group[locale], group);

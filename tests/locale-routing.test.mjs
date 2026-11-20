@@ -137,3 +137,20 @@ test('host routing uses the served Host even when Next has an internal request U
   const request = new NextRequest('http://127.0.0.1:3050/', { headers: { host: 'admin.crowndental.hu' } });
   assert.equal(getRewrittenUrl(proxy(request)), request.nextUrl.origin + '/admin/portal');
 });
+
+test('legacy patient pages and known translated article slugs lead to their canonical destinations', async () => {
+  const rules = await nextConfig.redirects();
+  const aliases = new Map(rules.map(rule => [rule.source, rule]));
+  for (const [source, destination] of [
+    ['/idopont-foglalas', '/idopont'],
+    ['/arlista', '/kezelesek#arlista'],
+    ['/en/blog/aranykoszoru', '/en/blog/master-craftsmanship-story-of-crown-dental'],
+    ['/de/blog/weekend-dentist-why-saturday-and-sunday-care-matters', '/de/blog/zahnaerztlicher-notdienst-esztergom-2026-wochenende'],
+    ['/blog/zubny-implantat-v-madarsku-cena-a-vyhody', '/blog/fogimplantatum-magyarorszagon-arak-elonyok-kulfoldi-pacienseknek'],
+  ]) {
+    const rule = aliases.get(source);
+    assert.equal(rule?.destination, destination, source);
+    assert.equal(rule?.permanent, true);
+    assert.ok(!aliases.has(destination), 'Canonical URL should not redirect: ' + destination);
+  }
+});

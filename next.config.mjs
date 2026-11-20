@@ -1,4 +1,31 @@
+import { articleTranslations, oldArticleSlugs, mergedArticleSlugs } from './lib/blogRouteData.mjs';
 import createNextIntlPlugin from 'next-intl/plugin';
+
+// Older links mixed a language prefix with the slug of a different translation.
+// Resolve only known articles, before Next.js checks the list of static routes.
+function translatedArticleRedirects() {
+  const redirects = new Map();
+  const groupForSlug = new Map();
+  for (const group of articleTranslations) {
+    for (const slug of Object.values(group)) groupForSlug.set(slug, group);
+  }
+  const aliases = {
+    ...oldArticleSlugs,
+    ...mergedArticleSlugs,
+    'fogorvos-valasztas': 'how-to-choose-dentist-10-signs-good-clinic',
+  };
+  for (const slug of new Set([...groupForSlug.keys(), ...Object.keys(aliases)])) {
+    const group = groupForSlug.get(aliases[slug] ?? slug);
+    if (!group) throw new Error(`Missing canonical translation group for ${slug}`);
+    for (const [locale, target] of Object.entries(group)) {
+      if (slug === target) continue;
+      const prefix = locale === 'hu' ? '/blog/' : `/${locale}/blog/`;
+      const source = prefix + slug;
+      redirects.set(source, { source, destination: prefix + target, permanent: true });
+    }
+  }
+  return [...redirects.values()];
+}
 
 const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 
@@ -102,6 +129,26 @@ const nextConfig = {
       { source: '/idopontfoglalas', destination: '/idopont', permanent: true },
       { source: '/:locale(en|sk|de)/idopontfoglalas', destination: '/:locale/idopont', permanent: true },
 
+      // Former patient-facing URLs with a verified equivalent.
+      { source: '/idopont-foglalas', destination: '/idopont', permanent: true },
+      { source: '/rendelesi-idok', destination: '/kapcsolat', permanent: true },
+      { source: '/arlista', destination: '/kezelesek#arlista', permanent: true },
+      { source: '/sk/cennik', destination: '/sk/kezelesek#arlista', permanent: true },
+      { source: '/fogpotlas', destination: '/kezelesek#fogpotlas', permanent: true },
+      { source: '/kezelesek/diagnosztika', destination: '/kezelesek/allapotfelmeres', permanent: true },
+      { source: '/kezelesek/tomes', destination: '/kezelesek#diagnosztika', permanent: true },
+      { source: '/cpg/138879/Esztetikai-fogaszat', destination: '/kezelesek/esztetikai-fogaszat', permanent: true },
+      { source: '/fogko-es-szajhigienia', destination: '/kezelesek/air-polishing', permanent: true },
+      { source: '/gyerek-fogszabalyozas', destination: '/kezelesek/fogszabalyozas', permanent: true },
+      { source: '/blog/fogszabalyozas-felnottkent', destination: '/blog/lathatatlan-sin-vagy-rogzitett-fogszabalyozo-felnottkorban', permanent: true },
+      { source: '/kezelesek/gyerekfogazat', destination: '/kezelesek/gyerekfogaszat', permanent: true },
+      { source: '/kezelesek/gyokerkezel%C3%A9s', destination: '/kezelesek/gyokerkezeles', permanent: true },
+      { source: '/ajanlatkeres', destination: '/#arajanlat-elemzo', permanent: true },
+      { source: '/de/unterkunft', destination: '/de/utazas-szallas', permanent: true },
+      { source: '/fogfeherites', destination: '/kezelesek/fogfeherites', permanent: true },
+      { source: '/fogtechnikus', destination: '/kezelesek/fogtechnikai-megoldasok', permanent: true },
+      { source: '/en/dentures', destination: '/en/kezelesek/fogsor', permanent: true },
+
       // A szlovák cikkekben elterjedt hibás "kezeleses" útvonalszegmens.
       { source: '/sk/kezeleses/fogkovezetites', destination: '/sk/kezelesek/esztetikai-fogaszat', permanent: true },
       { source: '/sk/kezeleses/tomok', destination: '/sk/kezelesek/esztetikai-fogaszat', permanent: true },
@@ -171,26 +218,11 @@ const nextConfig = {
       { source: '/cpg/930300,3348311/Soha-nincs-keso-a-tokeletes-mosolyhoz-fogszabalyoz', destination: '/blog/soha-nincs-keso-a-tokeletes-mosolyhoz-fogszabalyoz', permanent: true },
       { source: '/cpg/930300,3348301/Uj-mosoly-varakozas-nelkul-minden-a-modern-fogsoro', destination: '/blog/uj-mosoly-varakozas-nelkul-minden-a-modern-fogsoro', permanent: true },
 
-      // Régi angol slug, amely korábban a fogorvosválasztási cikk kanonikus
-      // változataként szerepelt a Search Console-ban.
-      { source: '/en/blog/fogorvos-valasztas', destination: '/en/blog/how-to-choose-dentist-10-signs-good-clinic', permanent: true },
-
       // Régi feed URL-eknek a bloglista a legközelebbi valódi megfelelője.
       { source: '/feed', destination: '/blog', permanent: true },
       { source: '/blog/feed', destination: '/blog', permanent: true },
 
-      // KANNIBALIZÁLÓ BLOGCIKKEK - a hasznos forrástartalom a célcikkben
-      // megmarad, a régi URL pedig permanensen átadja a jelzéseit.
-      { source: '/blog/hetvege', destination: '/blog/fogaszati-ugyelet-esztergomban-2026', permanent: true },
-      { source: '/sk/blog/vikendovy-zubar-preco-je-dolezite-osetrenie-v-sobotu-a-nedelu', destination: '/sk/blog/zubna-pohotovost-ostrihom-2026-ordinacne-hodiny', permanent: true },
-      { source: '/en/blog/weekend-dentist-why-saturday-and-sunday-care-matters', destination: '/en/blog/emergency-dentist-esztergom-2026-weekend-hours', permanent: true },
-      { source: '/de/blog/zahnarzt-am-wochenende-samstag-sonntag-esztergom', destination: '/de/blog/zahnaerztlicher-notdienst-esztergom-2026-wochenende', permanent: true },
-
-      // A két sérült szlovák slug olvasható, stabil kanonikus URL-re költözik.
-      { source: '/sk/blog/ko-ko-stoja-umele-zuby-v-ma-arsku-v-roku-2026-kompletn-sprievodca-cenami', destination: '/sk/blog/kolko-stoja-umele-zuby-v-madarsku-2026', permanent: true },
-      { source: '/sk/blog/zubn-implantat-v-ma-arsku-ko-ko-m-ete-u-etri-a-pre-o-je-crown-dental-najlep-ou-vo-bou', destination: '/sk/blog/zubny-implantat-v-madarsku-cena-a-vyhody', permanent: true },
-      { source: '/sk/blog/zubar-v-ma-arsku-pre-o-si-slovenski-pacienti-vyberaju-esztergom', destination: '/sk/blog/zubar-v-madarsku-preco-si-slovenski-pacienti-vyberaju-ostrihom', permanent: true },
-      { source: '/sk/blog/ko-ko-stoji-zubna-korunka-v-roku-2026-kompletn-sprievodca-cenami', destination: '/sk/blog/kolko-stoji-zubna-korunka-2026', permanent: true },
+      ...translatedArticleRedirects(),
 
       // A nem leképezett /cpg/ URL-ek szándékosan maradnak valódi 404-ek.
       // A főoldalra irányított tömeges 307 soft-404 jelzést okozott volna.
