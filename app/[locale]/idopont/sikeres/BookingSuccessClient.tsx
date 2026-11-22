@@ -1,14 +1,14 @@
 'use client';
 
 import ClinicPhoneLinks from '@/components/ClinicPhoneLinks';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import voucherArt from '@/prototypes/karacsonyi-utalvanyok/teli-mese-a5.webp';
-import { isVoucherLocale, voucherShopNames, voucherShopPath } from '@/lib/vouchers/storefront';
+import { isVoucherLocale, voucherShopNames, voucherShopPath, type VoucherLocale } from '@/lib/vouchers/storefront';
 import { motion } from 'framer-motion';
 import { useLocale } from 'next-intl';
-import { ArrowRight, CalendarCheck2, CheckCircle2, Home, Mail } from 'lucide-react';
+import { ArrowRight, CalendarCheck2, CheckCircle2, Home, Mail, X } from 'lucide-react';
 import {
   CONSENT_EVENT,
   CONSENT_STORAGE_KEY,
@@ -118,11 +118,36 @@ const copyByLocale = {
   },
 };
 
+function VoucherOffer({ locale, titleId }: { locale: VoucherLocale; titleId: string }) {
+  return (
+    <aside aria-labelledby={titleId} className="grid overflow-hidden rounded-[2rem] border border-[#ddd5c3] bg-[#f7f4eb] sm:grid-cols-[1.05fr_1fr]">
+      <div className="self-center px-6 py-7 sm:p-8 lg:px-11">
+        <h2 id={titleId} className="text-3xl font-bold leading-tight tracking-tight text-[#173e38] sm:text-4xl">
+          {voucherShopNames[locale]}
+        </h2>
+        <p className="mt-3 max-w-md leading-relaxed text-[#36544a]">
+          {locale === 'hu'
+            ? 'Lepje meg szeretteit névre szóló fogászati utalvánnyal. 10 000 Ft-tól választhat ajándékot, nyomtatható PDF-ben vagy személyes átvétellel.'
+            : 'Darujte svojim blízkym poukážku na zubné ošetrenie už od 10 000 HUF. Môžeme na ňu doplniť meno. Vyberte si PDF e-mailom alebo osobné prevzatie v Ostrihome.'}
+        </p>
+        <Link href={voucherShopPath(locale)} className="mt-5 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#174d40] px-6 py-3 font-semibold text-white hover:bg-[#103b31] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#174d40]">
+          {locale === 'hu' ? 'Utalvány kiválasztása' : 'Vybrať poukážku'} <ArrowRight className="h-4 w-4" aria-hidden="true" />
+        </Link>
+      </div>
+      <div className="grid place-items-center bg-gradient-to-br from-[#245347] to-[#0f302b] px-8 py-7 sm:px-9 lg:px-12">
+        <Image src={voucherArt} alt={locale === 'hu' ? 'A Crown Dental téli mintás ajándékutalványa' : 'Darčeková poukážka Crown Dental so zimným motívom'} sizes="(max-width: 640px) 80vw, 400px" className="h-auto w-full max-w-[370px] -rotate-2 rounded-sm shadow-xl" />
+      </div>
+    </aside>
+  );
+}
+
 export default function BookingSuccessClient() {
   const locale = useLocale();
   const safeLocale = normalizeLocale(locale);
   const text = copyByLocale[safeLocale];
   const prefix = safeLocale === 'hu' ? '' : `/${safeLocale}`;
+  const voucherDialog = useRef<HTMLDialogElement>(null);
+  const voucherPending = useRef(false);
   const [bookingConsent, setBookingConsent] = useState<BookingConsent | null>(null);
   const [offerStatus, setOfferStatus] = useState<'idle' | 'loading' | 'done' | 'already' | 'dismissed' | 'error'>('idle');
 
@@ -130,6 +155,7 @@ export default function BookingSuccessClient() {
     const isRealBookingRedirect = sessionStorage.getItem(BOOKING_SUCCESS_STORAGE_KEY) === '1';
 
     if (!isRealBookingRedirect) return;
+    voucherPending.current = true;
 
     const storedContact = sessionStorage.getItem(BOOKING_SUCCESS_CONTACT_KEY);
     let initialBookingConsent: BookingConsent | null = null;
@@ -181,6 +207,29 @@ export default function BookingSuccessClient() {
       window.removeEventListener(CONSENT_EVENT, handleConsent);
     };
   }, []);
+
+  useEffect(() => {
+    const dialog = voucherDialog.current;
+    if (!voucherPending.current || !dialog) return;
+
+    let timer: number | undefined;
+    const scheduleOffer = () => {
+      window.clearTimeout(timer);
+      if (document.visibilityState !== 'visible' || !voucherPending.current) return;
+      timer = window.setTimeout(() => {
+        dialog.showModal();
+        voucherPending.current = false;
+      }, 1000);
+    };
+
+    scheduleOffer();
+    document.addEventListener('visibilitychange', scheduleOffer);
+    return () => {
+      window.clearTimeout(timer);
+      document.removeEventListener('visibilitychange', scheduleOffer);
+      if (dialog.open) dialog.close();
+    };
+  }, [safeLocale]);
 
   const handleOfferSignup = async () => {
     if (!bookingConsent?.consentToken) return;
@@ -309,26 +358,36 @@ export default function BookingSuccessClient() {
             </div>
           </div>
           {isVoucherLocale(safeLocale) && (
-            <aside aria-labelledby="voucher-offer-title" className="mt-6 grid overflow-hidden rounded-[2rem] border border-[#ddd5c3] bg-[#f7f4eb] sm:grid-cols-[1.05fr_1fr]">
-              <div className="self-center px-6 py-7 sm:p-8 lg:px-11">
-                <h2 id="voucher-offer-title" className="text-3xl font-bold leading-tight tracking-tight text-[#173e38] sm:text-4xl">
-                  {voucherShopNames[safeLocale]}
-                </h2>
-                <p className="mt-3 max-w-md leading-relaxed text-[#36544a]">
-                  {safeLocale === 'hu'
-                    ? 'Lepje meg szeretteit névre szóló fogászati utalvánnyal. 10 000 Ft-tól választhat ajándékot, nyomtatható PDF-ben vagy személyes átvétellel.'
-                    : 'Darujte svojim blízkym poukážku na zubné ošetrenie už od 10 000 HUF. Môžeme na ňu doplniť meno. Vyberte si PDF e-mailom alebo osobné prevzatie v Ostrihome.'}
-                </p>
-                <Link href={voucherShopPath(safeLocale)} className="mt-5 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#174d40] px-6 py-3 font-semibold text-white hover:bg-[#103b31] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#174d40]">
-                  {safeLocale === 'hu' ? 'Utalvány kiválasztása' : 'Vybrať poukážku'} <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                </Link>
-              </div>
-              <div className="grid place-items-center bg-gradient-to-br from-[#245347] to-[#0f302b] px-8 py-7 sm:px-9 lg:px-12">
-                <Image src={voucherArt} alt={safeLocale === 'hu' ? 'A Crown Dental téli mintás ajándékutalványa' : 'Darčeková poukážka Crown Dental so zimným motívom'} sizes="(max-width: 640px) 80vw, 400px" className="h-auto w-full max-w-[370px] -rotate-2 rounded-sm shadow-xl" />
-              </div>
-            </aside>
+            <div className="mt-6">
+              <VoucherOffer locale={safeLocale} titleId="voucher-offer-title" />
+            </div>
           )}
         </motion.section>
+        {isVoucherLocale(safeLocale) && (
+          <dialog
+            ref={voucherDialog}
+            aria-labelledby="voucher-popup-title"
+            className="fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none overflow-hidden overscroll-contain border-0 bg-transparent p-3 open:grid open:place-items-center backdrop:bg-slate-950/70 sm:p-6"
+            onClick={event => {
+              if (event.target === event.currentTarget) event.currentTarget.close();
+            }}
+          >
+            <div className="relative w-full max-w-5xl overflow-hidden rounded-[2rem] bg-[#f7f4eb] shadow-2xl">
+              <form method="dialog" className="absolute right-2 top-2 z-10 sm:right-3 sm:top-3">
+                <button
+                  type="submit"
+                  aria-label={safeLocale === 'hu' ? 'Ajánlat bezárása' : 'Zavrieť ponuku'}
+                  className="grid h-12 w-12 place-items-center rounded-full border border-[#ddd5c3] bg-white text-[#173e38] shadow-md hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#174d40]"
+                >
+                  <X size={24} aria-hidden="true" />
+                </button>
+              </form>
+              <div className="max-h-[calc(100dvh-1.5rem)] overflow-y-auto overscroll-contain max-sm:[&_h2]:pr-12 sm:max-h-[calc(100dvh-3rem)]">
+                <VoucherOffer locale={safeLocale} titleId="voucher-popup-title" />
+              </div>
+            </div>
+          </dialog>
+        )}
       </main>
     </div>
   );
