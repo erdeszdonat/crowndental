@@ -316,8 +316,8 @@ export default function BookingSuccessClient() {
                 </h2>
                 <p className="mt-3 max-w-md leading-relaxed text-[#36544a]">
                   {safeLocale === 'hu'
-                    ? 'Lepje meg szeretteit névre szóló fogászati utalvánnyal. 10 000 Ft-tól választhat ajándékot, nyomtatható PDF-ben vagy személyes átvétellel.'
-                    : 'Darujte svojim blízkym poukážku na zubné ošetrenie už od 10 000 HUF. Môžeme na ňu doplniť meno. Vyberte si PDF e-mailom alebo osobné prevzatie v Ostrihome.'}
+                    ? 'Lepje meg szeretteit névre szóló fogászati utalvánnyal. 10 000 Ft-tól választhat ajándékot, nyomtatható PDF-ben vagy személyes átvétellel.'
+                    : 'Darujte svojim blízkym poukážku na zubné ošetrenie už od 10 000 HUF. Môžeme na ňu doplniť meno. Vyberte si PDF e-mailom alebo osobné prevzatie v Ostrihome.'}
                 </p>
                 <Link href={voucherShopPath(safeLocale)} className="mt-5 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#174d40] px-6 py-3 font-semibold text-white hover:bg-[#103b31] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#174d40]">
                   {safeLocale === 'hu' ? 'Utalvány kiválasztása' : 'Vybrať poukážku'} <ArrowRight className="h-4 w-4" aria-hidden="true" />
