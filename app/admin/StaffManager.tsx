@@ -60,7 +60,7 @@ export default function StaffManager({ identity }: { identity: StaffIdentity }) 
     <div className="rounded-3xl bg-slate-950 p-6 text-white md:p-8">
       <ShieldCheck className="mb-4 h-8 w-8 text-sky-400" aria-hidden="true" />
       <h2 className="text-2xl font-bold">Kollégák és hozzáférések</h2>
-      <p className="mt-2 max-w-3xl leading-relaxed text-slate-300">Minden kolléga saját e-mail-címmel és jelszóval lép be. Az asszisztens a pácienseket és az időpontokat kezeli. Az admin minden adminfunkcióhoz hozzáfér.</p>
+      <p className="mt-2 max-w-3xl leading-relaxed text-slate-300">Minden kolléga saját e-mail-címmel és jelszóval lép be. Az asszisztens a pácienseket és az időpontokat kezeli, és kóddal utalványt válthat be. Az admin minden adminfunkcióhoz hozzáfér.</p>
     </div>
     {notice && <p role="status" className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-emerald-800">{notice}</p>}
     {error && !pending && <p role="alert" className="rounded-2xl border border-red-200 bg-red-50 p-4 text-red-800">{error}</p>}
@@ -90,7 +90,7 @@ export default function StaffManager({ identity }: { identity: StaffIdentity }) 
       <form onSubmit={execute} className="space-y-5 p-6 md:p-8">
         <div className="flex items-start justify-between gap-4"><h3 id="staff-confirm-title" className="text-xl font-bold text-slate-950">{pending.label}</h3><button type="button" disabled={saving} onClick={() => setPending(null)} aria-label="Mégsem" className="p-1 text-slate-500"><X className="h-5 w-5" /></button></div>
         {pending.email && <p className="break-words font-semibold text-slate-700">{pending.email}</p>}
-        {pending.role && <p className="rounded-xl bg-sky-50 p-4 text-sm text-sky-900">{pending.role === 'admin' ? 'Az admin minden adminfunkciót és adatot elér, és kollégákat is meghívhat.' : 'Az asszisztens a pácienslistát és az időpontkezelést éri el.'}</p>}
+        {pending.role && <p className="rounded-xl bg-sky-50 p-4 text-sm text-sky-900">{pending.role === 'admin' ? 'Az admin minden adminfunkciót és adatot elér, és kollégákat is meghívhat.' : 'Az asszisztens a pácienslistát, az időpontkezelést és a kódos utalványbeváltást éri el.'}</p>}
         {['reset', 'resend', 'disable'].includes(pending.action) && <p className="text-sm leading-relaxed text-slate-600">A korábbi munkamenetek hozzáférése megszűnik. Új belépéshez az aktiváló linkkel beállított jelszó szükséges.</p>}
         {pending.action === 'delete' && <p className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm leading-relaxed text-red-900">Ez végleg törli a kolléga fiókját, belépését és korábbi meghívóit. A páciensadatok és a kontaktlista megmaradnak. Később új meghívóval adhat ismét hozzáférést.</p>}
         <label className="block text-sm font-semibold text-slate-700">A saját jelszavad a megerősítéshez<input autoFocus required type="password" autoComplete="current-password" maxLength={256} value={password} onChange={e => setPassword(e.target.value)} className="mt-2 block w-full rounded-xl border border-slate-300 px-4 py-3" /></label>

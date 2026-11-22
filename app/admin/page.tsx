@@ -27,6 +27,7 @@ import { getAppointmentClinic } from '@/lib/appointmentClinics';
 import { BLOG_CATEGORIES, BLOG_LANGUAGES, normalizeBlogCategory, normalizeBlogLanguage } from '@/lib/blogConfig';
 
 const TeamManager = nextDynamic(() => import('./TeamManager'));
+const Vouchers = nextDynamic(() => import('./Vouchers'));
 
 export const dynamic = 'force-dynamic';
 
@@ -544,7 +545,7 @@ export default function AdminDashboard() {
           <AnimatePresence mode="wait">
 
             {/* STATS */}
-            {activeTab === 'nfc' && identity?.role === 'admin' ? <NfcDashboard /> : activeTab === 'security' && identity ? (
+            {activeTab === 'vouchers' && identity ? <Vouchers redemptionOnly={identity.role === 'assistant'}/> : activeTab === 'nfc' && identity?.role === 'admin' ? <NfcDashboard /> : activeTab === 'security' && identity ? (
               <motion.div key="security" initial={{ opacity: 0 }} animate={{ opacity: 1 }}><AccountSecurity identity={identity} onReady={fetchSecureData} onLogout={handleLogout} /></motion.div>
             ) : activeTab === 'staff' && identity?.role === 'admin' ? (
               <motion.div key="staff" initial={{ opacity: 0 }} animate={{ opacity: 1 }}><StaffManager identity={identity} /></motion.div>

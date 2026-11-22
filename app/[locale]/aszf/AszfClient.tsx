@@ -157,6 +157,9 @@ function TermsContent() {
                   <li>A fizetés az adott kezeléshez kapcsolódó megállapodás és a rendelőben elérhető fizetési módok szerint esedékes. A Szolgáltató a teljesített szolgáltatásról számlát állít ki.</li>
                   <li>Az írásos árajánlat a rajta feltüntetett ideig érvényes. Ennek hiányában az árajánlat nem tekinthető határozatlan ideig rögzített árnak.</li>
                 </ul>
+                <h3>Ajándékutalvány vásárlása és beváltása</h3>
+                <p>Az utalvány a fizetés napjától számított egy évig érvényes adómentes fogászati kezelésre. Bármelyik Crown Dental rendelőben egyszer váltható be. Beváltáskor a teljes utalvány felhasználtnak minősül akkor is, ha a kezelés díja alacsonyabb az utalvány értékénél.</p>
+                <p>A vásárló forintban fizet a Stripe fizetési oldalán. Sikeres fizetés után e-mailben küldjük az A5-ös utalványt vagy a választott személyes átvétel részleteit. A nyomtatott példány a fizetést követő harmadik naptári naptól vehető át a belvárosi rendelőben (2500 Esztergom, Petőfi Sándor utca 11.), nyitvatartási időben. A számla külön e-mailben érkezik a Számlázz.hu rendszeréből.</p>
               </div>
 
               <div id="ai-kalkulator" className="scroll-mt-32">

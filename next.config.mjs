@@ -92,6 +92,10 @@ const studioSecurityHeaders = [
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  outputFileTracingIncludes: {
+    '/api/utalvany/webhook': ['./prototypes/karacsonyi-utalvanyok/teli-mese-a5.pdf'],
+    '/api/admin/utalvanyok': ['./prototypes/karacsonyi-utalvanyok/teli-mese-a5.pdf'],
+  },
   poweredByHeader: false,
   images: {
     remotePatterns: [

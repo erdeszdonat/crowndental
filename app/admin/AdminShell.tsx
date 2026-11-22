@@ -24,6 +24,7 @@ import type { StaffIdentity } from "@/lib/staffAuth";
 import styles from "./admin-ui.module.css";
 
 export type AdminTab =
+  | "vouchers"
   | "nfc"
   | "stats"
   | "appointments"
@@ -35,6 +36,7 @@ export type AdminTab =
   | "staff"
   | "security";
 const sections = [
+  { id: "vouchers", label: "Utalványok", description: "Vásárlások, kézbesítés és beváltás.", icon: Crown, group: "Rendelő" },
   { id: "nfc", label: "NFC-kártyák", description: "Kártyák, kollégák és időpontkérések kimutatása.", icon: BarChart3, group: "Rendelő" },
   {
     id: "appointments",
@@ -130,16 +132,17 @@ export default function AdminShell({
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const tabs = sections.filter(
+  const tabs = sections.map(tab => tab.id === "vouchers" && identity.role === "assistant"
+    ? { ...tab, label: "Utalvány beváltása", description: "Utalvány ellenőrzése és beváltása kóddal." }
+    : tab).filter(
     (tab) =>
-      identity.role === "admin" ||
-      ["appointments", "security"].includes(tab.id),
+      identity.role === "admin" || ["appointments", "vouchers", "security"].includes(tab.id),
   );
   const current = tabs.find((tab) => tab.id === activeTab) || tabs[0];
   const primary = tabs.filter((tab) =>
     identity.role === "admin"
       ? ["appointments", "stats", "marketing"].includes(tab.id)
-      : ["appointments", "security"].includes(tab.id),
+      : ["appointments", "vouchers", "security"].includes(tab.id),
   );
   const inMore = !primary.some((tab) => tab.id === activeTab);
   const initials = identity.name
