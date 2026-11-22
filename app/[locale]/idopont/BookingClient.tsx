@@ -9,11 +9,9 @@ import { bookingAnalyticsContext } from '@/lib/firstPartyAnalytics';
 import { ArrowRight, ArrowLeft, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
-import { BUDAPEST_BOOKING_OPEN_LABELS, isBudapestBookingAvailable } from '@/lib/bookingAvailability';
 import GoogleReviewsCta from '@/components/GoogleReviewsCta';
 import { getVeneerOffer } from '@/lib/veneers.mjs';
 import { getVeneerLabels } from '@/lib/veneerI18n';
-import { APPOINTMENT_CLINICS } from '@/lib/appointmentClinics';
 import { bookingTreatmentIds, type BookingTreatmentId } from '@/lib/bookingTreatment';
 import { isValidEmail, isValidPhone } from '@/lib/contactValidation';
 import VeneerOfferCard from '@/components/VeneerOffer';
@@ -121,7 +119,7 @@ export function BookingForm({ directOffer, initialTreatmentSlug }: BookingFormPr
   const veneerLabels = veneerBookingLabels(safeLocale);
   const router = useRouter();
   const p = safeLocale === 'hu' ? '' : `/${safeLocale}`;
-  const [step, setStep] = useState<1 | 2 | 3>(1);
+  const [step, setStep] = useState<1 | 2>(1);
   // A native submit before hydration would navigate away from the form.
   const [interactive, setInteractive] = useState(false);
   useEffect(() => { setInteractive(true); }, []);
@@ -136,12 +134,10 @@ export function BookingForm({ directOffer, initialTreatmentSlug }: BookingFormPr
   const headingRef = useRef<HTMLHeadingElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [formData, setFormData] = useState({ clinic: '', name: '', nickname: '', email: '', phone: '', treatment: initialTreatmentSlug ?? '' });
+  const [formData, setFormData] = useState({ name: '', nickname: '', email: '', phone: '', treatment: initialTreatmentSlug ?? '' });
   const [otherNote, setOtherNote] = useState('');
   const [marketingConsent, setMarketingConsent] = useState(false);
   const idempotencyKeyRef = useRef<string | null>(null);
-  const isBudapestOpen = isBudapestBookingAvailable();
-  const budapestOpenLabel = BUDAPEST_BOOKING_OPEN_LABELS[safeLocale] ?? BUDAPEST_BOOKING_OPEN_LABELS.hu;
   const otherNotePlaceholders: Record<string, string> = {
     hu: 'Írja le röviden, mi a panasza vagy mit szeretne...',
     en: 'Briefly describe your concern or what you would like...',
@@ -197,35 +193,33 @@ export function BookingForm({ directOffer, initialTreatmentSlug }: BookingFormPr
 
   const handleNext = (e: React.FormEvent) => {
     e.preventDefault();
-    if (step === 3) return;
-    if (step === 1 && !formData.treatment) return;
-    if (step === 2 && (!formData.name.trim() || !isValidEmail(formData.email.trim()) || !isValidPhone(formData.phone.trim()))) {
-      setSubmitError(feedback.invalid);
-      trackSiteEvent('booking_validation_error', safeLocale, { step, error: 'validation' });
-      return;
-    }
+    if (!formData.treatment) return;
     setSubmitError(null);
     markStarted();
     trackSiteEvent('booking_step_complete', safeLocale, { step });
-    setStep(step === 1 ? 2 : 3);
+    setStep(2);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (step !== 3 || !formData.clinic || !formData.treatment || busyRef.current) return;
+    if (step !== 2 || !formData.treatment || busyRef.current) return;
+    if (!formData.name.trim() || !isValidEmail(formData.email.trim()) || !isValidPhone(formData.phone.trim())) {
+      setSubmitError(feedback.invalid);
+      trackSiteEvent('booking_validation_error', safeLocale, { step, error: 'validation' });
+      return;
+    }
     busyRef.current = true;
-    trackSiteEvent('booking_step_complete', safeLocale, { step: 3 });
-    trackSiteEvent('booking_submit', safeLocale, { step: 3 });
+    trackSiteEvent('booking_step_complete', safeLocale, { step });
+    trackSiteEvent('booking_submit', safeLocale, { step });
     setSubmitError(null);
     setIsSubmitting(true);
     try {
-      const { clinic, name, nickname, email, phone } = formData;
+      const { name, nickname, email, phone } = formData;
       const idempotencyKey = idempotencyKeyRef.current ?? createIdempotencyKey('booking');
       idempotencyKeyRef.current = idempotencyKey;
       const bookingPayload = {
         name, nickname, email, phone,
-        city: clinic === 'budapest' ? 'Budapest' : 'Esztergom',
-        requestedClinicId: clinic === 'budapest' ? undefined : clinic,
+        city: 'Esztergom',
         treatment: isOther && otherNote ? `${treatmentLabel}: ${otherNote}` : treatmentLabel,
         analytics: bookingAnalyticsContext(),
         locale: safeLocale,
@@ -244,7 +238,7 @@ export function BookingForm({ directOffer, initialTreatmentSlug }: BookingFormPr
       });
       const data = await res.json().catch(() => ({})) as BookingResponse;
       if (!res.ok || data.success !== true) {
-        trackSiteEvent('booking_error', safeLocale, { step: 3, error: res.status === 429 ? 'rate_limited' : res.status >= 500 ? 'service' : res.status === 400 || res.status === 422 ? 'validation' : 'unknown' });
+        trackSiteEvent('booking_error', safeLocale, { step, error: res.status === 429 ? 'rate_limited' : res.status >= 500 ? 'service' : res.status === 400 || res.status === 422 ? 'validation' : 'unknown' });
         if (res.status === 400 || res.status === 422) setSubmitError(feedback.invalid);
         else if (res.status === 429) setSubmitError(feedback.rateLimited);
         else if (res.status >= 500) setSubmitError(feedback.unavailable);
@@ -261,10 +255,10 @@ export function BookingForm({ directOffer, initialTreatmentSlug }: BookingFormPr
       } catch {
         // The booking is already saved; storage is only used to enhance the success page.
       }
-      trackSiteEvent('booking_success', safeLocale, { step: 3 });
+      trackSiteEvent('booking_success', safeLocale, { step });
       router.push(`${p}/idopont/sikeres`);
     } catch {
-      trackSiteEvent('booking_error', safeLocale, { step: 3, error: 'network' });
+      trackSiteEvent('booking_error', safeLocale, { step, error: 'network' });
       setSubmitError(feedback.network);
     }
     finally { busyRef.current = false; setIsSubmitting(false); }
@@ -275,9 +269,9 @@ export function BookingForm({ directOffer, initialTreatmentSlug }: BookingFormPr
       <ol className="crown-booking-progress" aria-label={t('title')}>
         {copy.steps.map((label, i) => <li key={label} aria-current={step === i + 1 ? 'step' : undefined}><span>{i + 1}</span>{label}</li>)}
       </ol>
-      <h2 ref={headingRef} tabIndex={-1} style={{ scrollMarginTop: '7rem' }}>{t(step === 1 ? 'treatmentHeading' : step === 2 ? 'contactHeading' : 'city')}</h2>
+      <h2 ref={headingRef} tabIndex={-1} style={{ scrollMarginTop: '7rem' }}>{t(step === 1 ? 'treatmentHeading' : 'contactHeading')}</h2>
       <p className="crown-booking-note mb-6">{copy.required}</p>
-      <form key={step} onSubmit={step === 3 ? handleSubmit : handleNext} onChange={markStarted}
+      <form key={step} onSubmit={step === 2 ? handleSubmit : handleNext} onChange={markStarted}
         onInvalidCapture={() => trackSiteEvent('booking_validation_error', safeLocale, { step, error: 'validation' })}
         aria-busy={isSubmitting}>
         <fieldset disabled={!interactive || isSubmitting} className="space-y-5">
@@ -325,34 +319,16 @@ export function BookingForm({ directOffer, initialTreatmentSlug }: BookingFormPr
                   <span className="mt-1 block text-xs leading-relaxed text-gray-600">{t('marketingOptInText')}</span>
                 </span>
               </label>
-          </>}
-          {step === 3 && <>
-            <fieldset>
-              <legend className="crown-field-label">{copy.location} *</legend>
-              <div className="grid gap-3">
-                {[...APPOINTMENT_CLINICS, { id: 'budapest', name: 'Budapest', address: 'Királyok útja 55.' }].map(clinic => {
-                  const unavailable = clinic.id === 'budapest' && !isBudapestOpen;
-                  return <label key={clinic.id} className={`flex items-start gap-3 rounded-xl border p-4 ${unavailable ? 'bg-gray-50 text-gray-500' : 'cursor-pointer'} ${formData.clinic === clinic.id ? 'border-sky-600 bg-sky-50' : 'border-gray-200'}`}>
-                    <input type="radio" name="clinic" value={clinic.id} checked={formData.clinic === clinic.id}
-                      required={!unavailable} disabled={unavailable} onChange={handleChange} className="mt-1 h-4 w-4 shrink-0 accent-sky-700" />
-                    <span><strong className="block text-sm">{clinic.name}</strong>
-                      <span className="block text-xs">{clinic.address}</span>
-                      {unavailable && <span className="block text-xs">{budapestOpenLabel}</span>}
-                    </span>
-                  </label>;
-                })}
-              </div>
-            </fieldset>
-            <p className="crown-booking-note">{copy.note}</p>
+              <p className="crown-booking-note">{copy.location}</p>
           </>}
           {submitError && <div role="alert" className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
             <p>{submitError}</p>
             <ClinicPhoneLinks tone="light" />
           </div>}
           <div className="flex flex-col-reverse sm:flex-row gap-3 pt-3">
-            {step > 1 && <button type="button" onClick={() => { setSubmitError(null); setStep(step === 3 ? 2 : 1); }} className="crown-button crown-button-secondary"><ArrowLeft size={18} />{t('prevStep')}</button>}
+            {step > 1 && <button type="button" onClick={() => { setSubmitError(null); setStep(1); }} className="crown-button crown-button-secondary"><ArrowLeft size={18} />{t('prevStep')}</button>}
             <button type="submit" className="crown-button flex-1" disabled={isSubmitting}>
-              {isSubmitting ? <><Loader2 size={18} className="animate-spin" aria-hidden="true" />{t('submitting')}</> : <>{t(step === 3 ? 'submit' : 'nextStep')}<ArrowRight size={18} aria-hidden="true" /></>}
+              {isSubmitting ? <><Loader2 size={18} className="animate-spin" aria-hidden="true" />{t('submitting')}</> : <>{t(step === 2 ? 'submit' : 'nextStep')}<ArrowRight size={18} aria-hidden="true" /></>}
             </button>
           </div>
         </fieldset>

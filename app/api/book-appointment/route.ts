@@ -21,22 +21,22 @@ const EMAIL_COPY: Record<SupportedLocale, {
   hu: {
     subject: 'Időpontfoglalási kérését rögzítettük – Crown Dental', greeting: (name) => `Kedves ${name}!`,
     intro: 'Köszönjük, hogy a Crown Dentalt választotta! Foglalási kérését sikeresen rögzítettük.', details: 'Az Ön által megadott adatok',
-    clinic: 'Választott rendelő', treatment: 'Kezelés típusa', phone: 'Telefonszám', next: 'Munkatársaink legkésőbb 24 órán belül felveszik Önnel a kapcsolatot a pontos időpont egyeztetéséhez.', signoff: 'Üdvözlettel', team: 'A Crown Dental csapata',
+    clinic: 'Helyszín', treatment: 'Kezelés típusa', phone: 'Telefonszám', next: 'Munkatársaink legkésőbb 24 órán belül felveszik Önnel a kapcsolatot a pontos időpont és a rendelő címének egyeztetéséhez.', signoff: 'Üdvözlettel', team: 'A Crown Dental csapata',
   },
   en: {
     subject: 'We received your appointment request – Crown Dental', greeting: (name) => `Hello ${name}!`,
     intro: 'Thank you for choosing Crown Dental. Your appointment request has been recorded successfully.', details: 'Your details',
-    clinic: 'Selected clinic', treatment: 'Requested treatment', phone: 'Phone number', next: 'Our team will contact you within 24 hours to agree the exact appointment time.', signoff: 'Kind regards', team: 'The Crown Dental team',
+    clinic: 'Location', treatment: 'Requested treatment', phone: 'Phone number', next: 'Our team will contact you within 24 hours to confirm the appointment time and clinic address.', signoff: 'Kind regards', team: 'The Crown Dental team',
   },
   sk: {
     subject: 'Vašu žiadosť o termín sme prijali – Crown Dental', greeting: (name) => `Dobrý deň, ${name}!`,
     intro: 'Ďakujeme, že ste si vybrali Crown Dental. Vašu žiadosť o termín sme úspešne zaznamenali.', details: 'Vaše údaje',
-    clinic: 'Vybraná klinika', treatment: 'Požadované ošetrenie', phone: 'Telefónne číslo', next: 'Náš tím vás bude kontaktovať najneskôr do 24 hodín, aby sme dohodli presný termín.', signoff: 'S pozdravom', team: 'Tím Crown Dental',
+    clinic: 'Miesto', treatment: 'Požadované ošetrenie', phone: 'Telefónne číslo', next: 'Náš tím vás bude kontaktovať najneskôr do 24 hodín, a potvrdí vám termín aj adresu ambulancie.', signoff: 'S pozdravom', team: 'Tím Crown Dental',
   },
   de: {
     subject: 'Ihre Terminanfrage wurde erhalten – Crown Dental', greeting: (name) => `Guten Tag ${name}!`,
     intro: 'Vielen Dank, dass Sie sich für Crown Dental entschieden haben. Ihre Terminanfrage wurde erfolgreich erfasst.', details: 'Ihre Angaben',
-    clinic: 'Gewählte Praxis', treatment: 'Gewünschte Behandlung', phone: 'Telefonnummer', next: 'Unser Team meldet sich spätestens innerhalb von 24 Stunden, um den genauen Termin abzustimmen.', signoff: 'Mit freundlichen Grüßen', team: 'Ihr Crown Dental Team',
+    clinic: 'Standort', treatment: 'Gewünschte Behandlung', phone: 'Telefonnummer', next: 'Unser Team meldet sich spätestens innerhalb von 24 Stunden, um Ihnen den Termin und die Praxisadresse zu bestätigen.', signoff: 'Mit freundlichen Grüßen', team: 'Ihr Crown Dental Team',
   },
 };
 
@@ -104,13 +104,9 @@ export async function POST(request: Request) {
       releaseIdempotency('booking', idempotencyKey);
       return noStoreJson({ error: 'Érvénytelen kártya, kolléga, kezelés vagy adatkezelési visszajelzés.' }, { status: 400 });
     }
-    const city = nfc ? 'Esztergom' : cleanText(body.city, 80);
-    const clinic = getAppointmentClinic(body.requestedClinicId);
-    if (!nfc && body.requestedClinicId !== undefined && (!clinic || city !== 'Esztergom')) {
-      releaseIdempotency('booking', idempotencyKey);
-      return noStoreJson({ error: 'Érvénytelen rendelő.' }, { status: 400 });
-    }
-    const clinicFields = nfc ?? (clinic ? { requested_clinic_id: clinic.id } : {});
+    const city = nfc || body.city === undefined ? 'Esztergom' : cleanText(body.city, 80);
+    // Clinic-specific hygiene cards carry their own routing. Reception assigns all other requests.
+    const clinicFields = nfc ?? {};
     const name = cleanText(body.name, 120);
     const nickname = cleanText(body.nickname, 80);
     const email = normalizeEmail(body.email);
