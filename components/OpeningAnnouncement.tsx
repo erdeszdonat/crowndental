@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowUpRight, MapPin } from 'lucide-react';
 import { sanityImageLoader } from '@/lib/sanityImage';
+import { getVeneerLabels } from '@/lib/veneerI18n';
 import content from '@/lib/openingAnnouncement.json';
 
 const servicePaths = ['fogszabalyozas', 'allapotfelmeres', 'esztetikai-fogaszat', 'fogfeherites'] as const;
@@ -11,6 +12,12 @@ export default function OpeningAnnouncement({ locale, compact = false, imageUrl 
   const language = locale === 'en' || locale === 'sk' || locale === 'de' ? locale : 'hu';
   const copy = content[language];
   const prefix = language === 'hu' ? '' : `/${language}`;
+  const veneers = getVeneerLabels(language);
+  const treatmentLinks = [
+    ...copy.services.map((label, index) => ({ label, slug: servicePaths[index] })),
+    { label: veneers.directName, slug: 'direkt-hej' },
+    { label: veneers.indirectName, slug: 'indirekt-hej' },
+  ];
   if (imageUrl && !compact) return (
     <section aria-label={copy.bannerTitle} className="bg-white px-4 py-10 sm:px-6 sm:py-16" data-cta-location="primas_opening">
       <div className="mx-auto max-w-7xl overflow-hidden rounded-[2rem] bg-slate-950 text-white shadow-2xl shadow-slate-900/15">
@@ -18,7 +25,15 @@ export default function OpeningAnnouncement({ locale, compact = false, imageUrl 
           <div className="p-6 sm:p-10 xl:p-12">
             <p className="mb-6 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-sky-300"><span className="h-2 w-2 rounded-full bg-emerald-300" aria-hidden="true" />{copy.tag}</p>
             <h2 className="text-3xl font-black leading-tight tracking-tight sm:text-4xl">{copy.bannerTitle}</h2>
-            <ul className="my-6 grid gap-2 text-sm text-slate-200 sm:grid-cols-2">{copy.services.map((service, index) => <li key={service}><Link href={`${prefix}/kezelesek/${servicePaths[index]}`} className="flex min-h-11 items-center gap-2 rounded-md underline decoration-white/30 underline-offset-4 transition-colors hover:text-sky-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300"><span className="text-sky-300" aria-hidden="true">✓</span>{service}</Link></li>)}</ul>
+            <ul className="my-6 grid gap-2 text-sm text-slate-200 sm:grid-cols-2">
+              {treatmentLinks.map(({ label, slug }) => (
+                <li key={slug}>
+                  <Link href={`${prefix}/kezelesek/${slug}`} className="flex min-h-11 items-center gap-2 rounded-md underline decoration-white/30 underline-offset-4 transition-colors hover:text-sky-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300">
+                    <span className="text-sky-300" aria-hidden="true">✓</span>{label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
             <div className="flex flex-col gap-3">
               <Link href={`${prefix}/idopont`} className="inline-flex min-h-14 items-center justify-between gap-3 rounded-xl bg-sky-400 px-5 py-4 font-bold text-slate-950 transition-colors hover:bg-sky-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky-300">{copy.book}<ArrowUpRight className="h-5 w-5 shrink-0" aria-hidden="true" /></Link>
               <ClinicPhoneLinks tone="dark" clinic="primas-sziget" />
