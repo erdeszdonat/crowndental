@@ -1,5 +1,6 @@
 'use client';
 
+import { isVoucherLocale, voucherShopNames, voucherShopPath } from '@/lib/vouchers/storefront';
 import { bookingHref } from '@/lib/bookingTreatment';
 import { isNfcCardPath } from '@/lib/nfcCards';
 import ClinicPhoneLinks from '@/components/ClinicPhoneLinks';
@@ -32,6 +33,10 @@ function localizedPath(locale: LocaleCode, path: string): string {
 
 function localeFallbackPath(pathname: string, newLocale: LocaleCode): string {
   const pathWithoutLocale = pathname.replace(/^\/(hu|en|sk|de)(?=\/|$)/, '') || '/';
+
+  if (pathWithoutLocale.replace(/\/$/, '') === voucherShopPath('hu') && !isVoucherLocale(newLocale)) {
+    return localizedPath(newLocale, '/');
+  }
 
   // These landing pages intentionally use a different, search-friendly slug
   // in every language, so preserving the current slug would create a 404.
@@ -366,14 +371,14 @@ export default function Navigation() {
             exit={{ opacity: 0, height: 0 }}
             className="2xl:hidden bg-white border-t border-gray-100 p-6 flex flex-col gap-4 font-bold shadow-2xl absolute w-full left-0 z-40"
           >
-            {locale === 'hu' && (
+            {isVoucherLocale(locale) && (
               <Link
-                href="/karacsonyi-utalvanyok"
-                aria-current={isActive('/karacsonyi-utalvanyok') ? 'page' : undefined}
+                href={voucherShopPath(locale)}
+                aria-current={isActive(voucherShopPath(locale)) ? 'page' : undefined}
                 onClick={() => setIsOpen(false)}
                 className="block rounded-xl bg-sky-50 px-4 py-2 text-sky-700 hover:bg-sky-100"
               >
-                Karácsonyi ajándékutalvány
+                {voucherShopNames[locale]}
               </Link>
             )}
             {navLinks.map((link) => (

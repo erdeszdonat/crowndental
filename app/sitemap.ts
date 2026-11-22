@@ -1,3 +1,4 @@
+import { voucherShopPath } from '@/lib/vouchers/storefront';
 import { clinicNewsPosts } from '@/lib/openingPosts';
 import type { MetadataRoute } from 'next';
 import { normalizeBlogLanguage } from '@/lib/blogConfig';
@@ -5,6 +6,7 @@ import { canonicalBlogSlug, isMergedBlogSource } from '@/lib/blogConsolidation';
 import { blogLanguageAlternates } from '@/lib/blogTranslations';
 import {
   HREFLANG_BY_LOCALE,
+  SITE_URL,
   languageAlternates,
   localizedUrl,
   SUPPORTED_LOCALES,
@@ -114,7 +116,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       alternates: { languages: languageAlternates(path) },
     })),
   );
-  return [...staticRoutes, ...veneerRoutes, ...legalRoutes, ...internationalPatientRoutes, ...dynamicBlogRoutes];
+  const voucherRoutes: MetadataRoute.Sitemap = (['hu', 'sk'] as const).map(locale => ({
+    url: SITE_URL + voucherShopPath(locale),
+    alternates: { languages: {
+      'hu-HU': SITE_URL + voucherShopPath('hu'),
+      'sk-SK': SITE_URL + voucherShopPath('sk'),
+    } },
+  }));
+  return [...staticRoutes, ...voucherRoutes, ...veneerRoutes, ...legalRoutes, ...internationalPatientRoutes, ...dynamicBlogRoutes];
 }
 
 export const dynamic = 'force-static';
