@@ -229,23 +229,12 @@ export default function AdminDashboard() {
     return `${match[1]}.${match[2]}.${match[3]}. ${match[4]}:${match[5]}`;
   };
 
-  const getAppointmentClinicLabel = (appointment: any) => {
-    const clinic = getAppointmentClinic(appointment?.confirmed_clinic_id);
-    if (clinic) return clinic.location;
-    if (appointment?.confirmed_appointment_local || appointment?.status === 'processed') {
-      return 'A visszaigazolt rendelő nincs külön rögzítve (korábbi időpont).';
-    }
-    const requested = getAppointmentClinic(appointment?.requested_clinic_id);
-    if (requested) return `Kért rendelő: ${requested.location}`;
-    return 'Rendelő még nincs kiválasztva.';
-  };
-
   const handleAppointmentStatusChange = (appointment: any, value: string) => {
     if (value === 'processed' && appointment.status !== 'processed') {
       setAppointmentConfirmModal({
         appointment,
         dateTime: '',
-        clinicId: getAppointmentClinic(appointment.requested_clinic_id)?.id || '',
+        clinicId: appointment.nfc_card_id ? getAppointmentClinic(appointment.requested_clinic_id)?.id || '' : '',
         includeImagingNotice: null,
         step: 'input',
         error: '',
@@ -523,9 +512,14 @@ export default function AdminDashboard() {
     BLOG_LANGUAGES.find(item => item.id === normalizeBlogLanguage(language))?.label ?? 'Magyar';
   const getBlogCategoryLabel = (category: string | undefined) =>
     BLOG_CATEGORIES.find(item => item.id === normalizeBlogCategory(category))?.shortLabel ?? 'Szakmai';
-  const appointmentClinic = (record: any) => getAppointmentClinic(record.confirmed_clinic_id)?.name || getAppointmentClinic(record.requested_clinic_id)?.name || (record.city ? `Kérés: ${record.city}` : 'Rendelő még nincs megadva');
-  const clinics = Array.from(new Set(appointments.map(appointmentClinic))).sort((a, b) => a.localeCompare(b, 'hu'));
-  const visibleAppointments = filterAdminRecords(appointments.map(record => ({ ...record, nfcLabel: nfcBookingLabel(record) })), filters.appointments, ['name', 'email', 'phone', 'treatment', 'city', 'special_note', 'nfcLabel']).filter(record => hygienistFilter === 'all' || (hygienistFilter === 'nfc' ? Boolean(record.nfc_card_id) : record.requested_hygienist_id === hygienistFilter)).filter(record => clinicFilter === 'all' || appointmentClinic(record) === clinicFilter);
+  const locations = new Set<string>();
+  for (const appointment of appointments) {
+    locations.add(appointment.city || 'Nincs megadva');
+    const assignedClinic = getAppointmentClinic(appointment.confirmed_clinic_id);
+    if (assignedClinic) locations.add(assignedClinic.name);
+  }
+  const clinics = Array.from(locations).sort((a, b) => a.localeCompare(b, 'hu'));
+  const visibleAppointments = filterAdminRecords(appointments.map(record => ({ ...record, nfcLabel: nfcBookingLabel(record) })), filters.appointments, ['name', 'email', 'phone', 'treatment', 'city', 'special_note', 'nfcLabel']).filter(record => hygienistFilter === 'all' || (hygienistFilter === 'nfc' ? Boolean(record.nfc_card_id) : record.requested_hygienist_id === hygienistFilter)).filter(record => clinicFilter === 'all' || (record.city || 'Nincs megadva') === clinicFilter || getAppointmentClinic(record.confirmed_clinic_id)?.name === clinicFilter);
   const visibleApplications = filterAdminRecords(applications, filters.career, ['name', 'email', 'phone', 'position', 'location']);
   const visibleQuotes = filterAdminRecords(quotes, filters.quotes, ['name', 'email', 'phone']);
   const visibleMarketing = filterAdminRecords(marketingSubscribers, filters.marketing, ['name', 'nickname', 'email', 'phone', 'clinic']);
@@ -630,6 +624,9 @@ export default function AdminDashboard() {
                             {getAppointmentClinic(item.confirmed_clinic_id)?.name || 'Rendelő nincs külön rögzítve (korábbi időpont)'}
                           </p>
                         )}
+                        {expandedId !== item.id && !item.confirmed_appointment_local && item.status !== 'processed' && (
+                          <p className="mt-2 text-sm text-slate-600">Város: {item.city || 'Nincs megadva'}</p>
+                        )}
                       </div>
                       <div className="flex-shrink-0 text-sky-400 mt-1">
                         {expandedId === item.id ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
@@ -645,14 +642,16 @@ export default function AdminDashboard() {
                             <a className="mt-1 block break-all text-xs text-sky-800" href={`mailto:${item.email}`}>{item.email}</a>
                           </div>
                           <div className="col-span-2 bg-white rounded-xl p-3 border border-sky-100 sm:col-span-1">
-                            <p className="text-[10px] font-black text-sky-400 uppercase tracking-widest mb-1 flex items-center gap-1"><MapPin className="w-3 h-3" /> Rendelő</p>
-                            <p className="font-black text-gray-900 text-sm">{getAppointmentClinicLabel(item)}</p>
-                            <p className="mt-1 text-xs text-slate-500">Kérés helyszíne: {item.city || 'Nincs megadva'}</p>
+                            <p className="text-[10px] font-black text-sky-400 uppercase tracking-widest mb-1 flex items-center gap-1"><MapPin className="w-3 h-3" /> Város</p>
+                            <p className="font-black text-gray-900 text-sm">{item.city || 'Nincs megadva'}</p>
                           </div>
                           {item.confirmed_appointment_local && (
                             <div className="col-span-2 bg-emerald-50 rounded-xl p-3 border border-emerald-100">
                               <p className="text-[10px] font-black text-emerald-500 uppercase tracking-widest mb-1 flex items-center gap-1"><Clock className="w-3 h-3" /> Kapott időpont</p>
                               <p className="font-black text-emerald-950 text-lg">{formatAppointmentDateTime(item.confirmed_appointment_local) || item.confirmed_appointment_local}</p>
+                              {getAppointmentClinic(item.confirmed_clinic_id) && (
+                                <p className="mt-1 text-sm text-emerald-900">{getAppointmentClinic(item.confirmed_clinic_id)?.address}</p>
+                              )}
                               {item.confirmation_email_sent_at && (
                                 <p className="text-emerald-700/70 text-xs mt-0.5">Visszaigazoló e-mail elküldve: {formatDate(item.confirmation_email_sent_at)}</p>
                               )}
@@ -906,7 +905,7 @@ export default function AdminDashboard() {
                   <div className="rounded-2xl bg-purple-50 border border-purple-100 p-4">
                     <p className="text-[10px] font-black uppercase tracking-widest text-purple-500 mb-1">Kezelés</p>
                     <p className="font-black text-slate-950">{specialAppointmentModal.appointment.treatment || 'Fogászati időpont'}</p>
-                    <p className="text-sm text-slate-600">{getAppointmentClinicLabel(specialAppointmentModal.appointment)}</p>
+                    <p className="text-sm text-slate-600">Város: {specialAppointmentModal.appointment.city || 'Nincs megadva'}</p>
                   </div>
                 </div>
 
