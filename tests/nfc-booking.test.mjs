@@ -309,22 +309,24 @@ test("persistent booking buttons keep every localized NFC card in its own form",
     assert.equal(cards.isNfcCardPath(path), false);
 });
 
-test("ordinary clinic preferences persist and appear on the receipt, including on retries", async () => {
-  for (const clinic of clinics.APPOINTMENT_CLINICS) {
+test("online requests default to Esztergom and leave clinic assignment to reception", async () => {
+  for (const preference of [undefined, ...clinics.APPOINTMENT_CLINICS.map(clinic => clinic.id)]) {
     const normal = booking();
-    const body = { nfcCardId: undefined, requestedClinicId: clinic.id, treatment: "Fogszabályozás konzultáció" };
+    const body = { nfcCardId: undefined, city: undefined, requestedClinicId: preference, treatment: "Fogszabályozás konzultáció" };
     assert.equal((await normal.run(body)).status, 200);
-    assert.equal(normal.stored.requested_clinic_id, clinic.id);
+    assert.equal(normal.stored.city, "Esztergom");
+    assert.equal(normal.stored.requested_clinic_id, undefined);
+    assert.equal(normal.stored.confirmed_clinic_id, undefined);
     assert.equal(normal.stored.nfc_card_id, undefined);
-    assert.ok(normal.emails[0].html.includes(clinic.location));
+    assert.match(normal.emails[0].html, /Helyszín:<\/strong> Esztergom</);
 
     const retry = booking({ existing: normal.stored });
     assert.equal((await retry.run(body)).status, 200);
-    assert.ok(retry.emails[0].html.includes(clinic.location));
+    assert.match(retry.emails[0].html, /Helyszín:<\/strong> Esztergom</);
   }
-  for (const [city, requestedClinicId] of [["Budapest", "belvaros"], ["Esztergom", "unknown"]]) {
-    const e = booking();
-    assert.equal((await e.run({ nfcCardId: undefined, city, requestedClinicId })).status, 400);
-    assert.equal(e.inserts.length, 0);
+  for (const city of ["Budapest", "Unknown"]) {
+    const invalid = booking();
+    assert.equal((await invalid.run({ nfcCardId: undefined, city })).status, 400);
+    assert.equal(invalid.inserts.length, 0);
   }
 });
