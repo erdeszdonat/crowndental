@@ -4,6 +4,7 @@ import QuoteComparison from '@/components/QuoteComparison';
 import { quoteResultCopy } from '@/lib/quoteCopy';
 import type { QuoteResult } from '@/lib/quotePricing';
 import ClinicPhoneLinks from '@/components/ClinicPhoneLinks';
+import { isVoucherLocale, voucherShopNames, voucherShopPath } from '@/lib/vouchers/storefront';
 import openingCopy from '@/lib/openingAnnouncement.json';
 import OpeningAnnouncement from '@/components/OpeningAnnouncement';
 import React, { useState, useEffect, useRef } from 'react';
@@ -949,7 +950,7 @@ function FeaturedPricesSection({ sanityImages }: { sanityImages: Record<string, 
         </div>
         <div className="mt-10 flex flex-wrap justify-center gap-3">
           <Link href={`${p}/kezelesek`} className="crown-button">{t('viewAllPrices')}<ArrowRight size={18} aria-hidden="true" /></Link>
-          {locale === 'hu' && <Link href="/karacsonyi-utalvanyok" className="crown-button crown-button-secondary">Karácsonyi ajándékutalvány</Link>}
+          {isVoucherLocale(locale) && <Link href={voucherShopPath(locale)} className="crown-button crown-button-secondary">{voucherShopNames[locale]}</Link>}
         </div>
       </div>
     </section>

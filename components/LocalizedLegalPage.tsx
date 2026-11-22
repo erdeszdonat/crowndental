@@ -5,6 +5,7 @@ export type InformationalLegalLocale = 'en' | 'sk';
 export type LegalDocument = 'terms' | 'privacy' | 'cookies' | 'imprint';
 
 type LegalSection = {
+  id?: string;
   title: string;
   paragraphs?: string[];
   items?: string[];
@@ -234,7 +235,7 @@ const documents: Record<InformationalLegalLocale, Record<LegalDocument, LegalCon
       eyebrow: 'Právne informácie',
       title: 'Všeobecné obchodné podmienky',
       lead: 'Hlavné podmienky žiadostí o termín, poskytovania zubnej starostlivosti a používania online služieb Crown Dental.',
-      updated: 'Aktualizované: 20. júla 2026',
+      updated: 'Aktualizované: 22. novembra 2026',
       sections: [
         {
           title: '1. Poskytovateľ a rozsah podmienok',
@@ -258,6 +259,14 @@ const documents: Record<InformationalLegalLocale, Record<LegalDocument, LegalCon
         {
           title: '4. Ceny, cenové ponuky a platba',
           paragraphs: ['Ceny na webovej stránke sú orientačné, pokiaľ Crown Dental nevydá písomnú záväznú cenovú ponuku. Konečný plán sa môže po vyšetrení alebo pri zistení dovtedy neznámych klinických okolností zmeniť. Ceny sa uhrádzajú v maďarských forintoch; dostupný spôsob platby potvrdí ambulancia. Prepočet na eurá zobrazený na stránke je iba odhad a môže sa meniť podľa kurzu.'],
+        },
+        {
+          id: 'poukazky',
+          title: 'Nákup a uplatnenie darčekovej poukážky',
+          paragraphs: [
+            'Poukážka platí jeden rok od zaplatenia. Môžete ju použiť raz v ktorejkoľvek ambulancii Crown Dental na zubné ošetrenie oslobodené od DPH. Ak je cena ošetrenia nižšia ako hodnota poukážky, zvyšok sa neprenáša na ďalšiu návštevu.',
+            'Platba prebieha vo forintoch cez Stripe. Po úspešnej platbe pošleme e-mailom poukážku vo formáte A5 alebo pokyny na osobné prevzatie. Vytlačenú poukážku si môžete prevziať od tretieho kalendárneho dňa po zaplatení počas otváracích hodín v ambulancii v centre Ostrihomu (2500 Esztergom, Petőfi Sándor utca 11.). Faktúru pošle Számlázz.hu samostatným e-mailom.',
+          ],
         },
         {
           title: '5. Zrušenie termínu a nedostavenie sa',
@@ -285,7 +294,7 @@ const documents: Record<InformationalLegalLocale, Record<LegalDocument, LegalCon
       eyebrow: 'Ochrana osobných údajov',
       title: 'Oznámenie o ochrane osobných údajov',
       lead: 'Ako Crown Dental zhromažďuje, používa, chráni a uchováva osobné údaje v súvislosti s ambulanciami a webovou stránkou.',
-      updated: 'Aktualizované: 20. júla 2026',
+      updated: 'Aktualizované: 22. novembra 2026',
       sections: [
         {
           title: '1. Prevádzkovateľ',
@@ -314,6 +323,10 @@ const documents: Record<InformationalLegalLocale, Record<LegalDocument, LegalCon
         {
           title: '4. Automatizované nástroje a komunikácia s pacientom',
           paragraphs: ['Analyzátor ponuky používa automatizovanú technológiu na rozpoznanie a porovnanie informácií, nevydáva však právne ani medicínsky záväzné rozhodnutie. Diagnózu, plán liečby a cenu možno potvrdiť až po vyšetrení zubným lekárom. Po ošetrení môže Crown Dental posielať servisné žiadosti o hodnotenie alebo pripomienky kontroly, ak súvisia so starostlivosťou o pacienta alebo ich umožňuje zákon. Reklamné newslettery sa posielajú iba s osobitným súhlasom.'],
+        },
+        {
+          title: 'Údaje pri kúpe darčekovej poukážky',
+          paragraphs: ['Na vybavenie objednávky evidujeme meno kupujúceho, e-mail, fakturačnú adresu, pri nákupe na firmu aj daňové číslo a prípadne meno obdarovaného. S objednávkou spájame sumu a identifikátor platby, kód a platnosť poukážky aj stav prevzatia a uplatnenia. Údaje o karte zadávate na platobnej stránke Stripe. Számlázz.hu vystaví a odošle faktúru a Resend doručí poukážku alebo pokyny na prevzatie.'],
         },
         {
           title: '5. Príjemcovia a poskytovatelia služieb',
@@ -483,7 +496,7 @@ export default function LocalizedLegalPage({
             </div>
 
             {content.sections.map((section) => (
-              <section key={section.title} className="border-b border-slate-100 pb-9 last:border-0 last:pb-0">
+              <section key={section.title} id={section.id} className="border-b border-slate-100 pb-9 last:border-0 last:pb-0">
                 <h2 className="text-2xl font-black tracking-tight text-slate-950">{section.title}</h2>
                 {section.paragraphs?.map((paragraph) => (
                   <p key={paragraph} className="mt-4 leading-8 text-slate-600">{paragraph}</p>

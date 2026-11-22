@@ -3,13 +3,14 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import * as pdf from 'pdf-lib';
 import Stripe from 'stripe';
+import { voucherShopPath } from './storefront';
 import { staffServiceClient } from '@/lib/staffAuth';
 import { sendTransactionalEmail } from '@/lib/addToAudience';
 import { voucherDocument } from './document.mjs';
 import { voucherEmail, issueInvoice } from './fulfillment.mjs';
 
 export const publicOrigin = 'https://www.crowndental.hu';
-export const voucherPath = '/karacsonyi-utalvanyok';
+
 export function salesReady() {
   return process.env.VOUCHER_SALES_ENABLED === 'true' && processingReady();
 }
@@ -151,7 +152,8 @@ async function orderForSession(
   // Our return URL also lets Stripe retry a notification that arrived before that write.
   if (
     !data &&
-    (session.success_url === publicOrigin + voucherPath + '?visszateres=1' ||
+    (session.success_url === publicOrigin + voucherShopPath('hu') + '?visszateres=1' ||
+      session.success_url === publicOrigin + voucherShopPath('sk') + '?visszateres=1' ||
       session.metadata?.source === 'crown-voucher')
   )
     throw new Error('voucher_session_not_attached');

@@ -1,12 +1,12 @@
 import { staffServiceClient } from '@/lib/staffAuth';
 import { enforceRateLimit, noStoreJson } from '@/lib/serverSecurity';
 import { isDeepStrictEqual } from 'node:util';
-import { parseVoucherBilling } from '@/lib/vouchers/billing.mjs';
+import { voucherShopPath } from '@/lib/vouchers/storefront';
+import { parseVoucherBilling, voucherValidationMessage } from '@/lib/vouchers/billing.mjs';
 import voucher from '@/prototypes/karacsonyi-utalvanyok/voucher';
 import {
   salesReady,
   publicOrigin,
-  voucherPath,
   stripeClient,
 } from '@/lib/vouchers/service';
 
@@ -36,6 +36,8 @@ export async function POST(req: Request) {
     )
   )
     return noStoreJson({}, { status: 400 });
+  const locale = input.locale === 'sk' ? 'sk' : 'hu';
+  const voucherPath = voucherShopPath(locale);
   let billing, recipientName;
   try {
     billing = parseVoucherBilling(input.billing);
@@ -43,8 +45,7 @@ export async function POST(req: Request) {
   } catch (error) {
     return noStoreJson(
       {
-        error:
-          error instanceof Error ? error.message : 'Hibás számlázási adatok.',
+        error: voucherValidationMessage(error, locale),
       },
       { status: 400 },
     );

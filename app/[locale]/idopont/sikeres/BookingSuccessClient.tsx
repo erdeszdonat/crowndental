@@ -3,6 +3,9 @@
 import ClinicPhoneLinks from '@/components/ClinicPhoneLinks';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+import voucherArt from '@/prototypes/karacsonyi-utalvanyok/teli-mese-a5.webp';
+import { isVoucherLocale, voucherShopNames, voucherShopPath } from '@/lib/vouchers/storefront';
 import { motion } from 'framer-motion';
 import { useLocale } from 'next-intl';
 import { ArrowRight, CalendarCheck2, CheckCircle2, Home, Mail } from 'lucide-react';
@@ -305,6 +308,26 @@ export default function BookingSuccessClient() {
               </div>
             </div>
           </div>
+          {isVoucherLocale(safeLocale) && (
+            <aside aria-labelledby="voucher-offer-title" className="mt-6 grid overflow-hidden rounded-[2rem] border border-[#ddd5c3] bg-[#f7f4eb] sm:grid-cols-[1.05fr_1fr]">
+              <div className="self-center px-6 py-7 sm:p-8 lg:px-11">
+                <h2 id="voucher-offer-title" className="text-3xl font-bold leading-tight tracking-tight text-[#173e38] sm:text-4xl">
+                  {voucherShopNames[safeLocale]}
+                </h2>
+                <p className="mt-3 max-w-md leading-relaxed text-[#36544a]">
+                  {safeLocale === 'hu'
+                    ? 'Lepje meg szeretteit névre szóló fogászati utalvánnyal. 10 000 Ft-tól választhat ajándékot, nyomtatható PDF-ben vagy személyes átvétellel.'
+                    : 'Darujte svojim blízkym poukážku na zubné ošetrenie už od 10 000 HUF. Môžeme na ňu doplniť meno. Vyberte si PDF e-mailom alebo osobné prevzatie v Ostrihome.'}
+                </p>
+                <Link href={voucherShopPath(safeLocale)} className="mt-5 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#174d40] px-6 py-3 font-semibold text-white hover:bg-[#103b31] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#174d40]">
+                  {safeLocale === 'hu' ? 'Utalvány kiválasztása' : 'Vybrať poukážku'} <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Link>
+              </div>
+              <div className="grid place-items-center bg-gradient-to-br from-[#245347] to-[#0f302b] px-8 py-7 sm:px-9 lg:px-12">
+                <Image src={voucherArt} alt={safeLocale === 'hu' ? 'A Crown Dental téli mintás ajándékutalványa' : 'Darčeková poukážka Crown Dental so zimným motívom'} sizes="(max-width: 640px) 80vw, 400px" className="h-auto w-full max-w-[370px] -rotate-2 rounded-sm shadow-xl" />
+              </div>
+            </aside>
+          )}
         </motion.section>
       </main>
     </div>
