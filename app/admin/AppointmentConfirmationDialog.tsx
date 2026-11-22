@@ -134,7 +134,7 @@ export default function AppointmentConfirmationDialog({ state, busy, displayDate
             <div className="rounded-2xl border border-sky-100 bg-sky-50 p-4">
               <p className="mb-1 text-xs font-black uppercase tracking-widest text-sky-700">Kért kezelés</p>
               <p className="font-black text-slate-950">{state.appointment.treatment || 'Fogászati időpont'}</p>
-              <p className="mt-1 text-sm text-slate-600">Kérés helyszíne: {state.appointment.city || 'Nincs megadva'}</p>
+              <p className="mt-1 text-sm text-slate-600">Város: {state.appointment.city || 'Nincs megadva'}</p>
             </div>
           </div>
 

@@ -83,14 +83,14 @@ export default function AdminListFilters({
           )}
           {clinics && onClinicChange && (
             <label className="min-w-0 flex-1 basis-24">
-              <span className="sr-only">Rendelő szűrése</span>
+              <span className="sr-only">Szűrés város vagy visszaigazolt rendelő szerint</span>
               <select
-                aria-label="Rendelő szűrése"
+                aria-label="Szűrés város vagy visszaigazolt rendelő szerint"
                 value={clinic}
                 onChange={(event) => onClinicChange(event.target.value)}
                 className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-medium text-slate-700"
               >
-                <option value="all">Rendelő</option>
+                <option value="all">Város vagy visszaigazolt rendelő</option>
                 {clinics.map((item) => (
                   <option key={item} value={item}>
                     {item}
