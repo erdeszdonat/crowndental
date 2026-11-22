@@ -1,0 +1,27 @@
+[
+  {
+    "amount": 10000,
+    "treatmentPrice": 10000,
+    "description": "Fogászati elővizsgálat és kezelési terv (10 000 Ft)."
+  },
+  {
+    "amount": 30000,
+    "treatmentPrice": 30000,
+    "description": "Ultrahangos fogkőeltávolítás mindkét állcsonton (15 000 Ft állcsontonként)."
+  },
+  {
+    "amount": 60000,
+    "treatmentPrice": 50000,
+    "description": "Prémium biofilm-terápia mindkét állcsonton (25 000 Ft állcsontonként, összesen 50 000 Ft)."
+  },
+  {
+    "amount": 90000,
+    "treatmentPrice": 90000,
+    "description": "Rendelői, lámpás fogfehérítés mindkét fogíven (45 000 Ft fogívenként)."
+  },
+  {
+    "amount": 120000,
+    "treatmentPrice": 110000,
+    "description": "Teljes kivehető fogsor egy állcsontra (110 000 Ft)."
+  }
+]

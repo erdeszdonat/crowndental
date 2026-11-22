@@ -1,0 +1,15 @@
+{
+  "name": "crown-dental-utalvany-sandbox",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env.local server.mjs",
+    "test": "node --test sandbox.test.mjs"
+  },
+  "dependencies": {
+    "stripe": "23.2.0"
+  }
+}

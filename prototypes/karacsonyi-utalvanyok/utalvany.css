@@ -1,0 +1,20 @@
+[hidden] { display:none !important; }
+#shop,#admin { --crown-ink:#102b40; --crown-blue:#086b94; --crown-muted:#526575; --crown-surface:#f2f7f8; --crown-line:#dce6eb; --crown-radius:1.25rem; }
+#configure .choices { display:flex; gap:.5rem; flex-wrap:wrap; }
+#configure .choices button,.secondary,.staff-card button,.example { border:1px solid #aabec8; color:#102b40; background:white; border-radius:999px; padding:.55rem .95rem; font-weight:600; }
+#configure .choices button[aria-pressed=true] { background:#086b94; border-color:#086b94; color:#fff; }
+#custom-box { padding-top:.75rem; }
+#configure .option { display:flex; align-items:flex-start; gap:.6rem; margin:.4rem 0; padding:.7rem; border:1px solid #dce6eb; border-radius:.7rem; cursor:pointer; }
+#configure .option:has(input:checked) { border-color:#086b94; background:#f2f7f8; }
+.option input { margin-top:.25rem; }
+.option small,.billing p,.quiet { display:block; color:#526575; font-size:.85rem; font-weight:400; }
+.billing label { margin-top:.7rem; }
+#shop .primary,#admin .primary { background:#086b94; color:#fff; font-weight:650; padding:.75rem 1.35rem; border-radius:999px; }
+#shop button:disabled,#admin button:disabled { opacity:.55; }
+#shop .error { color:#a31837; }
+#shop .error:empty,#admin p:empty { display:none; }
+#shop dt { font-weight:650; } #shop dd { margin-bottom:.75rem; }
+.staff,.result { padding-block:7rem 3rem; } .result h2,.staff h1,.staff h2 { font-weight:700; font-size:2rem; } .staff-card { margin-top:1.5rem; padding:1.5rem; border:1px solid #dce6eb; border-radius:1rem; }
+.staff-card input { border:1px solid #aabec8; border-radius:.5rem; padding:.5rem; }.staff-card table{border-collapse:collapse;width:100%}.staff-card :is(td,th){text-align:left; padding:.5rem;border-bottom:1px solid #dce6eb}.table-scroll{overflow-x:auto}.staff-card small{display:block}.code{font:600 1.2rem monospace;margin:1rem 0}
+.preview-menu { position:absolute; z-index:55; top:100%; right:0; min-width:11rem; max-width:100vw; max-height:75vh; overflow:auto; padding:.7rem; background:white; border:1px solid #dce6eb; border-radius:.85rem; box-shadow:0 1rem 2rem #102b4022; }.preview-menu a{display:block;padding:.55rem .8rem;color:#102b40;font-weight:600}.preview-menu a:hover{background:#f2f7f8;color:#086b94}
+@media print {body.crown-site :is(header,footer,.crown-skip,#admin,.voucher-grid,.result,.intro-copy){display:none!important}#shop .crown-home-hero,#shop .crown-hero-grid,#shop .voucher-art{display:block;width:210mm;max-width:none;margin:0;padding:0;border:0;border-radius:0;box-shadow:none}.ticket{width:210mm;height:148mm}@page{size:A5 landscape;margin:0}}

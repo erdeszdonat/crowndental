@@ -317,10 +317,13 @@ function PrivacyContent() {
                   <li><strong>Vercel Inc.:</strong> Weboldal hoszting.</li>
                   <li><strong>Supabase Inc.:</strong> Titkosított felhő adatbázis.</li>
                   <li><strong>Resend Inc.:</strong> E-mail kommunikációs infrastruktúra.</li>
+                  <li><strong>Stripe</strong> kezeli az ajándékutalvány kártyás fizetését. A vásárló a kártyaadatait a Stripe fizetési oldalán adja meg.</li>
+                  <li><strong>Számlázz.hu</strong> állítja ki és küldi el e-mailben az ajándékutalvány számláját a vásárló számlázási adataival.</li>
                   <li><strong>Google Ireland Limited / Google LLC:</strong> AI elemzőmotor, statisztika, hirdetésmérés és térképszolgáltatás.</li>
                   <li><strong>Meta Platforms Ireland Limited:</strong> marketing-hozzájárulás esetén kampánymérés.</li>
                   <li><strong>Sanity:</strong> a nyilvános weboldal- és blogtartalom kezelése.</li>
                 </ul>
+                <p>Az utalvány rendelésekor rögzítjük a vásárló nevét, e-mail-címét, számlázási címét, céges vásárlás esetén az adószámot is. Ha a vásárló megadja a megajándékozott nevét, azt a rendeléshez mentjük, hogy feltüntethessük az utalványon. A fizetés azonosítóját és összegét a rendeléshez kapcsoljuk. Az utalvány kódját, érvényességét, valamint az átvétel és a beváltás állapotát a teljesítéshez tartjuk nyilván. A Resend az e-mail-címre az utalványt vagy az átvételi tájékoztatót kézbesíti.</p>
                 <p>Egyes szolgáltatók az Európai Gazdasági Térségen kívül is kezelhetnek adatot. Ilyen esetben az adattovábbítás az alkalmazandó adatvédelmi jog szerinti megfelelő garanciák – például megfelelőségi határozat vagy általános szerződési feltételek – alapján történik.</p>
               </div>
 

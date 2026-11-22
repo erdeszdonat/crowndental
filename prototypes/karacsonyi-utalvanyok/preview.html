@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Karácsonyi ajándékutalvány · Crown Dental Esztergom</title>
+  <link rel="stylesheet" href="site-chrome.css">
+  <link rel="stylesheet" href="voucher-shop.css">
+  <link rel="stylesheet" href="utalvany.css">
+  <link id="pdf-template" rel="alternate" type="application/pdf" href="teli-mese-a5.pdf">
+  <script defer src="vendor/pdf-lib.min.js"></script>
+  <script defer src="vendor/fontkit.umd.min.js"></script>
+  <script defer src="vendor/recipient-font.js"></script>
+  <script defer src="voucher.js"></script>
+  <script defer src="utalvany.js"></script>
+</head>
+<body class="crown-site">
+<a class="crown-skip" href="#shop">Ugrás a tartalomra</a>
+<!-- SITE_HEADER -->
+<main class="cd-vouchers" id="shop" tabindex="-1">
+  <section class="crown-home-hero"><div class="crown-container crown-hero-grid">
+    <div class="intro-copy">
+      <h1>Karácsonyi <span>ajándékutalvány</span></h1>
+      <p>Válasszon összeget, és ha szeretné, írja rá a megajándékozott nevét. Az utalvány bármelyik Crown Dental rendelőben felhasználható.</p>
+      <a class="crown-button" href="#valasztas">Utalvány összeállítása <span aria-hidden="true">↓</span></a>
+    </div>
+    <div class="voucher-art">
+      <svg class="ticket" viewBox="0 0 595.2756 419.5276" role="img" aria-labelledby="ticket-title">
+        <title id="ticket-title">Karácsonyi Crown Dental mintautalvány arany rókával és szalagos ajándékkal</title>
+        <image href="teli-mese-a5.webp" width="595.2756" height="419.5276" preserveAspectRatio="none"/>
+        <g id="ticket-fields" fill="#443525">
+          <text id="ticket-recipient" x="39.685" y="261.78" font-family="Georgia, serif" font-size="17"></text>
+          <text id="ticket-amount" x="526" y="261.78" text-anchor="end" font-family="Times New Roman, serif" font-size="19">60 000</text>
+          <text id="ticket-start" x="39.685" y="327" font-family="Times New Roman, serif" font-size="11.5">2026. november 22.</text>
+          <text id="ticket-expiry" x="206.929" y="327" font-family="Times New Roman, serif" font-size="11.5">2027. november 22.</text>
+          <text id="ticket-code" x="374.173" y="327" font-family="Courier New, monospace" font-size="10.5" font-weight="bold">CDM26-H7N4Q-R8K5B-X3P9T</text>
+          <text x="555.59" y="351" text-anchor="end" font-family="Arial, sans-serif" font-weight="bold" font-size="6.9" fill="#84592f">MINTA · NEM BEVÁLTHATÓ</text>
+        </g>
+      </svg>
+    </div>
+  </div></section>
+  <div class="crown-container voucher-grid" id="valasztas">
+    <form class="voucher-form" id="configure" method="post" action="/api/checkout">
+      <fieldset class="recipient"><legend>Kinek szól az utalvány?</legend>
+        <label for="recipient-name">A megajándékozott neve <span class="voucher-optional">(nem kötelező)</span></label>
+        <input id="recipient-name" name="recipientName" type="text" maxlength="60" autocomplete="off">
+      </fieldset>
+      <fieldset><legend>Az utalvány értéke</legend>
+        <div class="choices" id="amounts">
+          <button type="button" data-amount="10000" aria-pressed="false">10 000 Ft</button>
+          <button type="button" data-amount="30000" aria-pressed="false">30 000 Ft</button>
+          <button type="button" data-amount="60000" aria-pressed="true">60 000 Ft</button>
+          <button type="button" data-amount="90000" aria-pressed="false">90 000 Ft</button>
+          <button type="button" data-amount="120000" aria-pressed="false">120 000 Ft</button>
+          <button type="button" id="custom-button" aria-pressed="false">Egyéb összeg</button>
+        </div>
+        <div id="custom-box" hidden><label for="custom">Egyedi összeg forintban</label><input id="custom" type="number" min="10000" max="500000" step="5000" inputmode="numeric" aria-describedby="amount-hint"><small id="amount-hint">10 000 és 500 000 Ft között, 5 000 Ft-os lépésekben.</small></div>
+      </fieldset>
+      <p id="selected-example" aria-live="polite"></p>
+      <script type="application/json" id="voucher-examples"><!-- VOUCHER_EXAMPLES --></script>
+      <fieldset><legend>Hogyan szeretné átvenni?</legend>
+        <label class="option"><input type="radio" name="delivery" value="email" checked><span><strong>E-mailben, PDF-ként</strong><small>Nyomtatható utalvány a vásárló e-mail-címére.</small></span></label>
+        <label class="option"><input type="radio" name="delivery" value="pickup"><span><strong>Nyomtatva, személyesen</strong><small>A fizetést követő harmadik naptári naptól veheti át belvárosi rendelőnkben, nyitvatartási időben (2500 Esztergom, Petőfi Sándor utca 11.). A pontos dátumot e-mailben küldjük.</small></span></label>
+      </fieldset>
+      <fieldset class="billing"><legend>Számlázási adatok</legend>
+        <p>A próbavásárláshoz használjon kitalált adatokat.</p>
+        <label><input type="checkbox" id="company-billing"> Céges számlát kérek</label>
+        <label>Számlázási név vagy cégnév<input name="name" autocomplete="name" maxlength="180" required></label>
+        <label>E-mail-cím az utalványhoz és a számlához<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+        <label>Országkód (pl. HU vagy SK)<input name="country" value="HU" autocomplete="country" maxlength="2" minlength="2" required></label>
+        <label>Irányítószám<input name="postalCode" autocomplete="postal-code" maxlength="20" required></label>
+        <label>Település<input name="city" autocomplete="address-level2" maxlength="100" required></label>
+        <label>Utca, házszám, emelet, ajtó<input name="line1" autocomplete="address-line1" maxlength="240" required></label>
+        <label id="company-tax" hidden>Adószám<input name="taxNumber" maxlength="40" disabled></label>
+      </fieldset>
+      <button class="primary" type="submit" disabled>Próbavásárlás <span aria-hidden="true">→</span></button>
+      <small class="quiet">A próba helyben fut. Nincs kártyaterhelés vagy levélküldés.</small>
+      <p id="form-error" class="error" role="alert"></p>
+    </form>
+    <aside class="voucher-summary"><h2>Az Ön ajándéka</h2><p id="summary-amount" aria-live="polite">60 000 Ft</p><p id="summary-recipient" hidden></p><p id="summary-delivery">Nyomtatható PDF e-mailben</p>
+      <hr><dl><dt>Érvényesség</dt><dd>A sikeres fizetéstől számított egy év.</dd>
+      <dt>Beváltás</dt><dd>Bármelyik Crown Dental rendelőben egyszer váltható be, adómentes fogászati kezelésre.</dd>
+      <dt>Rendelőink</dt><dd>Belváros · Petőfi Sándor utca 11.<br>Prímás Sziget · Helischer József út 6.</dd></dl>
+    </aside>
+  </div>
+  <section class="crown-container result" id="result" hidden tabindex="-1"><p class="overline">Sikeres próbavásárlás</p><h2>Elkészült a mintautalvány.</h2><p id="receipt"></p><p class="code" id="result-code"></p><button type="button" class="primary" id="print">A5-ös utalvány letöltése PDF-ben</button> <button type="button" class="secondary" id="new-order">Új próbavásárlás</button><p id="pdf-error" class="error" role="alert"></p></section>
+</main>
+<main class="crown-container staff" id="admin" hidden>
+  <p class="overline">Crown Dental · Adminisztrációs minta</p><h1>Utalványok</h1>
+  <p id="staff-description" class="lead">A helyi próbavásárlások, a nyomtatott példányok átadása és az egyszeri beváltás.</p>
+  <section class="staff-card"><h2>Beváltás kóddal</h2><form id="lookup"><label for="code-input">Utalványkód</label>
+    <div class="inline"><input id="code-input" required maxlength="32" placeholder="XXXXX-XXXXX-XXXXX-XXXXX" autocomplete="off" autocapitalize="characters" spellcheck="false"><button class="primary">Ellenőrzés</button></div>
+  </form><button type="button" id="example" class="example">Kipróbálás a PDF-minta kódjával</button><p id="lookup-info" role="status"></p><button type="button" id="redeem" hidden class="primary">Teljes összeg beváltása</button></section>
+  <section class="staff-card" id="admin-list"><h2>Kiállított utalványok</h2><p id="list-info" role="status"></p><div class="table-scroll"><table><thead><tr><th>Összeg és kódvég</th><th>Érvényes eddig</th><th>Állapot</th><th>Átvétel</th></tr></thead><tbody id="orders"></tbody></table></div></section>
+</main>
+
+<!-- SITE_FOOTER -->
+</body></html>

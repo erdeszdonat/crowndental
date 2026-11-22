@@ -947,8 +947,9 @@ function FeaturedPricesSection({ sanityImages }: { sanityImages: Record<string, 
         <div className="crown-cards-grid">
           {cards.map((card) => <TreatmentCard key={card.slug} href={`${p}/kezelesek/${card.slug}`} title={card.title} description={card.subtitle} price={card.price} imageUrl={sanityImages[card.slug]} linkLabel={copy.details} />)}
         </div>
-        <div className="text-center mt-10">
+        <div className="mt-10 flex flex-wrap justify-center gap-3">
           <Link href={`${p}/kezelesek`} className="crown-button">{t('viewAllPrices')}<ArrowRight size={18} aria-hidden="true" /></Link>
+          {locale === 'hu' && <Link href="/karacsonyi-utalvanyok" className="crown-button crown-button-secondary">Karácsonyi ajándékutalvány</Link>}
         </div>
       </div>
     </section>
