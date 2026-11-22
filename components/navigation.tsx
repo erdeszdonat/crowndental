@@ -5,6 +5,7 @@ import { isNfcCardPath } from '@/lib/nfcCards';
 import ClinicPhoneLinks from '@/components/ClinicPhoneLinks';
 import React, { useState, useEffect, useId, useRef } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, Menu, X, ChevronDown } from 'lucide-react';
@@ -365,6 +366,16 @@ export default function Navigation() {
             exit={{ opacity: 0, height: 0 }}
             className="2xl:hidden bg-white border-t border-gray-100 p-6 flex flex-col gap-4 font-bold shadow-2xl absolute w-full left-0 z-40"
           >
+            {locale === 'hu' && (
+              <Link
+                href="/karacsonyi-utalvanyok"
+                aria-current={isActive('/karacsonyi-utalvanyok') ? 'page' : undefined}
+                onClick={() => setIsOpen(false)}
+                className="block rounded-xl bg-sky-50 px-4 py-2 text-sky-700 hover:bg-sky-100"
+              >
+                Karácsonyi ajándékutalvány
+              </Link>
+            )}
             {navLinks.map((link) => (
               <a
                 key={link.href}
