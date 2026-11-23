@@ -250,6 +250,20 @@
     }
   },
   "booking": {
+    "hygieneUpgrade": {
+      "perArch": "{price} per arch",
+      "difference": "An extra {amount} per arch",
+      "air-polishing": {
+        "title": "Do coffee or tea stains bother you too?",
+        "detail": "Air polishing adds a fine powder spray to your scaling appointment to remove surface stains.",
+        "choice": "I’d like scaling with air polishing"
+      },
+      "premium-biofilm-terapia": {
+        "title": "Would you like to see where brushing leaves plaque behind?",
+        "detail": "Before air polishing, we colour the plaque and show you in a mirror where it remains. After cleaning, we show you how to reach those areas at home.",
+        "choice": "I’d like premium biofilm therapy with plaque staining"
+      }
+    },
     "title": "Book an Appointment",
     "subtitle": "Fill in your details and one of our colleagues will contact you shortly.",
     "contactHeading": "Your Details",

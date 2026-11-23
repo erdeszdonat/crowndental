@@ -250,6 +250,20 @@
     }
   },
   "booking": {
+    "hygieneUpgrade": {
+      "perArch": "{price} / zubný oblúk",
+      "difference": "O {amount} viac za oblúk",
+      "air-polishing": {
+        "title": "Prekážajú vám aj škvrny od kávy alebo čaju?",
+        "detail": "Pri pieskovaní doplníme odstránenie zubného kameňa o čistenie jemným práškom, ktoré odstraňuje aj povrchové zafarbenie zubov.",
+        "choice": "Prosím si odstránenie zubného kameňa s pieskovaním"
+      },
+      "premium-biofilm-terapia": {
+        "title": "Chcete vidieť, kde po čistení zubov zostáva povlak?",
+        "detail": "Pred pieskovaním povlak zafarbíme a v zrkadle vám ukážeme, kde zostal. Po ošetrení vám poradíme, ako si tieto miesta vyčistiť doma.",
+        "choice": "Prosím si prémiovú terapiu biofilmu s farbením povlaku"
+      }
+    },
     "title": "Objednať sa",
     "subtitle": "Vyplňte svoje údaje a náš kolega vás čoskoro kontaktuje.",
     "contactHeading": "Vaše údaje",

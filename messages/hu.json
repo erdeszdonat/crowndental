@@ -250,6 +250,20 @@
     }
   },
   "booking": {
+    "hygieneUpgrade": {
+      "perArch": "{price} / állcsont",
+      "difference": "Az alapkezeléshez képest +{amount}",
+      "air-polishing": {
+        "title": "A kávé vagy tea után maradt foltok is zavarják?",
+        "detail": "Az air polishing a fogkőleszedést finom porral végzett tisztítással egészíti ki, amely a felszíni elszíneződéseket is eltávolítja.",
+        "choice": "Air polishinggal kérem a fogkőleszedést"
+      },
+      "premium-biofilm-terapia": {
+        "title": "Megnézné, hol marad lepedék fogmosás után?",
+        "detail": "Tisztítás előtt megfestjük a lepedéket, és tükörben megmutatjuk, hol maradt. Az air polishing után azt is megmutatjuk, hogyan érheti el ezeket a részeket otthon.",
+        "choice": "Prémium biofilm-terápiát kérek lepedékfestéssel"
+      }
+    },
     "title": "Foglaljon Időpontot",
     "subtitle": "Töltse ki az alábbi adatokat, és egy kollégánk hamarosan felveszi Önnel a kapcsolatot.",
     "contactHeading": "Az Ön adatai",

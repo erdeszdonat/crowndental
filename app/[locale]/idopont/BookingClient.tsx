@@ -13,6 +13,7 @@ import GoogleReviewsCta from '@/components/GoogleReviewsCta';
 import { getVeneerOffer } from '@/lib/veneers.mjs';
 import { getVeneerLabels } from '@/lib/veneerI18n';
 import { bookingTreatmentIds, type BookingTreatmentId } from '@/lib/bookingTreatment';
+import { hygieneFee, hygienePrices } from '@/lib/hygiene';
 import { isValidEmail, isValidPhone } from '@/lib/contactValidation';
 import VeneerOfferCard from '@/components/VeneerOffer';
 
@@ -112,6 +113,12 @@ type BookingFormProps = {
   initialTreatmentSlug?: BookingTreatmentId;
 };
 
+function hygieneUpgradeFor(treatment: string) {
+  if (treatment !== 'fogko' && treatment !== 'air-polishing') return null;
+  const target = treatment === 'fogko' ? 'air-polishing' : 'premium-biofilm-terapia';
+  return { target, price: hygienePrices[target], difference: hygienePrices[target] - hygienePrices[treatment] } as const;
+}
+
 export function BookingForm({ directOffer, initialTreatmentSlug }: BookingFormProps) {
   const t = useTranslations('booking');
   const locale = useLocale();
@@ -136,6 +143,7 @@ export function BookingForm({ directOffer, initialTreatmentSlug }: BookingFormPr
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [formData, setFormData] = useState({ name: '', nickname: '', email: '', phone: '', treatment: initialTreatmentSlug ?? '' });
   const [otherNote, setOtherNote] = useState('');
+  const [upgradeRequested, setUpgradeRequested] = useState(false);
   const [marketingConsent, setMarketingConsent] = useState(false);
   const idempotencyKeyRef = useRef<string | null>(null);
   const otherNotePlaceholders: Record<string, string> = {
@@ -149,7 +157,10 @@ export function BookingForm({ directOffer, initialTreatmentSlug }: BookingFormPr
 
   const treatmentLabels: Record<string, string> = { ...t.raw('treatments'), ...veneerLabels };
   const isOther = formData.treatment === 'egyeb';
-  const treatmentLabel = treatmentLabels[formData.treatment] ?? '';
+  const upgrade = hygieneUpgradeFor(formData.treatment);
+  const selectedTreatment = upgradeRequested && upgrade ? upgrade.target : formData.treatment;
+  const treatmentLabel = treatmentLabels[selectedTreatment] ?? '';
+  const upgradePrice = upgrade ? t('hygieneUpgrade.perArch', { price: hygieneFee(safeLocale, upgrade.price) }) : '';
 
   useEffect(() => {
     const measure = () => {
@@ -188,6 +199,7 @@ export function BookingForm({ directOffer, initialTreatmentSlug }: BookingFormPr
     idempotencyKeyRef.current = null;
     setSubmitError(null);
     const { name, value } = e.currentTarget;
+    if (name === 'treatment') setUpgradeRequested(false);
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
@@ -283,6 +295,27 @@ export function BookingForm({ directOffer, initialTreatmentSlug }: BookingFormPr
                   {bookingTreatmentIds.map(id => <option key={id} value={id}>{treatmentLabels[id]}</option>)}
                 </select>
               </div>
+              {upgrade && (
+                <section aria-labelledby="booking-upgrade-title" className="rounded-2xl border border-sky-200 bg-sky-50 p-4 sm:p-5">
+                  <h3 id="booking-upgrade-title" className="text-lg font-semibold leading-snug text-slate-950">
+                    {t(`hygieneUpgrade.${upgrade.target}.title`)}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-700">{t(`hygieneUpgrade.${upgrade.target}.detail`)}</p>
+                  <p id="booking-upgrade-price" className="mt-3 flex flex-wrap items-baseline gap-x-2 text-sm">
+                    <strong className="text-slate-950">{upgradePrice}</strong>
+                    <span className="text-slate-700">{t('hygieneUpgrade.difference', { amount: hygieneFee(safeLocale, upgrade.difference) })}</span>
+                  </p>
+                  <label className="mt-3 flex min-h-12 cursor-pointer items-center gap-3 rounded-xl border border-sky-200 bg-white px-3 py-2 text-sm font-semibold text-slate-950">
+                    <input type="checkbox" checked={upgradeRequested} aria-describedby="booking-upgrade-price"
+                      className="h-5 w-5 shrink-0 accent-sky-700"
+                      onChange={event => {
+                        idempotencyKeyRef.current = null;
+                        setUpgradeRequested(event.currentTarget.checked);
+                      }} />
+                    {t(`hygieneUpgrade.${upgrade.target}.choice`)}
+                  </label>
+                </section>
+              )}
               {(['direkt-hej', 'indirekt-hej'] as const).map(slug => formData.treatment === slug && (
                 <div key={slug} className="space-y-3 rounded-xl border border-sky-100 bg-sky-50 p-4">
                   <VeneerOfferCard slug={slug} initialOffer={slug === 'direkt-hej' ? directOffer : getVeneerOffer(slug)} locale={safeLocale} compact />
@@ -299,6 +332,11 @@ export function BookingForm({ directOffer, initialTreatmentSlug }: BookingFormPr
               </div>}
           </>}
           {step === 2 && <>
+              {upgradeRequested && upgrade && (
+                <p className="rounded-xl bg-sky-50 px-4 py-3 text-sm text-slate-800">
+                  <strong>{treatmentLabel}</strong> · {upgradePrice}
+                </p>
+              )}
               <div>
                 <label htmlFor="booking-name" className="crown-field-label">{t('fullName')} *</label>
                 <input id="booking-name" required maxLength={120} autoComplete="name" name="name" value={formData.name} onChange={handleChange} className="crown-input" />

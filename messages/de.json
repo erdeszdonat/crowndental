@@ -303,6 +303,20 @@
     }
   },
   "booking": {
+    "hygieneUpgrade": {
+      "perArch": "{price} pro Kiefer",
+      "difference": "Aufpreis pro Kiefer: {amount}",
+      "air-polishing": {
+        "title": "Stören Sie auch Verfärbungen durch Kaffee oder Tee?",
+        "detail": "Beim Air-Polishing ergänzen wir die Zahnsteinentfernung durch einen feinen Pulverstrahl, der oberflächliche Verfärbungen entfernt.",
+        "choice": "Ich möchte die Zahnsteinentfernung mit Air-Polishing"
+      },
+      "premium-biofilm-terapia": {
+        "title": "Möchten Sie sehen, wo nach dem Zähneputzen Beläge bleiben?",
+        "detail": "Vor dem Air-Polishing färben wir die Beläge an und zeigen Ihnen die Stellen im Spiegel. Nach der Reinigung zeigen wir Ihnen, wie Sie diese zu Hause erreichen.",
+        "choice": "Ich möchte die Premium-Biofilmtherapie mit Plaqueanfärbung"
+      }
+    },
     "title": "Termin anfragen",
     "subtitle": "Geben Sie Ihre Daten ein und einer unserer Kollegen wird sich in Kürze mit Ihnen in Verbindung setzen.",
     "contactHeading": "Ihre Daten",
