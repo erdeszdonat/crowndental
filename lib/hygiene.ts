@@ -51,6 +51,6 @@ export function hygieneCopy(locale: SupportedLocale, slug: HygieneSlug) {
 }
 
 export function hygieneFee(locale: SupportedLocale, amount: number) {
-  const value = new Intl.NumberFormat(locale === 'hu' ? 'hu-HU' : locale).format(amount);
+  const value = new Intl.NumberFormat(locale === 'hu' ? 'hu-HU' : locale, { useGrouping: true }).format(amount);
   return value + (locale === 'hu' ? ' Ft' : ' HUF');
 }
