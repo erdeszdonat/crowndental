@@ -1,7 +1,4 @@
-import {
-  getAppointmentClinic,
-  type AppointmentClinicId,
-} from "./appointmentClinics";
+import { getAppointmentClinic } from "./appointmentClinics";
 
 export const HYGIENISTS = [
   { id: "ujvari-lili", name: "Ujvári Lili", clinicId: "belvaros" },
@@ -69,6 +66,11 @@ export const getNfcCard = (id: unknown) =>
   NFC_CARDS.find((card) => card.id === id) ?? null;
 export const getHygienist = (id: unknown) =>
   HYGIENISTS.find((person) => person.id === id) ?? null;
+// A personal card identifies the colleague. Only a clinic card selects a site.
+export function getCardBookingClinic(card: NfcCard) {
+  return card.hygienistId ? null : getAppointmentClinic(card.clinicId);
+}
+
 export function resolveNfcBooking(
   cardId: unknown,
   hygienistId: unknown,
@@ -85,17 +87,22 @@ export function resolveNfcBooking(
     hygienistId == null || hygienistId === ""
       ? null
       : getHygienist(hygienistId);
-  if (hygienistId && (!selected || selected.clinicId !== card.clinicId))
-    return null;
-  if (card.hygienistId && selected && selected.id !== card.hygienistId)
+  if (hygienistId != null && hygienistId !== "" && !selected) return null;
+  if (selected && (card.hygienistId ? selected.id !== card.hygienistId : selected.clinicId !== card.clinicId))
     return null;
   return {
     nfc_card_id: card.id,
     requested_hygienist_id: card.hygienistId || selected?.id || null,
-    requested_clinic_id: card.clinicId as AppointmentClinicId,
+    requested_clinic_id: getCardBookingClinic(card)?.id ?? null,
     hygiene_treatment_id: treatmentId as HygieneTreatmentId,
   };
 }
+export function getRequestedBookingClinic(record: { nfc_card_id?: unknown; requested_clinic_id?: unknown }) {
+  // Historical personal-card requests also stored the location printed on the card.
+  if (getNfcCard(record.nfc_card_id)?.hygienistId) return null;
+  return getAppointmentClinic(record.requested_clinic_id);
+}
+
 export function nfcBookingLabel(record: {
   nfc_card_id?: unknown;
   requested_hygienist_id?: unknown;
@@ -104,7 +111,8 @@ export function nfcBookingLabel(record: {
   const card = getNfcCard(record.nfc_card_id);
   if (!card) return "";
   const person = getHygienist(record.requested_hygienist_id);
-  const clinic = getAppointmentClinic(record.requested_clinic_id);
+  if (card.hygienistId) return `Választott kolléga: ${card.name}`;
+  const clinic = getRequestedBookingClinic(record);
   return `${person ? `${person.name} páciense · ` : ""}${clinic?.name || card.name} · Kártya: ${card.name}`;
 }
 

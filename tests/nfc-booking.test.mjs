@@ -49,7 +49,7 @@ test("personal and clinic cards enforce the professional/clinic mapping and trea
   for (const c of cards.NFC_CARDS) {
     for (const treatment of Object.keys(cards.HYGIENE_TREATMENTS)) {
       const r = cards.resolveNfcBooking(c.id, c.hygienistId, treatment);
-      assert.equal(r.requested_clinic_id, c.clinicId);
+      assert.equal(r.requested_clinic_id, c.hygienistId ? null : c.clinicId);
       assert.equal(r.requested_hygienist_id, c.hygienistId);
     }
   }
@@ -182,7 +182,7 @@ test("booking stores canonical source/professional/clinic separately without ana
     const saved = e.inserts[0];
     assert.equal(saved.nfc_card_id, "berber-waller-oxana");
     assert.equal(saved.requested_hygienist_id, "berber-waller-oxana");
-    assert.equal(saved.requested_clinic_id, "primas-sziget");
+    assert.equal(saved.requested_clinic_id, null);
     assert.equal(
       saved.treatment,
       cards.HYGIENE_TREATMENTS.fogfeherites[locale],
@@ -191,9 +191,29 @@ test("booking stores canonical source/professional/clinic separately without ana
     assert.equal(saved.city, "Esztergom");
     const html = e.emails[0].html;
     assert.ok(html.includes("Berber-Waller Oxána"));
-    assert.ok(html.includes("Helischer"));
+    assert.ok(html.includes("> Esztergom</p>"));
+    assert.ok(!html.includes("Helischer"));
     assert.ok(html.includes("&lt;script&gt;"));
     assert.ok(html.indexOf("+36706042500") < html.indexOf("+36305892468"));
+  }
+});
+test("personal cards leave the clinic to reception, including old receipt retries, while clinic cards keep their address", async () => {
+  const legacy = booking({ existing: {
+    id: 123, name: "Fixture", email: "fixture@example.invalid", phone: "+36123456789", city: "Esztergom",
+    treatment: "Fogfehérítés", nfc_card_id: "ujvari-lili", requested_hygienist_id: "ujvari-lili", requested_clinic_id: "belvaros",
+  } });
+  assert.equal((await legacy.run()).status, 200);
+  assert.match(legacy.emails[0].html, /Helyszín:<\/strong> Esztergom<\/p>/);
+  assert.ok(!legacy.emails[0].html.includes("Petőfi Sándor utca"));
+  for (const card of cards.NFC_CARDS) {
+    const record = { nfc_card_id: card.id, requested_hygienist_id: card.hygienistId, requested_clinic_id: card.clinicId };
+    assert.equal(cards.getRequestedBookingClinic(record)?.id ?? null, card.hygienistId ? null : card.clinicId);
+    if (card.hygienistId) assert.equal(cards.nfcBookingLabel(record), "Választott kolléga: " + card.name);
+    else {
+      const e = booking();
+      assert.equal((await e.run({ nfcCardId: card.id, requestedHygienistId: null })).status, 200);
+      assert.ok(e.emails[0].html.includes(clinics.getAppointmentClinic(card.clinicId).address));
+    }
   }
 });
 test("forged card/provider, invalid treatment and missing privacy acknowledgement are rejected before DB", async () => {

@@ -3,12 +3,12 @@ import { useEffect, useRef, useState } from "react";
 import { CheckCircle2, Loader2 } from "lucide-react";
 import {
   getHygienist,
+  getCardBookingClinic,
   HYGIENISTS,
   HYGIENE_TREATMENTS,
   type NfcCard,
   type HygieneTreatmentId,
 } from "@/lib/nfcCards";
-import { getAppointmentClinic } from "@/lib/appointmentClinics";
 import { nfcCopy } from "@/lib/nfcCopy";
 import { bookingAnalyticsContext } from "@/lib/firstPartyAnalytics";
 import { trackSiteEvent, rememberBookingSource } from "@/lib/siteAnalytics";
@@ -23,7 +23,7 @@ export default function NfcBookingForm({
   locale: Locale;
 }) {
   const copy = nfcCopy[locale];
-  const clinic = getAppointmentClinic(card.clinicId)!;
+  const clinic = getCardBookingClinic(card);
   const [treatment, setTreatment] = useState<HygieneTreatmentId | "">("");
   const [person, setPerson] = useState<string>(card.hygienistId || "");
   const [busy, setBusy] = useState(false);
@@ -120,13 +120,13 @@ export default function NfcBookingForm({
             {copy.success}
           </h2>
           <p className="mt-4 leading-relaxed text-slate-600">
-            {copy.successText}
+            {clinic ? copy.successText : copy.personalLocationNote}
           </p>
           <p className="mt-4 font-semibold">
-            {getHygienist(person)?.name || clinic.name} ·{" "}
+            {getHygienist(person)?.name || clinic?.name || card.name} ·{" "}
             {treatment && HYGIENE_TREATMENTS[treatment][locale]}
           </p>
-          <p className="mt-2 text-sm text-slate-500">{clinic.address}</p>
+          {clinic && <p className="mt-2 text-sm text-slate-500">{clinic.address}</p>}
           {!done.emailSent && (
             <p className="mt-4 rounded-xl bg-amber-50 p-4 text-sm text-amber-800">
               {copy.receiptFailed}
@@ -139,7 +139,7 @@ export default function NfcBookingForm({
             {copy.formTitle}
           </h2>
           <p className="mt-2 text-sm leading-relaxed text-slate-500">
-            {copy.formIntro}
+            {clinic ? copy.formIntro : copy.personalLocationNote}
           </p>
           <form
             onSubmit={submit}
@@ -180,7 +180,6 @@ export default function NfcBookingForm({
                   <p className="mt-1 font-bold text-sky-900">
                     {getHygienist(card.hygienistId)?.name}
                   </p>
-                  <p className="mt-1 text-slate-600">{clinic.name}</p>
                 </div>
               ) : (
                 <div>

@@ -1,5 +1,5 @@
-import { resolveNfcBooking, getHygienist, HYGIENE_TREATMENTS } from '@/lib/nfcCards';
-import { getAppointmentClinic, getAppointmentContacts } from '@/lib/appointmentClinics';
+import { resolveNfcBooking, getRequestedBookingClinic, getHygienist, HYGIENE_TREATMENTS } from '@/lib/nfcCards';
+import { getAppointmentContacts } from '@/lib/appointmentClinics';
 import { nfcCopy } from '@/lib/nfcCopy';
 import { createClient } from '@supabase/supabase-js';
 import { captureAnalyticsSession } from '@/lib/analyticsServer';
@@ -59,6 +59,7 @@ type BookingReceipt = {
   locale?: string | null;
   requested_hygienist_id?: string | null;
   requested_clinic_id?: string | null;
+  nfc_card_id?: string | null;
   request_receipt_email_sent_at?: string | null;
   request_receipt_email_idempotency_key?: string | null;
 };
@@ -66,9 +67,9 @@ type BookingReceipt = {
 async function sendBookingReceipt(booking: BookingReceipt, providerKey: string) {
   const locale = normalizeLocale(booking.locale);
   const copy = EMAIL_COPY[locale];
-  const clinic = getAppointmentClinic(booking.requested_clinic_id);
+  const clinic = getRequestedBookingClinic(booking);
   const hygienist = getHygienist(booking.requested_hygienist_id);
-  const contacts = getAppointmentContacts(booking.requested_clinic_id);
+  const contacts = getAppointmentContacts(clinic?.id);
   const greeting = copy.greeting(escapeHtml(getPreferredGreetingName(booking.name, booking.nickname || '')));
   return sendTransactionalEmail({
     from: 'Crown Dental <info@crowndental.hu>',
@@ -151,7 +152,7 @@ export async function POST(request: Request) {
       if (error?.code === '23505') {
         const { data: existing, error: existingError } = await supabase
           .from('appointments')
-          .select('id,name,nickname,email,phone,city,treatment,locale,requested_hygienist_id,requested_clinic_id,request_receipt_email_sent_at,request_receipt_email_idempotency_key')
+          .select('id,name,nickname,email,phone,city,treatment,locale,nfc_card_id,requested_hygienist_id,requested_clinic_id,request_receipt_email_sent_at,request_receipt_email_idempotency_key')
           .eq('idempotency_key', idempotencyKey)
           .maybeSingle();
         if (existing?.id) {

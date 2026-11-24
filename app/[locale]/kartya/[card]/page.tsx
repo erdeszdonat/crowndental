@@ -4,12 +4,12 @@ import { notFound } from "next/navigation";
 import { ArrowDown, MapPin, Sparkles } from "lucide-react";
 import {
   getNfcCard,
+  getCardBookingClinic,
   getHygienist,
   HYGIENISTS,
   NFC_CARDS,
   HYGIENE_TREATMENTS,
 } from "@/lib/nfcCards";
-import { getAppointmentClinic } from "@/lib/appointmentClinics";
 import { nfcCopy } from "@/lib/nfcCopy";
 import { getPublicTeam } from "@/lib/teamServer";
 import { localizedTeamText } from "@/lib/team";
@@ -51,9 +51,9 @@ export default async function CardPage({ params }: Props) {
   const locale = normalizeLocale(raw),
     copy = nfcCopy[locale],
     person = getHygienist(card.hygienistId),
-    clinic = getAppointmentClinic(card.clinicId)!;
+    clinic = getCardBookingClinic(card);
   const team = await getPublicTeam().catch(() => []);
-  const people = HYGIENISTS.filter((p) => p.clinicId === card.clinicId).map(
+  const people = HYGIENISTS.filter((p) => person ? p.id === person.id : p.clinicId === card.clinicId).map(
     (p) => ({
       ...p,
       profile: team.find(
@@ -84,7 +84,7 @@ export default async function CardPage({ params }: Props) {
             <p className="mt-5 max-w-lg text-base leading-relaxed text-slate-300">
               {copy.intro}
             </p>
-            <div className="mt-6 flex items-start gap-3 text-sm text-slate-200">
+            {clinic && <div className="mt-6 flex items-start gap-3 text-sm text-slate-200">
               <MapPin
                 className="h-5 w-5 shrink-0 text-sky-300"
                 aria-hidden="true"
@@ -93,7 +93,7 @@ export default async function CardPage({ params }: Props) {
                 <strong>{clinic.name}</strong>
                 <p className="mt-1">{clinic.address}</p>
               </div>
-            </div>
+            </div>}
             <a
               href="#konzultacio"
               data-booking-cta

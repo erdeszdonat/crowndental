@@ -1,5 +1,6 @@
 export const nfcCopy = {
   hu: {
+    personalLocationNote: "A pontos időpontot és az esztergomi rendelő címét munkatársunk egyezteti Önnel.",
     badge: "Személyes figyelem. Ragyogó mosoly.",
     role: "Dentálhigiénikus",
     clinicTitle: "A mosolyáért, személyesen.",
@@ -38,6 +39,7 @@ export const nfcCopy = {
     back: "Vissza a Crown Dental oldalára",
   },
   en: {
+    personalLocationNote: "Our team will contact you to confirm the time and the address of your appointment in Esztergom.",
     badge: "Personal attention. A brighter smile.",
     role: "Dental hygienist",
     clinicTitle: "Personal care for your smile.",
@@ -76,6 +78,7 @@ export const nfcCopy = {
     back: "Back to Crown Dental",
   },
   sk: {
+    personalLocationNote: "Náš tím vás bude kontaktovať a dohodne s vami presný termín aj adresu ambulancie v Ostrihome.",
     badge: "Osobná pozornosť. Žiarivý úsmev.",
     role: "Dentálna hygienička",
     clinicTitle: "Osobná starostlivosť o váš úsmev.",
@@ -113,6 +116,7 @@ export const nfcCopy = {
     back: "Späť na Crown Dental",
   },
   de: {
+    personalLocationNote: "Unser Team stimmt den genauen Termin und die Adresse der Praxis in Esztergom mit Ihnen ab.",
     badge: "Persönliche Aufmerksamkeit. Ein strahlendes Lächeln.",
     role: "Dentalhygienikerin",
     clinicTitle: "Persönliche Betreuung für Ihr Lächeln.",

@@ -11,7 +11,7 @@ import {
   Mail, ArrowRight
 } from 'lucide-react';
 import NfcDashboard from './NfcDashboard';
-import { nfcBookingLabel, HYGIENISTS } from '@/lib/nfcCards';
+import { getRequestedBookingClinic, nfcBookingLabel, HYGIENISTS } from '@/lib/nfcCards';
 import AnalyticsDashboard from './AnalyticsDashboard';
 import StatsDashboard from './StatsDashboard';
 import StaffManager from './StaffManager';
@@ -235,7 +235,7 @@ export default function AdminDashboard() {
       setAppointmentConfirmModal({
         appointment,
         dateTime: '',
-        clinicId: appointment.nfc_card_id ? getAppointmentClinic(appointment.requested_clinic_id)?.id || '' : '',
+        clinicId: appointment.nfc_card_id ? getRequestedBookingClinic(appointment)?.id || '' : '',
         includeImagingNotice: null,
         step: 'input',
         error: '',
