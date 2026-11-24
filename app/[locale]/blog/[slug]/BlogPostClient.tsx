@@ -1,6 +1,7 @@
 'use client';
 
 import { articleBookingTreatment, contextualArticleLink } from '@/lib/bookingTreatment';
+import { patientGuideLinks, relatedPatientGuides } from '@/lib/patientGuideLinks';
 import ClinicPhoneLinks from '@/components/ClinicPhoneLinks';
 import React from 'react';
 import {
@@ -57,11 +58,13 @@ export default function BlogPostClient({ post }: { post: any }) {
   const linkCopy = articleLinkCopy[locale as keyof typeof articleLinkCopy] ?? articleLinkCopy.hu;
   const sourceLabel = locale === 'sk' ? 'Zdroj fotografie' : locale === 'en' ? 'Image source' : locale === 'de' ? 'Bildquelle' : 'Kép forrása';
   const slug = post?.slug || '';
-  const topic = articleBookingTreatment(slug, post?.title);
+  const giftGuide = locale === 'hu' && slug === patientGuideLinks.voucher.slug;
+  const relatedGuide = locale === 'hu' ? relatedPatientGuides[slug] : undefined;
+  const topic = slug === patientGuideLinks.orthodontics.slug ? 'fogszabalyozas' : articleBookingTreatment(slug, post?.title);
   const bookingLink = contextualArticleLink('/idopont', p, slug, topic);
   const treatmentSlug = topic && ['implantatum', 'koronak-hidak', 'fogszabalyozas', 'fogfeherites', 'fogsor', 'gyokerkezeles',
     'direkt-hej', 'indirekt-hej', 'szajsebeszet', 'gockutatas', 'gyerekfogaszat', 'esztetikai-fogaszat',
-    'fogtechnikai-megoldasok', 'air-polishing', 'premium-biofilm-terapia'].includes(topic) ? topic : 'allapotfelmeres';
+    'fogtechnikai-megoldasok', 'air-polishing', 'premium-biofilm-terapia'].includes(topic) ? topic : topic === 'fogtomes' ? 'gyokerkezeles' : 'allapotfelmeres';
   const internationalPath = INTERNATIONAL_PATIENT_PATHS[locale as keyof typeof INTERNATIONAL_PATIENT_PATHS] ?? INTERNATIONAL_PATIENT_PATHS.hu;
 
   if (!post) return (
@@ -221,6 +224,7 @@ export default function BlogPostClient({ post }: { post: any }) {
             }
             return result;
           })()}
+          {relatedGuide && <p className="mb-6">Kapcsolódó cikkünk: <Link href={'/blog/' + relatedGuide.slug} className="font-semibold text-sky-700 underline">{relatedGuide.label}</Link></p>}
         </div>
 
         <aside className="mb-20 rounded-[2rem] border border-sky-100 bg-sky-50 p-7 md:p-9">
@@ -245,10 +249,10 @@ export default function BlogPostClient({ post }: { post: any }) {
             <div className="w-20 h-20 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center mx-auto mb-8 border border-white/20 shadow-inner">
               <Sparkles className="w-10 h-10 text-white" />
             </div>
-            <h3 className="text-3xl md:text-5xl font-extrabold mb-6 tracking-tight">{t('ctaTitle')}</h3>
-            <p className="text-xl text-sky-100 mb-10 max-w-2xl mx-auto font-light leading-relaxed">{t('ctaSubtitle')}</p>
-            <a href={bookingLink} className="inline-flex items-center gap-3 px-10 py-5 bg-white text-sky-700 font-extrabold rounded-full shadow-xl hover:scale-105 transition-all text-lg tracking-wide group">
-              {t('ctaBtn')} <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            <h3 className="text-3xl md:text-5xl font-extrabold mb-6 tracking-tight">{giftGuide ? 'Ajándékozzon fogászati utalványt karácsonyra!' : t('ctaTitle')}</h3>
+            <p className="text-xl text-sky-100 mb-10 max-w-2xl mx-auto font-light leading-relaxed">{giftGuide ? 'Válassza ki az összeget, és kérje az utalványt e-mailben vagy nyomtatva.' : t('ctaSubtitle')}</p>
+            <a href={giftGuide ? '/karacsonyi-utalvanyok#utalvany-vasarlas' : bookingLink} className="inline-flex items-center gap-3 px-10 py-5 bg-white text-sky-700 font-extrabold rounded-full shadow-xl hover:scale-105 transition-all text-lg tracking-wide group">
+              {giftGuide ? 'Kiválasztom az utalványt' : t('ctaBtn')} <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </a>
           </div>
         </div>

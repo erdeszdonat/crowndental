@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import copy from '@/lib/vouchers/storefront-copy.json';
 import { voucherShopPath, type VoucherLocale } from '@/lib/vouchers/storefront';
+import { patientGuideLinks } from '@/lib/patientGuideLinks';
 import examples from '@/lib/vouchers/examples.json';
 import Image from 'next/image';
 import sample from '@/prototypes/karacsonyi-utalvanyok/teli-mese-a5.webp';
@@ -31,8 +32,8 @@ export default function Purchase({ salesOpen, locale }: { salesOpen: boolean; lo
   useEffect(() => {
     setReady(true);
   }, []);
-  const [preset, setPreset] = useState('60000'),
-    [custom, setCustom] = useState('60000');
+  const [preset, setPreset] = useState('10000'),
+    [custom, setCustom] = useState('10000');
   const [delivery, setDelivery] = useState('email'),
     [busy, setBusy] = useState(false),
     [error, setError] = useState('');
@@ -164,6 +165,7 @@ export default function Purchase({ salesOpen, locale }: { salesOpen: boolean; lo
       <p aria-live="polite">{Number.isInteger(amount) && amount >= 10000 && amount <= 500000 && amount % 5000 === 0
         ? t.example + ': ' + (slovak ? example?.descriptionSk : example?.description)
         : t.amountHint} <Link href={prefix + '/kezelesek'} className="underline">{t.priceList}</Link></p>
+      {locale === 'hu' && <p><Link href={'/blog/' + patientGuideLinks.voucher.slug} className="underline">{patientGuideLinks.voucher.label}</Link></p>}
       <fieldset className="grid gap-2">
         <legend className="mb-2">{t.delivery}</legend>
         <label>

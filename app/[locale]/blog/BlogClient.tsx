@@ -265,7 +265,9 @@ export default function BlogClient({ initialPosts = EMPTY_BLOG_POSTS }: { initia
   );
 
   const filteredPosts = useMemo(
-    () => posts.filter((post) => post.language === selectedLanguage && (selectedCategory === 'all' || post.category === selectedCategory)),
+    () => posts
+      .filter((post) => post.language === selectedLanguage && (selectedCategory === 'all' || post.category === selectedCategory))
+      .sort((a, b) => (b.publishedAt ?? '').localeCompare(a.publishedAt ?? '')),
     [posts, selectedCategory, selectedLanguage]
   );
 

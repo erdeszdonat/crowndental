@@ -1,4 +1,5 @@
 'use client';
+import { patientGuideLinks } from '@/lib/patientGuideLinks';
 import TreatmentHero from '@/components/TreatmentHero';
 
 import React, { useState } from 'react';
@@ -36,6 +37,7 @@ function PricesAndPlanning() {
         <p className="mt-4 text-slate-700">{t('priceNote')}</p>
         <div className="mt-6 flex flex-wrap gap-x-6 gap-y-3 text-sky-800 underline underline-offset-4">
           <Link href={`${prefix}/blog/${t('guideSlug')}`}>{t('guideLink')}</Link>
+          {locale === 'hu' && <Link href={'/blog/' + patientGuideLinks.orthodontics.slug}>{patientGuideLinks.orthodontics.label}</Link>}
           <Link href={`${prefix}/kollegaink`}>{t('teamLink')}</Link>
           <Link href={`${prefix}/primas-sziget`}>Crown Dental Prímás Sziget</Link>
           <Link href={`${prefix}/esztergom`}>Crown Dental Belváros</Link>

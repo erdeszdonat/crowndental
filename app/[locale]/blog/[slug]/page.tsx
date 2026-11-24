@@ -1,5 +1,5 @@
 import { blogCoverProjection } from '@/lib/blogConfig';
-import { clinicNewsPosts } from '@/lib/openingPosts';
+import { siteBlogPosts } from '@/lib/siteBlogPosts';
 import type { Metadata } from 'next';
 import { cache } from 'react';
 import { notFound, permanentRedirect } from 'next/navigation';
@@ -85,7 +85,7 @@ export async function generateStaticParams(): Promise<Array<{ locale: string; sl
       const slug = canonicalBlogSlug(post.slug);
       unique.set(`${post.locale}/${slug}`, { locale: post.locale, slug });
     }
-    return [...unique.values(), ...clinicNewsPosts.map(post => ({ locale: post.language, slug: post.slug }))];
+    return [...unique.values(), ...siteBlogPosts.map(post => ({ locale: post.language, slug: post.slug }))];
   } catch (error) {
     throw new Error('A publikált cikkek útvonalai nem tölthetők be.', { cause: error });
   }
@@ -119,7 +119,7 @@ const postFields = `
 `;
 
 const getPost = cache(async (locale: string, slug: string): Promise<BlogPost | null> => {
-  const opening = clinicNewsPosts.find(post => post.language === locale && post.slug === slug);
+  const opening = siteBlogPosts.find(post => post.language === locale && post.slug === slug);
   if (opening) return opening;
   const query = `*[_type == "post" && !(_id in path("drafts.**")) && slug.current == $slug && coalesce(language, "hu") == $language][0]{${postFields}}`;
   return client.fetch(

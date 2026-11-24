@@ -1,4 +1,5 @@
 'use client';
+import { patientGuideLinks } from '@/lib/patientGuideLinks';
 import TreatmentHero from '@/components/TreatmentHero';
 
 import React, { useState } from 'react';
@@ -13,6 +14,7 @@ function ServiceHero({ imageUrl }: { imageUrl: string }) {
 }
 
 function ProblemSolution() {
+  const locale = useLocale();
   const t = useTranslations('treatmentPages.fogsor');
   return (
     <section className="py-24 bg-white">
@@ -27,6 +29,7 @@ function ProblemSolution() {
             <div className="w-14 h-14 bg-sky-600 text-white rounded-2xl flex items-center justify-center mb-6 shadow-md"><Plus className="w-8 h-8" /></div>
             <h3 className="text-2xl font-bold text-gray-900 mb-4">{t('solutionTitle')}</h3>
             <p className="text-gray-700 leading-relaxed text-lg">{t('solutionDesc')}</p>
+            {locale === 'hu' && <Link href={'/blog/' + patientGuideLinks.dentures.slug} className="mt-4 inline-block font-semibold text-sky-800 underline">{patientGuideLinks.dentures.label}</Link>}
           </div>
         </div>
       </div>

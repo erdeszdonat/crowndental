@@ -1,5 +1,5 @@
 import { blogCoverProjection } from '@/lib/blogConfig';
-import { clinicNewsPosts } from '@/lib/openingPosts';
+import { siteBlogPosts } from '@/lib/siteBlogPosts';
 import type { Metadata } from 'next';
 import { buildLocalizedMetadata, normalizeLocale } from '@/lib/seo';
 import BlogClient from './BlogClient';
@@ -70,8 +70,8 @@ async function getBlogPosts() {
 
 export default async function BlogPage() {
   // The index only needs card data; keep full multilingual article bodies on the server.
-  const newsCards = clinicNewsPosts.map(({ _id, title, slug, publishedAt, excerpt, imageUrl, language, category }) =>
+  const newsCards = siteBlogPosts.map(({ _id, title, slug, publishedAt, excerpt, imageUrl, language, category }) =>
     ({ _id, title, slug, publishedAt, excerpt, imageUrl, language, category }));
-  const posts = [...newsCards, ...(await getBlogPosts()).filter((post: { slug: string }) => !clinicNewsPosts.some(opening => opening.slug === post.slug))];
+  const posts = [...newsCards, ...(await getBlogPosts()).filter((post: { slug: string }) => !siteBlogPosts.some(opening => opening.slug === post.slug))];
   return <BlogClient initialPosts={posts} />;
 }
