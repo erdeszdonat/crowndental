@@ -24,6 +24,30 @@ const heading = (text: string) => block('h2', [text]);
 
 export const patientGuidePosts = [
   {
+    slug: patientGuideLinks.itop.slug,
+    title: "Fogmosás fogszabályzóval – így segít az iTOP a bracketek körül",
+    seoTitle: "Fogmosás fogszabályzóval és iTOP-oktatás Esztergomban",
+    seoDescription: "Hogyan tisztítsa meg a drót alatti részt, az ínyszélt és a fogközöket? Gyakorlati útmutató és személyes iTOP-oktatás Berber-Waller Oxánával a Crown Dentalnál.",
+    excerpt: "A fogkefe végigért a fogsoron, mégis ott maradt az étel a drót alatt? Mutatjuk, mire érdemes figyelni, és mit gyakorolhat Oxánával az új esztergomi iTOP-alkalmon.",
+    category: "professional",
+    imageUrl: "https://www.crowndental.hu/images/blog/biofilmfestes-fogmosas-utan.webp",
+    mainImage: { alt: "Lepedékfestés után láthatóvá váló, tisztítandó fogfelszínek" },
+    content: [
+      paragraph("Fogmosás után nézze meg a tükörben az egyik hátsó fogát is. Látja a bracket íny felőli szélét? És hozzáfér a keféje a drót alatt? Rögzített fogszabályzóval a korábban bevált mozdulat nem mindig éri el ezeket a helyeket. 2026. november 24-től a Crown Dentalnál Esztergomban is foglalható az ", link("iTOP személyes szájápolási oktatás", "/kezelesek/itop"), ". Az alkalmon a saját fogain próbálhatja ki, hogyan fér hozzá ahhoz a területhez, amely otthon gondot okoz."),
+      heading("Hogyan mosson fogat a bracketek körül?"),
+      paragraph("Válasszon a tükörben egy olyan fogat, amelyet jól lát. Puha fogkefével, kis mozdulatokkal tisztítsa meg a bracket íny felőli, majd a rágóél felőli oldalát. Ezután haladjon tovább a következő fogra. A belső felszínekre, a rágófelszínekre és az utolsó őrlőfog hátuljára is jusson idő. A fogszabályzó melletti otthoni ápolás része a rendszeres, fluoridos fogkrémmel végzett fogmosás. ", link("Az Amerikai Fogszabályozó Szövetség útmutatója a két kontroll közötti ápolásról", "https://aaoinfo.org/whats-trending/orthodontic-care-between-visits/")),
+      heading("A drót alatt és két fog között másképp fér el a kefe"),
+      paragraph("A drót alatt a fogköztisztító kefe segíthet elérni a bracketek oldalát. Két szomszédos fog között a rendelkezésre álló hely határozza meg, milyen méret vagy más eszköz megfelelő. Ugyanabban a szájban is eltérhetnek a méretek. Ha a kefe csak erőltetve férne be, ne nyomja tovább. Az oktatáson megmutathatja a konkrét fogközt Oxánának, és együtt kipróbálhatják a megfelelő megoldást."),
+      heading("Mi változik, ha átlátszó sínt hord?"),
+      paragraph("A kivehető sín mellett a fogfelszínekhez levett készülékkel hozzáfér. A mindennapokban inkább az a kérdés, hogyan fér bele a tisztítás az ebédszünetbe, és hogyan maradnak tiszták a fogközök a sín visszahelyezése előtt. Hozza el azokat az eszközöket, amelyeket napközben valóban magánál tart. Ha még készüléket választ, itt olvashat az ", link("esztergomi fogszabályozási lehetőségekről", "/kezelesek/fogszabalyozas"), "."),
+      heading("Mit gyakorolhat Berber-Waller Oxánával az iTOP-on?"),
+      paragraph("Az iTOP a Curaprox márkát is jegyző Curaden egyénre szabott szájápolási oktatási módszere. ", link("Berber-Waller Oxána, a Crown Dental iTOP-képzett dentálhigiénikusa", "/kartya/berber-waller-oxana"), " megkéri, hogy mutassa meg, hogyan tisztítja azt a területet, amellyel otthon nehezen boldogul. Segít az eszközválasztásban, bemutatja a mozdulatot, majd figyeli, ahogy Ön kipróbálja. Így például még a rendelőben kiderülhet, hogy a hátsó fogaknál egy másik irányból könnyebben be tudja vezetni a kefét. ", link("A Curaden Academy ismertetője az iTOP-ról", "https://curadenacademy.com/en/faq")),
+      heading("Első alkalom vagy iTOP kontroll?"),
+      paragraph(strong("Az első iTOP-alkalom díja 20 000 Ft."), " Ezt válassza, ha most szeretné kialakítani az otthoni rutint. Akkor is jelentkezhet, ha nincs fogszabályzója, de bizonytalan például a fogköztisztító kefe méretében. ", link("Időpontot kérek az első iTOP-alkalomra", "/idopont?kezeles=itop")),
+      paragraph(strong("Az iTOP kontroll díja 10 000 Ft."), " Ha már járt az oktatáson, a kontrollon az otthoni tapasztalataiból indulnak ki. Hozza magával a használt keféket, és mutassa meg azt a helyet, ahol még elakad. A fogszabályzó beállítását továbbra is a fogszabályozó orvossal egyezteti. ", link("Időpontot kérek iTOP kontrollra Oxánához", "/idopont?kezeles=itop-kontroll")),
+    ],
+  },
+  {
     slug: patientGuideLinks.voucher.slug,
     title: "Milyen összegű fogászati ajándékutalványt válasszon karácsonyra?",
     seoTitle: "Fogászati ajándékutalvány karácsonyra – melyik összeget válasszam?",

@@ -292,6 +292,8 @@
       "fogfeherites": "Fogfehérítés",
       "fogko": "Ultrahangos fogkőeltávolítás",
       "air-polishing": "Fogkőeltávolítás és air polishing",
+      "itop": "iTOP – első alkalom",
+      "itop-kontroll": "iTOP kontroll",
       "premium-biofilm-terapia": "Prémium biofilm-terápia",
       "panorama": "Panoráma röntgen",
       "cbct": "CBCT (3D) felvétel",
@@ -458,6 +460,7 @@
       { "id": "koronak-hidak", "title": "Koronák és Hidak", "description": "Fémkerámia és cirkónium koronák prémium minőségben, saját laborból." },
       { "id": "fogsor", "title": "Fogsorok", "description": "Kivehető és rögzített fogsorok, precíz illeszkedés, alábélelés." },
       { "id": "air-polishing", "title": "Fogkőeltávolítás és air polishing", "description": "Fogkő és külső elszíneződések eltávolítása ultrahanggal és finom porral." },
+      {"id": "itop", "title": "iTOP szájápolási tanácsadás", "description": "Gyakorolja a fogmosást és a fogköztisztítást Berber-Waller Oxánával, akár fogszabályzó mellett is."},
       { "id": "premium-biofilm-terapia", "title": "Prémium biofilm-terápia", "description": "Lepedékfestés és air polishing, szükség szerint fogkőeltávolítással." },
       { "id": "implantatum", "title": "Implantátum", "description": "Élethű fogpótlás titánium implantátummal, akár egy nap alatt." },
       { "id": "fogfeherites", "title": "Fogfehérítés", "description": "Professzionális fehérítés otthoni vagy rendelői módszerrel." },
@@ -502,6 +505,8 @@
         "items": [
           {"name": "Ultrahangos fogkőeltávolítás (állcsontonként)", "price": "15 000 Ft"},
           {"name": "Fogkőeltávolítás és air polishing (állcsontonként)", "price": "20 000 Ft", "slug": "air-polishing"},
+          {"name": "iTOP – első alkalom", "price": "20 000 Ft", "slug": "itop"},
+          {"name": "iTOP kontroll", "price": "10 000 Ft", "slug": "itop#itop-kontroll"},
           {"name": "Prémium biofilm-terápia (állcsontonként)", "price": "25 000 Ft", "slug": "premium-biofilm-terapia"},
           { "name": "Fogfehérítés szilikon sínnel (otthoni) / fogívenként", "price": "30.000 Ft", "slug": "fogfeherites" },
           { "name": "Fogfehérítés rendelői (lámpás) / fogívenként", "price": "45.000 Ft", "highlight": true, "slug": "fogfeherites" }

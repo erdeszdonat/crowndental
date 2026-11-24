@@ -43,7 +43,7 @@ function TreatmentCard({ card, imageUrl, imageIsBeforeAfter }: { card: { id: str
 function TreatmentCardsSection({ sanityImages }: { sanityImages: Record<string, string> }) {
   const t = useTranslations('treatments');
   const cards = t.raw('cards') as Array<{ id: string; title: string; description: string; href?: string }>;
-  const hygieneImages: Record<string, string> = { 'air-polishing': '/images/hygiene/air-polishing.webp', 'premium-biofilm-terapia': '/images/hygiene/premium-biofilm-terapia.webp' };
+  const hygieneImages: Record<string, string> = { itop: '/images/blog/biofilmfestes-fogmosas-utan.webp', 'air-polishing': '/images/hygiene/air-polishing.webp', 'premium-biofilm-terapia': '/images/hygiene/premium-biofilm-terapia.webp' };
   const directImage = sanityImages['direkt-hej'] || sanityImages['hollywood-mosoly'];
   return (
     <section className="py-12 sm:py-16 bg-white">

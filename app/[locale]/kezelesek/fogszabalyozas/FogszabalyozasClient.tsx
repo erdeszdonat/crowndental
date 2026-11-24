@@ -1,4 +1,6 @@
 'use client';
+import { itopCopy } from '@/lib/itop';
+import { normalizeLocale } from '@/lib/seo';
 import { patientGuideLinks } from '@/lib/patientGuideLinks';
 import TreatmentHero from '@/components/TreatmentHero';
 
@@ -35,6 +37,12 @@ function PricesAndPlanning() {
           ))}
         </dl>
         <p className="mt-4 text-slate-700">{t('priceNote')}</p>
+        <aside className="mt-7 rounded-2xl border border-sky-200 bg-white p-5">
+          <h3 className="text-xl font-semibold">{itopCopy[normalizeLocale(locale)].braces}</h3>
+          <p className="my-3 text-slate-700">{itopCopy[normalizeLocale(locale)].bracesText}</p>
+          <Link className="font-semibold text-sky-800 underline" href={prefix + '/kezelesek/itop'}>{itopCopy[normalizeLocale(locale)].title}</Link>
+          {locale === 'hu' && <p className="mt-3"><Link className="text-sky-800 underline" href={'/blog/' + patientGuideLinks.itop.slug}>{patientGuideLinks.itop.label}</Link></p>}
+        </aside>
         <div className="mt-6 flex flex-wrap gap-x-6 gap-y-3 text-sky-800 underline underline-offset-4">
           <Link href={`${prefix}/blog/${t('guideSlug')}`}>{t('guideLink')}</Link>
           {locale === 'hu' && <Link href={'/blog/' + patientGuideLinks.orthodontics.slug}>{patientGuideLinks.orthodontics.label}</Link>}

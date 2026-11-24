@@ -13,6 +13,7 @@ import GoogleReviewsCta from '@/components/GoogleReviewsCta';
 import { getVeneerOffer } from '@/lib/veneers.mjs';
 import { getVeneerLabels } from '@/lib/veneerI18n';
 import { bookingTreatmentIds, type BookingTreatmentId } from '@/lib/bookingTreatment';
+import { isItopVisit, itopCopy, itopFees } from '@/lib/itop';
 import { hygieneFee, hygienePrices } from '@/lib/hygiene';
 import { isValidEmail, isValidPhone } from '@/lib/contactValidation';
 import VeneerOfferCard from '@/components/VeneerOffer';
@@ -232,6 +233,7 @@ export function BookingForm({ directOffer, initialTreatmentSlug }: BookingFormPr
       const bookingPayload = {
         name, nickname, email, phone,
         city: 'Esztergom',
+        treatmentId: selectedTreatment,
         treatment: isOther && otherNote ? `${treatmentLabel}: ${otherNote}` : treatmentLabel,
         analytics: bookingAnalyticsContext(),
         locale: safeLocale,
@@ -295,6 +297,12 @@ export function BookingForm({ directOffer, initialTreatmentSlug }: BookingFormPr
                   {bookingTreatmentIds.map(id => <option key={id} value={id}>{treatmentLabels[id]}</option>)}
                 </select>
               </div>
+              {isItopVisit(selectedTreatment) && <p className="rounded-xl bg-sky-50 p-4 text-slate-800">
+                <strong>{hygieneFee(safeLocale, itopFees[selectedTreatment])}</strong> · {itopCopy[safeLocale].bookingNote}
+              </p>}
+              {['fogszabalyozas', 'fogszabalyozo-kezeles'].includes(selectedTreatment) && <p className="text-sm text-slate-700">
+                {itopCopy[safeLocale].braces} · <Link className="font-semibold text-sky-800 underline" href={p + '/kezelesek/itop'}>{itopCopy[safeLocale].title}</Link>
+              </p>}
               {upgrade && (
                 <section aria-labelledby="booking-upgrade-title" className="rounded-2xl border border-sky-200 bg-sky-50 p-4 sm:p-5">
                   <h3 id="booking-upgrade-title" className="text-lg font-semibold leading-snug text-slate-950">

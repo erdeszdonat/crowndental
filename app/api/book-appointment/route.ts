@@ -1,3 +1,4 @@
+import { isItopVisit, itopPractitioner } from "@/lib/itop";
 import { resolveNfcBooking, getRequestedBookingClinic, getHygienist, HYGIENE_TREATMENTS } from '@/lib/nfcCards';
 import { getAppointmentContacts } from '@/lib/appointmentClinics';
 import { nfcCopy } from '@/lib/nfcCopy';
@@ -105,15 +106,18 @@ export async function POST(request: Request) {
       releaseIdempotency('booking', idempotencyKey);
       return noStoreJson({ error: 'Érvénytelen kártya, kolléga, kezelés vagy adatkezelési visszajelzés.' }, { status: 400 });
     }
-    const city = nfc || body.city === undefined ? 'Esztergom' : cleanText(body.city, 80);
+    const treatmentId: unknown = body.treatmentId;
+    const itopVisit = !nfc && isItopVisit(treatmentId) ? treatmentId : null;
+    const city = nfc || itopVisit || body.city === undefined ? 'Esztergom' : cleanText(body.city, 80);
     // Clinic-specific hygiene cards carry their own routing. Reception assigns all other requests.
-    const clinicFields = nfc ?? {};
+    const clinicFields = nfc ?? (itopVisit ? { requested_hygienist_id: itopPractitioner, hygiene_treatment_id: itopVisit } : {});
     const name = cleanText(body.name, 120);
     const nickname = cleanText(body.nickname, 80);
     const email = normalizeEmail(body.email);
     const phone = cleanText(body.phone, 40);
     const locale = normalizeLocale(body.locale || body.marketingConsentLocale);
-    const treatment = nfc ? HYGIENE_TREATMENTS[nfc.hygiene_treatment_id][locale] : cleanText(body.treatment, 280);
+    const hygieneVisit = nfc?.hygiene_treatment_id ?? itopVisit;
+    const treatment = hygieneVisit ? HYGIENE_TREATMENTS[hygieneVisit][locale] : cleanText(body.treatment, 280);
     const marketingConsent = body.marketingConsent === true;
 
     if (!name || !BOOKING_CITIES.has(city) || !treatment || !isValidEmail(email) || !isValidPhone(phone)) {

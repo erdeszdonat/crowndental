@@ -4,7 +4,7 @@ import { CONSENT_STORAGE_KEY, parseStoredConsent, type StoredConsent } from './c
 export const GOOGLE_TAG_ID = 'G-9BS3P1DC4T';
 export const ANALYTICS_READY_EVENT = 'crown-analytics-ready';
 const SOURCE_KEY = 'crown_booking_source_v1';
-const TREATMENT_SLUGS = new Set(['air-polishing', 'premium-biofilm-terapia', 'allapotfelmeres', 'esztetikai-fogaszat', 'fogfeherites', 'foghuzas', 'fogsor', 'fogszabalyozas', 'fogtechnikai-megoldasok', 'gockutatas', 'gyerekfogaszat', 'gyokerkezeles', 'implantatum', 'koronak-hidak', 'szajsebeszet', 'direkt-hej', 'indirekt-hej']);
+const TREATMENT_SLUGS = new Set(['itop', 'air-polishing', 'premium-biofilm-terapia', 'allapotfelmeres', 'esztetikai-fogaszat', 'fogfeherites', 'foghuzas', 'fogsor', 'fogszabalyozas', 'fogtechnikai-megoldasok', 'gockutatas', 'gyerekfogaszat', 'gyokerkezeles', 'implantatum', 'koronak-hidak', 'szajsebeszet', 'direkt-hej', 'indirekt-hej']);
 let currentConsent: StoredConsent | null | undefined;
 
 export function isProductionSite() {

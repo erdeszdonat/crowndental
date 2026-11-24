@@ -345,6 +345,8 @@
       "fogfeherites": "Zahnaufhellung",
       "fogko": "Zahnsteinentfernung mit Ultraschall",
       "air-polishing": "Zahnsteinentfernung mit Air-Polishing",
+      "itop": "iTOP – Ersttermin",
+      "itop-kontroll": "iTOP-Kontrolle",
       "premium-biofilm-terapia": "Premium-Biofilmtherapie",
       "panorama": "Panoramaröntgen",
       "cbct": "DVT-Aufnahme (3D)",
@@ -563,6 +565,7 @@
         "title": "Zahnsteinentfernung mit Air-Polishing",
         "description": "Ultraschall und Pulver-Wasser-Strahl bei Zahnstein und äußeren Verfärbungen."
       },
+      {"id": "itop", "title": "iTOP-Mundhygieneschulung", "description": "Üben Sie mit Oxána Berber-Waller die Pflege Ihrer Zähne und Zahnzwischenräume, auch bei fester Zahnspange."},
       {
         "id": "premium-biofilm-terapia",
         "title": "Premium-Biofilmtherapie",
@@ -700,6 +703,8 @@
         "items": [
           {"name": "Zahnsteinentfernung mit Ultraschall (pro Kiefer)", "price": "15.000 HUF"},
           {"name": "Zahnsteinentfernung mit Air-Polishing (pro Kiefer)", "price": "20.000 HUF", "slug": "air-polishing"},
+          {"name": "iTOP – Ersttermin", "price": "20.000 HUF", "slug": "itop"},
+          {"name": "iTOP-Kontrolle", "price": "10.000 HUF", "slug": "itop#itop-kontroll"},
           {"name": "Premium-Biofilmtherapie (pro Kiefer)", "price": "25.000 HUF", "slug": "premium-biofilm-terapia"},
           {
             "name": "Aufhellung mit Silikonschiene (zu Hause) / pro Zahnbogen",

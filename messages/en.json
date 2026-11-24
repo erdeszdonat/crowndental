@@ -292,6 +292,8 @@
       "fogfeherites": "Teeth Whitening",
       "fogko": "Ultrasonic scaling",
       "air-polishing": "Scaling and air polishing",
+      "itop": "iTOP – first visit",
+      "itop-kontroll": "iTOP follow-up",
       "premium-biofilm-terapia": "Premium biofilm therapy",
       "panorama": "Panoramic X-ray",
       "cbct": "CBCT (3D) Scan",
@@ -458,6 +460,7 @@
       { "id": "koronak-hidak", "title": "Crowns & Bridges", "description": "Metal-ceramic and zirconia crowns in premium quality, from our own lab." },
       { "id": "fogsor", "title": "Dentures", "description": "Removable and fixed dentures, precise fit, relining." },
       { "id": "air-polishing", "title": "Scaling and air polishing", "description": "Ultrasonic scaling and air polishing for tartar and external stains." },
+      {"id": "itop", "title": "iTOP oral hygiene coaching", "description": "Practise brushing and cleaning between your teeth with Oxána Berber-Waller, including around braces."},
       { "id": "premium-biofilm-terapia", "title": "Premium biofilm therapy", "description": "Plaque disclosure and air polishing, with tartar removal where needed." },
       { "id": "implantatum", "title": "Dental Implants", "description": "Lifelike tooth replacement with titanium implants, in as little as one day." },
       { "id": "fogfeherites", "title": "Teeth Whitening", "description": "Professional whitening with at-home or in-clinic methods." },
@@ -502,6 +505,8 @@
         "items": [
           {"name": "Ultrasonic scaling (per arch)", "price": "15,000 HUF"},
           {"name": "Scaling and air polishing (per arch)", "price": "20,000 HUF", "slug": "air-polishing"},
+          {"name": "iTOP – first visit", "price": "20,000 HUF", "slug": "itop"},
+          {"name": "iTOP follow-up", "price": "10,000 HUF", "slug": "itop#itop-kontroll"},
           {"name": "Premium biofilm therapy (per arch)", "price": "25,000 HUF", "slug": "premium-biofilm-terapia"},
           { "name": "Whitening with silicone tray (home) / per arch", "price": "30,000 HUF", "slug": "fogfeherites" },
           { "name": "In-clinic whitening (lamp) / per arch", "price": "45,000 HUF", "highlight": true, "slug": "fogfeherites" }

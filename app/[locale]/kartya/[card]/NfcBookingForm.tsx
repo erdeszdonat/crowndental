@@ -6,9 +6,12 @@ import {
   getCardBookingClinic,
   HYGIENISTS,
   HYGIENE_TREATMENTS,
+  cardTreatments,
   type NfcCard,
   type HygieneTreatmentId,
 } from "@/lib/nfcCards";
+import { hygieneFee } from "@/lib/hygiene";
+import { isItopVisit, itopFees } from "@/lib/itop";
 import { nfcCopy } from "@/lib/nfcCopy";
 import { bookingAnalyticsContext } from "@/lib/firstPartyAnalytics";
 import { trackSiteEvent, rememberBookingSource } from "@/lib/siteAnalytics";
@@ -167,9 +170,9 @@ export default function NfcBookingForm({
                   className="crown-input"
                 >
                   <option value="">{copy.choose}</option>
-                  {Object.entries(HYGIENE_TREATMENTS).map(([id, t]) => (
+                  {cardTreatments(card).map(([id, t]) => (
                     <option key={id} value={id}>
-                      {t[locale]}
+                      {t[locale]}{isItopVisit(id) && " · " + hygieneFee(locale, itopFees[id])}
                     </option>
                   ))}
                 </select>

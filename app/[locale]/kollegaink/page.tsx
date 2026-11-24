@@ -1,3 +1,4 @@
+import { itopCopy, itopPractitioner } from "@/lib/itop";
 import ClinicPhoneLinks from '@/components/ClinicPhoneLinks';
 import Image from "next/image";
 import Link from "next/link";
@@ -165,6 +166,9 @@ export default async function TeamPage({ params }: Props) {
                                   {localizedTeamText(member.title, locale)}
                                 </p>
                               )}
+                              {role === "dental_hygienist" && member.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z]/g, "") === itopPractitioner.replace(/-/g, "") && <p className={styles.subtitle}>
+                                {itopCopy[locale].profile} <Link className="font-semibold underline" href={prefix + "/kezelesek/itop"}>{itopCopy[locale].title}</Link>
+                              </p>}
                               {bio && (
                                 <details className={styles.details}>
                                   <summary>

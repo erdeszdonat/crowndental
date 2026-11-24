@@ -615,7 +615,7 @@ export default function AdminDashboard() {
                         </div>
                         <p className="text-base font-semibold tracking-tight text-slate-900 break-words">{item.name}</p>
                         <span className="mt-2 block text-sm leading-relaxed text-slate-500">{item.treatment}</span>
-                        {item.nfc_card_id && <span className="mt-2 inline-block rounded-lg bg-sky-50 px-3 py-2 text-xs font-semibold leading-relaxed text-sky-800">{nfcBookingLabel(item)}</span>}
+                        {(item.nfc_card_id || item.requested_hygienist_id) && <span className="mt-2 inline-block rounded-lg bg-sky-50 px-3 py-2 text-xs font-semibold leading-relaxed text-sky-800">{nfcBookingLabel(item)}</span>}
                         {item.confirmed_appointment_local && <p className="mt-2 flex items-center gap-1.5 text-xs font-semibold text-emerald-800"><Clock className="h-3.5 w-3.5" aria-hidden="true" />{formatAppointmentDateTime(item.confirmed_appointment_local) || item.confirmed_appointment_local}</p>}
                         {item.reminder_email_sent_at && <p className="mt-2 text-xs text-emerald-700">Emlékeztető elküldve: {formatDate(item.reminder_email_sent_at)}</p>}
                         {item.status === 'special' && item.special_note && <p className="mt-2 flex items-start gap-1.5 text-xs leading-relaxed text-purple-700"><Sparkles className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" />{item.special_note}</p>}

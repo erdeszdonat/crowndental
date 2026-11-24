@@ -8,12 +8,15 @@ import {
   getHygienist,
   HYGIENISTS,
   NFC_CARDS,
-  HYGIENE_TREATMENTS,
+  cardTreatments,
 } from "@/lib/nfcCards";
+import Link from "next/link";
+import { hygieneFee } from "@/lib/hygiene";
+import { itopCopy, itopPractitioner, isItopVisit, itopFees } from "@/lib/itop";
 import { nfcCopy } from "@/lib/nfcCopy";
 import { getPublicTeam } from "@/lib/teamServer";
 import { localizedTeamText } from "@/lib/team";
-import { buildLocalizedMetadata, normalizeLocale } from "@/lib/seo";
+import { buildLocalizedMetadata, localePrefix, normalizeLocale } from "@/lib/seo";
 import ClinicPhoneLinks from "@/components/ClinicPhoneLinks";
 import NfcBookingForm from "./NfcBookingForm";
 
@@ -82,8 +85,9 @@ export default async function CardPage({ params }: Props) {
               {person?.name || card.name}
             </h1>
             <p className="mt-5 max-w-lg text-base leading-relaxed text-slate-300">
-              {copy.intro}
+              {person?.id === itopPractitioner ? itopCopy[locale].profile : copy.intro}
             </p>
+            {person?.id === itopPractitioner && <Link className="mt-4 inline-block text-sky-200 underline underline-offset-4" href={localePrefix(locale) + '/kezelesek/itop'}>{itopCopy[locale].title}</Link>}
             {clinic && <div className="mt-6 flex items-start gap-3 text-sm text-slate-200">
               <MapPin
                 className="h-5 w-5 shrink-0 text-sky-300"
@@ -148,7 +152,7 @@ export default async function CardPage({ params }: Props) {
             {copy.clinicTitle}
           </h2>
           <ul className="mt-6 space-y-3">
-            {Object.entries(HYGIENE_TREATMENTS).map(([id, t]) => (
+            {cardTreatments(card).map(([id, t]) => (
               <li
                 key={id}
                 className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-4"
@@ -157,7 +161,7 @@ export default async function CardPage({ params }: Props) {
                   className="h-5 w-5 shrink-0 text-sky-600"
                   aria-hidden="true"
                 />
-                {t[locale]}
+                {t[locale]}{isItopVisit(id) && " · " + hygieneFee(locale, itopFees[id])}
               </li>
             ))}
           </ul>

@@ -1,5 +1,7 @@
 import { getAppointmentClinic } from "./appointmentClinics";
 
+import { isItopVisit, itopPractitioner, itopVisits } from "./itop";
+
 export const HYGIENISTS = [
   { id: "ujvari-lili", name: "Ujvári Lili", clinicId: "belvaros" },
   {
@@ -28,6 +30,7 @@ export const NFC_CARDS = [
 export type NfcCard = (typeof NFC_CARDS)[number];
 export type NfcCardId = NfcCard["id"];
 export const HYGIENE_TREATMENTS = {
+  ...itopVisits,
   fogfeherites: {
     hu: "Fogfehérítés",
     en: "Teeth whitening",
@@ -71,6 +74,10 @@ export function getCardBookingClinic(card: NfcCard) {
   return card.hygienistId ? null : getAppointmentClinic(card.clinicId);
 }
 
+export function cardTreatments(card: NfcCard) {
+  return Object.entries(HYGIENE_TREATMENTS).filter(([id]) => !isItopVisit(id) || card.hygienistId === itopPractitioner);
+}
+
 export function resolveNfcBooking(
   cardId: unknown,
   hygienistId: unknown,
@@ -79,6 +86,7 @@ export function resolveNfcBooking(
   const card = getNfcCard(cardId);
   if (
     !card ||
+    (isItopVisit(treatmentId) && card.hygienistId !== itopPractitioner) ||
     typeof treatmentId !== "string" ||
     !Object.hasOwn(HYGIENE_TREATMENTS, treatmentId)
   )
@@ -109,8 +117,8 @@ export function nfcBookingLabel(record: {
   requested_clinic_id?: unknown;
 }) {
   const card = getNfcCard(record.nfc_card_id);
-  if (!card) return "";
   const person = getHygienist(record.requested_hygienist_id);
+  if (!card) return person ? `Választott kolléga: ${person.name}` : "";
   if (card.hygienistId) return `Választott kolléga: ${card.name}`;
   const clinic = getRequestedBookingClinic(record);
   return `${person ? `${person.name} páciense · ` : ""}${clinic?.name || card.name} · Kártya: ${card.name}`;

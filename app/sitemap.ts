@@ -38,6 +38,7 @@ const staticPaths = [
   '',
   'kezelesek',
   'kezelesek/air-polishing',
+  'kezelesek/itop',
   'kezelesek/premium-biofilm-terapia',
   ...TREATMENT_SLUGS.map((slug) => `kezelesek/${slug}`),
   'esztergom',

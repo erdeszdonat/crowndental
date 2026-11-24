@@ -49,6 +49,11 @@ test("personal and clinic cards enforce the professional/clinic mapping and trea
   for (const c of cards.NFC_CARDS) {
     for (const treatment of Object.keys(cards.HYGIENE_TREATMENTS)) {
       const r = cards.resolveNfcBooking(c.id, c.hygienistId, treatment);
+      if (["itop", "itop-kontroll"].includes(treatment) && c.id !== "berber-waller-oxana") {
+        assert.equal(r, null);
+        assert.ok(!cards.cardTreatments(c).some(([id]) => id === treatment));
+        continue;
+      }
       assert.equal(r.requested_clinic_id, c.hygienistId ? null : c.clinicId);
       assert.equal(r.requested_hygienist_id, c.hygienistId);
     }
@@ -348,5 +353,21 @@ test("online requests default to Esztergom and leave clinic assignment to recept
     const invalid = booking();
     assert.equal((await invalid.run({ nfcCardId: undefined, city })).status, 400);
     assert.equal(invalid.inserts.length, 0);
+  }
+});
+
+test("general and personal iTOP requests go to Oxána without preassigning a clinic", async () => {
+  for (const visit of ["itop", "itop-kontroll"]) {
+    for (const nfcCardId of [undefined, "berber-waller-oxana"]) {
+      const e = booking();
+      const result = await e.run({ nfcCardId, hygieneTreatmentId: visit, treatmentId: visit, requestedClinicId: "belvaros", locale: "sk" });
+      assert.equal(result.status, 200);
+      assert.equal(e.stored.hygiene_treatment_id, visit);
+      assert.equal(e.stored.requested_hygienist_id, "berber-waller-oxana");
+      assert.equal(e.stored.requested_clinic_id ?? null, null);
+      assert.equal(e.stored.nfc_card_id ?? null, nfcCardId ?? null);
+      assert.equal(e.stored.treatment, cards.HYGIENE_TREATMENTS[visit].sk);
+      assert.match(e.emails[0].html, /Berber-Waller Oxána/);
+    }
   }
 });
