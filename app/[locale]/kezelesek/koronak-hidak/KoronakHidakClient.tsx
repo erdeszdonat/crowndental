@@ -1,4 +1,5 @@
 'use client';
+import ItopAftercareLink from '@/components/ItopAftercareLink';
 import TreatmentHero from '@/components/TreatmentHero';
 
 import React, { useState } from 'react';
@@ -150,6 +151,7 @@ export default function KoronakHidakClient({ imageUrl }: { imageUrl: string }) {
         <Benefits />
         <ProcessSection />
         <AppointmentCTASection />
+        <ItopAftercareLink />
         <FAQSection />
       </main>
     </div>

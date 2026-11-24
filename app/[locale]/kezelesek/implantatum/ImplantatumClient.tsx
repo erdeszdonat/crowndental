@@ -1,4 +1,5 @@
 'use client';
+import ItopAftercareLink from '@/components/ItopAftercareLink';
 import TreatmentHero from '@/components/TreatmentHero';
 
 import React, { useState } from 'react';
@@ -141,6 +142,7 @@ export default function ImplantatumClient({ imageUrl }: { imageUrl: string }) {
         <Benefits />
         <ProcessSection />
         <QuoteAnalyzerSection />
+        <ItopAftercareLink />
         <FAQSection />
       </main>
     </div>

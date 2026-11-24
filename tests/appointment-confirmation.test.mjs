@@ -202,6 +202,17 @@ test('a clinic selection cannot bypass exact appointment date validation', async
   }
 });
 
+test('confirmed iTOP visits use the booked duration in both calendar links', async () => {
+  for (const [visit, end] of [['itop', '20261103T153000'], ['itop-kontroll', '20261103T150000']]) {
+    const env = environment({ appointment: { hygiene_treatment_id: visit, treatment: 'iTOP' } });
+    const response = await env.submit();
+    assert.equal(response.status, 200);
+    const { google, ics } = calendarLinks(env.emails[0].payload.html);
+    assert.equal(google.searchParams.get('dates'), '20261103T143000/' + end);
+    assert.equal(ics.searchParams.get('end'), end);
+  }
+});
+
 test('the chosen clinic is saved and used consistently in email, Google Calendar and ICS, regardless of requested city', async () => {
   for (const clinic of [
     { id: 'belvaros', name: 'Crown Dental Belváros', street: 'Petőfi Sándor utca 11' },

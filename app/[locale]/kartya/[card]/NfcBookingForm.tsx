@@ -11,7 +11,7 @@ import {
   type HygieneTreatmentId,
 } from "@/lib/nfcCards";
 import { hygieneFee } from "@/lib/hygiene";
-import { isItopVisit, itopFees } from "@/lib/itop";
+import { isItopVisit, itopCopy, itopFees } from "@/lib/itop";
 import { nfcCopy } from "@/lib/nfcCopy";
 import { bookingAnalyticsContext } from "@/lib/firstPartyAnalytics";
 import { trackSiteEvent, rememberBookingSource } from "@/lib/siteAnalytics";
@@ -177,6 +177,9 @@ export default function NfcBookingForm({
                   ))}
                 </select>
               </div>
+              {isItopVisit(treatment) && <p className="rounded-xl bg-sky-50 p-4 text-sm">
+                {treatment === 'itop' ? itopCopy[locale].first : itopCopy[locale].control}
+              </p>}
               {card.hygienistId ? (
                 <div className="rounded-xl bg-sky-50 p-4 text-sm">
                   <p className="text-slate-500">{copy.selected}</p>

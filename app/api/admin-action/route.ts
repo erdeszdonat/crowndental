@@ -28,6 +28,7 @@ type AppointmentForNoAnswerEmail = {
 
 type AppointmentForConfirmationEmail = AppointmentForNoAnswerEmail & {
   city?: string | null;
+  hygiene_treatment_id?: string | null;
   treatment?: string | null;
 };
 
@@ -136,7 +137,7 @@ function createIdempotentResendSender(idempotencyKey: string) {
   };
 }
 
-function parseAppointmentDateTime(value: unknown) {
+function parseAppointmentDateTime(value: unknown, durationMinutes: number) {
   const match = String(value || '').match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/);
   if (!match) return null;
 
@@ -155,7 +156,7 @@ function parseAppointmentDateTime(value: unknown) {
   if (!isSameDate) return null;
 
   const pad = (number: number) => String(number).padStart(2, '0');
-  const end = new Date(start.getTime() + APPOINTMENT_DURATION_MINUTES * 60_000);
+  const end = new Date(start.getTime() + durationMinutes * 60_000);
 
   return {
     displayDateTime: `${year}.${month}.${day}. ${hour}:${minute}`,
@@ -180,7 +181,8 @@ function buildAppointmentDateTimeMeta(
   includeImagingNotice = true,
   explicitlyRequested = false,
 ): AppointmentDateTimeMeta | null {
-  const parsed = parseAppointmentDateTime(appointmentDateTime);
+  const durationMinutes = appointment.hygiene_treatment_id === 'itop-kontroll' ? 30 : APPOINTMENT_DURATION_MINUTES;
+  const parsed = parseAppointmentDateTime(appointmentDateTime, durationMinutes);
   if (!parsed) return null;
 
   const location = clinic.location;
@@ -808,7 +810,7 @@ export async function POST(req: Request) {
 
         const { data, error } = await supabase
           .from('appointments')
-          .select('name,nickname,email,phone,city,treatment,status,locale,confirmation_email_idempotency_key')
+          .select('name,nickname,email,phone,city,treatment,hygiene_treatment_id,status,locale,confirmation_email_idempotency_key')
           .eq('id', id)
           .maybeSingle();
 

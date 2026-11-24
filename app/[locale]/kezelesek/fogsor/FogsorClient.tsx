@@ -1,5 +1,6 @@
 'use client';
 import { patientGuideLinks } from '@/lib/patientGuideLinks';
+import ItopAftercareLink from '@/components/ItopAftercareLink';
 import TreatmentHero from '@/components/TreatmentHero';
 
 import React, { useState } from 'react';
@@ -194,6 +195,7 @@ export default function FogsorClient({ imageUrl }: { imageUrl: string }) {
         <Benefits />
         <ProcessSection />
         <AppointmentCTASection />
+        <ItopAftercareLink />
         <FAQSection />
       </main>
     </div>

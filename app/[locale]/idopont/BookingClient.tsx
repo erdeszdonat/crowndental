@@ -298,10 +298,10 @@ export function BookingForm({ directOffer, initialTreatmentSlug }: BookingFormPr
                 </select>
               </div>
               {isItopVisit(selectedTreatment) && <p className="rounded-xl bg-sky-50 p-4 text-slate-800">
-                <strong>{hygieneFee(safeLocale, itopFees[selectedTreatment])}</strong> · {itopCopy[safeLocale].bookingNote}
+                <strong>{hygieneFee(safeLocale, itopFees[selectedTreatment])}</strong> · {selectedTreatment === 'itop' ? itopCopy[safeLocale].first : itopCopy[safeLocale].control} {itopCopy[safeLocale].bookingNote}
               </p>}
-              {['fogszabalyozas', 'fogszabalyozo-kezeles'].includes(selectedTreatment) && <p className="text-sm text-slate-700">
-                {itopCopy[safeLocale].braces} · <Link className="font-semibold text-sky-800 underline" href={p + '/kezelesek/itop'}>{itopCopy[safeLocale].title}</Link>
+              {['fogszabalyozas', 'fogszabalyozo-kezeles', 'implantatum', 'koronak-hidak', 'fogsor'].includes(selectedTreatment) && <p className="text-sm text-slate-700">
+                {['fogszabalyozas', 'fogszabalyozo-kezeles'].includes(selectedTreatment) ? itopCopy[safeLocale].braces : itopCopy[safeLocale].restoration} · <Link className="font-semibold text-sky-800 underline" href={p + '/kezelesek/itop'}>{itopCopy[safeLocale].title}</Link>
               </p>}
               {upgrade && (
                 <section aria-labelledby="booking-upgrade-title" className="rounded-2xl border border-sky-200 bg-sky-50 p-4 sm:p-5">

@@ -1,5 +1,5 @@
 export const patientGuideLinks = {
-  itop: { slug: "fogmosas-fogszabalyzoval-itop-szajapolas", label: "Fogmosás fogszabályzóval – útmutató a bracketek körüli tisztításhoz" },
+  itop: { slug: "fogmosas-fogszabalyzoval-itop-szajapolas", label: "Szájápolás fogszabályzóval, híddal vagy implantátummal – iTOP-útmutató" },
   voucher: { slug: "fogaszati-ajandekutalvany-karacsonyra-milyen-osszeget-valasszak", label: "Milyen összegű karácsonyi fogászati utalványt válasszak?" },
   orthodontics: { slug: "fogszabalyozas-koronaval-vagy-implantatummal", label: "Fogszabályozás koronával vagy implantátummal" },
   dentures: { slug: "mozog-a-kiveheto-fogsor-alabeleles-vagy-uj-fogsor", label: "Mozog a fogsora? Mikor segíthet az alábélelés?" },

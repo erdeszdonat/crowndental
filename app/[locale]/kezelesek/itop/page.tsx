@@ -29,7 +29,7 @@ export default async function ItopPage({ params }: Props) {
     '@context': 'https://schema.org', '@type': 'Service', '@id': url + '#service', url,
     name: copy.title, description: copy.lead, areaServed: 'Esztergom',
     provider: { '@id': SITE_URL + '/#organization' },
-    offers: visits.map(visit => ({ '@type': 'Offer', name: visit.name, price: visit.price, priceCurrency: 'HUF', url: SITE_URL + visit.href })),
+    offers: visits.map(visit => ({ '@type': 'Offer', name: visit.name, description: visit.detail, price: visit.price, priceCurrency: 'HUF', url: SITE_URL + visit.href })),
   };
   return <main className="crown-page">
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(schema) }} />
@@ -58,6 +58,13 @@ export default async function ItopPage({ params }: Props) {
         <div className="mt-4 grid gap-3 font-semibold text-sky-800 underline underline-offset-4">
           {locale === 'hu' && <Link href={'/blog/' + patientGuideLinks.itop.slug}>{patientGuideLinks.itop.label}</Link>}
           <Link href={prefix + '/kezelesek/fogszabalyozas'}>{copy.ortho}</Link>
+        </div>
+      </section>
+      <section className="md:col-span-2"><h2 className="mb-4 text-2xl font-bold">{copy.restoration}</h2>
+        <p className="max-w-3xl leading-relaxed">{copy.restorationText}</p>
+        <div className="mt-4 flex flex-wrap gap-x-6 gap-y-3 font-semibold text-sky-800 underline underline-offset-4">
+          <Link href={prefix + '/kezelesek/koronak-hidak'}>{copy.crowns}</Link>
+          <Link href={prefix + '/kezelesek/implantatum'}>{copy.implants}</Link>
         </div>
       </section>
     </div>
