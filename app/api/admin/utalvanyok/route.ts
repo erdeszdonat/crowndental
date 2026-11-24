@@ -15,7 +15,8 @@ export async function POST(request: Request) {
   if (!access.context.id) return noStoreJson({}, { status: 403 });
   const input = await request.json().catch(() => null);
   const byCode = input?.action === 'lookup' || input?.action === 'redeem';
-  if (access.context.role !== 'admin' && !byCode) return noStoreJson({}, { status: 403 });
+  if (access.context.role !== 'admin' && !byCode)
+    return noStoreJson({}, { status: 403 });
   try {
     const db = staffServiceClient();
     if (input?.action === 'list') {
@@ -25,19 +26,30 @@ export async function POST(request: Request) {
       const result = await db
         .from('voucher_orders')
         .select(
-          'id,amount,delivery,issued_at,expiry,pickup_from,refunded,collected_at,redeemed_at,voucher_jobs(kind,state,issue,provider_id)',
+          'id,amount,delivery,issued_at,expiry,pickup_from,refunded,collected_at,redeemed_at,recipient_name,business_name:billing->>business_name,individual_name:billing->>individual_name,name:billing->>name,buyer_email:billing->>email,voucher_jobs(kind,state,issue,provider_id)',
         )
         .not('payment_id', 'is', null)
         .order('created_at', { ascending: false })
         .order('id')
-        .range(page * 30, page * 30 + 29);
+        .range(page * 30, page * 30 + 30);
       if (result.error) throw new Error();
-      return noStoreJson({ orders: result.data });
+      const orders = result.data
+        .slice(0, 30)
+        .map(({ business_name, individual_name, name, ...order }) => ({
+          ...order,
+          buyer_name: business_name || individual_name || name || null,
+        }));
+      return noStoreJson({ orders, hasMore: result.data.length > 30 });
     }
     if (
-      !['print', 'collect', 'lookup', 'redeem', 'delivery'].includes(
-        input?.action,
-      )
+      ![
+        'show_code',
+        'print',
+        'collect',
+        'lookup',
+        'redeem',
+        'delivery',
+      ].includes(input?.action)
     )
       return noStoreJson({}, { status: 400 });
     const value = byCode
@@ -48,9 +60,20 @@ export async function POST(request: Request) {
     if (
       byCode
         ? !/^[A-HJ-NP-Z2-9]{20}$/.test(value)
-        : !/^[a-f\d-]{36}$/i.test(value)
+        : !/^[a-f\d]{8}(?:-[a-f\d]{4}){3}-[a-f\d]{12}$/i.test(value)
     )
       return noStoreJson({}, { status: 400 });
+    if (input.action === 'show_code') {
+      const result = await db
+        .from('voucher_orders')
+        .select('code')
+        .eq('id', value)
+        .not('payment_id', 'is', null)
+        .maybeSingle();
+      if (result.error) throw new Error();
+      if (!result.data) return noStoreJson({}, { status: 404 });
+      return noStoreJson({ code: result.data.code });
+    }
     const { data: order, error } = await db
       .from('voucher_orders')
       .select('*')
