@@ -56,11 +56,8 @@ export default function StatsDashboard({ appointments, quotes, marketingSubscrib
   const [importResult, setImportResult] = useState<any>(null);
   const [importError, setImportError] = useState('');
 
-  const runResendImport = async (skipEvent: boolean) => {
-    const msg = skipEvent
-      ? `Csak FRISSÍTI a ${marketingSubscriberCount} igazolt feliratkozó kontaktadatait a Resendben, DE nem indít új automatizmust. Új email nem megy ki senkinek.\n\nFolytatod?`
-      : `Importálja mind a ${marketingSubscriberCount} igazolt feliratkozót a Resend audience-be ÉS elindítja rájuk a 2 éves automatizmust.\n\n⚠️ Akinél már fut korábbi sorozat, annál párhuzamos új sorozat indulhat.\n\nFolytatod?`;
-    const confirmed = window.confirm(msg);
+  const runResendImport = async () => {
+    const confirmed = window.confirm('Frissíted a marketinghozzájárulást adó feliratkozók adatait a Resendben? A művelet megőrzi a leiratkozásokat.');
     if (!confirmed) return;
     setImportLoading(true);
     setImportResult(null);
@@ -69,7 +66,6 @@ export default function StatsDashboard({ appointments, quotes, marketingSubscrib
       const res = await fetch('/api/admin/import-resend', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ skipEvent }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Ismeretlen hiba');
@@ -514,9 +510,9 @@ export default function StatsDashboard({ appointments, quotes, marketingSubscrib
             <Send className="w-5 h-5 text-white" />
           </div>
           <div className="flex-1">
-            <h3 className="font-black text-gray-900 text-sm uppercase tracking-wider">Resend Audience Import</h3>
+            <h3 className="font-black text-gray-900 text-sm uppercase tracking-wider">Resend-feliratkozók frissítése</h3>
             <p className="text-xs text-gray-500 mt-0.5">
-              Kizárólag a külön marketinghozzájárulást adó feliratkozókat kezeli. Leiratkozott vagy pusztán időpontot kérő páciens nem kerül exportba.
+              A kézi frissítés megőrzi a leiratkozásokat. Az üdvözlőlevél a webes feliratkozáskor indul.
             </p>
           </div>
         </div>
@@ -524,25 +520,14 @@ export default function StatsDashboard({ appointments, quotes, marketingSubscrib
         {!importResult && !importError && (
           <div className="flex flex-col md:flex-row gap-2">
             <button
-              onClick={() => runResendImport(true)}
+              onClick={runResendImport}
               disabled={importLoading || marketingSubscriberCount === 0}
               className="flex-1 flex items-center justify-center gap-2 px-5 py-3 bg-white border-2 border-sky-300 text-sky-700 font-black rounded-xl hover:bg-sky-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-sm"
             >
               {importLoading ? (
                 <><Loader2 className="w-4 h-4 animate-spin" /> Folyamatban...</>
               ) : (
-                <><Send className="w-4 h-4" /> Csak adat-frissítés (email nem megy ki)</>
-              )}
-            </button>
-            <button
-              onClick={() => runResendImport(false)}
-              disabled={importLoading || marketingSubscriberCount === 0}
-              className="flex-1 flex items-center justify-center gap-2 px-5 py-3 bg-gradient-to-r from-sky-600 to-indigo-600 text-white font-black rounded-xl hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all text-sm"
-            >
-              {importLoading ? (
-                <><Loader2 className="w-4 h-4 animate-spin" /> Folyamatban...</>
-              ) : (
-                <><Send className="w-4 h-4" /> Import + Automation indítás</>
+                <><Send className="w-4 h-4" /> Feliratkozói adatok frissítése</>
               )}
             </button>
           </div>

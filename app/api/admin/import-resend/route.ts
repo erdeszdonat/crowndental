@@ -12,8 +12,6 @@ export async function POST(req: Request) {
   if (access.error) return access.error;
 
   try {
-    const { skipEvent } = await req.json();
-
     const supabase = access.context.db;
     const { data, error } = await supabase
       .from('marketing_subscribers')
@@ -55,7 +53,7 @@ export async function POST(req: Request) {
           name: contact.name,
           nickname: contact.nickname,
           source: 'appointment',
-          skipEvent: !!skipEvent,
+          skipEvent: true,
           unsubscribeToken: unsubscribeToken || undefined,
         });
         if (syncResult.ok) imported++;
