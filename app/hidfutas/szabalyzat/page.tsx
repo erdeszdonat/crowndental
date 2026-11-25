@@ -9,7 +9,7 @@ export const metadata: Metadata = { title: 'Hídfutás 2026 – Játékszabályz
 
 export default function RulesPage() {
   return <main className={styles.page} id="crown-content">
-    <header className={styles.header}><Link href="/hidfutas"><Image src="/logo.webp" alt="Crown Dental – vissza a játékhoz" width={168} height={56} className={styles.logo} /></Link><span className={styles.eventTag}>HÍDFUTÁS 2026</span></header>
+    <header className={styles.header}><Link href="/hidfutas"><Image src="/brand/crown-dental.svg" alt="Crown Dental – vissza a játékhoz" width={72} height={72} className={styles.logo} /></Link><span className={styles.eventTag}>HÍDFUTÁS 2026</span></header>
     <article className={styles.legal}>
       <Link href="/hidfutas">← Vissza a nyereményjátékhoz</Link>
       <h1>Játékszabályzat<br />és adatkezelési tájékoztató</h1>

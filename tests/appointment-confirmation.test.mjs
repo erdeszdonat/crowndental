@@ -1,3 +1,4 @@
+import { withCrownSignature } from '../lib/emailBrand.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash, randomUUID } from 'node:crypto';
@@ -56,6 +57,7 @@ function environment({ role = 'admin', appointment = {}, readError = null, missi
   const json = (body, options) => Response.json(body, options);
   const clinics = load('lib/appointmentClinics.ts', { '@/lib/serverSecurity': { normalizeLocale } });
   const api = load('app/api/admin-action/route.ts', {
+    '@/lib/emailBrand.mjs': { withCrownSignature },
     testRole: role,
     'next/server': { NextResponse: { json } },
     'node:crypto': { createHash, randomUUID },
@@ -563,6 +565,7 @@ function adminDataEnvironment({ failedTable, role = 'admin' } = {}) {
   };
   const json = (body, options) => Response.json(body, options);
   const api = load('app/api/admin-data/route.ts', {
+    '@/lib/emailBrand.mjs': { withCrownSignature },
     testRole: role,
     '@supabase/supabase-js': {
       createClient: () => ({

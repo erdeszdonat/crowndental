@@ -181,6 +181,7 @@ const documents: Record<InformationalLegalLocale, Record<LegalDocument, LegalCon
         {
           title: '5. Typical storage periods and providers',
           items: [
+            'With analytics consent, crown_voucher_measurement is kept in the tab until a confirmed voucher purchase is measured, consent is withdrawn or the tab is closed. Google Analytics receives checkout starts, amounts paid in HUF and a separate transaction identifier to avoid counting a purchase twice.',
             '_ga and _ga_* (Google Analytics): commonly retained for up to two years, subject to the active Google configuration.',
             '_gcl_au and _gcl_aw_* (Google Ads): commonly retained for up to 90 days.',
             '_fbp (Meta): commonly retained for up to 90 days.',
@@ -396,6 +397,7 @@ const documents: Record<InformationalLegalLocale, Record<LegalDocument, LegalCon
         {
           title: '5. Typické doby uchovávania a poskytovatelia',
           items: [
+            'Po udelení analytického súhlasu sa crown_voucher_measurement uchováva v karte do zaznamenania zaplateného nákupu, odvolania súhlasu alebo zatvorenia karty. Google Analytics zaznamenáva začatie platby za poukážku, zaplatenú sumu v HUF a samostatný identifikátor na zabránenie dvojitému započítaniu nákupu.',
             '_ga a _ga_* (Google Analytics): bežne najviac dva roky podľa aktívnej konfigurácie Google.',
             '_gcl_au a _gcl_aw_* (Google Ads): bežne najviac 90 dní.',
             '_fbp (Meta): bežne najviac 90 dní.',

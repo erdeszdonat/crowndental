@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { ShieldCheck } from 'lucide-react';
 
@@ -41,7 +42,7 @@ export default function StaffAccessPage() {
   }
   return <main className="flex min-h-screen items-center justify-center bg-slate-950 px-4 py-12"><section className="w-full max-w-lg rounded-3xl bg-white p-7 shadow-2xl sm:p-10">
     <ShieldCheck className="mb-5 h-10 w-10 text-sky-600" aria-hidden="true" />
-    <p className="mb-2 text-xs font-bold uppercase tracking-widest text-sky-700">Crown Dental</p><h1 className="text-3xl font-bold text-slate-950">Hozzáférés beállítása</h1>
+    <Image src="/brand/crown-dental.svg" width="72" height="72" alt="Crown Dental" className="mb-4" /><h1 className="text-3xl font-bold text-slate-950">Hozzáférés beállítása</h1>
     <p className="mt-3 leading-relaxed text-slate-500">Adja meg a nevét és válasszon saját jelszót. A jelszó legalább 12 karakterből álljon.</p>
     {loading ? <p className="mt-6 text-slate-500" role="status">Hivatkozás ellenőrzése…</p> : email && <form onSubmit={submit} className="mt-7 space-y-5">
       <p className="break-words rounded-xl bg-slate-50 px-4 py-3 font-semibold text-slate-700">{email}</p>

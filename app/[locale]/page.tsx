@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { buildHomeMetadata, normalizeLocale, safeJsonLd } from '@/lib/seo';
 import { buildLocationSchema } from '@/lib/clinicSchema';
 import { getTreatmentImages } from '@/lib/treatmentImages';
+import { isVoucherSeasonOpen } from '@/lib/vouchers/storefront';
 
 // Sanity-managed marketing images rarely change. A weekly fallback prevents
 // traffic and crawlers from rewriting every locale's ISR entry each hour.
@@ -90,6 +91,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
   return <>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd({ '@context': 'https://schema.org', '@graph': [buildLocationSchema(locale, 0), buildLocationSchema(locale, 1)] }) }} />
-    <HomeClient sanityImages={sanityImages} />
+    <HomeClient sanityImages={sanityImages} voucherSeasonInitiallyOpen={isVoucherSeasonOpen()} />
   </>;
 }

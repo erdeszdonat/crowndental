@@ -59,7 +59,7 @@ export default function proxy(request: NextRequest) {
 
   if (isAdminHost) {
     // All APIs retain their own existing authentication and origin checks.
-    if (isAdminApi || path.startsWith('/_next/') || path.startsWith('/_vercel/') || ['/logo.webp', '/beauty-crown-logo.png', '/favicon.ico'].includes(path)) {
+    if (isAdminApi || path.startsWith('/_next/') || path.startsWith('/_vercel/') || ['/brand/crown-dental.svg', '/brand/crown-dental.jpg', '/apple-icon.png', '/logo.webp', '/beauty-crown-logo.png', '/favicon.ico'].includes(path)) {
       return NextResponse.next({ headers: { 'X-Robots-Tag': privateHeaders['X-Robots-Tag'] } });
     }
     if (path.startsWith('/api/') || path === '/sitemap.xml') return new NextResponse(null, { status: 404, headers: privateHeaders });

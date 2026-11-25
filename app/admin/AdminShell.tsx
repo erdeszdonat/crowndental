@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   BarChart3,
@@ -177,7 +178,7 @@ export default function AdminShell({
       <aside className={styles.sidebar} aria-label="Oldalsó menü">
         <Link href="/crown-dental" className={styles.brand}>
           <span className={styles.brandIcon}>
-            <Crown aria-hidden="true" />
+            <Image src="/brand/crown-dental.svg" alt="" width={40} height={40} />
           </span>
           <span>
             Crown Dental<small>Rendelői munkatér</small>
@@ -240,7 +241,7 @@ export default function AdminShell({
         <header className={styles.header}>
           <div className="flex min-w-0 items-center gap-3">
             <span className={styles.mobileBrand}>
-              <Crown aria-hidden="true" />
+              <Image src="/brand/crown-dental.svg" alt="" width={40} height={40} />
             </span>
             <div className="min-w-0">
               <p className={styles.headerEyebrow}>

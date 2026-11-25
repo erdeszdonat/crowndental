@@ -1,3 +1,4 @@
+import { withCrownSignature } from '../lib/emailBrand.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -8,6 +9,7 @@ function setup(env, fetch) {
   const module = { exports: {} };
   const source = ts.transpileModule(readFileSync(new URL('../lib/addToAudience.ts', import.meta.url), 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText;
   const imports = {
+    './emailBrand.mjs': { withCrownSignature },
     './names': { getContactNameParts: () => ({ firstName: 'Test', lastName: 'Contact' }) },
     './marketingTokens': { createUnsubscribeToken: () => 'a'.repeat(43) },
   };

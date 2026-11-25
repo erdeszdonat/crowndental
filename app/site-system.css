@@ -1,11 +1,16 @@
 /* Shared public-site system. Studio/admin never receive the crown-site scope. */
 .crown-site {
-  --crown-ink: #102b40;
-  --crown-blue: #086b94;
-  --crown-blue-hover: #075579;
-  --crown-muted: #526575;
-  --crown-surface: #f2f7f8;
-  --crown-line: #dce6eb;
+  --crown-ink: #111111;
+  --crown-accent: #87602e;
+  --crown-accent-hover: #604322;
+  --crown-blue: var(--crown-accent); /* Used by existing public page modules. */
+  --crown-blue-hover: var(--crown-accent-hover);
+  --crown-evergreen: #22463d;
+  --crown-muted: #625c54;
+  --crown-surface: #f8f5ee;
+  --crown-surface-strong: #f1ebdf;
+  --crown-input-line: #8d8071;
+  --crown-line: #e6ddce;
   --crown-radius: 1.25rem;
   color: var(--crown-ink);
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -13,10 +18,10 @@
 }
 .crown-site *, .crown-site *::before, .crown-site *::after { box-sizing: border-box; }
 .crown-site :is(a, button, input, textarea, select):focus-visible {
-  outline: 3px solid #0891b2;
+  outline: 3px solid var(--crown-accent); box-shadow: 0 0 0 7px white;
   outline-offset: 4px;
 }
-.crown-site label:has(input:focus-visible) { outline: 3px solid #0891b2; outline-offset: 3px; }
+.crown-site label:has(input:focus-visible) { outline: 3px solid var(--crown-accent); box-shadow: 0 0 0 7px white; outline-offset: 3px; }
 .crown-site :is(button, a, input, textarea) { -webkit-tap-highlight-color: transparent; }
 .crown-site section[id] { scroll-margin-top: 7rem; }
 .crown-container, .crown-page .container { width: 100%; max-width: 1248px; margin-inline: auto; padding-inline: clamp(1.25rem, 4vw, 3rem); }
@@ -29,31 +34,31 @@ main.crown-page > section:not(.crown-clinical-hero),
 /* Keep the restored banner outside crown-page typography/card overrides. */
 .crown-home-banner { font-family: Arial, Helvetica, sans-serif; }
 .crown-page :is(.rounded-3xl, .rounded-2xl) { border-radius: var(--crown-radius); }
-.crown-page .shadow-2xl { box-shadow: 0 16px 45px -24px rgb(16 43 64 / 25%); }
-.crown-page .shadow-xl { box-shadow: 0 10px 32px -20px rgb(16 43 64 / 20%); }
-.crown-eyebrow { color: var(--crown-blue); font-size: .7rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; margin-bottom: 1.25rem; line-height: 1.6; }
+.crown-page .shadow-2xl { box-shadow: 0 16px 45px -24px rgb(35 28 19 / 25%); }
+.crown-page .shadow-xl { box-shadow: 0 10px 32px -20px rgb(35 28 19 / 20%); }
+.crown-eyebrow { color: var(--crown-accent); font-size: .7rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; margin-bottom: 1.25rem; line-height: 1.6; }
 .crown-lead { font-size: clamp(1.05rem, 1.5vw, 1.2rem); line-height: 1.75; color: var(--crown-muted); max-width: 37rem; }
 .crown-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
 .crown-site .crown-button {
   display: inline-flex; align-items: center; justify-content: center; gap: .7rem; min-height: 52px;
-  padding: .9rem 1.35rem; border: 1px solid var(--crown-blue); border-radius: .8rem;
-  background: var(--crown-blue); color: white; font-size: .9rem; font-weight: 650; line-height: 1.4;
+  padding: .9rem 1.35rem; border: 1px solid var(--crown-accent); border-radius: .8rem;
+  background: var(--crown-accent); color: white; font-size: .9rem; font-weight: 650; line-height: 1.4;
   text-align: center; transition: background-color .18s, border-color .18s, box-shadow .18s;
   cursor: pointer; box-shadow: none;
 }
-.crown-site .crown-button:hover { background: var(--crown-blue-hover); border-color: var(--crown-blue-hover); }
+.crown-site .crown-button:hover { background: var(--crown-accent-hover); border-color: var(--crown-accent-hover); }
 .crown-site .crown-button-secondary { background: white; border-color: var(--crown-line); color: var(--crown-ink); }
-.crown-site .crown-button-secondary:hover { background: #eaf3f6; border-color: #aac5d2; }
+.crown-site .crown-button-secondary:hover { background: var(--crown-surface); border-color: var(--crown-input-line); }
 .crown-site .crown-button:disabled { opacity: .5; cursor: not-allowed; }
 .crown-button svg { flex: 0 0 auto; }
 .crown-back { display: inline-flex; align-items: center; gap: .6rem; font-size: .8rem; font-weight: 550; color: var(--crown-muted); margin-bottom: 2.5rem; }
-.crown-back:hover { color: var(--crown-blue); }
+.crown-back:hover { color: var(--crown-accent); }
 .crown-home-hero { background: var(--crown-surface); padding-block: 9rem 4.5rem; border-bottom: 1px solid var(--crown-line); }
 .crown-hero-grid { display: grid; grid-template-columns: 1.08fr 1fr; align-items: center; gap: clamp(2rem, 5vw, 5rem); }
 .crown-home-hero h1 { font-size: clamp(2.65rem, 4.8vw, 4.4rem); line-height: 1.07; margin-bottom: 1.5rem; font-weight: 650; }
-.crown-home-hero h1 span { display: block; color: var(--crown-blue); }
+.crown-home-hero h1 span { display: block; color: var(--crown-accent); }
 .crown-hero-visual { min-width: 0; position: relative; }
-.crown-hero-photo { aspect-ratio: 1.13; border-radius: 1.5rem; background: #dfebef; overflow: hidden; position: relative; }
+.crown-hero-photo { aspect-ratio: 1.13; border-radius: 1.5rem; background: var(--crown-surface-strong); overflow: hidden; position: relative; }
 .crown-hero-photo img { width: 100%; height: 100%; object-fit: cover; }
 .crown-home-photo { aspect-ratio: 1; border-radius: 1.5rem 1.5rem 5rem 1.5rem; }
 .crown-image-caption { display: flex; align-items: center; gap: .8rem; padding: 1.1rem .2rem 0; font-size: .82rem; color: var(--crown-muted); }
@@ -64,10 +69,10 @@ main.crown-page > section:not(.crown-clinical-hero),
 .crown-clinical-hero h1 { font-size: clamp(2.2rem, 4vw, 3.6rem); line-height: 1.12; margin-bottom: 1.4rem; overflow-wrap: anywhere; }
 .crown-price-note { background: white; border: 1px solid var(--crown-line); border-radius: 1rem; padding: 1.2rem 1.4rem; margin: -2rem 1.25rem 0; position: relative; display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
 .crown-price-note span { color: var(--crown-muted); font-size: .82rem; }
-.crown-price-note strong { font-size: 1.3rem; color: var(--crown-blue); }
+.crown-price-note strong { font-size: 1.3rem; color: var(--crown-accent); }
 .crown-treatment-card { display: flex; flex-direction: column; height: 100%; border: 1px solid var(--crown-line); border-radius: var(--crown-radius); overflow: hidden; background: white; transition: border-color .2s, box-shadow .2s; }
-.crown-treatment-card:hover { border-color: #8eb9cb; box-shadow: 0 10px 30px -20px rgb(16 43 64 / 35%); }
-.crown-treatment-image { position: relative; aspect-ratio: 1.7; background: #e4eef1; overflow: hidden; }
+.crown-treatment-card:hover { border-color: var(--crown-accent); box-shadow: 0 10px 30px -20px rgb(35 28 19 / 35%); }
+.crown-treatment-image { position: relative; aspect-ratio: 1.7; background: var(--crown-surface-strong); overflow: hidden; }
 .crown-treatment-image img { width: 100%; height: 100%; object-fit: cover; transition: transform .35s ease; }
 @media (hover:hover) { .crown-treatment-card:hover img { transform: scale(1.025); } }
 .crown-card-arrow { display: grid; place-items: center; position: absolute; right: 1rem; bottom: 1rem; height: 40px; width: 40px; border-radius: 50%; color: var(--crown-ink); background: white; }
@@ -75,7 +80,7 @@ main.crown-page > section:not(.crown-clinical-hero),
 .crown-treatment-body h3 { font-size: 1.3rem; line-height: 1.25; margin-bottom: .7rem; }
 .crown-treatment-body p { color: var(--crown-muted); font-size: .92rem; line-height: 1.65; margin-bottom: 1.5rem; }
 .crown-treatment-bottom { display: flex; flex-direction: column; gap: .8rem; margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--crown-line); }
-.crown-treatment-bottom strong { color: var(--crown-blue); font-size: 1.15rem; }
+.crown-treatment-bottom strong { color: var(--crown-accent); font-size: 1.15rem; }
 .crown-treatment-bottom span { display: flex; align-items: center; justify-content: space-between; gap: .5rem; font-size: .8rem; font-weight: 650; }
 .crown-section-heading { max-width: 45rem; margin: 0 auto 3rem; text-align: center; }
 .crown-section-heading h1 { font-size: clamp(2.4rem, 4.5vw, 4rem); line-height: 1.1; margin-bottom: 1.5rem; }
@@ -92,18 +97,18 @@ main.crown-page > section:not(.crown-clinical-hero),
 .crown-booking-progress { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; padding-bottom: 1.5rem; margin-bottom: 1.75rem; border-bottom: 1px solid var(--crown-line); }
 .crown-booking-progress li { display: flex; align-items: center; gap: .65rem; color: var(--crown-muted); font-size: .8rem; font-weight: 600; }
 .crown-booking-progress li > span { display: grid; place-items: center; flex-shrink: 0; width: 32px; height: 32px; border: 1px solid var(--crown-line); border-radius: 50%; }
-.crown-booking-progress li[aria-current="step"] { color: var(--crown-blue); }
-.crown-booking-progress li[aria-current="step"] > span { background: var(--crown-blue); color: white; border-color: var(--crown-blue); }
+.crown-booking-progress li[aria-current="step"] { color: var(--crown-accent); }
+.crown-booking-progress li[aria-current="step"] > span { background: var(--crown-accent); color: white; border-color: var(--crown-accent); }
 .crown-field-label { display: block; font-size: .82rem; font-weight: 600; color: var(--crown-ink); margin-bottom: .45rem; }
-.crown-input { width: 100%; min-height: 50px; padding: .8rem 1rem; background: #fafcfc; border: 1px solid #c3d4de; border-radius: .65rem; font-size: 1rem; color: var(--crown-ink); }
-.crown-input:focus { border-color: var(--crown-blue); background: white; }
-.crown-booking-help { padding: 2rem; border-radius: var(--crown-radius); background: #e7f0f3; }
+.crown-input { width: 100%; min-height: 50px; padding: .8rem 1rem; background: #fcfbf8; border: 1px solid var(--crown-input-line); border-radius: .65rem; font-size: 1rem; color: var(--crown-ink); }
+.crown-input:focus { border-color: var(--crown-accent); background: white; }
+.crown-booking-help { padding: 2rem; border-radius: var(--crown-radius); background: var(--crown-surface-strong); }
 .crown-booking-help h2 { font-size: 1.35rem; margin-bottom: 1.5rem; }
 .crown-booking-help ol { counter-reset: booking; display: grid; gap: 1.5rem; margin-bottom: 2rem; }
 .crown-booking-help li { display: flex; align-items: start; gap: .8rem; font-size: .9rem; line-height: 1.65; }
-.crown-booking-help li::before { counter-increment: booking; content: counter(booking, decimal-leading-zero); color: var(--crown-blue); font-size: .75rem; font-weight: 700; padding-top: .2rem; }
+.crown-booking-help li::before { counter-increment: booking; content: counter(booking, decimal-leading-zero); color: var(--crown-accent); font-size: .75rem; font-weight: 700; padding-top: .2rem; }
 .crown-booking-note { color: var(--crown-muted); font-size: .82rem; line-height: 1.7; }
-.crown-booking-contact { padding-top: 1.5rem; margin-top: 1.5rem; border-top: 1px solid #ccdee6; }
+.crown-booking-contact { padding-top: 1.5rem; margin-top: 1.5rem; border-top: 1px solid var(--crown-line); }
 .crown-booking-contact a { display: inline-flex; align-items: center; gap: .6rem; font-size: 1.3rem; font-weight: 650; margin-top: .6rem; }
 .crown-facts-grid > div { padding: 1.5rem .8rem; min-width: 0; }
 .crown-facts-grid > div > div { overflow-wrap: anywhere; }
@@ -157,9 +162,8 @@ main.crown-page > section:not(.crown-clinical-hero),
 
 /* Paired clinic calls share one order and styling across every contact surface. */
 .crown-site .crown-clinic-phones { display: inline-flex; flex-direction: column; gap: .45rem; max-width: 100%; vertical-align: middle; text-align: left; }
-.crown-site .crown-clinic-phones > a { display: flex; align-items: center; justify-content: flex-start; gap: .7rem; min-height: 48px; margin: 0; padding: .55rem .9rem; border: 1px solid #b9d5e3; border-radius: .75rem; background: #f0f9ff; color: #075985; font-size: 1rem; font-weight: 700; line-height: 1.2; text-decoration: none; transition: background .15s ease; }
-.crown-site .crown-clinic-phones > a:hover { background: #e0f2fe; }
-.crown-site .crown-clinic-phones > a:focus-visible { outline: 3px solid #38bdf8; outline-offset: 3px; }
+.crown-site .crown-clinic-phones > a { display: flex; align-items: center; justify-content: flex-start; gap: .7rem; min-height: 48px; margin: 0; padding: .55rem .9rem; border: 1px solid var(--crown-line); border-radius: .75rem; background: var(--crown-surface); color: var(--crown-accent); font-size: 1rem; font-weight: 700; line-height: 1.2; text-decoration: none; transition: background .15s ease; }
+.crown-site .crown-clinic-phones > a:hover { background: var(--crown-surface-strong); }
 .crown-site .crown-clinic-phones > a > svg { flex-shrink: 0; }
 .crown-site .crown-clinic-phones__details { display: flex; flex-direction: column; gap: .15rem; }
 .crown-site .crown-clinic-phones__name { font-size: .68rem; font-weight: 600; letter-spacing: .025em; }
@@ -170,7 +174,7 @@ main.crown-page > section:not(.crown-clinical-hero),
 @media (min-width: 768px) {
   .crown-site .crown-header-phones { display: inline-flex; gap: 0; margin-right: .5rem; }
   .crown-site .crown-header-phones > a { min-height: 34px; border: 0; border-radius: .3rem; padding: .3rem .4rem; background: transparent; font-size: .88rem; }
-  .crown-site .crown-header-phones > a:hover { background: #f0f9ff; }
+  .crown-site .crown-header-phones > a:hover { background: var(--crown-surface); }
   .crown-site .crown-header-phones .crown-clinic-phones__details { flex-direction: row; align-items: center; justify-content: space-between; gap: .65rem; width: 220px; }
 }
 @media (max-width: 767px) {

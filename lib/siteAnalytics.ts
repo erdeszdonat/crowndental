@@ -1,8 +1,10 @@
+import { isVoucherAmount } from './vouchers/amount';
 import { NFC_CARDS } from './nfcCards';
 import { CONSENT_STORAGE_KEY, parseStoredConsent, type StoredConsent } from './cookieConsent';
 
 export const GOOGLE_TAG_ID = 'G-9BS3P1DC4T';
 export const ANALYTICS_READY_EVENT = 'crown-analytics-ready';
+export const VOUCHER_RECEIPT_KEY = 'crown_voucher_measurement';
 const SOURCE_KEY = 'crown_booking_source_v1';
 const TREATMENT_SLUGS = new Set(['itop', 'air-polishing', 'premium-biofilm-terapia', 'allapotfelmeres', 'esztetikai-fogaszat', 'fogfeherites', 'foghuzas', 'fogsor', 'fogszabalyozas', 'fogtechnikai-megoldasok', 'gockutatas', 'gyerekfogaszat', 'gyokerkezeles', 'implantatum', 'koronak-hidak', 'szajsebeszet', 'direkt-hej', 'indirekt-hej']);
 let currentConsent: StoredConsent | null | undefined;
@@ -26,7 +28,10 @@ export function setAnalyticsConsent(consent: StoredConsent | null) {
   if (typeof window.dispatchEvent === 'function') window.dispatchEvent(new Event('crown-measurement-consent'));
   window['ga-disable-G-9BS3P1DC4T'] = !consent?.analytics;
   if (!consent?.analytics) {
-    try { window.sessionStorage.removeItem(SOURCE_KEY); } catch { /* Storage is optional. */ }
+    try {
+      window.sessionStorage.removeItem(SOURCE_KEY);
+      window.sessionStorage.removeItem(VOUCHER_RECEIPT_KEY);
+    } catch { /* Storage is optional. */ }
   }
 }
 
@@ -46,6 +51,7 @@ export function measurementPage(pathname: string) {
   if (path === '/') return 'home';
   if (NFC_CARDS.some(card => path === `/kartya/${card.id}`)) return path.slice(1);
   if (path === '/kezelesek' || (path.startsWith('/kezelesek/') && TREATMENT_SLUGS.has(path.slice(11)))) return path.slice(1);
+  if (path === '/karacsonyi-utalvanyok') return 'karacsonyi-utalvanyok';
   if (path === '/idopont') return 'booking';
   if (path === '/idopont/sikeres') return 'booking_success';
   if (path === '/blog' || path.startsWith('/blog/')) return 'blog';
@@ -94,6 +100,22 @@ export function trackSiteEvent(event: SiteEvent, locale: string, options: EventO
       ...(options.placement ? { cta_location: options.placement } : {}),
       ...(options.error ? { error_type: options.error } : {}),
       // No names, contact details, treatment selections, free text or booking IDs.
+    });
+    return true;
+  } catch { return false; }
+}
+
+
+export function trackVoucherEvent(event: 'begin_checkout' | 'purchase', value: number, transaction?: string) {
+  if (!canMeasure() || !isVoucherAmount(value)) return false;
+  if (event === 'purchase' && (typeof transaction !== 'string' || !/^[a-f0-9]{32}$/.test(transaction))) return false;
+  try {
+    ensureGtag()('event', event, {
+      send_to: GOOGLE_TAG_ID,
+      currency: 'HUF',
+      value,
+      items: [{ item_id: 'gift_voucher', item_name: 'Crown Dental ajándékutalvány', price: value, quantity: 1 }],
+      ...(event === 'purchase' ? { transaction_id: transaction } : {}),
     });
     return true;
   } catch { return false; }

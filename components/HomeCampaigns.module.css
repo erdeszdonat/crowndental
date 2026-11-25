@@ -1,0 +1,51 @@
+.voucher {
+  background: #f6f1e7;
+  border-block: 1px solid #dfd5be;
+  color: var(--crown-ink);
+}
+.offer {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 1.1rem clamp(1.25rem, 4vw, 3rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(1rem, 4vw, 3rem);
+  text-decoration: none;
+}
+.offer:focus-visible { outline-offset: -5px; }
+.offerCopy { display: grid; gap: .35rem; }
+.offerCopy strong {
+  font: 500 clamp(1.45rem, 3vw, 2.35rem)/1.13 Georgia, serif;
+  letter-spacing: -.025em;
+  text-wrap: balance;
+}
+.offerCopy > span { font-size: .89rem; line-height: 1.45; }
+.offerCopy .buy { display: inline-flex; align-items: center; gap: .5rem; margin-top: .2rem; color: var(--crown-evergreen); font-weight: 700; }
+.offer:hover .buy { text-decoration: underline; text-underline-offset: .22em; }
+.voucherImage {
+  width: clamp(7rem, 19vw, 12.2rem);
+  height: auto;
+  flex: none;
+  border: 1px solid #d3c8b0;
+  box-shadow: 0 5px 12px #5d4f361f;
+  transform: rotate(2deg);
+}
+.hygiene { background: var(--crown-surface); border-block: 1px solid var(--crown-line); padding: clamp(2.6rem, 6vw, 5rem) 0; }
+.hygiene h2 { color: var(--crown-ink); font-size: clamp(1.9rem, 3.5vw, 3.1rem); line-height: 1.1; font-weight: 650; letter-spacing: -.035em; }
+.treatments { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 1.8rem; gap: clamp(1.25rem, 4vw, 3rem); }
+.treatment { display: flex; flex-direction: column; border-top: 1px solid #cabb9e; padding: 1.1rem 0 .4rem; color: var(--crown-ink); }
+.treatment h3 { font-size: 1.2rem; line-height: 1.3; font-weight: 650; }
+.treatment p { line-height: 1.55; margin: .55rem 0 1.1rem; color: var(--crown-muted); }
+.treatment span { display: flex; align-items: center; justify-content: space-between; gap: .5rem; margin-top: auto; color: var(--crown-accent); font-size: .91rem; font-weight: 700; }
+.treatment:hover h3 { text-decoration: underline; text-underline-offset: .2em; }
+.scaling { display: inline-flex; min-height: 44px; align-items: center; gap: .6rem; margin-top: 1.15rem; color: var(--crown-accent); font-size: .87rem; text-decoration: underline; text-underline-offset: .2em; }
+@media (max-width: 700px) {
+  .treatments { grid-template-columns: 1fr; gap: 1rem; }
+  .treatment p { margin: .4rem 0 .7rem; }
+}
+@media (max-width: 460px) {
+  .offer { gap: .8rem; padding-block: .95rem; }
+  .offerCopy > span { font-size: .78rem; }
+  .voucherImage { width: 23vw; }
+}

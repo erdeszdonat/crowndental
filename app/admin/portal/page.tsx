@@ -13,7 +13,7 @@ export default function AdminPortal() {
         <p className={styles.intro}>A belépéshez válasszon márkát.</p>
         <div className={styles.cards}>
           <a className={`${styles.card} ${styles.dental}`} href="/crown-dental" aria-label="Crown Dental admin – bejelentkezés">
-            <div className={styles.logo}><Image src="/logo.webp" alt="Crown Dental" width={280} height={190} priority className={styles.dentalLogo} /></div>
+            <div className={styles.logo}><Image src="/brand/crown-dental.svg" alt="Crown Dental" width={190} height={190} priority className={styles.dentalLogo} /></div>
             <span className={styles.cardName}>Crown Dental</span>
             <span className={styles.description}>Fogászat · rendelői adminisztráció</span>
             <span className={styles.action}>Bejelentkezés <span aria-hidden="true">↗</span></span>

@@ -1,3 +1,4 @@
+import { withCrownSignature } from '@/lib/emailBrand.mjs';
 import { NextResponse } from 'next/server';
 import { createHash, randomUUID } from 'node:crypto';
 import { getPreferredGreetingName } from '@/lib/names';
@@ -103,7 +104,7 @@ async function sendResendEmail(
         'Content-Type': 'application/json',
         'Idempotency-Key': idempotencyKey,
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify({ ...payload, html: withCrownSignature(payload.html) }),
     });
   } catch {
     throw new ResendSendError(null, 'network_error');

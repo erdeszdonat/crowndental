@@ -32,6 +32,9 @@ test('traffic attribution distinguishes paid, organic, social and missing referr
   assert.equal(rules.trafficSource('','https://www.crowndental.hu/idopont').source,'direct');
   assert.equal(rules.trafficSource('','https://unknown.example/private').source,'other-referral');
   const r=rules.trafficSource('?utm_source=facebook&utm_medium=paid_social&utm_campaign=primas-nyitas&email=secret@example.com','');
+  assert.deepEqual({...rules.trafficSource('?gclid=private&gad_campaignid=24344648088','')}, {source:'google',medium:'cpc',campaign:'s-fogszabi-esztergom'});
+  assert.equal(rules.trafficSource('?gclid=private&gad_campaignid=9999999999','').campaign,'');
+  assert.equal(rules.trafficSource('?utm_source=facebook&gad_campaignid=24344648088','').campaign,'');
   assert.equal(r.campaign,'primas-nyitas'); assert.equal(JSON.stringify(r).includes('secret'),false);
   assert.equal(rules.safeTag('email@example.com'),''); assert.equal(rules.safeTag('36706042500'),'');
 });

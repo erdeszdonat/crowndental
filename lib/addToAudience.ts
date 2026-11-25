@@ -1,3 +1,4 @@
+import { withCrownSignature } from './emailBrand.mjs';
 import { getContactNameParts } from './names';
 import { createUnsubscribeToken } from './marketingTokens';
 
@@ -40,7 +41,7 @@ export async function sendTransactionalEmail(
         'Content-Type': 'application/json',
         'Idempotency-Key': idempotencyKey,
       },
-      body: JSON.stringify(email),
+      body: JSON.stringify({ ...email, html: withCrownSignature(email.html) }),
     });
     const responseBody = await response.json().catch(() => null) as { id?: unknown } | null;
     if (!response.ok) {

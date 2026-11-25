@@ -6,7 +6,9 @@ import { sanityImageLoader } from '@/lib/sanityImage';
 import { getVeneerLabels } from '@/lib/veneerI18n';
 import content from '@/lib/openingAnnouncement.json';
 
-const servicePaths = ['fogszabalyozas', 'allapotfelmeres', 'esztetikai-fogaszat', 'fogfeherites'] as const;
+export const openingServicePaths = [
+  '/kezelesek/fogszabalyozas', '/kezelesek/allapotfelmeres', '/#dentalhigienia', '/kezelesek/fogfeherites',
+] as const;
 
 export default function OpeningAnnouncement({ locale, compact = false, imageUrl }: { locale: string; compact?: boolean; imageUrl?: string }) {
   const language = locale === 'en' || locale === 'sk' || locale === 'de' ? locale : 'hu';
@@ -14,9 +16,9 @@ export default function OpeningAnnouncement({ locale, compact = false, imageUrl 
   const prefix = language === 'hu' ? '' : `/${language}`;
   const veneers = getVeneerLabels(language);
   const treatmentLinks = [
-    ...copy.services.map((label, index) => ({ label, slug: servicePaths[index] })),
-    { label: veneers.directName, slug: 'direkt-hej' },
-    { label: veneers.indirectName, slug: 'indirekt-hej' },
+    ...copy.services.map((label, index) => ({ label, path: openingServicePaths[index] })),
+    { label: veneers.directName, path: '/kezelesek/direkt-hej' },
+    { label: veneers.indirectName, path: '/kezelesek/indirekt-hej' },
   ];
   if (imageUrl && !compact) return (
     <section aria-label={copy.bannerTitle} className="bg-white px-4 py-10 sm:px-6 sm:py-16" data-cta-location="primas_opening">
@@ -26,9 +28,9 @@ export default function OpeningAnnouncement({ locale, compact = false, imageUrl 
             <p className="mb-6 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-sky-300"><span className="h-2 w-2 rounded-full bg-emerald-300" aria-hidden="true" />{copy.tag}</p>
             <h2 className="text-3xl font-black leading-tight tracking-tight sm:text-4xl">{copy.bannerTitle}</h2>
             <ul className="my-6 grid gap-2 text-sm text-slate-200 sm:grid-cols-2">
-              {treatmentLinks.map(({ label, slug }) => (
-                <li key={slug}>
-                  <Link href={`${prefix}/kezelesek/${slug}`} className="flex min-h-11 items-center gap-2 rounded-md underline decoration-white/30 underline-offset-4 transition-colors hover:text-sky-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300">
+              {treatmentLinks.map(({ label, path }) => (
+                <li key={path}>
+                  <Link href={prefix + path} className="flex min-h-11 items-center gap-2 rounded-md underline decoration-white/30 underline-offset-4 transition-colors hover:text-sky-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300">
                     <span className="text-sky-300" aria-hidden="true">✓</span>{label}
                   </Link>
                 </li>
