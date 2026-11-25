@@ -1,6 +1,7 @@
 import { staffServiceClient } from '@/lib/staffAuth';
 import { enforceRateLimit, noStoreJson } from '@/lib/serverSecurity';
 import { isDeepStrictEqual } from 'node:util';
+import { isVoucherAmount } from '@/lib/vouchers/amount';
 import { voucherShopPath } from '@/lib/vouchers/storefront';
 import { parseVoucherBilling, voucherValidationMessage } from '@/lib/vouchers/billing.mjs';
 import voucher from '@/prototypes/karacsonyi-utalvanyok/voucher';
@@ -25,10 +26,7 @@ export async function POST(req: Request) {
   const input = await req.json().catch(() => null);
   const { amount, delivery, attempt } = input ?? {};
   if (
-    !Number.isInteger(amount) ||
-    amount < 10000 ||
-    amount > 500000 ||
-    amount % 5000 ||
+    !isVoucherAmount(amount) ||
     !['pickup', 'email'].includes(delivery) ||
     typeof attempt !== 'string' ||
     !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
@@ -81,6 +79,13 @@ export async function POST(req: Request) {
           {
             mode: 'payment',
             ui_mode: 'hosted_page',
+            locale,
+            branding_settings: {
+              display_name: 'Crown Dental',
+              logo: { type: 'url', url: publicOrigin + '/brand/crown-dental.jpg' },
+              icon: { type: 'url', url: publicOrigin + '/brand/crown-dental.jpg' },
+              button_color: '#174d40',
+            },
             billing_address_collection: 'auto',
             phone_number_collection: { enabled: false },
             automatic_tax: { enabled: false },
@@ -126,11 +131,11 @@ export async function POST(req: Request) {
     }
     if (session.status === 'complete')
       return noStoreJson({
-        url: publicOrigin + voucherPath + '?visszateres=1',
+        url: publicOrigin + voucherPath + '?visszateres=1', receipt: session.id,
       });
     if (session.status !== 'open' || !session.url)
       return noStoreJson({}, { status: 409 });
-    return noStoreJson({ url: session.url });
+    return noStoreJson({ url: session.url, receipt: session.id });
   } catch {
     return noStoreJson({}, { status: 503 });
   }

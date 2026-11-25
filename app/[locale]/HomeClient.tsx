@@ -4,9 +4,10 @@ import QuoteComparison from '@/components/QuoteComparison';
 import { quoteResultCopy } from '@/lib/quoteCopy';
 import type { QuoteResult } from '@/lib/quotePricing';
 import ClinicPhoneLinks from '@/components/ClinicPhoneLinks';
-import { isVoucherLocale, voucherShopNames, voucherShopPath } from '@/lib/vouchers/storefront';
+import { useVoucherSeason } from '@/lib/vouchers/useVoucherSeason';
+import { ChristmasVoucherBanner, HomeHygiene } from '@/components/HomeCampaigns';
 import openingCopy from '@/lib/openingAnnouncement.json';
-import OpeningAnnouncement from '@/components/OpeningAnnouncement';
+import OpeningAnnouncement, { openingServicePaths } from '@/components/OpeningAnnouncement';
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
@@ -104,7 +105,7 @@ function buildPDF(result: QuoteAnalysisResult, name: string, phone: string, emai
     ? range(result.savingsMin, result.savingsMax)
     : result.requiresManualReview ? copy.manual : copy.noSaving;
 
-  return `<!doctype html><html lang="${locale}"><head><meta charset="utf-8"><title>${copy.title}</title><style>@page{size:A4;margin:16mm 18mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#0f172a;margin:0}.header{display:flex;justify-content:space-between;border-bottom:3px solid #0284c7;padding-bottom:14px}.brand{font-size:26px;font-weight:900;color:#0369a1}.meta{font-size:11px;color:#64748b;text-align:right}h1{font-size:22px;margin:24px 0 6px}.patient{font-size:12px;color:#64748b}.summary{background:#f0f9ff;border:1px solid #bae6fd;border-radius:12px;padding:18px;text-align:center;margin:22px 0}.summary strong{display:block;font-size:22px;color:#0369a1;margin-top:5px}table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:10px;border-bottom:1px solid #e2e8f0;text-align:left}.number{text-align:right}.crown{color:#0369a1;font-weight:800}tfoot td{border-top:2px solid #0284c7;font-weight:900}.notice{margin-top:24px;padding:14px;border:1px solid #fbbf24;background:#fffbeb;border-radius:10px;font-size:11px;line-height:1.55;color:#78350f}</style></head><body><div class="header"><div><div class="brand">CROWN DENTAL</div><div class="meta">Praxis és Labor · Esztergom · Budapest</div></div><div class="meta">${date}<br>Prímás Sziget: +36 70 604 2500<br>Petőfi utca: +36 30 589 2468</div></div><h1>${resultCopy.title}</h1><div class="patient">${patientLine}</div><div class="summary">${resultCopy.saving}<strong>${summary}</strong></div><table><thead><tr><th>${copy.treatment}</th><th class="number">${copy.other}</th><th class="number">${copy.crown}</th></tr></thead><tbody>${rows}</tbody><tfoot><tr><td>${resultCopy.total}</td><td class="number">${money(result.competitorTotal)}</td><td class="number crown">${range(result.ourTotalMin, result.ourTotalMax)}</td></tr></tfoot></table><div class="notice">${resultCopy.disclaimer}<br><br>${resultCopy.details}</div><p><a href="https://www.crowndental.hu${locale === 'hu' ? '' : `/${locale}`}/idopont">${resultCopy.book}</a></p></body></html>`;
+  return `<!doctype html><html lang="${locale}"><head><meta charset="utf-8"><title>${copy.title}</title><style>@page{size:A4;margin:16mm 18mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#0f172a;margin:0}.header{display:flex;justify-content:space-between;border-bottom:3px solid #0284c7;padding-bottom:14px}.brand{display:block;max-width:175px;height:64px;object-fit:contain;object-position:left center;margin-bottom:6px}.meta{font-size:11px;color:#64748b;text-align:right}h1{font-size:22px;margin:24px 0 6px}.patient{font-size:12px;color:#64748b}.summary{background:#f0f9ff;border:1px solid #bae6fd;border-radius:12px;padding:18px;text-align:center;margin:22px 0}.summary strong{display:block;font-size:22px;color:#0369a1;margin-top:5px}table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:10px;border-bottom:1px solid #e2e8f0;text-align:left}.number{text-align:right}.crown{color:#0369a1;font-weight:800}tfoot td{border-top:2px solid #0284c7;font-weight:900}.notice{margin-top:24px;padding:14px;border:1px solid #fbbf24;background:#fffbeb;border-radius:10px;font-size:11px;line-height:1.55;color:#78350f}</style></head><body><div class="header"><div><img class="brand" src="/brand/crown-dental.svg" alt="Crown Dental"><div class="meta">Praxis és Labor · Esztergom · Budapest</div></div><div class="meta">${date}<br>Prímás Sziget: +36 70 604 2500<br>Petőfi utca: +36 30 589 2468</div></div><h1>${resultCopy.title}</h1><div class="patient">${patientLine}</div><div class="summary">${resultCopy.saving}<strong>${summary}</strong></div><table><thead><tr><th>${copy.treatment}</th><th class="number">${copy.other}</th><th class="number">${copy.crown}</th></tr></thead><tbody>${rows}</tbody><tfoot><tr><td>${resultCopy.total}</td><td class="number">${money(result.competitorTotal)}</td><td class="number crown">${range(result.ourTotalMin, result.ourTotalMax)}</td></tr></tfoot></table><div class="notice">${resultCopy.disclaimer}<br><br>${resultCopy.details}</div><p><a href="https://www.crowndental.hu${locale === 'hu' ? '' : `/${locale}`}/idopont">${resultCopy.book}</a></p></body></html>`;
 }
 
 // ─── Original three-slide homepage banners ─────────────────────────────────────
@@ -158,7 +159,7 @@ function HeroSlider({ images }: { images: HomeSanityImages['hero'] }) {
         if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setIsInteractionPaused(false);
       }}
       data-cta-location="home_hero"
-      className="crown-home-banner relative mt-20 h-[90svh] min-h-[700px] w-full overflow-clip flex items-center justify-center bg-gray-950"
+      className="crown-home-banner relative h-[90svh] min-h-[700px] w-full overflow-clip flex items-center justify-center bg-gray-950"
     >
       <motion.div style={prefersReducedMotion ? undefined : { y:imgY }} className="absolute inset-0 z-0 will-change-transform">
         <AnimatePresence mode="wait" initial={false}>
@@ -200,7 +201,7 @@ function HeroSlider({ images }: { images: HomeSanityImages['hero'] }) {
               </h2>
               <p className={current === 0 ? "mb-5 flex items-center gap-3 text-lg font-bold text-emerald-200 sm:text-2xl" : "text-lg sm:text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed max-w-2xl font-light"}>{current === 0 && <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-emerald-300" aria-hidden="true" />}{slideData[current]?.subtitle}</p>
               {current === 0 && <>
-                <ul className="mb-5 flex max-w-xl flex-wrap gap-2">{campaign.services.map(service => <li key={service} className="rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-sm font-semibold text-white backdrop-blur-sm">{service}</li>)}</ul>
+                <ul className="mb-5 flex max-w-xl flex-wrap gap-2">{campaign.services.map((service, index) => <li key={service}><Link href={p + openingServicePaths[index]} className="inline-flex min-h-11 items-center rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-sm font-semibold text-white backdrop-blur-sm hover:bg-white/20">{service}</Link></li>)}</ul>
                 <p className="mb-7 flex items-start gap-2 text-sm text-slate-300"><MapPin className="h-4 w-4 shrink-0" aria-hidden="true" />2500 Esztergom, Helischer József út 6.</p>
               </>}
               <div className="flex flex-col sm:flex-row gap-4">
@@ -769,16 +770,25 @@ function QuoteAnalyzerSection() {
     if (!result) return;
     const html = buildPDF(result, formData.name, formData.phone, formData.email, formData.nickname, safeLocale);
     const isApple = /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1)||/^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    if (isApple) {
-      const w = window.open('','_blank');
-      if (w) { w.document.open(); w.document.write(html); w.document.close(); setTimeout(()=>{w.focus();w.print();},500); }
-    } else {
-      const iframe = document.createElement('iframe');
-      iframe.style.cssText='position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0.01;border:none;';
+    const iframe = isApple ? null : document.createElement('iframe');
+    if (iframe) {
+      iframe.style.cssText = 'position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;border:0;';
       document.body.appendChild(iframe);
-      const doc = iframe.contentWindow?.document;
-      if (doc) { doc.open(); doc.write(html); doc.close(); iframe.onload=()=>{ setTimeout(()=>{ iframe.contentWindow?.focus(); iframe.contentWindow?.print(); setTimeout(()=>document.body.removeChild(iframe),1000); },300); }; }
     }
+    const printWindow = iframe ? iframe.contentWindow : window.open('', '_blank');
+    if (!printWindow) {
+      iframe?.remove();
+      return;
+    }
+    const doc = printWindow.document;
+    doc.open();
+    doc.write(html);
+    doc.close();
+    void Promise.allSettled(Array.from(doc.images, image => image.decode())).then(() => {
+      printWindow.focus();
+      printWindow.print();
+      if (iframe) window.setTimeout(() => iframe.remove(), 1000);
+    });
   };
 
   return (
@@ -950,7 +960,6 @@ function FeaturedPricesSection({ sanityImages }: { sanityImages: Record<string, 
         </div>
         <div className="mt-10 flex flex-wrap justify-center gap-3">
           <Link href={`${p}/kezelesek`} className="crown-button">{t('viewAllPrices')}<ArrowRight size={18} aria-hidden="true" /></Link>
-          {isVoucherLocale(locale) && <Link href={voucherShopPath(locale)} className="crown-button crown-button-secondary">{voucherShopNames[locale]}</Link>}
         </div>
       </div>
     </section>
@@ -1025,12 +1034,18 @@ function FAQSection() {
 }
 
 // ─── Főoldal export ───────────────────────────────────────────────────────────
-export default function HomeClient({ sanityImages = emptyHomeSanityImages }: { sanityImages?: HomeSanityImages }) {
-  const openingLocale = useLocale();
+export default function HomeClient({ sanityImages = emptyHomeSanityImages, voucherSeasonInitiallyOpen }: {
+  sanityImages?: HomeSanityImages;
+  voucherSeasonInitiallyOpen: boolean;
+}) {
+  const openingLocale = normalizeLocale(useLocale());
+  const voucherSeason = useVoucherSeason(voucherSeasonInitiallyOpen);
   return (
     <div className="bg-white min-h-screen selection:bg-sky-200 selection:text-sky-900">
-      <main>
+      <main className="pt-20">
+        {voucherSeason && <ChristmasVoucherBanner locale={openingLocale} />}
         <HeroSlider images={sanityImages.hero} />
+        <HomeHygiene locale={openingLocale} />
         <OpeningAnnouncement locale={openingLocale} imageUrl={sanityImages.hero.primas} />
         <div className="crown-page crown-home-sections">
         <TrustBadges />

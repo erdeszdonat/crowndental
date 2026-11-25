@@ -2,16 +2,27 @@ import { NFC_CARDS } from './nfcCards';
 // Shared allowlists: no contact details, full URLs, form values or arbitrary event properties.
 export const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 export const ANALYTICS_EVENTS = ['page_view', 'engagement', 'booking_cta_click', 'phone_click', 'booking_form_view', 'booking_start', 'booking_step_view', 'booking_step_complete', 'booking_submit', 'booking_error', 'booking_validation_error'] as const;
-export const PUBLIC_PAGES = new Set([...NFC_CARDS.map(card => `kartya/${card.id}`), 'home', 'booking', 'booking_success', 'blog', 'other', 'kezelesek', 'kezelesek/itop', 'kezelesek/air-polishing', 'kezelesek/premium-biofilm-terapia', 'esztergom', 'primas-sziget', 'budapest', 'kapcsolat', 'rolunk', 'kollegaink', 'utazas-szallas', 'hollywood-mosoly', ...['allapotfelmeres','esztetikai-fogaszat','fogfeherites','foghuzas','fogsor','fogszabalyozas','fogtechnikai-megoldasok','gockutatas','gyerekfogaszat','gyokerkezeles','implantatum','koronak-hidak','szajsebeszet','direkt-hej','indirekt-hej'].map(s => `kezelesek/${s}`)]);
+export const PUBLIC_PAGES = new Set([...NFC_CARDS.map(card => `kartya/${card.id}`), 'home', 'booking', 'booking_success', 'karacsonyi-utalvanyok', 'blog', 'other', 'kezelesek', 'kezelesek/itop', 'kezelesek/air-polishing', 'kezelesek/premium-biofilm-terapia', 'esztergom', 'primas-sziget', 'budapest', 'kapcsolat', 'rolunk', 'kollegaink', 'utazas-szallas', 'hollywood-mosoly', ...['allapotfelmeres','esztetikai-fogaszat','fogfeherites','foghuzas','fogsor','fogszabalyozas','fogtechnikai-megoldasok','gockutatas','gyerekfogaszat','gyokerkezeles','implantatum','koronak-hidak','szajsebeszet','direkt-hej','indirekt-hej'].map(s => `kezelesek/${s}`)]);
 export function safeTag(value: unknown, fallback = ''): string {
   return typeof value === 'string' && /^[a-z0-9][a-z0-9_.-]{0,79}$/i.test(value) && !/\d{7,}/.test(value) ? value.toLowerCase() : fallback;
 }
+// Recognize only the clinic's own Google Ads campaigns. Never store click identifiers.
+const googleCampaigns = new Map([
+  ['24461075893', 's-altalanos'],
+  ['24344648088', 's-fogszabi-esztergom'],
+  ['23514098555', 's-fogsor-implant-fogpotlas'],
+  ['23792105929', 'sk-implant-fogsor'],
+]);
+
 export function trafficSource(search: string, referrer: string) {
   const params = new URLSearchParams(search);
   const source = safeTag(params.get('utm_source')); const medium = safeTag(params.get('utm_medium'));
-  const campaign = safeTag(params.get('utm_campaign'));
+  const knownGoogleCampaign = googleCampaigns.get(params.get('gad_campaignid') ?? '');
+  const hasGoogleClick = params.has('gclid') || params.has('gbraid') || params.has('wbraid');
+  const paidGoogle = source === 'google' && medium === 'cpc' || !source && (hasGoogleClick || Boolean(knownGoogleCampaign));
+  const campaign = safeTag(params.get('utm_campaign')) || (paidGoogle ? knownGoogleCampaign ?? '' : '');
   if (source) return { source, medium: medium || 'campaign', campaign };
-  if (params.has('gclid') || params.has('gbraid') || params.has('wbraid')) return { source: 'google', medium: 'cpc', campaign };
+  if (paidGoogle) return { source: 'google', medium: 'cpc', campaign };
   let host = ''; try { host = new URL(referrer).hostname.toLowerCase(); } catch {}
   if (/^(www\.)?crowndental\.hu$/.test(host)) host = '';
   const known = ['facebook.com','instagram.com','tiktok.com','youtube.com','bing.com','duckduckgo.com'];

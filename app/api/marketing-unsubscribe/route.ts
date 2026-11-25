@@ -19,7 +19,7 @@ function escapeHtml(value: unknown) {
 }
 
 function html(content: string, status = 200) {
-  return new Response(`<!doctype html><html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><meta name="robots" content="noindex,nofollow"><title>Crown Dental leiratkozás</title></head><body style="margin:0;background:#f8fafc;font-family:system-ui;color:#0f172a"><main style="max-width:620px;margin:12vh auto;padding:32px;background:white;border:1px solid #e2e8f0;border-radius:20px;text-align:center">${content}<p><a href="https://www.crowndental.hu" style="color:#0284c7;font-weight:700">Vissza a Crown Dental oldalára</a></p></main></body></html>`, {
+  return new Response(`<!doctype html><html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><meta name="robots" content="noindex,nofollow"><title>Crown Dental leiratkozás</title></head><body style="margin:0;background:#f8f5ee;font-family:system-ui;color:#27241f"><main style="max-width:620px;margin:12vh auto;padding:32px;background:white;border:1px solid #e6ddce;border-radius:20px;text-align:center"><img src="/brand/crown-dental.svg" width="84" height="84" alt="Crown Dental">${content}<p><a href="https://www.crowndental.hu" style="color:#78562d;font-weight:700">Vissza a Crown Dental oldalára</a></p></main></body></html>`, {
     status,
     headers: PAGE_HEADERS,
   });

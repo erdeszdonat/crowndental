@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import * as pdf from 'pdf-lib';
 import Stripe from 'stripe';
-import { voucherShopPath } from './storefront';
+import { isVoucherSeasonOpen, voucherShopPath } from './storefront';
 import { staffServiceClient } from '@/lib/staffAuth';
 import { sendTransactionalEmail } from '@/lib/addToAudience';
 import { voucherDocument } from './document.mjs';
@@ -12,7 +12,7 @@ import { voucherEmail, issueInvoice } from './fulfillment.mjs';
 export const publicOrigin = 'https://www.crowndental.hu';
 
 export function salesReady() {
-  return process.env.VOUCHER_SALES_ENABLED === 'true' && processingReady();
+  return isVoucherSeasonOpen() && process.env.VOUCHER_SALES_ENABLED === 'true' && processingReady();
 }
 export function processingReady() {
   return (

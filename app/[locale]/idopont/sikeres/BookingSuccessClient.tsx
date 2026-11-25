@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import voucherArt from '@/prototypes/karacsonyi-utalvanyok/teli-mese-a5.webp';
+import { useVoucherSeason } from '@/lib/vouchers/useVoucherSeason';
 import { isVoucherLocale, voucherShopNames, voucherShopPath, type VoucherLocale } from '@/lib/vouchers/storefront';
 import { motion } from 'framer-motion';
 import { useLocale } from 'next-intl';
@@ -146,6 +147,7 @@ export default function BookingSuccessClient() {
   const safeLocale = normalizeLocale(locale);
   const text = copyByLocale[safeLocale];
   const prefix = safeLocale === 'hu' ? '' : `/${safeLocale}`;
+  const voucherSeason = useVoucherSeason();
   const voucherDialog = useRef<HTMLDialogElement>(null);
   const voucherPending = useRef(false);
   const [bookingConsent, setBookingConsent] = useState<BookingConsent | null>(null);
@@ -229,7 +231,7 @@ export default function BookingSuccessClient() {
       document.removeEventListener('visibilitychange', scheduleOffer);
       if (dialog.open) dialog.close();
     };
-  }, [safeLocale]);
+  }, [safeLocale, voucherSeason]);
 
   const handleOfferSignup = async () => {
     if (!bookingConsent?.consentToken) return;
@@ -357,13 +359,13 @@ export default function BookingSuccessClient() {
               </div>
             </div>
           </div>
-          {isVoucherLocale(safeLocale) && (
+          {voucherSeason && isVoucherLocale(safeLocale) && (
             <div className="mt-6">
               <VoucherOffer locale={safeLocale} titleId="voucher-offer-title" />
             </div>
           )}
         </motion.section>
-        {isVoucherLocale(safeLocale) && (
+        {voucherSeason && isVoucherLocale(safeLocale) && (
           <dialog
             ref={voucherDialog}
             aria-labelledby="voucher-popup-title"

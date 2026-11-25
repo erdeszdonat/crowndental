@@ -1,3 +1,4 @@
+import { withCrownSignature } from '../lib/emailBrand.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -29,6 +30,7 @@ test('personalized reminders use the chosen clinic, both contact numbers and esc
 function worker({ authorized = true, authError = null, mailStatus = 200, networkError = false, saveError = false, missingKey = false } = {}) {
   let claimed = false; const calls = []; const emails = [];
   const api = load('app/api/appointment-reminders/route.ts', {
+    '@/lib/emailBrand.mjs': { withCrownSignature },
     '@/lib/appointmentReminder': builder,
     '@/lib/staffAuth': { staffServiceClient: () => ({ rpc: async (name, args) => {
       calls.push({ name, args });

@@ -1,16 +1,20 @@
 'use client';
 import Link from 'next/link';
+import { canMeasure, trackVoucherEvent, VOUCHER_RECEIPT_KEY } from '@/lib/siteAnalytics';
+import { startVoucherReturnMeasurement } from '@/lib/vouchers/returnMeasurement';
 import copy from '@/lib/vouchers/storefront-copy.json';
 import { voucherShopPath, type VoucherLocale } from '@/lib/vouchers/storefront';
 import { patientGuideLinks } from '@/lib/patientGuideLinks';
+import { isVoucherAmount } from '@/lib/vouchers/amount';
 import examples from '@/lib/vouchers/examples.json';
 import Image from 'next/image';
 import sample from '@/prototypes/karacsonyi-utalvanyok/teli-mese-a5.webp';
-import { useState, useEffect, type FormEvent } from 'react';
+import { useState, useEffect, useRef, type FormEvent } from 'react';
 export function ReturnNotice({ locale }: { locale: VoucherLocale }) {
   const t = copy[locale];
   useEffect(() => {
-    sessionStorage.removeItem('crown-voucher-checkout');
+    try { sessionStorage.removeItem('crown-voucher-checkout'); } catch { /* Optional browser storage. */ }
+    return startVoucherReturnMeasurement();
   }, []);
   return (
     <div>
@@ -22,7 +26,9 @@ export function ReturnNotice({ locale }: { locale: VoucherLocale }) {
     </div>
   );
 }
-export default function Purchase({ salesOpen, locale }: { salesOpen: boolean; locale: VoucherLocale }) {
+const presetAmounts = [...new Set([...examples.map(example => example.amount), 25_000, 40_000, 50_000])].sort((a, b) => a - b);
+
+export default function Purchase({ salesOpen, locale, initialAmount }: { salesOpen: boolean; locale: VoucherLocale; initialAmount: number }) {
   const t = copy[locale];
   const slovak = locale === 'sk';
   const prefix = slovak ? '/sk' : '';
@@ -32,8 +38,8 @@ export default function Purchase({ salesOpen, locale }: { salesOpen: boolean; lo
   useEffect(() => {
     setReady(true);
   }, []);
-  const [preset, setPreset] = useState('10000'),
-    [custom, setCustom] = useState('10000');
+  const [preset, setPreset] = useState(presetAmounts.includes(initialAmount) ? String(initialAmount) : 'custom');
+  const [custom, setCustom] = useState(String(initialAmount));
   const [delivery, setDelivery] = useState('email'),
     [busy, setBusy] = useState(false),
     [error, setError] = useState('');
@@ -41,6 +47,7 @@ export default function Purchase({ salesOpen, locale }: { salesOpen: boolean; lo
   const example = examples.filter(item => item.treatmentPrice <= amount).at(-1);
   const [business, setBusiness] = useState(false);
   const [recipientName, setRecipientName] = useState('');
+  const checkoutAttempt = useRef<{ attempt: string; amount: number; delivery: string; billingHash: string; locale: VoucherLocale } | null>(null);
   async function buy(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (busy || !salesOpen) return;
@@ -68,9 +75,11 @@ export default function Purchase({ salesOpen, locale }: { salesOpen: boolean; lo
         new TextEncoder().encode(JSON.stringify(nameOnVoucher ? [billing, nameOnVoucher] : billing)),
       );
       const billingHash = Array.from(new Uint8Array(bytes)).join('.');
-      const previous = JSON.parse(
-        sessionStorage.getItem('crown-voucher-checkout') || 'null',
-      );
+      let previous = checkoutAttempt.current;
+      if (!previous) {
+        try { previous = JSON.parse(sessionStorage.getItem('crown-voucher-checkout') || 'null'); }
+        catch { /* An in-memory attempt still protects retries when storage is blocked. */ }
+      }
       const attempt =
         (previous?.locale ?? 'hu') === locale &&
         previous?.amount === amount &&
@@ -78,17 +87,18 @@ export default function Purchase({ salesOpen, locale }: { salesOpen: boolean; lo
         previous?.billingHash === billingHash
           ? previous.attempt
           : crypto.randomUUID();
-      sessionStorage.setItem(
-        'crown-voucher-checkout',
-        JSON.stringify({ attempt, amount, delivery, billingHash, locale }),
-      );
+      checkoutAttempt.current = { attempt, amount, delivery, billingHash, locale };
+      try { sessionStorage.setItem('crown-voucher-checkout', JSON.stringify(checkoutAttempt.current)); }
+      catch { /* Keep the current form usable when storage is blocked. */ }
       const response = await fetch('/api/utalvany/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ amount, delivery, attempt, billing, recipientName, locale }),
       });
-      if (response.status === 409)
-        sessionStorage.removeItem('crown-voucher-checkout');
+      if (response.status === 409) {
+        checkoutAttempt.current = null;
+        try { sessionStorage.removeItem('crown-voucher-checkout'); } catch { /* No stored attempt. */ }
+      }
       if (!response.ok) {
         const result = await response.json().catch(() => null);
         setError(
@@ -98,7 +108,16 @@ export default function Purchase({ salesOpen, locale }: { salesOpen: boolean; lo
         setBusy(false);
         return;
       }
-      location.assign((await response.json()).url);
+      const result = await response.json();
+      if (canMeasure() && typeof result.receipt === 'string') {
+        try {
+          if (sessionStorage.getItem(VOUCHER_RECEIPT_KEY) !== result.receipt) {
+            sessionStorage.setItem(VOUCHER_RECEIPT_KEY, result.receipt);
+            if (result.url.startsWith('https://checkout.stripe.com/')) trackVoucherEvent('begin_checkout', amount);
+          }
+        } catch { /* Optional measurement must never interrupt payment. */ }
+      }
+      location.assign(result.url);
     } catch {
       setError(t.error);
       setBusy(false);
@@ -139,7 +158,7 @@ export default function Purchase({ salesOpen, locale }: { salesOpen: boolean; lo
           value={preset}
           onChange={(e) => setPreset(e.target.value)}
         >
-          {examples.map(({amount: a}) => (
+          {presetAmounts.map(a => (
             <option key={a} value={a}>
               {formatValue(a)} {currency}
             </option>
@@ -162,7 +181,7 @@ export default function Purchase({ salesOpen, locale }: { salesOpen: boolean; lo
           />
         </label>
       )}
-      <p aria-live="polite">{Number.isInteger(amount) && amount >= 10000 && amount <= 500000 && amount % 5000 === 0
+      <p aria-live="polite">{isVoucherAmount(amount)
         ? t.example + ': ' + (slovak ? example?.descriptionSk : example?.description)
         : t.amountHint} <Link href={prefix + '/kezelesek'} className="underline">{t.priceList}</Link></p>
       {locale === 'hu' && <p><Link href={'/blog/' + patientGuideLinks.voucher.slug} className="underline">{patientGuideLinks.voucher.label}</Link></p>}

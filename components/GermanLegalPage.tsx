@@ -98,7 +98,7 @@ const documents: Record<GermanLegalDocument, { eyebrow: string; title: string; l
       },
       {
         title: '4. Eingesetzte Speichertechnologien',
-        items: ['crown_cookie_consent (notwendiger lokaler Speicher): speichert Ihre Auswahl bis zur Löschung der Browserdaten.', 'Buchungsbestätigung (notwendiger Sitzungsspeicher): bleibt bis zum Ende der Browser-Sitzung bestehen.', '_ga und _ga_* (Google Analytics): typischerweise bis zu zwei Jahre.', '_gcl_au und _gcl_aw_* (Google Ads): typischerweise bis zu 90 Tage.', '_fbp (Meta): typischerweise bis zu 90 Tage.'],
+        items: ['crown_cookie_consent (notwendiger lokaler Speicher): speichert Ihre Auswahl bis zur Löschung der Browserdaten.', 'Buchungsbestätigung (notwendiger Sitzungsspeicher): bleibt bis zum Ende der Browser-Sitzung bestehen.', 'Nach Ihrer Statistik-Einwilligung bleibt crown_voucher_measurement bis zur Erfassung des bestätigten Gutscheinkaufs, zum Widerruf oder zum Schließen des Tabs im Sitzungsspeicher. Google Analytics erfasst den Beginn des Bezahlvorgangs, den gezahlten Betrag in HUF und eine separate Transaktionskennung, um den Kauf nur einmal zu zählen.', '_ga und _ga_* (Google Analytics): typischerweise bis zu zwei Jahre.', '_gcl_au und _gcl_aw_* (Google Ads): typischerweise bis zu 90 Tage.', '_fbp (Meta): typischerweise bis zu 90 Tage.'],
       },
       {
         title: '5. Externe Anbieter',

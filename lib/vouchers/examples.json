@@ -6,10 +6,22 @@
     "descriptionSk": "Vstupné zubné vyšetrenie a liečebný plán (10 000 HUF)."
   },
   {
+    "amount": 25000,
+    "treatmentPrice": 25000,
+    "description": "Első iTOP-alkalom Berber-Waller Oxánával, 60 perc egyéni gyakorlással és hazavihető Curaprox csomaggal (25 000 Ft).",
+    "descriptionSk": "Prvá návšteva iTOP s Oxánou Berber-Waller, 60 minút individuálneho nácviku a balíček Curaprox na doma (25 000 HUF)."
+  },
+  {
     "amount": 30000,
     "treatmentPrice": 30000,
     "description": "Ultrahangos fogkőeltávolítás mindkét állcsonton (15 000 Ft állcsontonként).",
     "descriptionSk": "Ultrazvukové odstránenie zubného kameňa na oboch čeľustiach (15 000 HUF za čeľusť)."
+  },
+  {
+    "amount": 40000,
+    "treatmentPrice": 40000,
+    "description": "Ultrahangos fogkőeltávolítás és porpolírozás mindkét állcsonton (20 000 Ft állcsontonként).",
+    "descriptionSk": "Ultrazvukové odstránenie zubného kameňa a pieskovanie oboch čeľustí (20 000 HUF za čeľusť)."
   },
   {
     "amount": 60000,

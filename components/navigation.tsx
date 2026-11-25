@@ -1,6 +1,7 @@
 'use client';
 
 import { isVoucherLocale, voucherShopNames, voucherShopPath } from '@/lib/vouchers/storefront';
+import { useVoucherSeason } from '@/lib/vouchers/useVoucherSeason';
 import { bookingHref } from '@/lib/bookingTreatment';
 import { isNfcCardPath } from '@/lib/nfcCards';
 import ClinicPhoneLinks from '@/components/ClinicPhoneLinks';
@@ -212,7 +213,7 @@ function LanguageSwitcher() {
         aria-haspopup="menu"
         aria-expanded={open}
         aria-controls={menuId}
-        className="flex items-center gap-1.5 px-3 py-2 rounded-full text-gray-700 hover:text-sky-600 hover:bg-sky-50 transition-all text-sm font-bold"
+        className="flex items-center gap-1.5 px-3 py-2 rounded-full text-gray-700 hover:text-[#78562d] hover:bg-[#f8f4ec] transition-all text-sm font-bold"
       >
         <FlagIcon code={currentLang.code} />
         <span className="hidden sm:inline">{currentLang.label}</span>
@@ -243,14 +244,14 @@ function LanguageSwitcher() {
                 tabIndex={-1}
                 aria-current={locale === lang.code ? 'true' : undefined}
                 onClick={() => switchLocale(lang.code)}
-                className={`w-full flex items-center gap-3 px-4 py-3 text-sm font-medium hover:bg-sky-50 transition-colors text-left ${
-                  locale === lang.code ? 'bg-sky-50 text-sky-700 font-bold' : 'text-gray-700'
+                className={`w-full flex items-center gap-3 px-4 py-3 text-sm font-medium hover:bg-[#f8f4ec] transition-colors text-left ${
+                  locale === lang.code ? 'bg-[#f8f4ec] text-[#604322] font-bold' : 'text-gray-700'
                 }`}
               >
                 <FlagIcon code={lang.code} />
                 <span>{lang.label}</span>
                 {locale === lang.code && (
-                  <span className="ml-auto w-2 h-2 rounded-full bg-sky-500" />
+                  <span className="ml-auto w-2 h-2 rounded-full bg-[#8c642f]" />
                 )}
               </button>
             ))}
@@ -267,6 +268,7 @@ export default function Navigation() {
   const locale = useLocale();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+  const voucherSeason = useVoucherSeason();
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
 
@@ -309,13 +311,13 @@ export default function Navigation() {
         {/* Logo */}
         <a href={homeHref} className="flex items-center relative h-full py-2 z-50">
           <Image
-            src="/logo.webp"
+            src="/brand/crown-dental.svg"
             unoptimized
-            alt="Crown Dental Logo"
-            width={140}
-            height={84}
+            alt="Crown Dental"
+            width={72}
+            height={72}
             priority
-            className="h-12 w-auto object-contain drop-shadow-sm md:h-14"
+            className="size-16 object-contain md:size-[72px]"
           />
         </a>
 
@@ -325,7 +327,8 @@ export default function Navigation() {
             <a
               key={link.href}
               href={link.href}
-              className={`font-bold transition-colors ${isActive(link.href) ? 'text-sky-600 bg-sky-50 px-4 py-2 rounded-full' : 'text-gray-800 hover:text-sky-600'}`}
+              aria-current={isActive(link.href) ? 'page' : undefined}
+              className={`font-bold transition-colors ${isActive(link.href) ? 'text-[#78562d] bg-[#f8f4ec] px-4 py-2 rounded-full' : 'text-gray-800 hover:text-[#78562d]'}`}
             >
               {link.name}
             </a>
@@ -371,12 +374,12 @@ export default function Navigation() {
             exit={{ opacity: 0, height: 0 }}
             className="2xl:hidden bg-white border-t border-gray-100 p-6 flex flex-col gap-4 font-bold shadow-2xl absolute w-full left-0 z-40"
           >
-            {isVoucherLocale(locale) && (
+            {voucherSeason && isVoucherLocale(locale) && (
               <Link
                 href={voucherShopPath(locale)}
                 aria-current={isActive(voucherShopPath(locale)) ? 'page' : undefined}
                 onClick={() => setIsOpen(false)}
-                className="block rounded-xl bg-sky-50 px-4 py-2 text-sky-700 hover:bg-sky-100"
+                className="block rounded-xl bg-[#f8f4ec] px-4 py-2 text-[#604322] hover:bg-[#efe7d7]"
               >
                 {voucherShopNames[locale]}
               </Link>
@@ -385,8 +388,9 @@ export default function Navigation() {
               <a
                 key={link.href}
                 href={link.href}
+                aria-current={isActive(link.href) ? 'page' : undefined}
                 onClick={() => setIsOpen(false)}
-                className={`px-4 py-2 rounded-xl ${isActive(link.href) ? 'text-sky-600 bg-sky-50' : 'hover:bg-sky-50'}`}
+                className={`px-4 py-2 rounded-xl ${isActive(link.href) ? 'text-[#78562d] bg-[#f8f4ec]' : 'hover:bg-[#f8f4ec]'}`}
               >
                 {link.name}
               </a>
@@ -409,7 +413,7 @@ export default function Navigation() {
                       }
                     }}
                     className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold transition-colors ${
-                      locale === lang.code ? 'bg-sky-100 text-sky-700' : 'bg-gray-100 text-gray-600 hover:bg-sky-50'
+                      locale === lang.code ? 'bg-[#efe7d7] text-[#604322]' : 'bg-gray-100 text-gray-600 hover:bg-[#f8f4ec]'
                     }`}
                   >
                     <FlagIcon code={lang.code} />{lang.label}
@@ -426,7 +430,7 @@ export default function Navigation() {
               href={isNfc ? '#konzultacio' : bookingHref(prefix, pathname)}
               data-booking-cta={isNfc ? 'true' : undefined}
               onClick={() => setIsOpen(false)}
-              className="flex items-center justify-center gap-2 px-5 py-3 bg-sky-600 text-white font-bold rounded-full shadow-md"
+              className="flex items-center justify-center gap-2 px-5 py-3 bg-[#78562d] text-white font-bold rounded-full shadow-md"
             >
               <Calendar className="w-5 h-5" /> {t('bookAppointment')}
             </a>

@@ -69,7 +69,7 @@ export function buildBlogPostingJsonLd(post: {
       '@id': 'https://www.crowndental.hu/#organization',
       name: 'Crown Dental',
       url: 'https://www.crowndental.hu',
-      logo: { '@type': 'ImageObject', url: 'https://www.crowndental.hu/logo.webp' },
+      logo: { '@type': 'ImageObject', url: 'https://www.crowndental.hu/brand/crown-dental.jpg' },
     },
     mainEntityOfPage: {
       '@type': 'WebPage',

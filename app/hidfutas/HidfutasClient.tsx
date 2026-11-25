@@ -90,7 +90,7 @@ export default function HidfutasClient() {
   return (
     <main className={styles.page} id="crown-content">
       <header className={styles.header}>
-        <Link href="/" aria-label="Crown Dental főoldal"><Image src="/logo.webp" alt="Crown Dental" width={168} height={56} priority className={styles.logo} /></Link>
+        <Link href="/" aria-label="Crown Dental főoldal"><Image src="/brand/crown-dental.svg" alt="Crown Dental" width={72} height={72} priority className={styles.logo} /></Link>
         <span className={styles.eventTag}>HÍDFUTÁS <span>2026</span></span>
       </header>
 

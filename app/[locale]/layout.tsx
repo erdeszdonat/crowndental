@@ -46,7 +46,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
         ? { 'msvalidate.01': process.env.BING_SITE_VERIFICATION }
         : undefined,
     },
-    openGraph: { siteName: 'Crown Dental', locale: localeMap[locale] ?? 'hu_HU', type: 'website' },
+    openGraph: { siteName: 'Crown Dental', locale: localeMap[locale] ?? 'hu_HU', type: 'website', images: [{ url: `${SITE_URL}/og-image.jpg`, width: 1200, height: 630, alt: 'Crown Dental Esztergom' }] },
   };
 }
 
@@ -64,7 +64,7 @@ const organizationJsonLd = {
       legalName: 'Crown Dental Praxis és Labor Fogászati Kft.',
       alternateName: ['Crown Dental Esztergom', 'Crown Dental Ostrihom', 'Crown Dental Zahnarztpraxis Esztergom'],
       url: SITE_URL,
-      logo: { '@type': 'ImageObject', url: `${SITE_URL}/logo.webp` },
+      logo: { '@type': 'ImageObject', url: `${SITE_URL}/brand/crown-dental.jpg` },
       image: `${SITE_URL}/og-image.jpg`,
       telephone: ['+36706042500', '+36305892468'],
       email: PATIENT_EMAIL,

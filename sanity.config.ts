@@ -1,5 +1,6 @@
 "use client";
 
+import { createElement } from "react";
 import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 import { dataset, projectId } from "./sanity/env";
@@ -9,6 +10,8 @@ import BlogSeoMaintenanceTool from "./sanity/tools/BlogSeoMaintenanceTool";
 
 export default defineConfig({
   basePath: "/studio",
+  title: "Crown Dental",
+  icon: () => createElement("img", { src: "/brand/crown-dental.svg", alt: "", width: 32, height: 32, style: { background: "white", borderRadius: "50%" } }),
   projectId,
   dataset,
   schema: {

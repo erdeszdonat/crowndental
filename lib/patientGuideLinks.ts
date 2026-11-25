@@ -1,4 +1,7 @@
+import { hygieneGuides } from './hygiene';
+
 export const patientGuideLinks = {
+  hygiene: { slug: "melyik-dentalhigieniai-idopontot-valasszam", label: "Melyik dentálhigiéniai időpontot válasszam?" },
   itop: { slug: "fogmosas-fogszabalyzoval-itop-szajapolas", label: "Szájápolás fogszabályzóval, híddal vagy implantátummal – iTOP-útmutató" },
   voucher: { slug: "fogaszati-ajandekutalvany-karacsonyra-milyen-osszeget-valasszak", label: "Milyen összegű karácsonyi fogászati utalványt válasszak?" },
   orthodontics: { slug: "fogszabalyozas-koronaval-vagy-implantatummal", label: "Fogszabályozás koronával vagy implantátummal" },
@@ -9,6 +12,9 @@ export const patientGuideLinks = {
 type GuideLink = (typeof patientGuideLinks)[keyof typeof patientGuideLinks];
 
 export const relatedPatientGuides: Readonly<Record<string, GuideLink | undefined>> = {
+  [patientGuideLinks.itop.slug]: patientGuideLinks.hygiene,
+  [hygieneGuides['air-polishing']]: patientGuideLinks.hygiene,
+  [hygieneGuides['premium-biofilm-terapia']]: patientGuideLinks.hygiene,
   "lathatatlan-sin-vagy-rogzitett-fogszabalyozo-felnottkorban": patientGuideLinks.itop,
   "ragyogo-mosoly-egy-ora-alatt-igy-mukodik-a-valodi": patientGuideLinks.voucher,
   "a-fogszabalyozas-menete-modszerek-es-arak-attekintese-crown-dental": patientGuideLinks.orthodontics,

@@ -104,6 +104,7 @@ test('unknown paths and IDs cannot leak through route parameters', () => {
     assert.ok(['other', 'home'].includes(analytics.measurementPage(route)));
   }
   assert.equal(analytics.measurementPage('/sk/blog/anything-sensitive?x=private'), 'blog');
+  assert.equal(analytics.measurementPage('/sk/karacsonyi-utalvanyok?osszeg=25000'), 'karacsonyi-utalvanyok');
 });
 
 test('veneer campaigns retain their public page attribution in all four locales', () => {
@@ -171,4 +172,31 @@ test('quote consultation CTA is attributed in GA and accepted by first-party ana
   assert.equal(e.window.dataLayer[0][2].cta_location, 'quote_result');
   const event = e.load('analyticsValidation').cleanAnalyticsEvent({ id: '11111111-1111-4111-8111-111111111111', event: 'booking_cta_click', page: 'home', placement: 'quote_result' });
   assert.equal(event.placement, 'quote_result');
+});
+
+test('voucher revenue uses confirmed transaction identifiers and analytics consent only', () => {
+  const transaction = 'f'.repeat(32);
+  const e = environment();
+  assert.equal(e.analytics.trackVoucherEvent('purchase', 15000, transaction), false);
+  e.analytics.setAnalyticsConsent(e.consent.createConsentRecord({ analytics: false, marketing: true }));
+  assert.equal(e.analytics.trackVoucherEvent('purchase', 15000, transaction), false);
+  e.grant();
+  assert.equal(e.analytics.trackVoucherEvent('purchase', 15000, ''), false);
+  assert.equal(e.analytics.trackVoucherEvent('purchase', 15000, 'cs_live_1234'), false);
+  assert.equal(e.analytics.trackVoucherEvent('purchase', -1000, transaction), false);
+  assert.equal(e.analytics.trackVoucherEvent('begin_checkout', 15000), true);
+  assert.equal(e.analytics.trackVoucherEvent('purchase', 15000, transaction), true);
+  const [start, paid] = e.window.dataLayer;
+  assert.equal(start[1], 'begin_checkout');
+  assert.equal(start[2].transaction_id, undefined);
+  assert.equal(paid[1], 'purchase');
+  assert.equal(paid[2].transaction_id, transaction);
+  assert.equal(paid[2].currency, 'HUF');
+  assert.equal(paid[2].value, 15000);
+  assert.deepEqual(Object.keys(paid[2]).sort(), ['currency','items','send_to','transaction_id','value']);
+  assert.equal(paid[2].items[0].quantity, 1);
+  assert.equal(paid[2].items[0].item_id, 'gift_voucher');
+  e.storage.setItem(e.analytics.VOUCHER_RECEIPT_KEY, 'receipt');
+  e.analytics.setAnalyticsConsent(null);
+  assert.equal(e.storage.getItem(e.analytics.VOUCHER_RECEIPT_KEY), null);
 });

@@ -14,7 +14,7 @@ const content: Record<SupportedLocale, Copy> = {
   hu: {
     base: 'Ultrahangos fogkőeltávolítás', unit: 'állcsont', both: 'Mindkét állcsont kezelése', prices: 'Dentálhigiéniai árak Esztergomban', process: 'Hogyan zajlik a kezelés?', imageLabel: 'Illusztráció',
     air: {
-      name: 'Fogkőeltávolítás és air polishing', title: 'Fogkőeltávolítás és air polishing Esztergomban',
+      name: 'Fogkőeltávolítás és porpolírozás (Airflow)', title: 'Airflow / air polishing és fogkőeltávolítás Esztergomban',
       lead: 'Érdes fogfelszínt érez a nyelvével, vagy zavarják a kávé után maradt foltok? Ebben a kezelésben az ultrahangos fogkőeltávolítást finom porral, vízzel és levegővel végzett tisztítás egészíti ki.',
       alt: 'Az air polishing fúvókája a felső fogak külső felszínének közelében.',
       steps: ['Megnézzük, hol található kemény fogkő, puha lepedék vagy felületi elszíneződés. Egyeztetjük, melyik állcsontot kezeljük.', 'Ultrahangos eszközzel eltávolítjuk a kemény fogkövet. Az air polishing során a víz, a levegő és a finom por a puha lerakódásokat és a felületi foltokat célozza.', 'A végén megmutatjuk a megtisztított területeket, és megbeszéljük, mire érdemes figyelni az otthoni fogápolásnál.'],

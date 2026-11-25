@@ -483,7 +483,7 @@ export default function AdminDashboard() {
       <div className="min-h-dvh bg-[radial-gradient(ellipse_at_top,#e2f0f8,#f4f7fb_65%)] flex items-center justify-center p-5">
         <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="max-w-md w-full bg-white rounded-3xl border border-slate-200/80 p-7 sm:p-10 shadow-xl shadow-slate-200/50">
           <a href="/admin/portal" className="mb-6 inline-flex text-sm text-slate-600 underline underline-offset-4">← Vissza a választáshoz</a>
-          <Image src="/logo.webp" alt="Crown Dental" width={232} height={145} priority className="mx-auto mb-7 h-24 w-44 object-contain" />
+          <Image src="/brand/crown-dental.svg" alt="Crown Dental" width={112} height={112} priority className="mx-auto mb-7 size-28 object-contain" />
           <h1 className="text-2xl font-bold text-slate-900 mb-2 text-center tracking-tight">Üdvözöljük a munkatérben</h1>
           <p className="text-gray-500 mb-8 text-center text-sm font-medium">Lépjen be a saját fiókjával a folytatáshoz.</p>
           <form onSubmit={handleLogin} className="space-y-4">

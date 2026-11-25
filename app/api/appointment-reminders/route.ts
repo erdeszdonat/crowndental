@@ -1,3 +1,4 @@
+import { withCrownSignature } from '@/lib/emailBrand.mjs';
 import { staffServiceClient } from '@/lib/staffAuth';
 import { buildAppointmentReminder, type ReminderSnapshot } from '@/lib/appointmentReminder';
 
@@ -30,7 +31,7 @@ export async function POST(request: Request) {
         const response = await fetch('https://api.resend.com/emails', {
           method: 'POST', signal: AbortSignal.timeout(8000),
           headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json', 'Idempotency-Key': `crown-appointment-reminder-v1-${job.id}` },
-          body: JSON.stringify(payload),
+          body: JSON.stringify({ ...payload, html: withCrownSignature(payload.html) }),
         });
         const body = await response.json().catch(() => null);
         if (response.ok && typeof body?.id === 'string' && body.id) providerId = body.id;
